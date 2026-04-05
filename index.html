@@ -1,0 +1,1108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Pasterry</title>
+<style>
+:root{
+  --bg:#1A1210; --card:#E8F5E9; --accent:#07fcdb; --muted:#1A1210; --danger:#ac940d;
+  --glass: rgb(255, 217, 0); --ok:#2b7245;
+  --header-collapsed-h: 58px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+html,body{height:100%;margin:0;background:linear-gradient(180deg,#1A1210 0%, #1A1210 60%);color:#e6eef6;-webkit-font-smoothing:antialiased; scroll-behavior: smooth;}
+.app{min-height:100vh;display:flex;flex-direction:column}
+
+html, body{
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar{
+  width: 0; height: 0;
+}
+
+/* ===== HEADER ATUALIZADO (Efeito de recolher via CSS) ===== */
+header{
+  position: sticky; 
+  top: -155px; 
+  z-index: 60;
+  display: grid; 
+  place-items: center;
+  padding: 15px 16px 10px;
+  background: linear-gradient(180deg, #1A1210, rgba(7,20,40,0.85));
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #1A1210;
+}
+
+.brand{ display: flex; flex-direction: column; align-items: center; }
+
+.logo{
+  width: 120px; height: 120px; border-radius: 100px; overflow: hidden;
+  display:flex; align-items:center; justify-content:center;
+  background:#1A1210; box-shadow: 0 10px 30px #1A1210;
+  animation: logo-fade linear both;
+  animation-timeline: scroll();
+  animation-range: 150px 250px;
+}
+.logo img{ width:100%; height:100%; object-fit:cover; display:block }
+
+@keyframes logo-fade {
+  to { opacity: 0; transform: scale(0.7) translateY(-20px); filter: blur(4px); }
+}
+
+/* ===== MAIN ===== */
+main{flex:1;display:flex;flex-direction:column;gap:12px;padding:10px 20px;box-sizing:border-box; padding-bottom: 90px;}
+
+/* ===== CATEGORIAS ===== */
+.categories{
+  position: sticky;
+  top: 0;
+  z-index: 70;
+  display: grid; 
+  grid-auto-flow: column;
+  grid-auto-columns: 25%; /* Para mostrar 4 itens */
+  gap: 10px;
+  overflow-x: auto;
+  padding:12px 8px;
+  background: #1A1210; 
+  border-radius:14px; 
+  scrollbar-width:none; 
+  -ms-overflow-style:none; 
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory; /* Efeito de "trava" na rolagem */
+}
+.categories::-webkit-scrollbar{display:none}
+
+.cat {
+  padding: 9px 15px; 
+  border-radius: 20px;
+  font-size: 14px; 
+  min-width: 90px;
+  scroll-snap-align: start; /* Alinha o início do item com o container */
+  background: var(--glass); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  cursor: pointer; 
+  font-weight: 800;
+  color: #1a1600; 
+  white-space: nowrap; 
+  text-align: center;
+  transition: transform .08s ease;
+}
+
+.cat.active {
+  outline: 3px solid var(--accent);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5); 
+  transform: scale(1.05);
+}
+
+.cat-section{
+  display:block;
+  margin: 10px 4px 24px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.cat-section:first-child{ border-top: 0; margin-top: 0; }
+
+.cat-section > .muted{
+  font-weight: 800;
+  letter-spacing: .3px;
+  margin: 6px 4px 12px;
+  opacity: .85;
+}
+
+.products{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+/* Ajustes no card do produto */
+.product{
+  background:linear-gradient(180deg, rgba(30, 30, 30, 0.02), rgba(25, 25, 25, 0.01)); 
+  padding:14px; 
+  border-radius:20px; 
+  display:flex; 
+  flex-direction:row;
+  gap:16px;
+  align-items: center;
+  overflow:hidden; 
+  scroll-margin-top: 20px; 
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.product .media{
+  position:relative; 
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  border-radius:12px; 
+  overflow:hidden; 
+  background:#0c1220;
+}
+.product .media > img{
+  position:absolute; 
+  inset:0; 
+  width:100%; 
+  height:100%; 
+  object-fit:cover; 
+  object-position:center; 
+  display:block;
+}
+
+.product .text-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.title{font-weight:700; font-size:18px; line-height: 1.2;}
+.price{color:var(--danger); font-weight:700; font-size:17px}
+.muted{color:#9aa6b2; font-size:13px; line-height: 1.3;}
+
+.product .info-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.add-btn{
+  width: auto;
+  padding:10px 20px;
+  border-radius:8px; 
+  background:var(--ok); 
+  border:0; 
+  color:#fff; 
+  font-weight:800; 
+  cursor:pointer;
+  flex-shrink: 0;
+}
+.add-btn:active{ transform: scale(0.97); filter: brightness(0.9); box-shadow: inset 0 3px 6px rgba(0,0,0,.25); }
+
+/* ===== Media Queries para Responsividade ===== */
+@media (max-width: 600px) {
+  main { padding: 10px; }
+  .categories { grid-auto-columns: 33%; }
+  .product .media { width: 100px; height: 100px; }
+  .title { font-size: 16px; }
+  .price { font-size: 15px; }
+  .add-btn { padding: 8px 16px; }
+  .dialog { flex-direction: column; }
+  .size-image-wrap { width: 100%; }
+  .size-image { height: 150px; }
+}
+
+#currentCat{
+  position: sticky;
+  top: calc(var(--header-collapsed-h) + 8px);
+  z-index: 69;
+}
+.products-wrap{ padding: 8px 6px 24px; }
+.content{display:flex;gap:18px}
+.left{flex:1;display:flex;flex-direction:column;min-width:0}
+
+.btn{flex:1; padding:14px; border-radius:10px; border:0; background:var(--glass); color:#1a1600; cursor:pointer; font-weight:800; font-size:16px}
+.btn.secondary{background:var(--glass); color:#1a1600; opacity:.9}
+.btn:disabled{opacity:.6; cursor:not-allowed}
+
+.overlay{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); z-index:80; backdrop-filter: blur(4px);}
+.dialog{width:840px; max-width:95%; background:#272323; border-radius:12px; padding:20px; display:flex; gap:12px; box-shadow:0 20px 60px rgba(2,6,23,0.8)}
+.left-panel{flex:1; display:flex; flex-direction:column; gap:10px}
+.kbd{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.kbd button{padding:18px 12px; font-size:20px; border-radius:10px; background:var(--glass); border:1px solid rgba(255,255,255,0.03); color:#eaf6f2}
+.num-display{font-size:40px; background:#021522; padding:12px; border-radius:10px; text-align:right; color:var(--accent); font-weight:800}
+.attract{position:fixed; inset:0; background-image:linear-gradient(180deg, rgba(0,0,0,0.5), rgba(0,0,0,0.6)); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:100; overflow:hidden}
+.attract.hidden{display:none}
+.attract h1{font-size:56px; margin:0 0 10px; color:var(--accent)}
+.attract p{color:var(--muted); font-size:22px; margin:0 0 20px}
+.attract-logo{position:absolute; inset:0; margin:auto; width:min(92vmin, 900px); height:auto; opacity:1; filter:none; pointer-events:none; user-select:none}
+.big-btn{padding:18px 30px; border-radius:14px; background:var(--accent); color:#022; font-weight:900; font-size:20px; border:0; cursor:pointer}
+@media (max-width:900px){ main{gap:10px} .content{flex-direction:column} }
+@media (max-height:760px){ .logo{ width:100px; height:100px } header{top: -130px;} }
+button:focus{outline:3px solid rgba(221, 2, 2, 0.12)}
+button,.btn,.big-btn,.cat{ transition: transform .08s ease, box-shadow .12s ease, filter .12s ease }
+button:active,.btn:active,.big-btn:active,.cat:active{ transform:scale(0.97); filter:brightness(0.96); box-shadow:inset 0 6px 14px rgba(0,0,0,.25) }
+.press{ animation: pressPop .18s ease }
+@keyframes pressPop{ 0%{transform:scale(1)} 40%{transform:scale(0.95)} 100%{transform:scale(1)} }
+.size-image-wrap{width:260px; display:flex; flex-direction:column; gap:10px; align-items:stretch}
+.size-image{width:100%; height:180px; object-fit:cover; border-radius:12px; background:#0c1220; box-shadow:0 10px 30px rgba(0,0,0,.5)}
+/* TOAST */
+#toastWrap{ position:fixed; left:0; right:0; top:14px; z-index:120; display:flex; flex-direction:column; align-items:center; gap:8px; pointer-events:none }
+.toast{ pointer-events:auto; display:flex; align-items:center; gap:10px; background:rgba(7,20,40,.92); color:#e6eef6; border:1px solid rgba(255,255,255,.06); box-shadow:0 10px 30px rgba(0,0,0,.5); padding:12px 14px; border-radius:12px; min-width:280px; max-width:90vw; transform:translateY(-12px); opacity:0; animation:toastIn .18s ease forwards, toastOut .18s ease forwards 1.6s }
+.toast.check{ width:28px; height:28px; border-radius:8px; background:var(--ok); display:grid; place-items:center; font-weight:900; color:#fff }
+.toast.title{ font-weight:800; font-size:15px; line-height:1.2 }
+.toast.sub{ color:var(--muted); font-size:13px }
+@keyframes toastIn{ to{ transform:translateY(0); opacity:1 } }
+@keyframes toastOut{ to{ transform:translateY(-8px); opacity:0 } }
+/* RODAPÉ */
+.footer-bar{ position:fixed; left:0; right:0; bottom:0; padding:10px 12px calc(10px + env(safe-area-inset-bottom)); background:linear-gradient(180deg, rgba(7,20,40,0.0), rgba(7,20,40,0.85) 30%, rgba(7,20,40,0.95)); backdrop-filter:blur(6px); border-top:1px solid rgba(255,255,255,0.06); z-index:70 }
+.footer-cart{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 16px; border-radius:14px; background:var(--danger); color:#fff; font-weight:900; font-size:18px; border:0; cursor:pointer; box-shadow:0 10px 30px rgba(0,0,0,.45), inset 0 -2px 0 rgba(0,0,0,.15) }
+.footer-cart .cart-ico{ display:grid; place-items:center }
+.footer-cart .cart-label{ flex:1; text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.footer-cart .cart-total{ font-weight:900; margin-right:8px; white-space:nowrap }
+.footer-cart .cart-badge{ min-width:28px; height:28px; padding:0 8px; border-radius:999px; display:inline-flex; align-items:center; justify-content:center; background:rgba(0,0,0,.25); color:#fff; font-weight:900; font-size:14px; box-shadow:inset 0 -2px 0 rgba(0,0,0,.2) }
+@media (max-width:380px){ .footer-cart .cart-label{ display:none } }
+</style>
+</head>
+<body>
+  <!-- Toast container -->
+  <div id="toastWrap" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Overlay de sucesso -->
+  <div class="overlay" id="successOverlay" aria-hidden="true" style="display:none">
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="successTitle" style="max-width:640px; flex-direction:column; align-items:center; text-align:center; gap:14px">
+      <img id="successImg" src="img/sucesso.png" alt="Pedido finalizado com sucesso" style="width:220px;height:220px;object-fit:contain;border-radius:16px;background:#021522;box-shadow:0 10px 30px rgba(0,0,0,.5)">
+      <div id="successTitle" style="font-weight:900;font-size:24px;color:var(--accent)">Pedido confirmado!</div>
+      <div class="muted" id="successMsg" style="font-size:15px">Seu pedido foi enviado para a cozinha e está sendo impresso.</div>
+      <button class="btn" id="okSuccess" type="button" style="width:220px">OK</button>
+    </div>
+  </div>
+
+  <!-- Área de impressão -->
+  <div id="printArea" aria-hidden="true"></div>
+
+  <div class="app" id="app">
+    <header>
+      <div class="brand" role="banner">
+        <div class="logo" aria-hidden="true"><img src="img/logo.jpg" alt="Logo Pasterry"></div>
+        <div class="brand-text">
+          
+          <div class="brand-sub"></div>
+        </div>
+      </div>
+      <div class="actions">
+        <!-- (botão do header removido para evitar duplicidade) -->
+      </div>
+    </header>
+
+<main>
+  <div class="categories" id="categories" role="tablist" aria-label="Categorias"></div>
+
+  <!-- Rótulo da categoria atual -->
+
+  <div class="content">
+    <div class="left" aria-live="polite">
+      <div class="products-wrap">
+        <div id="products" class="products" role="list"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+    <!-- Modal editar quantidade -->
+    <div class="overlay" id="overlay" aria-hidden="true">
+      <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+        <div class="left-panel">
+          <div id="dialogTitle" style="font-weight:800;font-size:18px">Editar quantidade</div>
+          <div class="num-display" id="numDisplay">1</div>
+          <div class="kbd" id="kbd">
+            <button data-key="1" type="button">1</button>
+            <button data-key="2" type="button">2</button>
+            <button data-key="3" type="button">3</button>
+            <button data-key="4" type="button">4</button>
+            <button data-key="5" type="button">5</button>
+            <button data-key="6" type="button">6</button>
+            <button data-key="7" type="button">7</button>
+            <button data-key="8" type="button">8</button>
+            <button data-key="9" type="button">9</button>
+            <button data-key="back" type="button">⌫</button>
+            <button data-key="0" type="button">0</button>
+            <button data-key="clear" type="button">C</button>
+          </div>
+        </div>
+        <div style="width:260px;display:flex;flex-direction:column;gap:10px;align-items:stretch">
+          <button class="btn" id="saveQty" type="button">Salvar</button>
+          <button class="btn secondary" id="cancelQty" type="button">Cancelar</button>
+          <div style="color:var(--muted);font-size:13px">Para quantidades grandes, use os botões 0-9</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de tamanho (15/25 cm para pastéis; 300/400/500 ml para açaí) -->
+    <div class="overlay" id="sizeOverlay" aria-hidden="true" style="display:none">
+      <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="sizeTitle" style="max-width:720px">
+        <div class="left-panel">
+          <div id="sizeTitle" style="font-weight:800;font-size:18px"></div>
+          <div id="sizeDesc" class="muted" style="margin-top:4px"></div>
+          <div id="sizeOptions" style="display:grid;gap:10px;margin-top:14px">
+            <!-- opções são renderizadas dinamicamente -->
+          </div>
+        </div>
+        <div class="size-image-wrap">
+          <img id="sizeImg" class="size-image" alt="" />
+          <div class="muted" style="text-align:center">Toque em uma opção para adicionar ao pedido.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="attract hidden" id="attract" role="dialog" aria-modal="true">
+      
+      <h1>Bem-vindo</h1>
+      <p>Peça rápido e fácil no nosso totem</p>
+      <button class="big-btn" id="startBtn" type="button" aria-label="Iniciar atendimento">Toque para Iniciar</button>
+    </div>
+  </div>
+
+  <!-- Rodapé com o botão do carrinho -->
+  <div class="footer-bar">
+    <button class="btn cart-btn footer-cart" id="checkoutBtn" type="button" aria-label="Ver carrinho">
+      <span class="cart-ico" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+          <path d="M7 4h-2l-1 2h2l3.6 7.59-1.35 2.44C8.52 16.37 8.92 17 9.5 17h9v-2h-8.6l1.1-2h6.45c.75 0 1.41-.41 1.75-1.03L22 7H6.42l-.7-1.5C5.52 5.2 5.27 5 5 5H3V3h2c.83 0 1.55.52 1.83 1.3L7 4zm5 13c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm-6 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+        </svg>
+      </span>
+      <span class="cart-label">Ver carrinho</span>
+      <span class="cart-total" id="cartTotal">R$ 0,00</span>
+      <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+  </div>
+
+  <script>
+    // Categorias finais
+     const CATEGORIES = [
+      { id: 'pasteis', name: 'Pastéis' },
+      { id: 'pasteis_especiais', name: 'Pastéis Especiais' },
+      { id: 'pasteis_doces', name: 'Pastéis Doces' },
+      { id: 'porcoes', name: 'Mini Pastéis' }, // Categoria adicionada
+      { id: 'salgados', name: 'Salgados' },
+      { id: 'churros', name: 'Churros' },
+      { id: 'acai', name: 'Açaí' },
+      { id: 'bebidas', name: 'Bebidas' },
+    ];
+
+  
+// Produtos
+    const PRODUCTS = {
+      pasteis: [
+        // CARNE
+        { id: 'beef1', title: 'BEEF 1 — Só carne moída', desc: 'Pastel de carne moída bem temperada.', img: 'img/beef1.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'beef2', title: 'BEEF 2 — Carne com mussarela', desc: 'Carne moída com mussarela derretida.', img: 'img/beef2.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'beef3', title: 'BEEF 3 — Carne com requeijão', desc: 'Carne moída com requeijão cremoso.', img: 'img/beef3.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'beef4', title: 'BEEF 4 — Carne com cheddar', desc: 'Carne moída com cheddar.', img: 'img/beef4.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'beef5', title: 'BEEF 5 — Carne com purê', desc: 'Carne moída com purê de batata.', img: 'img/beef5.png', sizes: { '15': 15.99, '25': 19.99 } },
+        { id: 'beef6', title: 'BEEF 6 — Carne com palmito', desc: 'Carne e palmito.', img: 'img/beef6.png', sizes: { '15': 15.99, '25': 19.99 } },
+        { id: 'beef7', title: 'BEEF 7 — Carne Catupiry original', desc: 'Carne com Catupiry original.', img: 'img/beef7.png', sizes: { '15': 20.99, '25': 23.99 } },
+        { id: 'beef8', title: 'BEEF 8 — Carne cheddar polenghi', desc: 'Carne com cheddar Polenghi.', img: 'img/beef8.png', sizes: { '15': 20.99, '25': 23.99 } },
+
+        // FRANGO
+        { id: 'chicken1', title: 'CHICKEN 1 — Só frango desfiado', desc: 'Frango desfiado temperado.', img: 'img/chicken1.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'chicken2', title: 'CHICKEN 2 — Frango com mussarela', desc: 'Frango desfiado com mussarela.', img: 'img/chicken2.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'chicken3', title: 'CHICKEN 3 — Frango com requeijão', desc: 'Frango desfiado com requeijão cremoso.', img: 'img/chicken3.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'chicken4', title: 'CHICKEN 4 — Frango com cheddar', desc: 'Frango desfiado com cheddar.', img: 'img/chicken4.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'chicken5', title: 'CHICKEN 5 — Frango com purê', desc: 'Frango desfiado com purê de batata.', img: 'img/chicken5.png', sizes: { '15': 17.99, '25': 21.99 } },
+        { id: 'chicken6', title: 'CHICKEN 6 — Frango com palmito', desc: 'Frango e palmito.', img: 'img/chicken6.png', sizes: { '15': 17.99, '25': 21.99 } },
+        { id: 'chicken7', title: 'CHICKEN 7 — Frango Catupiry original', desc: 'Frango com Catupiry original.', img: 'img/chicken7.png', sizes: { '15': 20.99, '25': 23.99 } },
+        { id: 'chicken8', title: 'CHICKEN 8 — Frango cheddar polenghi', desc: 'Frango com cheddar Polenghi.', img: 'img/chicken8.png', sizes: { '15': 20.99, '25': 23.99 } },
+
+        // CALABRESA
+        { id: 'italian1', title: 'ITALIAN 1 — Só calabresa fatiada', desc: 'Calabresa fatiada.', img: 'img/italian1.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'italian2', title: 'ITALIAN 2 — Calabresa com mussarela', desc: 'Calabresa com mussarela.', img: 'img/italian2.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'italian3', title: 'ITALIAN 3 — Calabresa com requeijão', desc: 'Calabresa com requeijão cremoso.', img: 'img/italian3.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'italian4', title: 'ITALIAN 4 — Calabresa com cheddar', desc: 'Calabresa com cheddar.', img: 'img/italian4.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'italian5', title: 'ITALIAN 5 — Calabresa com purê', desc: 'Calabresa com purê de batata.', img: 'img/italian5.png', sizes: { '15': 17.99, '25': 21.99 } },
+        { id: 'italian6', title: 'ITALIAN 6 — Calabresa com palmito', desc: 'Calabresa e palmito.', img: 'img/italian6.png', sizes: { '15': 17.99, '25': 21.99 } },
+        { id: 'italian7', title: 'ITALIAN 7 — Calabresa Catupiry original', desc: 'Calabresa com Catupiry original.', img: 'img/italian7.png', sizes: { '15': 20.99, '25': 23.99 } },
+        { id: 'italian8', title: 'ITALIAN 8 — Calabresa cheddar polenghi', desc: 'Calabresa com cheddar Polenghi.', img: 'img/italian8.png', sizes: { '15': 20.99, '25': 23.99 } },
+
+        // BAIANO
+        { id: 'baiano1', title: 'BAIANO 1 — Calabresa e pimenta', desc: 'Calabresa com pimenta.', img: 'img/baiano1.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'baiano2', title: 'BAIANO 2 — Calabresa, mussarela, pimenta', desc: 'Calabresa, mussarela e pimenta.', img: 'img/baiano2.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'baiano3', title: 'BAIANO 3 — Calabresa, requeijão, pimenta', desc: 'Calabresa, requeijão e pimenta.', img: 'img/baiano3.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'baiano4', title: 'BAIANO 4 — Calabresa, cheddar, pimenta', desc: 'Calabresa, cheddar e pimenta.', img: 'img/baiano4.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'baiano5', title: 'BAIANO 5 — Calabresa, purê e pimenta', desc: 'Calabresa, purê e pimenta.', img: 'img/baiano5.png', sizes: { '15': 17.99, '25': 21.99 } },
+        { id: 'baiano6', title: 'BAIANO 6 — Calabresa e palmito', desc: 'Calabresa, palmito e pimenta.', img: 'img/baiano6.png', sizes: { '15': 17.99, '25': 21.99 } },
+        { id: 'baiano7', title: 'BAIANO 7 — Calabresa, Catupiry original', desc: 'Calabresa com Catupiry original.', img: 'img/baiano7.png', sizes: { '15': 20.99, '25': 23.99 } },
+        { id: 'baiano8', title: 'BAIANO 8 — Calabresa, cheddar polenghi', desc: 'Calabresa com cheddar Polenghi.', img: 'img/baiano8.png', sizes: { '15': 20.99, '25': 23.99 } },
+
+        // PURÊ
+        { id: 'pure1', title: 'PURÊ 1 — Purê com bacon e mussarela', desc: 'Purê, bacon e mussarela.', img: 'img/pure1.png', sizes: { '15': 17.99, '25': 19.99 } },
+        { id: 'pure2', title: 'PURÊ 2 — Purê com bacon e requeijão', desc: 'Purê, bacon e requeijão.', img: 'img/pure2.png', sizes: { '15': 17.99, '25': 19.99 } },
+        { id: 'pure3', title: 'PURÊ 3 — Purê com bacon e cheddar', desc: 'Purê, bacon e cheddar.', img: 'img/pure3.png', sizes: { '15': 17.99, '25': 19.99 } },
+        { id: 'pure4', title: 'PURÊ 4 — Purê, bacon, Catupiry original', desc: 'Purê, bacon e Catupiry original.', img: 'img/pure4.png', sizes: { '15': 20.99, '25': 23.99 } },
+        { id: 'pure5', title: 'PURÊ 5 — Purê, bacon, cheddar polenghi', desc: 'Purê, bacon e cheddar Polenghi.', img: 'img/pure5.png', sizes: { '15': 20.99, '25': 23.99 } },
+
+        // QUEIJO
+        { id: 'mineiro1', title: 'MINEIRO 1 — Só mussarela', desc: 'Pastel de mussarela.', img: 'img/mineiro1.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'mineiro2', title: 'MINEIRO 2 — Mussarela com requeijão', desc: 'Mussarela com requeijão.', img: 'img/mineiro2.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'mineiro3', title: 'MINEIRO 3 — Mussarela com cheddar', desc: 'Mussarela com cheddar.', img: 'img/mineiro3.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'mineiro4', title: 'MINEIRO 4 — Mussarela, requeijão, cheddar', desc: 'Mussarela, requeijão e cheddar.', img: 'img/mineiro4.png', sizes: { '15': 17.99, '25': 21.99 } },
+        { id: 'mineiro5', title: 'MINEIRO 5 — Mussarela, Catupiry original', desc: 'Mussarela com Catupiry original.', img: 'img/mineiro5.png', sizes: { '15': 20.99, '25': 23.99 } },
+        { id: 'mineiro6', title: 'MINEIRO 6 — Mussarela, cheddar polenghi', desc: 'Mussarela com cheddar Polenghi.', img: 'img/mineiro6.png', sizes: { '15': 20.99, '25': 23.99 } },
+        { id: 'pizza1', title: 'PIZZA 1 — Queijo, tomate e orégano', desc: 'Mussarela, tomate e orégano.', img: 'img/pizza1.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'pizza2', title: 'PIZZA 2 — Queijo, tomate, orég., req.', desc: 'Mussarela, tomate, orégano e requeijão.', img: 'img/pizza2.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'pizza3', title: 'PIZZA 3 — Queijo, tomate, orég., cheddar', desc: 'Mussarela, tomate, orégano e cheddar.', img: 'img/pizza3.png', sizes: { '15': 14.99, '25': 16.99 } },
+        { id: 'pizza4', title: 'PIZZA 4 — Queijo, tomate, orég., Catupiry org.', desc: 'Mussarela, tomate, orégano e Catupiry original.', img: 'img/pizza4.png', sizes: { '15': 20.99, '25': 23.99 } },
+        { id: 'pizza5', title: 'PIZZA 5 — Queijo, tomate, orég., ched. polenghi', desc: 'Mussarela, tomate, orégano e cheddar Polenghi.', img: 'img/pizza5.png', sizes: { '15': 20.99, '25': 23.99 } },
+
+        // QUEIJO/PRESUNTO
+        { id: 'bauru1', title: 'BAURU 1 — Queijo, presunto, tomate, orég.', desc: 'Mussarela, presunto, tomate e orégano.', img: 'img/bauru1.png', sizes: { '15': 15.99, '25': 17.99 } },
+        { id: 'bauru2', title: 'BAURU 2 — Queijo, pres., tomate, orég., req.', desc: 'Mussarela, presunto, tomate, orégano e requeijão.', img: 'img/bauru2.png', sizes: { '15': 15.99, '25': 17.99 } },
+        { id: 'bauru3', title: 'BAURU 3 — Queijo, pres., tomate, orég., cheddar', desc: 'Mussarela, presunto, tomate, orégano e cheddar.', img: 'img/bauru3.png', sizes: { '15': 15.99, '25': 17.99 } },
+        { id: 'bauru4', title: 'BAURU 4 — Queijo, pres., tomate, orég., Catupiry org.', desc: 'Mussarela, presunto, tomate, orégano e Catupiry original.', img: 'img/bauru4.png', sizes: { '15': 20.99, '25': 23.99 } },
+        { id: 'bauru5', title: 'BAURU 5 — Queijo, pres., tomate, orég., ched. polenghi', desc: 'Mussarela, presunto, tomate, orégano e cheddar Polenghi.', img: 'img/bauru5.png', sizes: { '15': 20.99, '25': 23.99 } },
+        { id: 'misto1', title: 'MISTO 1 — Queijo, presunto', desc: 'Mussarela e presunto.', img: 'img/misto1.png', sizes: { '15': 15.99, '25': 17.99 } },
+        { id: 'misto2', title: 'MISTO 2 — Queijo, presunto, requeijão', desc: 'Mussarela, presunto e requeijão.', img: 'img/misto2.png', sizes: { '15': 15.99, '25': 17.99 } },
+        { id: 'misto3', title: 'MISTO 3 — Queijo, presunto, cheddar', desc: 'Mussarela, presunto e cheddar.', img: 'img/misto3.png', sizes: { '15': 15.99, '25': 17.99 } },
+        { id: 'misto4', title: 'MISTO 4 — Queijo, presunto, Catupiry original', desc: 'Mussarela, presunto e Catupiry original.', img: 'img/misto4.png', sizes: { '15': 20.99, '25': 23.99 } },
+        { id: 'misto5', title: 'MISTO 5 — Queijo, presunto, cheddar polenghi', desc: 'Mussarela, presunto e cheddar Polenghi.', img: 'img/misto5.png', sizes: { '15': 20.99, '25': 23.99 } },
+
+        // BRÓCOLIS
+        { id: 'brocolis1', title: 'BRÓCOLIS 1 — Brócolis com mussarela', desc: 'Brócolis com mussarela.', img: 'img/brocolis1.png', sizes: { '15': 19.99, '25': 25.99 } },
+        { id: 'brocolis2', title: 'BRÓCOLIS 2 — Brócolis com requeijão', desc: 'Brócolis com requeijão.', img: 'img/brocolis2.png', sizes: { '15': 19.99, '25': 25.99 } },
+        { id: 'brocolis3', title: 'BRÓCOLIS 3 — Brócolis com cheddar', desc: 'Brócolis com cheddar.', img: 'img/brocolis3.png', sizes: { '15': 19.99, '25': 25.99 } },
+        { id: 'brocolis4', title: 'BRÓCOLIS 4 — Brócolis e bacon', desc: 'Brócolis e bacon.', img: 'img/brocolis4.png', sizes: { '15': 20.99, '25': 26.99 } },
+        { id: 'brocolis5', title: 'BRÓCOLIS 5 — Brócolis com Catupiry original', desc: 'Brócolis com Catupiry original.', img: 'img/brocolis5.png', sizes: { '15': 20.99, '25': 26.99 } },
+        { id: 'brocolis6', title: 'BRÓCOLIS 6 — Brócolis com cheddar polenghi', desc: 'Brócolis com cheddar Polenghi.', img: 'img/brocolis6.png', sizes: { '15': 22.99, '25': 30.99 } },
+        { id: 'brocolis7', title: 'BRÓCOLIS 7 — Brócolis Completo', desc: 'Brócolis, mussarela, bacon e Catupiry.', img: 'img/brocolis7.png', sizes: { '15': 22.99, '25': 30.99 } },
+
+        // PALMITO
+        { id: 'pupunha1', title: 'PUPUNHA 1 — Palmito e mussarela', desc: 'Palmito com mussarela.', img: 'img/pupunha1.png', sizes: { '15': 14.99, '25': 20.99 } },
+        { id: 'pupunha2', title: 'PUPUNHA 2 — Palmito e requeijão', desc: 'Palmito com requeijão.', img: 'img/pupunha2.png', sizes: { '15': 14.99, '25': 20.99 } },
+        { id: 'pupunha3', title: 'PUPUNHA 3 — Palmito e cheddar', desc: 'Palmito com cheddar.', img: 'img/pupunha3.png', sizes: { '15': 14.99, '25': 20.99 } },
+        { id: 'pupunha4', title: 'PUPUNHA 4 — Palmito, milho e mussarela', desc: 'Palmito, milho e mussarela.', img: 'img/pupunha4.png', sizes: { '15': 15.99, '25': 21.99 } },
+        { id: 'pupunha5', title: 'PUPUNHA 5 — Palmito, Catupiry original', desc: 'Palmito com Catupiry original.', img: 'img/pupunha5.png', sizes: { '15': 20.99, '25': 25.99 } },
+        { id: 'pupunha6', title: 'PUPUNHA 6 — Palmito, cheddar polenghi', desc: 'Palmito com cheddar Polenghi.', img: 'img/pupunha6.png', sizes: { '15': 20.99, '25': 25.99 } },
+
+        // LOMBO SUÍNO
+        { id: 'lombo1', title: 'LOMBO 1 — Lombo com mussarela', desc: 'Lombo suíno com mussarela.', img: 'img/lombo1.png', sizes: { '15': 17.99, '25': 22.99 } },
+        { id: 'lombo2', title: 'LOMBO 2 — Lombo com requeijão', desc: 'Lombo suíno com requeijão.', img: 'img/lombo2.png', sizes: { '15': 17.99, '25': 22.99 } },
+        { id: 'lombo3', title: 'LOMBO 3 — Lombo com cheddar', desc: 'Lombo suíno com cheddar.', img: 'img/lombo3.png', sizes: { '15': 17.99, '25': 22.99 } },
+        { id: 'lombo4', title: 'LOMBO 4 — Lombo, Catupiry original', desc: 'Lombo suíno com Catupiry original.', img: 'img/lombo4.png', sizes: { '15': 21.99, '25': 28.99 } },
+        { id: 'lombo5', title: 'LOMBO 5 — Lombo, cheddar polenghi', desc: 'Lombo suíno com cheddar Polenghi.', img: 'img/lombo5.png', sizes: { '15': 21.99, '25': 28.99 } },
+
+        // CARNE LOUCA
+        { id: 'louca1', title: 'LOUCA 1 — Só carne louca', desc: 'Carne louca desfiada.', img: 'img/louca1.png', sizes: { '15': 19.99, '25': 23.99 } },
+        { id: 'louca2', title: 'LOUCA 2 — Carne louca, mussarela', desc: 'Carne louca com mussarela.', img: 'img/louca2.png', sizes: { '15': 21.99, '25': 25.99 } },
+        { id: 'louca3', title: 'LOUCA 3 — Carne louca com requeijão', desc: 'Carne louca com requeijão.', img: 'img/louca3.png', sizes: { '15': 21.99, '25': 25.99 } },
+        { id: 'louca4', title: 'LOUCA 4 — Carne louca com cheddar', desc: 'Carne louca com cheddar.', img: 'img/louca4.png', sizes: { '15': 21.99, '25': 25.99 } },
+        { id: 'louca5', title: 'LOUCA 5 — Carne louca com purê', desc: 'Carne louca com purê.', img: 'img/louca5.png', sizes: { '15': 21.99, '25': 25.99 } },
+        { id: 'louca6', title: 'LOUCA 6 — Carne louca, Catupiry original', desc: 'Carne louca com Catupiry original.', img: 'img/louca6.png', sizes: { '15': 26.99, '25': 35.99 } },
+        { id: 'louca7', title: 'LOUCA 7 — Carne louca, cheddar polenghi', desc: 'Carne louca com cheddar Polenghi.', img: 'img/louca7.png', sizes: { '15': 26.99, '25': 35.99 } },
+
+        // COSTELA
+        { id: 'gaucho1', title: 'GAÚCHO 1 — Só costela desfiada', desc: 'Costela bovina desfiada.', img: 'img/gaucho1.png', sizes: { '15': 19.99, '25': 23.99 } },
+        { id: 'gaucho2', title: 'GAÚCHO 2 — Costela, mussarela', desc: 'Costela com mussarela.', img: 'img/gaucho2.png', sizes: { '15': 21.99, '25': 25.99 } },
+        { id: 'gaucho3', title: 'GAÚCHO 3 — Costela com requeijão', desc: 'Costela com requeijão.', img: 'img/gaucho3.png', sizes: { '15': 21.99, '25': 25.99 } },
+        { id: 'gaucho4', title: 'GAÚCHO 4 — Costela com cheddar', desc: 'Costela com cheddar.', img: 'img/gaucho4.png', sizes: { '15': 21.99, '25': 25.99 } },
+        { id: 'gaucho5', title: 'GAÚCHO 5 — Costela com purê', desc: 'Costela com purê.', img: 'img/gaucho5.png', sizes: { '15': 21.99, '25': 25.99 } },
+        { id: 'gaucho6', title: 'GAÚCHO 6 — Costela, Catupiry original', desc: 'Costela com Catupiry original.', img: 'img/gaucho6.png', sizes: { '15': 26.99, '25': 35.99 } },
+        { id: 'gaucho7', title: 'GAÚCHO 7 — Costela, cheddar polenghi', desc: 'Costela com cheddar Polenghi.', img: 'img/gaucho7.png', sizes: { '15': 26.99, '25': 35.99 } },
+
+        // CARNE SECA
+        { id: 'lampiao1', title: 'LAMPIÃO 1 — Só carne seca (jabá)', desc: 'Carne seca (jabá).', img: 'img/lampiao1.png', sizes: { '15': 19.99, '25': 23.99 } },
+        { id: 'lampiao2', title: 'LAMPIÃO 2 — Carne seca, mussarela', desc: 'Carne seca com mussarela.', img: 'img/lampiao2.png', sizes: { '15': 21.99, '25': 25.99 } },
+        { id: 'lampiao3', title: 'LAMPIÃO 3 — Carne seca com requeijão', desc: 'Carne seca com requeijão.', img: 'img/lampiao3.png', sizes: { '15': 21.99, '25': 25.99 } },
+        { id: 'lampiao4', title: 'LAMPIÃO 4 — Carne seca com cheddar', desc: 'Carne seca com cheddar.', img: 'img/lampiao4.png', sizes: { '15': 21.99, '25': 25.99 } },
+        { id: 'lampiao5', title: 'LAMPIÃO 5 — Carne seca com purê', desc: 'Carne seca com purê.', img: 'img/lampiao5.png', sizes: { '15': 21.99, '25': 25.99 } },
+        { id: 'lampiao6', title: 'LAMPIÃO 6 — Carne seca, Catupiry original', desc: 'Carne seca com Catupiry original.', img: 'img/lampiao6.png', sizes: { '15': 26.99, '25': 35.99 } },
+        { id: 'lampiao7', title: 'LAMPIÃO 7 — Carne seca, cheddar polenghi', desc: 'Carne seca com cheddar Polenghi.', img: 'img/lampiao7.png', sizes: { '15': 26.99, '25': 35.99 } },
+      ],
+
+      pasteis_doces: [
+        { id: 'romeu-julieta', title: 'ROMEU E JULIETA — Goiabada, queijo', desc: 'Goiabada com queijo.', img: 'img/romeu-julieta.png', sizes: { '15': 14.99, '25': 18.99 } },
+        { id: 'doce-leite', title: 'SÓ DOCE DE LEITE', desc: 'Pastel recheado com doce de leite.', img: 'img/doce-leite.png', sizes: { '15': 14.99, '25': 18.99 } },
+        { id: 'choco1', title: 'CHOCO 1 — Só chocolate ao leite', desc: 'Chocolate ao leite.', img: 'img/choco1.png', sizes: { '15': 14.99, '25': 17.99 } },
+        { id: 'choco2', title: 'CHOCO 2 — Só chocolate branco', desc: 'Chocolate branco.', img: 'img/choco5.png', sizes: { '15': 14.99, '25': 17.99 } },
+        { id: 'choco3', title: 'CHOCO 3 — Choco com Sonho de Valsa', desc: 'Chocolate com bombom Sonho de Valsa.', img: 'img/choco3.png', sizes: { '15': 16.99, '25': 19.99 } },
+        { id: 'choco4', title: 'CHOCO 4 — Choco com Ouro Branco', desc: 'Chocolate com bombom Ouro Branco.', img: 'img/choco4.png', sizes: { '15': 16.99, '25': 19.99 } },
+        { id: 'ninho1', title: 'NINHO 1 — Só leite Ninho', desc: 'Leite Ninho.', img: 'img/ninho1.png', sizes: { '15': 15.99, '25': 17.99 } },
+        { id: 'creme-avela1', title: 'SÓ CREME DE AVELÃ', desc: 'Creme de avelã puro.', img: 'img/creme-avela1.png', sizes: { '15': 21.99, '25': 26.99 } },
+        { id: 'creme-avela-banana', title: 'CREME DE AVELÃ COM BANANA', desc: 'Creme de avelã com banana.', img: 'img/creme-avela-banana.png', sizes: { '15': 21.99, '25': 26.99 } },
+        { id: 'creme-avela-coco', title: 'CREME DE AVELÃ COM COCO', desc: 'Creme de avelã com coco ralado.', img: 'img/creme-avela-coco.png', sizes: { '15': 21.99, '25': 26.99 } },
+        { id: 'barra-chocolate', title: 'BARRA CHOCOLATE (ao leite / branco) — 25CM', desc: 'Barra de chocolate (ao leite ou branco) — somente 25cm.', img: 'img/barra-chocolate.png', sizes: { '25': 19.99 } },
+      ],
+
+      pasteis_especiais: [
+        { id: 'cruzeiro1', title: 'CRUZEIRO 1 — Carne, ovo, azeitona, cebola', desc: 'Carne, ovo, azeitona e cebola.', img: 'img/cruzeiro1.png', sizes: { '15': 17.99, '25': 21.99 } },
+        { id: 'cruzeiro2', title: 'CRUZEIRO 2 — Carne, ovo, azeit., queijo', desc: 'Carne, ovo, azeitona e queijo.', img: 'img/cruzeiro2.png', sizes: { '15': 17.99, '25': 21.99 } },
+        { id: 'cruzeiro3', title: 'CRUZEIRO 3 — Carne, ovo, azeit., requeijão', desc: 'Carne, ovo, azeitona e requeijão.', img: 'img/cruzeiro3.png', sizes: { '15': 17.99, '25': 21.99 } },
+        { id: 'cruzeiro4', title: 'CRUZEIRO 4 — Carne, ovo, azeit., cheddar', desc: 'Carne, ovo, azeitona e cheddar.', img: 'img/cruzeiro4.png', sizes: { '15': 17.99, '25': 21.99 } },
+        { id: 'embarque1', title: 'EMBARQUE 1 — Frango, milho, mussarela', desc: 'Frango, milho e mussarela.', img: 'img/embarque1.png', sizes: { '15': 16.99, '25': 20.99 } },
+        { id: 'embarque2', title: 'EMBARQUE 2 — Frango, milho, requeijão', desc: 'Frango, milho e requeijão.', img: 'img/embarque2.png', sizes: { '15': 16.99, '25': 20.99 } },
+        { id: 'embarque3', title: 'EMBARQUE 3 — Frango, milho, cheddar', desc: 'Frango, milho e cheddar.', img: 'img/embarque3.png', sizes: { '15': 16.99, '25': 20.99 } },
+        { id: 'caipira1', title: 'CAIPIRA 1 — Frango, milho, bacon, queijo', desc: 'Frango, milho, bacon e queijo.', img: 'img/caipira1.png', sizes: { '15': 19.99, '25': 24.99 } },
+        { id: 'caipira2', title: 'CAIPIRA 2 — Frango, milho, bacon, req.', desc: 'Frango, milho, bacon e requeijão.', img: 'img/caipira2.png', sizes: { '15': 19.99, '25': 24.99 } },
+        { id: 'caipira3', title: 'CAIPIRA 3 — Frango, milho, bacon, chedd.', desc: 'Frango, milho, bacon e cheddar.', img: 'img/caipira3.png', sizes: { '15': 19.99, '25': 24.99 } },
+        { id: 'portug1', title: 'PORTUG 1 — Queij., pres., ovo, cebol., ervilha', desc: 'Queijo, presunto, ovo, cebola e ervilha.', img: 'img/portug1.png', sizes: { '15': 19.99, '25': 24.99 } },
+        { id: 'portug2', title: 'PORTUG 2 — Queij., pres., ovo, cebol., erv., req.', desc: 'Queijo, presunto, ovo, cebola, ervilha e requeijão.', img: 'img/portug2.png', sizes: { '15': 19.99, '25': 24.99 } },
+        { id: 'portug3', title: 'PORTUG 3 — Queij., pres., ovo, cebol., erv., chedd.', desc: 'Queijo, presunto, ovo, cebola, ervilha e cheddar.', img: 'img/portug3.png', sizes: { '15': 19.99, '25': 24.99 } },
+        { id: 'toscana1', title: 'TOSCANA 1 — Calabresa, azeit., queij., orég.', desc: 'Calabresa, azeitona, queijo e orégano.', img: 'img/toscana1.png', sizes: { '15': 19.99, '25': 24.99 } },
+        { id: 'toscana2', title: 'TOSCANA 2 — Calab., ovo, cebol., queij., orég.', desc: 'Calabresa, ovo, cebola, queijo e orégano.', img: 'img/toscana2.png', sizes: { '15': 19.99, '25': 24.99 } },
+        { id: 'metro1', title: 'METRÔ 1 — Carne, azeit., queij., tomat., orég.', desc: 'Carne, azeitona, queijo, tomate e orégano.', img: 'img/metro1.png', sizes: { '15': 19.99, '25': 24.99 } },
+        { id: 'metro2', title: 'METRÔ 2 — Mussarela, req., bacon, milho', desc: 'Mussarela, requeijão, bacon e milho.', img: 'img/metro2.png', sizes: { '15': 19.99, '25': 24.99 } },
+        { id: 'lasanha', title: 'LASANHA — Carne, presunto, queijo, orég.', desc: 'Carne, presunto, queijo e orégano.', img: 'img/lasanha.png', sizes: { '15': 19.99, '25': 24.99 } },
+        { id: 'hotdog', title: 'HOT DOG — Salsicha, purê, batata palha', desc: 'Salsicha, purê e batata palha.', img: 'img/hotdog.png', sizes: { '15': 17.99, '25': 21.99 } },
+        { id: 'alho-poro', title: 'ALHO PORÓ — Mussarela, requeijão., bacon., milho', desc: 'Alho-poró, mussarela, requeijão, bacon e milho.', img: 'img/alho-poro.png', sizes: { '15': 19.99, '25': 24.99 } },
+        { id: 'pupunha-esp', title: 'PUPUNHA — Palmito, req., bacon, milho', desc: 'Palmito, requeijão, bacon e milho.', img: 'img/pupunha-esp.png', sizes: { '15': 19.99, '25': 24.99 } },
+        { id: 'mexicana', title: 'MEXICANA — Calabresa, carne, milho, pimentão, cebola, tomate, pimenta', desc: 'Calabresa, carne, milho, pimentão, cebola, tomate e pimenta.', img: 'img/mexicana.png', sizes: { '15': 19.99, '25': 24.99 } },
+      ],
+
+porcoes: [
+        // SALGADOS TRADICIONAIS (30un: R$ 26.99)
+        { id: 'm1_frango', title: 'Mini Pastéis Frango ao Creme (30un)', price: 26.99, desc: 'Porção de 30 unidades de Frango ao Creme.', img: 'img/minipasteis.png', units: 30 },
+        { id: 'm1_carne', title: 'Mini Pastéis Carne ao Creme (30un)', price: 26.99, desc: 'Porção de 30 unidades de Carne ao Creme.', img: 'img/minipasteis.png', units: 30 },
+        { id: 'm1_calabresa_cheddar', title: 'Mini Pastéis Calabresa c/ Cheddar (30un)', price: 26.99, desc: 'Porção de 30 unidades de Calabresa com Cheddar.', img: 'img/minipasteis.png', units: 30 },
+        { id: 'm1_calabresa_req', title: 'Mini Pastéis Calabresa c/ Requeijão (30un)', price: 26.99, desc: 'Porção de 30 unidades de Calabresa com Requeijão.', img: 'img/minipasteis.png', units: 30 },
+        { id: 'm1_presunto_req', title: 'Mini Pastéis Presunto e Requeijão (30un)', price: 26.99, desc: 'Porção de 30 unidades de Presunto e Requeijão.', img: 'img/minipasteis.png', units: 30 },
+        { id: 'm1_so_req', title: 'Mini Pastéis Só Requeijão (30un)', price: 26.99, desc: 'Porção de 30 unidades de Só Requeijão.', img: 'img/minipasteis.png', units: 30 },
+        { id: 'm1_so_cheddar', title: 'Mini Pastéis Só Cheddar (30un)', price: 26.99, desc: 'Porção de 30 unidades de Só Cheddar.', img: 'img/minipasteis.png', units: 30 },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        // SALGADOS ESPECIAIS (30un: R$ 30.99)
+        { id: 'm2_catupiry', title: 'Mini Pastéis Catupiry Original (30un)', price: 30.99, desc: 'Porção de 30 unidades de Catupiry Original.', img: 'img/minipasteis.png', units: 30 },
+        { id: 'm2_polenghi', title: 'Mini Pastéis Cheddar Polenghi (30un)', price: 30.99, desc: 'Porção de 30 unidades de Cheddar Polenghi.', img: 'img/minipasteis.png', units: 30 },
+
+        // DOCES (30un: R$ 28.99)
+        { id: 'm3_leite', title: 'Mini Pastéis Doce de Leite (30un)', price: 28.99, desc: 'Porção de 30 unidades de Doce de Leite.', img: 'img/minipasteis.png', units: 30 },
+        { id: 'm3_brigadeiro', title: 'Mini Pastéis Brigadeiro (30un)', price: 28.99, desc: 'Porção de 30 unidades de Brigadeiro.', img: 'img/minipasteis.png', units: 30 },
+        { id: 'm3_beijinho', title: 'Mini Pastéis Beijinho (30un)', price: 28.99, desc: 'Porção de 30 unidades de Beijinho.', img: 'img/minipasteis.png', units: 30 },
+      ],
+      
+
+      salgados: [
+        { 
+          id: 'salgado-coxinha', 
+          title: 'Coxinha de Frango', 
+          desc: 'Porção de coxinhas de frango cremosas.', 
+          img: 'img/coxinha.png', 
+          sizes: { '25': 23.99, '50': 47.98, '75': 71.97, '100': 95.96 } 
+        },
+        { 
+          id: 'salgado-risole', 
+          title: 'Risole de Queijo e Presunto', 
+          desc: 'Porção de risoles de queijo e presunto.', 
+          img: 'img/sortidos.png', 
+          sizes: { '25': 23.99, '50': 47.98, '75': 71.97, '100': 95.96 } 
+        },
+        { 
+          id: 'salgado-bolinha', 
+          title: 'Bolinha de Queijo', 
+          desc: 'Porção de bolinhas de queijo.', 
+          img: 'img/sortidos.png', 
+          sizes: { '25': 23.99, '50': 47.98, '75': 71.97, '100': 95.96 } 
+        },
+      ],
+
+
+      // NOVA CATEGORIA DE CHURROS
+      churros: [
+        { id: 'c1', title: 'Mini Churros Doce de leite (25 unid.)', price: 24.99, desc: 'Porção de mini churros de doce de leite.', img: 'img/churros.png' },
+      ],
+
+      acai: [
+        { id: 'acai1', title: 'Açaí Tradicional 1', desc: 'Banana, Leite em Pó e Leite Condensado.', img: 'img/tradicional1.png', sizes: { '480': 22.99, '1000': 45.99 } },
+        { id: 'acai2', title: 'Açaí Tradicional 2', desc: 'Banana, Granola, Paçoca e Leite Condensado.', img: 'img/tradicional2.png', sizes: { '480': 23.99, '1000': 45.99 } },
+        { id: 'acai3', title: 'Açaí Trufadão', desc: 'Chocolate ao leite, Leite em pó, Chocoboll, Granulado e Leite Condensado.', img: 'img/trufado.png', sizes: { '480': 29.99, '1000': 49.99 } },
+        { id: 'acai4', title: 'Açaí Choco White', desc: 'Chocolate branco, Leite em pó, Chocoboll e Leite Condensado.', img: 'img/Chocowhite.png', sizes: { '480': 32.99, '1000': 54.99 } },
+      ],
+
+       bebidas: [
+        { id: 'b1', title: 'Refrigerante 350ml', price: 7.00, desc: 'Lata 350ml.', img: 'img/coca-lata-350.png' },
+        { id: 'b2', title: 'Guaraná 350ml', price: 7.00, desc: 'Lata 350ml.', img: 'img/guarana-lata-350.png' },
+        { id: 'b3', title: 'Fanta Uva 350ml', price: 7.00, desc: 'Lata 350ml.', img: 'img/fanta-uva-lata-350.png' },
+        { id: 'b4', title: 'Fanta Laranja 350ml', price: 7.00, desc: 'Lata 350ml.', img: 'img/fanta-laranja-lata-350.png' },
+        { id: 'b5', title: 'Itubaína 350ml', price: 7.00, desc: 'Lata 350ml.', img: 'img/itubaina-lata-350.png' },
+        { id: 'b6', title: 'Pepsi 350ml', price: 7.00, desc: 'Lata 350ml.', img: 'img/pepsi-lata-350.png' },
+        { id: 'b7', title: 'Sukita Laranja 350ml', price: 7.00, desc: 'Lata 350ml.', img: 'img/sukita-laranja-lata-350.png' },
+        { id: 'b8', title: 'Sukita Uva 350ml', price: 7.00, desc: 'Lata 350ml.', img: 'img/sukita-uva-lata-350.png' },
+        { id: 'b9', title: 'Dell Vale laranja 450ml', price: 9.00, desc: 'pet 450ml.', img: 'img/Dellvale.png' },
+        { id: 'b10', title: 'Dell Vale Uva 450ml', price: 9.00, desc: 'pet 450ml.', img: 'img/Dellvaledeuva.png' },
+        { id: 'b11', title: 'Convenção Guaraná 2L', price: 9.00, desc: 'Garrafa 2 litros.', img: 'img/convencao-guarana-2l.png' },
+        { id: 'b12', title: 'Convenção Frutbaína 2L', price: 9.00, desc: 'Garrafa 2 litros.', img: 'img/convencao-frutbaina-2l.png' },
+        { id: 'b13', title: 'Coca Cola 2L', price: 15.99, desc: 'Garrafa 2 litros.', img: 'img/Coca-2l.png' },
+      { id: 'b14', title: 'Heineken Long Neck 350ml', price: 10.00, desc: 'Cerveja Heineken garrafa long neck 350ml.', img: 'img/heineken-350.png' },
+{ id: 'b15', title: 'Budweiser Long Neck 350ml', price: 10.00, desc: 'Cerveja Budweiser garrafa long neck 350ml.', img: 'img/budweiser-350.png' },
+      
+      
+      
+      ]
+    };
+
+   
+    const CART_KEY = 'pasterry_cart_v1';
+    function loadCart(){ try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); } catch { return []; } }
+    function saveCart(){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); updateCheckoutText(); }
+    let cart = loadCart();
+
+    let activeCategory = CATEGORIES[0].id;
+    let idleTimer = null;
+    const IDLE_TIMEOUT = 60 * 1000;
+
+    const categoriesEl = document.getElementById('categories');
+    const productsEl = document.getElementById('products');
+    const overlay = document.getElementById('overlay');
+    const numDisplay = document.getElementById('numDisplay');
+    const attract = document.getElementById('attract');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const toastWrap = document.getElementById('toastWrap');
+    const cartBadge = document.getElementById('cartBadge');
+    const productsWrap = document.querySelector('.products-wrap');
+    function scrollProductsToTop(){ if (productsWrap) productsWrap.scrollTop = 0; }
+
+    const formatBRL = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    function resetIdleTimer(){ if (idleTimer) clearTimeout(idleTimer); idleTimer = setTimeout(()=> showAttract(), IDLE_TIMEOUT); }
+    function showAttract(){ attract.classList.remove('hidden'); }
+    function hideAttract(){ attract.classList.add('hidden'); }
+    document.addEventListener('touchstart', resetIdleTimer, {passive:true});
+    document.addEventListener('mousedown', resetIdleTimer);
+    resetIdleTimer();
+
+    function getCartCount(){ return cart.reduce((s,i)=>s+i.qty,0); }
+    function getCartTotal(){ return cart.reduce((s,i)=> s + (i.price * i.qty), 0); }
+    function updateCheckoutText(){
+      const n = getCartCount();
+      const total = getCartTotal();
+      if (cartBadge) cartBadge.textContent = n;
+      const totalEl = document.getElementById('cartTotal');
+      if (totalEl) totalEl.textContent = formatBRL(total);
+      if (checkoutBtn) checkoutBtn.setAttribute('aria-label', `Ver carrinho (${n} itens, ${formatBRL(total)})`);
+    }
+    function pulseCart(){
+      const btn = document.getElementById('checkoutBtn');
+      const badge = document.getElementById('cartBadge');
+      [btn, badge].forEach(el => { if(!el) return; el.classList.remove('pulse'); void el.offsetWidth; el.classList.add('pulse'); });
+    }
+
+    function setActiveCategory(catId, {scrollIntoView=false}={}){
+      if (!catId || (activeCategory === catId &&!scrollIntoView)) return;
+      activeCategory = catId;
+      document.querySelectorAll('.cat').forEach(b=>{
+        const isActive = b.dataset.cat === catId;
+        b.classList.toggle('active', isActive);
+        if (isActive && scrollIntoView) b.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+      });
+    }
+
+    function renderCategories(){
+      categoriesEl.innerHTML = '';
+      CATEGORIES.forEach(cat=>{
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'cat' + (cat.id === activeCategory? ' active' : '');
+        b.dataset.cat = cat.id;
+        b.textContent = cat.name;
+        b.setAttribute('role','tab');
+        b.addEventListener('click', ()=>{
+          const section = document.querySelector(`.cat-section[data-cat="${cat.id}"]`);
+          if (section) section.scrollIntoView({behavior:'smooth', block:'start'});
+          setActiveCategory(cat.id, {scrollIntoView:true});
+          resetIdleTimer();
+        });
+        categoriesEl.appendChild(b);
+      });
+      document.querySelectorAll('.cat').forEach(bindPressAnimation);
+    }
+
+    function renderProducts(){
+      productsEl.innerHTML = '';
+      CATEGORIES.forEach(cat => {
+        const section = document.createElement('section');
+        section.className = 'cat-section';
+        section.dataset.cat = cat.id;
+        section.style.scrollMarginTop = '90px';
+
+        const header = document.createElement('div');
+        header.className = 'muted';
+        header.style.cssText = 'font-weight:800; letter-spacing:.3px; margin:6px 4px 10px; opacity:.8';
+        header.textContent = cat.name;
+        section.appendChild(header);
+
+        const grid = document.createElement('div');
+        grid.className = 'products';
+
+        const list = PRODUCTS[cat.id] || [];
+        list.forEach(p=>{
+          const card = document.createElement('div');
+          card.className = 'product';
+          card.tabIndex = 0;
+          card.setAttribute('role','listitem');
+
+          const media = document.createElement('div');
+          media.className = 'media';
+          const img = document.createElement('img');
+          img.alt = p.title;
+          img.src = p.img || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><rect width='100%' height='100%' fill='%230a1420'/><text x='50%' y='50%' fill='%23a7b6c1' font-size='20' text-anchor='middle' dominant-baseline='middle'>Imagem</text></svg>";
+          media.appendChild(img);
+          card.appendChild(media);
+
+          const textContent = document.createElement('div');
+          textContent.className = 'text-content';
+
+          const title = document.createElement('div'); title.className = 'title'; title.textContent = p.title;
+          const desc = document.createElement('div'); desc.className = 'muted'; desc.textContent = p.desc || '';
+          
+          const infoFooter = document.createElement('div');
+          infoFooter.className = 'info-footer';
+
+          const price = document.createElement('div'); price.className = 'price';
+          if (p.sizes) {
+            const minPrice = Math.min(...Object.values(p.sizes));
+            price.textContent = `A partir de ${formatBRL(minPrice)}`;
+          } else {
+            price.textContent = formatBRL(p.price);
+          }
+
+          const addBtn = document.createElement('button');
+          addBtn.type = 'button';
+          addBtn.className = 'add-btn';
+          addBtn.setAttribute('aria-label', `Adicionar ${p.title}`);
+          addBtn.textContent = 'Adicionar';
+          addBtn.addEventListener('click', (e)=>{ e.stopPropagation(); if (p.sizes) openSizeDialog(p); else addToCart(p.id, cat.id); });
+
+          infoFooter.appendChild(price);
+          infoFooter.appendChild(addBtn);
+          
+          textContent.appendChild(title);
+          textContent.appendChild(desc);
+          textContent.appendChild(infoFooter);
+
+          card.appendChild(textContent);
+          grid.appendChild(card);
+        });
+
+        section.appendChild(grid);
+        productsEl.appendChild(section);
+      });
+
+      document.querySelectorAll('.add-btn').forEach(bindPressAnimation);
+    }
+
+    // ====== Toast helper ======
+    function showToast({title='Item adicionado', sub=''}={}){
+      const el = document.createElement('div');
+      el.className = 'toast';
+      el.innerHTML = `
+        <div class="check">✓</div>
+        <div>
+          <div class="title">${title}</div>
+          ${sub? `<div class="sub">${sub}</div>` : ``}
+        </div>`;
+      toastWrap.appendChild(el);
+      setTimeout(()=>{ el.remove(); }, 1900);
+    }
+
+    function addToCart(productId, category){
+      const p = (PRODUCTS[category]||[]).find(x=>x.id===productId);
+      if(!p) return;
+      const existing = cart.find(i=>i.id===productId);
+      if(existing) existing.qty += 1;
+      else cart.push({ id: p.id, title: p.title, price: p.price, qty: 1, img: p.img });
+      saveCart(); hideAttract(); resetIdleTimer(); pulseCart();
+      const q = (existing? existing.qty : 1);
+      showToast({ title: `${p.title} adicionado`, sub: `Quantidade no carrinho: ${q}` });
+    }
+
+    function addToCartWithSize(p, sizeKey){
+      const price = p.sizes[sizeKey];
+      const categoryId = activeCategory;
+      let unit = 'cm';
+      if (categoryId === 'acai') unit = 'ml';
+      if (categoryId === 'salgados' || categoryId === 'churros') unit = ' unid.';
+
+      const variantId = `${p.id}-${sizeKey}`;
+      const titleWithSize = `${p.title} ${sizeKey}${unit}`;
+      const existing = cart.find(i=>i.id===variantId);
+      if(existing) existing.qty += 1;
+      else cart.push({ id: variantId, title: titleWithSize, price, qty: 1, img: p.img });
+      saveCart(); hideAttract(); resetIdleTimer(); pulseCart();
+      const q = (existing? existing.qty : 1);
+      showToast({ title: `${titleWithSize} adicionado`, sub: `Quantidade no carrinho: ${q}` });
+    }
+
+    let editingIndex = null;
+    function openQtyDialog(idx){
+      editingIndex = idx;
+      numDisplay.textContent = String(cart[idx].qty);
+      overlay.style.display = 'flex';
+      overlay.setAttribute('aria-hidden','false');
+      document.getElementById('kbd').querySelectorAll('button').forEach(b=>{ b.onclick = ()=> handleKey(b.dataset.key); });
+      document.querySelectorAll('#kbd button, #saveQty, #cancelQty').forEach(bindPressAnimation);
+      resetIdleTimer();
+    }
+    function closeQtyDialog(){ overlay.style.display = 'none'; overlay.setAttribute('aria-hidden','true'); editingIndex = null; }
+    function handleKey(key){
+      let v = numDisplay.textContent;
+      if(key === 'back'){ v = v.slice(0,-1) || '0'; }
+      else if(key === 'clear'){ v = '0'; }
+      else { v = (v === '0')? key : v + key; }
+      if(v.length > 4) v = v.slice(0,4);
+      v = v.replace(/^0+(?=\d)/,'');
+      if(v === '' ) v = '0';
+      numDisplay.textContent = v;
+    }
+    document.getElementById('saveQty').addEventListener('click', ()=>{
+      const n = parseInt(numDisplay.textContent || '0',10);
+      if(!isNaN(n) && n>=1 && editingIndex!== null){ cart[editingIndex].qty = n; saveCart(); }
+      closeQtyDialog();
+    });
+    document.getElementById('cancelQty').addEventListener('click', ()=> closeQtyDialog());
+    overlay.addEventListener('click', (e)=> { if(e.target === overlay) closeQtyDialog(); });
+
+    const sizeOverlay = document.getElementById('sizeOverlay');
+    const sizeTitle = document.getElementById('sizeTitle');
+    const sizeDesc = document.getElementById('sizeDesc');
+    const sizeOptions = document.getElementById('sizeOptions');
+    const sizeImg = document.getElementById('sizeImg');
+    let pendingProduct = null;
+
+    function openSizeDialog(p){
+      pendingProduct = p;
+      sizeTitle.textContent = p.title;
+      sizeDesc.textContent = p.desc || '';
+
+      sizeOptions.innerHTML = '';
+      const entries = Object.entries(p.sizes || {}).sort((a,b)=> Number(a[0]) - Number(b[0]));
+      const categoryId = activeCategory;
+      
+      entries.forEach(([size, price])=>{
+        let unit = 'cm';
+        if (categoryId === 'acai') unit = 'ml';
+        if (categoryId === 'salgados' || categoryId === 'churros') unit = ' unid.';
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn';
+        btn.style.display = 'flex';
+        btn.style.justifyContent = 'space-between';
+        btn.style.alignItems = 'center';
+        const label = `${size}${unit}`;
+        btn.innerHTML = `<span>${label}</span><strong>${formatBRL(price)}</strong>`;
+        btn.addEventListener('click', ()=>{
+          addToCartWithSize(p, size);
+          closeSizeDialog();
+        });
+        bindPressAnimation(btn);
+        sizeOptions.appendChild(btn);
+      });
+
+      sizeImg.src = p.img || '';
+      sizeImg.alt = p.title;
+      sizeOverlay.style.display = 'flex';
+      sizeOverlay.setAttribute('aria-hidden','false');
+      resetIdleTimer();
+    }
+    function closeSizeDialog(){
+      sizeOverlay.style.display = 'none';
+      sizeOverlay.setAttribute('aria-hidden','true');
+      pendingProduct = null;
+    }
+    sizeOverlay.addEventListener('click', (e)=>{ if(e.target === sizeOverlay) closeSizeDialog(); });
+
+    // Ação: abrir o carrinho
+    checkoutBtn.addEventListener('click', ()=>{
+      saveCart();
+      window.location.href = 'carrinho.html';
+    });
+
+    document.getElementById('startBtn').addEventListener('click', ()=>{ hideAttract(); resetIdleTimer(); scrollProductsToTop(); });
+    attract.addEventListener('click', ()=> { hideAttract(); resetIdleTimer(); scrollProductsToTop(); });
+
+    function bindPressAnimation(el){
+      if(!el) return;
+      const add = ()=>{ el.classList.remove('press'); void el.offsetWidth; el.classList.add('press'); };
+      el.addEventListener('mousedown', add);
+      el.addEventListener('touchstart', add, {passive:true});
+    }
+
+    document.querySelectorAll('button,.btn,.big-btn,.cat').forEach(bindPressAnimation);
+
+    // ====== IMPRESSÃO & SUCESSO (fallback via browser) ======
+    function nowStr(){
+      const d = new Date();
+      const pad = n => String(n).padStart(2,'0');
+      return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    function buildTicketHTML(cartData){
+      const total = cartData.reduce((s,i)=> s + i.price*i.qty, 0);
+      const items = cartData.map(i => `
+        <div class="item">
+          <div class="title">${i.title}</div>
+          <div class="row">
+            <div><span class="label">QTD</span><span class="value">${i.qty}</span></div>
+            <div><span class="label">UNIT</span><span class="value">${formatBRL(i.price)}</span></div>
+            <div><span class="label">TOTAL</span><span class="value">${formatBRL(i.price*i.qty)}</span></div>
+          </div>
+          ${i.note? `<div class="note"><span class="label">OBS</span> <span class="value">${i.note}</span></div>` : ``}
+        </div>
+      `).join('');
+
+      return `
+        <div class="ticket">
+          <h1>PASTERRY - PEDIDO</h1>
+          <div class="meta">${nowStr()}</div>
+          <div class="line"></div>
+          <div class="items">${items || '<div class="center">CARRINHO VAZIO</div>'}</div>
+          <div class="totals">
+            <div class="row"><span>TOTAL</span><span>${formatBRL(total)}</span></div>
+          </div>
+          <div class="thank">OBRIGADO! BOM APETITE 😊</div>
+        </div>
+      `;
+    }
+
+    function printOrder(){
+      const area = document.getElementById('printArea');
+      area.innerHTML = buildTicketHTML(cart);
+      window.print();
+    }
+
+    // Overlay de sucesso
+    const successOverlay = document.getElementById('successOverlay');
+    const okSuccessBtn = document.getElementById('okSuccess');
+    let successTimer = null;
+
+    function showSuccess({title='Pedido confirmado!', msg='Seu pedido foi enviado para a cozinha e está sendo impresso.', img='img/sucesso.png', autoCloseMs=2500} = {}){
+      document.getElementById('successTitle').textContent = title;
+      document.getElementById('successMsg').textContent = msg;
+      document.getElementById('successImg').src = img;
+      successOverlay.style.display = 'flex';
+      successOverlay.setAttribute('aria-hidden','false');
+      clearTimeout(successTimer);
+      successTimer = setTimeout(hideSuccess, autoCloseMs);
+      resetIdleTimer();
+    }
+    function hideSuccess(){
+      successOverlay.style.display = 'none';
+      successOverlay.setAttribute('aria-hidden','true');
+      clearTimeout(successTimer);
+    }
+    successOverlay.addEventListener('click', (e)=>{ if(e.target === successOverlay) hideSuccess(); });
+    okSuccessBtn.addEventListener('click', hideSuccess);
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && successOverlay.style.display === 'flex') hideSuccess(); });
+
+    // --- Sincronização do carrinho entre abas (totem/carrinho/relatórios) ---
+    function refreshCartFromStorage(){
+      try {
+        const raw = localStorage.getItem(CART_KEY);
+        cart = raw? JSON.parse(raw) : [];
+      } catch { cart = []; }
+      updateCheckoutText();
+    }
+    window.addEventListener('storage', (e)=>{
+      if (e.key === CART_KEY || e.key === 'pasterry_sales_v1') refreshCartFromStorage();
+    });
+    window.addEventListener('focus', refreshCartFromStorage);
+    document.addEventListener('visibilitychange', ()=>{ if (document.visibilityState === 'visible') refreshCartFromStorage(); });
+
+    // Colapsar/expandir header conforme rola a lista de produtos
+    (function(){
+      const headerEl = document.querySelector('header');
+      const productsWrapEl = document.querySelector('.products-wrap');
+      if(!headerEl ||!productsWrapEl) return;
+
+      let ticking = false;
+      const THRESHOLD = 24; // pixels de scroll para começar a sumir
+
+      function onScroll(){
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(()=>{
+          const y = productsWrapEl.scrollTop || 0;
+          if (y > THRESHOLD) headerEl.classList.add('collapsed');
+          else headerEl.classList.remove('collapsed');
+          ticking = false;
+        });
+      }
+
+      productsWrapEl.addEventListener('scroll', onScroll, { passive: true });
+
+      // Garantir estado inicial correto ao trocar categoria/voltar do atrativo
+      const reset = ()=>{ productsWrapEl.scrollTop = 0; headerEl.classList.remove('collapsed'); };
+      document.getElementById('startBtn')?.addEventListener('click', reset);
+      document.getElementById('attract')?.addEventListener('click', reset);
+    })();
+
+    // Inicialização final
+    renderCategories(); renderProducts(); updateCheckoutText();
+
+    // Scroll Spy: ativa a categoria conforme a seção visível
+  // Scroll Spy: ativa a categoria conforme a seção visível + mostra rótulo
+(function initScrollSpy(){
+  const wrap = document.querySelector('.products-wrap') || document.scrollingElement;
+  const label = document.getElementById('currentCatName');
+  if (!wrap) return;
+
+  let isClickScrolling = false;
+  let clickTimeout = null;
+
+  document.getElementById('categories')?.addEventListener('click', (e)=>{
+    if (e.target.closest('.cat')) {
+      isClickScrolling = true;
+      clearTimeout(clickTimeout);
+      clickTimeout = setTimeout(()=>{ isClickScrolling = false; }, 600);
+    }
+  });
+
+  function updateCurrent(catId){
+    setActiveCategory(catId); // só marca a aba, sem forçar scroll
+    const cat = CATEGORIES.find(c=>c.id===catId);
+    if (label && cat) label.textContent = cat.name;
+  }
+
+  const io = new IntersectionObserver((entries)=>{
+    if (isClickScrolling) return;
+    const visible = entries
+    .filter(e=>e.isIntersecting)
+    .sort((a,b)=>b.intersectionRatio - a.intersectionRatio)[0];
+    const catId = visible?.target?.dataset?.cat;
+    if (catId) updateCurrent(catId);
+  }, {
+    root: wrap,
+    threshold: [0.25, 0.5, 0.75],
+    rootMargin: '-90px 0px -45% 0px'
+  });
+
+  const observeAll = ()=> document.querySelectorAll('.cat-section').forEach(sec=>io.observe(sec));
+  observeAll();
+
+  const _renderProducts = renderProducts;
+  renderProducts = function(){ _renderProducts(); observeAll(); };
+
+  // estado inicial
+  updateCurrent(CATEGORIES[0].id);
+})();
+
+    window.addToCart = addToCart; window.openQtyDialog = openQtyDialog;
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') { if(overlay.style.display === 'flex') closeQtyDialog(); if(sizeOverlay.style.display === 'flex') closeSizeDialog(); } resetIdleTimer(); });
+    // Começa escondido; só aparece por inatividade
+    attract.classList.add('hidden');
+    resetIdleTimer();
+    
+    
+window.onscroll = function(){
+  let currentSectionId = '';
+  document.querySelectorAll('.cat-section').forEach(section => {
+    const sectionTop = section.offsetTop;
+    if (window.pageYOffset >= sectionTop - 100) {
+      currentSectionId = section.getAttribute('data-cat');
+    }
+  });
+  if (currentSectionId) {
+    setActiveCategory(currentSectionId);
+  }
+};
+
+  </script>
+</body>
+</html>

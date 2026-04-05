@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Pedidos - Pasterry</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 1em; background-color: #1A1210; color: #e6eef6; margin: 0; }
+        h1 { margin: 0 0 16px 0; color: #07fcdb; }
+        h3 { margin: 0 0 12px 0; border-bottom: 1px solid #444; padding-bottom: 8px; color: #07fcdb;}
+        #lista {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1em;
+        }
+
+        .pedido {
+            background: #2a201d;
+            border: 1px solid #444;
+            border-radius: 12px;
+            padding: 1.2em;
+            margin-bottom: 1em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        .empty { color: #9aa6b2; text-align: center; padding: 2em; background: #2a201d; border-radius: 12px; grid-column: 1 / -1; }
+        .pedido-info, .pedido-itens, .pedido-total { margin-bottom: 10px; }
+        .pedido-info strong, .pedido-total strong { color: #fff; }
+        .pedido-itens ul { list-style: none; padding-left: 0; margin: 5px 0 0 0; }
+        .pedido-itens li { padding: 4px 0; border-bottom: 1px solid #333; }
+        .pedido-footer { display: flex; gap: 10px; justify-content: flex-end; align-items: center; margin-top: auto; padding-top: 15px; }
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform .1s ease;
+        }
+        .btn:active{ transform: scale(0.96); }
+        .btn-imprimir { background-color: #07fcdb; color: #1A1210; }
+        .btn-imprimir:hover { filter: brightness(0.9); }
+        .btn-cancelar { background-color: #ac940d; color: white; }
+        .btn-cancelar:hover { filter: brightness(0.9); }
+
+        /* Estilos para Impressão */
+        @media print {
+            body { background: #fff; color: #000; }
+            body * { visibility: hidden; }
+            #area-impressao, #area-impressao * { visibility: visible; }
+            #area-impressao { position: absolute; left: 0; top: 0; width: 100%; }
+            .pedido { box-shadow: none; border: 1px solid #000; background: #fff; color: #000; }
+             h3, .pedido-info strong, .pedido-total strong { color: #000; }
+            .btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Painel de Pedidos</h1>
+    <div id="lista"></div>
+
+    <div id="area-impressao" aria-hidden="true"></div>
+
+    <template id="tpl">
+        <div class="pedido">
+            <h3>Pedido #<span class="pid"></span></h3>
+            <div class="pedido-info">
+                <div><strong>Data:</strong> <span class="pdata"></span></div>
+                <div><strong>Cliente:</strong> <span class="pcliente-nome"></span></div>
+                <div><strong>Endereço:</strong> <span class="pcliente-endereco"></span></div>
+                <div><strong>Pagamento:</strong> <span class="ppagamento"></span></div>
+            </div>
+            <div class="pedido-itens">
+                <strong>Itens:</strong>
+                <ul class="pitens-lista"></ul>
+            </div>
+            <div class="pedido-total">
+                <div>Subtotal: <span class="psubtotal"></span></div>
+                <div>Taxa de entrega: <span class="ptaxa"></span></div>
+                <strong>Total: <span class="ptotal"></span></strong>
+            </div>
+            <div class="pedido-footer">
+                <button class="btn btn-imprimir">Imprimir</button>
+                <button class="btn btn-cancelar">Finalizar</button>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        // CHAVES ATUALIZADAS PARA COMPATIBILIDADE
+        const PEDIDOS_KEY = 'pedidos_pasterry_v1';
+        const ARQUIVADOS_KEY = 'pedidos_arquivados_pasterry_v1';
+        const HORA_ARQUIVAMENTO_MS = 12 * 60 * 60 * 1000; // 12 horas
+
+        const listaEl = document.getElementById('lista');
+        const tpl = document.getElementById('tpl');
+
+        function money(v) { return 'R$ ' + Number(v).toFixed(2).replace('.', ','); }
+
+        function arquivarPedidosAntigos() {
+            const agora = Date.now();
+            let pedidos = JSON.parse(localStorage.getItem(PEDIDOS_KEY) || '[]');
+            let arquivados = JSON.parse(localStorage.getItem(ARQUIVADOS_KEY) || '[]');
+            
+            const pedidosParaManter = [];
+            const pedidosParaArquivar = [];
+
+            pedidos.forEach(p => {
+                const tempoPedido = new Date(p.criadoEm).getTime();
+                if (agora - tempoPedido > HORA_ARQUIVAMENTO_MS) {
+                    pedidosParaArquivar.push(p);
+                } else {
+                    pedidosParaManter.push(p);
+                }
+            });
+
+            if (pedidosParaArquivar.length > 0) {
+                const novosArquivados = [...pedidosParaArquivar, ...arquivados];
+                localStorage.setItem(ARQUIVADOS_KEY, JSON.stringify(novosArquivados));
+                localStorage.setItem(PEDIDOS_KEY, JSON.stringify(pedidosParaManter));
+                console.log(`${pedidosParaArquivar.length} pedido(s) arquivado(s).`);
+            }
+        }
+
+        function carregarPedidos() {
+            let pedidos = JSON.parse(localStorage.getItem(PEDIDOS_KEY) || '[]');
+            listaEl.innerHTML = ''; 
+            
+            if (pedidos.length === 0) {
+                listaEl.innerHTML = '<p class="empty">Nenhum pedido novo.</p>';
+                return;
+            }
+
+            pedidos.forEach(p => {
+                const node = tpl.content.cloneNode(true);
+                const pedidoDiv = node.querySelector('.pedido');
+                pedidoDiv.id = `pedido-${p.id}`;
+
+                node.querySelector('.pid').textContent = p.id;
+                node.querySelector('.pdata').textContent = p.data;
+                node.querySelector('.pcliente-nome').textContent = p.cliente.nome;
+                node.querySelector('.pcliente-endereco').textContent = `Rua ${p.cliente.rua}, Nº ${p.cliente.numero} - ${p.cliente.bairro}`;
+                
+                let pagamentoTxt = p.pagamento;
+                if (p.pagamento === 'Dinheiro' && p.troco) {
+                    pagamentoTxt += ` (Troco para: ${p.troco})`;
+                }
+                node.querySelector('.ppagamento').textContent = pagamentoTxt;
+
+                const itensUl = node.querySelector('.pitens-lista');
+                p.itens.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = `${item.qty}x ${item.title} - ${money(item.price * item.qty)}`;
+                    itensUl.appendChild(li);
+                });
+
+                node.querySelector('.psubtotal').textContent = money(p.subtotal);
+                node.querySelector('.ptaxa').textContent = money(p.taxa);
+                node.querySelector('.ptotal').textContent = money(p.total);
+
+                node.querySelector('.btn-imprimir').onclick = () => imprimirPedido(p.id);
+                node.querySelector('.btn-cancelar').onclick = () => finalizarPedido(p.id);
+
+                listaEl.appendChild(node);
+            });
+        }
+
+        function imprimirPedido(pedidoId) {
+            const areaImpressao = document.getElementById('area-impressao');
+            const conteudoPedido = document.getElementById(`pedido-${pedidoId}`).cloneNode(true);
+            // Remove o rodapé com botões da versão impressa
+            conteudoPedido.querySelector('.pedido-footer').remove();
+            areaImpressao.innerHTML = '';
+            areaImpressao.appendChild(conteudoPedido);
+            window.print();
+        }
+
+        function finalizarPedido(pedidoId) {
+            if (!confirm(`Tem certeza que deseja FINALIZAR e remover o pedido #${pedidoId} da tela?`)) {
+                return;
+            }
+            let pedidos = JSON.parse(localStorage.getItem(PEDIDOS_KEY) || '[]');
+            // Aqui você poderia mover para um arquivo de "concluídos" se quisesse
+            // Por enquanto, apenas removemos da lista de ativos
+            const pedidosAtualizados = pedidos.filter(p => p.id !== pedidoId);
+            localStorage.setItem(PEDIDOS_KEY, JSON.stringify(pedidosAtualizados));
+            carregarPedidos();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            arquivarPedidosAntigos();
+            carregarPedidos();
+            // Atualiza a lista a cada 30 segundos para pegar novos pedidos de outros terminais
+            setInterval(() => {
+                console.log("Verificando novos pedidos...");
+                carregarPedidos();
+            }, 30000);
+
+            // Ouve por mudanças no storage (outra aba/janela fechou um pedido)
+            window.addEventListener('storage', (e) => {
+                if (e.key === PEDIDOS_KEY) {
+                    carregarPedidos();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
