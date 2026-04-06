@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -88,123 +87,147 @@
         </div>
     </template>
 
-    <script>
-        // CHAVES ATUALIZADAS PARA COMPATIBILIDADE
-        const PEDIDOS_KEY = 'pedidos_pasterry_v1';
-        const ARQUIVADOS_KEY = 'pedidos_arquivados_pasterry_v1';
-        const HORA_ARQUIVAMENTO_MS = 12 * 60 * 60 * 1000; // 12 horas
+    <!-- O SCRIPT AGORA É UM MÓDULO PARA USAR OS IMPORTS DO FIREBASE -->
+    <script type="module">
+        // Importa as funções necessárias do Firebase a partir da CDN oficial
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, deleteDoc, addDoc, query, where, getDocs, serverTimestamp, orderBy } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+
+        // SUA CONFIGURAÇÃO DO FIREBASE (JÁ INSERIDA)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDV9tPC5XNNmB_REgW1au2NtpP1ETtV1i0",
+            authDomain: "paineldepedidos-8cfff.firebaseapp.com",
+            projectId: "paineldepedidos-8cfff",
+            storageBucket: "paineldepedidos-8cfff.appspot.com",
+            messagingSenderId: "390619980929",
+            appId: "1:390619980929:web:5bb015938e9dcb89389980",
+            measurementId: "G-CMH7LSQ7C0"
+        };
+        // ------------------------------------
+
+        // Inicializa o Firebase e o Firestore
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Referência às "coleções" (pastas) de pedidos no banco de dados
+        const pedidosCol = collection(db, 'pedidos');
+        const arquivadosCol = collection(db, 'pedidos_arquivados');
 
         const listaEl = document.getElementById('lista');
         const tpl = document.getElementById('tpl');
 
         function money(v) { return 'R$ ' + Number(v).toFixed(2).replace('.', ','); }
 
-        function arquivarPedidosAntigos() {
-            const agora = Date.now();
-            let pedidos = JSON.parse(localStorage.getItem(PEDIDOS_KEY) || '[]');
-            let arquivados = JSON.parse(localStorage.getItem(ARQUIVADOS_KEY) || '[]');
-            
-            const pedidosParaManter = [];
-            const pedidosParaArquivar = [];
+        // NOVA FUNÇÃO: arquivarPedidosAntigos com Firebase
+        async function arquivarPedidosAntigos() {
+            const HORA_ARQUIVAMENTO_MS = 12 * 60 * 60 * 1000;
+            const tempoLimite = new Date(Date.now() - HORA_ARQUIVAMENTO_MS);
 
-            pedidos.forEach(p => {
-                const tempoPedido = new Date(p.criadoEm).getTime();
-                if (agora - tempoPedido > HORA_ARQUIVAMENTO_MS) {
-                    pedidosParaArquivar.push(p);
-                } else {
-                    pedidosParaManter.push(p);
-                }
-            });
+            const q = query(pedidosCol, where("criadoEm", "<", tempoLimite));
 
-            if (pedidosParaArquivar.length > 0) {
-                const novosArquivados = [...pedidosParaArquivar, ...arquivados];
-                localStorage.setItem(ARQUIVADOS_KEY, JSON.stringify(novosArquivados));
-                localStorage.setItem(PEDIDOS_KEY, JSON.stringify(pedidosParaManter));
-                console.log(`${pedidosParaArquivar.length} pedido(s) arquivado(s).`);
-            }
-        }
-
-        function carregarPedidos() {
-            let pedidos = JSON.parse(localStorage.getItem(PEDIDOS_KEY) || '[]');
-            listaEl.innerHTML = ''; 
-            
-            if (pedidos.length === 0) {
-                listaEl.innerHTML = '<p class="empty">Nenhum pedido novo.</p>';
+            const snapshot = await getDocs(q);
+            if (snapshot.empty) {
+                console.log("Nenhum pedido antigo para arquivar.");
                 return;
             }
 
-            pedidos.forEach(p => {
-                const node = tpl.content.cloneNode(true);
-                const pedidoDiv = node.querySelector('.pedido');
-                pedidoDiv.id = `pedido-${p.id}`;
+            for (const documento of snapshot.docs) {
+                console.log(`Arquivando pedido #${documento.id}...`);
+                const dados = documento.data();
+                dados.arquivadoEm = serverTimestamp(); // Adiciona data de arquivamento
+                await addDoc(arquivadosCol, dados);
+                await deleteDoc(doc(db, 'pedidos', documento.id));
+            }
+        }
 
-                node.querySelector('.pid').textContent = p.id;
-                node.querySelector('.pdata').textContent = p.data;
-                node.querySelector('.pcliente-nome').textContent = p.cliente.nome;
-                node.querySelector('.pcliente-endereco').textContent = `Rua ${p.cliente.rua}, Nº ${p.cliente.numero} - ${p.cliente.bairro}`;
-                
-                let pagamentoTxt = p.pagamento;
-                if (p.pagamento === 'Dinheiro' && p.troco) {
-                    pagamentoTxt += ` (Troco para: ${p.troco})`;
+        // FUNÇÃO ATUALIZADA: carregarPedidos com Firebase em TEMPO REAL!
+        function carregarPedidos() {
+            // Cria uma query para ordenar os pedidos do mais novo para o mais antigo
+            const q = query(pedidosCol, orderBy("criadoEm", "desc"));
+
+            // onSnapshot "ouve" as mudanças na coleção em tempo real.
+            onSnapshot(q, (snapshot) => {
+                listaEl.innerHTML = '';
+
+                if (snapshot.empty) {
+                    listaEl.innerHTML = '<p class="empty">Nenhum pedido novo.</p>';
+                    return;
                 }
-                node.querySelector('.ppagamento').textContent = pagamentoTxt;
 
-                const itensUl = node.querySelector('.pitens-lista');
-                p.itens.forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = `${item.qty}x ${item.title} - ${money(item.price * item.qty)}`;
-                    itensUl.appendChild(li);
+                snapshot.forEach(documento => {
+                    const p = documento.data(); // p são os dados do pedido
+                    const id = documento.id;    // id é o identificador único do pedido
+
+                    const node = tpl.content.cloneNode(true);
+                    const pedidoDiv = node.querySelector('.pedido');
+                    pedidoDiv.id = `pedido-${id}`;
+
+                    const dataPedido = p.criadoEm ? new Date(p.criadoEm.seconds * 1000).toLocaleString('pt-BR') : 'Data não informada';
+
+                    node.querySelector('.pid').textContent = id.substring(0, 6).toUpperCase();
+                    node.querySelector('.pdata').textContent = dataPedido;
+                    node.querySelector('.pcliente-nome').textContent = p.cliente.nome;
+                    node.querySelector('.pcliente-endereco').textContent = `Rua ${p.cliente.rua}, Nº ${p.cliente.numero} - ${p.cliente.bairro}`;
+
+                    let pagamentoTxt = p.pagamento;
+                    if (p.pagamento === 'Dinheiro' && p.troco) {
+                        pagamentoTxt += ` (Troco para: ${money(p.troco)})`;
+                    }
+                    node.querySelector('.ppagamento').textContent = pagamentoTxt;
+
+                    const itensUl = node.querySelector('.pitens-lista');
+                    if(p.itens && p.itens.forEach) {
+                        p.itens.forEach(item => {
+                            const li = document.createElement('li');
+                            li.textContent = `${item.qty}x ${item.title} - ${money(item.price * item.qty)}`;
+                            itensUl.appendChild(li);
+                        });
+                    }
+
+                    node.querySelector('.psubtotal').textContent = money(p.subtotal);
+                    node.querySelector('.ptaxa').textContent = money(p.taxa);
+                    node.querySelector('.ptotal').textContent = money(p.total);
+
+                    node.querySelector('.btn-imprimir').onclick = () => imprimirPedido(id);
+                    node.querySelector('.btn-cancelar').onclick = () => finalizarPedido(id);
+
+                    listaEl.appendChild(node);
                 });
-
-                node.querySelector('.psubtotal').textContent = money(p.subtotal);
-                node.querySelector('.ptaxa').textContent = money(p.taxa);
-                node.querySelector('.ptotal').textContent = money(p.total);
-
-                node.querySelector('.btn-imprimir').onclick = () => imprimirPedido(p.id);
-                node.querySelector('.btn-cancelar').onclick = () => finalizarPedido(p.id);
-
-                listaEl.appendChild(node);
             });
         }
 
         function imprimirPedido(pedidoId) {
             const areaImpressao = document.getElementById('area-impressao');
             const conteudoPedido = document.getElementById(`pedido-${pedidoId}`).cloneNode(true);
-            // Remove o rodapé com botões da versão impressa
             conteudoPedido.querySelector('.pedido-footer').remove();
             areaImpressao.innerHTML = '';
             areaImpressao.appendChild(conteudoPedido);
             window.print();
         }
 
-        function finalizarPedido(pedidoId) {
-            if (!confirm(`Tem certeza que deseja FINALIZAR e remover o pedido #${pedidoId} da tela?`)) {
+        // FUNÇÃO ATUALIZADA: finalizarPedido com Firebase
+        async function finalizarPedido(pedidoId) {
+            if (!confirm(`Tem certeza que deseja FINALIZAR e remover o pedido #${pedidoId.substring(0,6).toUpperCase()} da tela?`)) {
                 return;
             }
-            let pedidos = JSON.parse(localStorage.getItem(PEDIDOS_KEY) || '[]');
-            // Aqui você poderia mover para um arquivo de "concluídos" se quisesse
-            // Por enquanto, apenas removemos da lista de ativos
-            const pedidosAtualizados = pedidos.filter(p => p.id !== pedidoId);
-            localStorage.setItem(PEDIDOS_KEY, JSON.stringify(pedidosAtualizados));
-            carregarPedidos();
+            try {
+                // Apaga o documento com o ID correspondente da coleção "pedidos"
+                await deleteDoc(doc(db, 'pedidos', pedidoId));
+                 console.log(`Pedido ${pedidoId} finalizado com sucesso.`);
+                // Não precisa chamar carregarPedidos()! O onSnapshot faz isso sozinho.
+            } catch (e) {
+                console.error("Erro ao finalizar pedido: ", e);
+                alert("Ocorreu um erro ao tentar finalizar o pedido.");
+            }
         }
 
+        // Código que roda quando a página carrega
         document.addEventListener('DOMContentLoaded', () => {
-            arquivarPedidosAntigos();
-            carregarPedidos();
-            // Atualiza a lista a cada 30 segundos para pegar novos pedidos de outros terminais
-            setInterval(() => {
-                console.log("Verificando novos pedidos...");
-                carregarPedidos();
-            }, 30000);
-
-            // Ouve por mudanças no storage (outra aba/janela fechou um pedido)
-            window.addEventListener('storage', (e) => {
-                if (e.key === PEDIDOS_KEY) {
-                    carregarPedidos();
-                }
-            });
+            arquivarPedidosAntigos(); // Faz uma limpeza inicial
+            carregarPedidos(); // Começa a "ouvir" por novos pedidos
+            // Não precisamos mais do setInterval e do 'storage' event listener!
         });
+
     </script>
 </body>
 </html>
