@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -5,14 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sacola — Pasterry</title>
   <style>
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#1A1210;color:#e6eef6;padding:16px; padding-bottom: 180px; /* Espaço para o rodapé fixo */}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#1A1210;color:#e6eef6;padding:16px; padding-bottom: 180px;}
     h3{margin:0 0 12px;font-size:22px; color: var(--accent, #07fcdb);}
     .btn{padding:8px 12px;border:none;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px; transition: transform .1s ease, background .1s ease;}
     .btn:active{transform: scale(0.96);}
-    /* --- CORES DOS BOTÕES MODIFICADAS --- */
-    .btn.primary{background:#28a745;color:#fff;} /* Verde */
+    .btn.primary{background:#28a745;color:#fff;}
     .btn.secondary{background:#E8F5E9;color:#1A1210;}
-    .btn.danger{background:#dc3545;color:#fff;} /* Vermelho */
+    .btn.danger{background:#dc3545;color:#fff;}
     .btn.ghost{background:#2a201d;color:#e6eef6;}
     .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px; justify-content: flex-end;}
     .cart-item{display:flex;align-items:center;gap:10px;padding:8px;background:#2a201d;border-radius:8px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,0.1);}
@@ -36,7 +36,6 @@
     .empty{opacity:.7;padding:16px;text-align:center;background:#2a201d;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
     a{color:inherit}
     #secret-login-btn {position: fixed;bottom: 5px;right: 5px;width: 20px;height: 20px;background-color: transparent;border: none;cursor: pointer;z-index: 9999;}
-    
     .footer-actions {
       position: fixed;
       bottom: 0;
@@ -76,13 +75,11 @@
   <div class="footer-actions">
     <div id="totais"></div>
     <div class="footer-buttons">
-      <!-- Botão "Voltar" agora com a classe "danger" -->
       <button class="btn danger btn-large" onclick="location.href='index.html'">Voltar ao cardápio</button>
       <button class="btn primary btn-large" onclick="abrirModal()" style="margin-left: auto;">Confirmar pedido</button>
     </div>
   </div>
 
-  <!-- Modal de endereço/checkout -->
   <div id="modalEndereco">
     <div class="modal-content">
       <button class="btn secondary" style="float:right;" onclick="fecharModal()">X</button>
@@ -109,10 +106,30 @@
 
   <button id="secret-login-btn" title="Acessar Painel"></button>
 
-<script>
+<script type="module">
+  // Importa as funções do Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+
+  // SUA CONFIGURAÇÃO DO FIREBASE
+  const firebaseConfig = {
+      apiKey: "AIzaSyDV9tPC5XNNmB_REgW1au2NtpP1ETtV1i0",
+      authDomain: "paineldepedidos-8cfff.firebaseapp.com",
+      projectId: "paineldepedidos-8cfff",
+      storageBucket: "paineldepedidos-8cfff.appspot.com",
+      messagingSenderId: "390619980929",
+      appId: "1:390619980929:web:5bb015938e9dcb89389980",
+      measurementId: "G-CMH7LSQ7C0"
+  };
+
+  // Inicializa o Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const pedidosCol = collection(db, 'pedidos');
+
   const TAXA = 4.00;
-  const CART_KEY = 'pasterry_cart_v1'; 
-  const PEDIDOS_KEY = 'pedidos_pasterry_v1';
+  const CART_KEY = 'pasterry_cart_v1';
+  // A const PEDIDOS_KEY não é mais necessária aqui
 
   const SAUCES = {
     'Molho Barbecue': { img: 'img/barbecue.jpg', desc: 'Defumado', price: 5.00 },
@@ -121,12 +138,11 @@
     'Molho Tártaro': { img: 'img/tartaro.jpg', desc: 'Tradicional', price: 5.00 },
     'Ketchup': { img: 'img/ketchup.jpg', desc: 'Tradicional', price: 5.00 }
   };
-
+  
+  // As funções abaixo continuam usando localStorage apenas para o carrinho, o que está correto!
   function getCart(){ try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); } catch(e){ return []; } }
   function setCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); }
-
   function money(v){ return 'R$ ' + Number(v).toFixed(2).replace('.', ','); }
-
   function renderMolhos(){
     const wrap = document.getElementById('molhos');
     wrap.innerHTML = Object.entries(SAUCES).map(([nome,s])=>`
@@ -139,7 +155,6 @@
       </div>
     `).join('');
   }
-
   function renderCart(){
     const cart = getCart();
     const cartEl = document.getElementById('cart');
@@ -163,40 +178,29 @@
     }
     renderTotais();
   }
-
   function renderTotais(){
     const cart = getCart();
     const subtotal = cart.reduce((s,i)=> s + i.price*i.qty, 0);
     const total = subtotal + TAXA;
-    const totaisEl = document.getElementById('totais');
-    if (totaisEl) {
-      totaisEl.innerHTML = `
+    document.getElementById('totais').innerHTML = `
         <div style="display:flex;justify-content:space-between"><div>Subtotal</div><div>${money(subtotal)}</div></div>
         <div style="display:flex;justify-content:space-between;opacity:.8"><div>Taxa de entrega</div><div>${money(TAXA)}</div></div>
         <div style="display:flex;justify-content:space-between;border-top:1px solid #444;margin-top:6px;padding-top:6px;font-weight:bold"><div>Total</div><div>${money(total)}</div></div>
       `;
-    }
   }
-
   function increaseQty(idx){ const c=getCart(); c[idx].qty++; setCart(c); renderCart(); }
   function decreaseQty(idx){ 
     const c=getCart(); 
-    if(c[idx].qty > 1){ 
-      c[idx].qty--; 
-    } else { 
-      c.splice(idx,1); 
-    } 
+    if(c[idx].qty > 1){ c[idx].qty--; } else { c.splice(idx,1); } 
     setCart(c); 
     renderCart(); 
   }
-  
   function limparSacola(){ 
     if(confirm('Tem certeza que deseja esvaziar a sacola?')){ 
       localStorage.removeItem(CART_KEY); 
       renderCart(); 
     } 
   }
-
   function addMolho(nome){
     const s = SAUCES[nome]; if(!s) return;
     const id = 'molho:' + nome;
@@ -206,18 +210,15 @@
     setCart(c); 
     renderCart();
   }
-
   function abrirModal(){
     if(getCart().length===0){ alert('Sua sacola está vazia!'); return; }
     document.getElementById('modalEndereco').style.display='flex';
     renderCupom();
   }
   function fecharModal(){ document.getElementById('modalEndereco').style.display='none'; }
-  
   document.getElementById('pagamento').addEventListener('change', function(){
     document.getElementById('troco').style.display = (this.value === 'Dinheiro')? 'block' : 'none';
   });
-
   function renderCupom(){
     const cart = getCart();
     const cupomItens = document.getElementById('cupomItens');
@@ -228,7 +229,8 @@
     cupomTotal.innerHTML = `Subtotal: ${money(subtotal)}<br>Taxa de entrega: ${money(TAXA)}<br><strong>Total: ${money(total)}</strong>`;
   }
 
-  function enviarPedido(){
+  // ===== FUNÇÃO ENVIAR PEDIDO ATUALIZADA =====
+  async function enviarPedido(){
     const nome = document.getElementById('nome').value.trim();
     const rua = document.getElementById('rua').value.trim();
     const numero = document.getElementById('numero').value.trim();
@@ -245,10 +247,9 @@
     const subtotal = cart.reduce((s,i)=> s + i.price*i.qty, 0);
     const total = subtotal + TAXA;
 
+    // 1. Cria o objeto do pedido para salvar no Firebase
     const pedido = {
-      id: Date.now(),
-      criadoEm: new Date().toISOString(),
-      data: new Date().toLocaleString('pt-BR'),
+      criadoEm: serverTimestamp(), // Usa a hora do servidor do Firebase. MUITO IMPORTANTE!
       cliente: { nome, rua, numero, bairro },
       pagamento,
       troco: pagamento === 'Dinheiro' ? troco : '',
@@ -258,34 +259,57 @@
       total: Number(total.toFixed(2)),
       status: 'novo'
     };
-
-    const pedidos = JSON.parse(localStorage.getItem(PEDIDOS_KEY) || '[]');
-    pedidos.unshift(pedido);
-    localStorage.setItem(PEDIDOS_KEY, JSON.stringify(pedidos));
-
-    const itensMsg = cart.map(i => `• ${i.qty}x ${i.title} — ${money(i.price*i.qty)}`).join('%0A');
-    let pagamentoInfo = `Forma de pagamento: ${pagamento}`;
-    if (pagamento === 'Dinheiro' && troco) pagamentoInfo += `%0A*Troco para: ${troco}*`;
     
-    const endereco = `*Cliente:* ${nome}%0A*Endereço:* Rua ${rua}, Nº ${numero} — Bairro ${bairro}`;
-    
-    const mensagem = `*=== NOVO PEDIDO PASTERRY ===*%0A%0A*ID do Pedido:* ${pedido.id}%0A%0A${itensMsg}%0A%0A------------------------------------%0ASubtotal: ${money(subtotal)}%0ATaxa de Entrega: ${money(TAXA)}%0A*Total do Pedido: ${money(total)}*%0A------------------------------------%0A%0A${endereco}%0A%0A${pagamentoInfo}`;
-    
-    const numeroWhatsApp = "5511994046432";
-    const url = `https://wa.me/${numeroWhatsApp}?text=${mensagem}`;
-    window.open(url, '_blank');
+    // Desativa o botão para evitar cliques duplos
+    const btnConfirmar = document.querySelector('.modal-content .btn.primary');
+    btnConfirmar.disabled = true;
+    btnConfirmar.textContent = 'Enviando...';
 
-    localStorage.removeItem(CART_KEY);
-    fecharModal();
-    alert("Pedido enviado com sucesso! Você será redirecionado para a tela de acompanhamento.");
-    renderCart();
+    try {
+      // 2. SALVA O PEDIDO NO FIREBASE!
+      const docRef = await addDoc(pedidosCol, pedido);
+      console.log("Pedido salvo na nuvem com o ID: ", docRef.id);
+      
+      // 3. (Opcional) Envia a notificação para o WhatsApp
+      const itensMsg = cart.map(i => `• ${i.qty}x ${i.title} — ${money(i.price*i.qty)}`).join('%0A');
+      let pagamentoInfo = `Forma de pagamento: ${pagamento}`;
+      if (pagamento === 'Dinheiro' && troco) pagamentoInfo += `%0A*Troco para: ${troco}*`;
+      const endereco = `*Cliente:* ${nome}%0A*Endereço:* Rua ${rua}, Nº ${numero} — Bairro ${bairro}`;
+      const mensagem = `*=== NOVO PEDIDO PASTERRY ===*%0A%0A*ID: ${docRef.id.substring(0,6).toUpperCase()}*%0A%0A${itensMsg}%0A%0A------------------------------------%0ASubtotal: ${money(subtotal)}%0ATaxa de Entrega: ${money(TAXA)}%0A*Total: ${money(total)}*%0A------------------------------------%0A%0A${endereco}%0A%0A${pagamentoInfo}`;
+      const numeroWhatsApp = "5511994046432";
+      const url = `https://wa.me/${numeroWhatsApp}?text=${mensagem}`;
+      window.open(url, '_blank');
+
+      // 4. Limpa tudo e avisa o usuário
+      localStorage.removeItem(CART_KEY);
+      fecharModal();
+      alert("Pedido enviado com sucesso! Acompanhe seu pedido no painel.");
+      renderCart();
+
+    } catch (e) {
+        console.error("Erro ao salvar pedido no Firebase: ", e);
+        alert("Ops! Tivemos um problema ao registrar seu pedido. Por favor, tente novamente.");
+    } finally {
+        // Reativa o botão
+        btnConfirmar.disabled = false;
+        btnConfirmar.textContent = 'Confirmar e Enviar';
+    }
   }
 
+  // Deixando todas as funções globais para o HTML acessá-las
+  window.limparSacola = limparSacola;
+  window.addMolho = addMolho;
+  window.increaseQty = increaseQty;
+  window.decreaseQty = decreaseQty;
+  window.abrirModal = abrirModal;
+  window.fecharModal = fecharModal;
+  window.enviarPedido = enviarPedido;
+  
   document.getElementById('secret-login-btn').addEventListener('click', () => {
     const login = prompt("Login:");
     const senha = prompt("Senha:");
     if (login === "admin" && senha === "admin") {
-        window.location.href = "painel.html";
+        window.location.href = "painel.html"; // Mude para o nome correto se for diferente
     } else {
         alert("Login ou senha incorretos!");
     }
