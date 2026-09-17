@@ -1,324 +1,2360 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sacola — Pasterry</title>
-  <style>
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#1A1210;color:#e6eef6;padding:16px; padding-bottom: 180px;}
-    h3{margin:0 0 12px;font-size:22px; color: var(--accent, #07fcdb);}
-    .btn{padding:8px 12px;border:none;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px; transition: transform .1s ease, background .1s ease;}
-    .btn:active{transform: scale(0.96);}
-    .btn.primary{background:#28a745;color:#fff;}
-    .btn.secondary{background:#E8F5E9;color:#1A1210;}
-    .btn.danger{background:#dc3545;color:#fff;}
-    .btn.ghost{background:#2a201d;color:#e6eef6;}
-    .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px; justify-content: flex-end;}
-    .cart-item{display:flex;align-items:center;gap:10px;padding:8px;background:#2a201d;border-radius:8px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,0.1);}
-    .cart-item img{width:50px;height:50px;object-fit:cover;border-radius:6px;}
-    .molhos{display:flex;overflow-x:auto;gap:8px;margin:10px 0;padding-bottom:8px;}
-    .molho-card{flex: 0 0 120px;}
-    .molhos::-webkit-scrollbar { display: none; }
-    .molhos { -ms-overflow-style: none; scrollbar-width: none; }
-    .molho-card{background:#2a201d;border-radius:8px;padding:6px 4px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.1)}
-    .molho-card img{width:100%;height:48px;object-fit:cover;border-radius:6px}
-    .molho-card strong{display:block;font-size:12px;line-height:1.1;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .molho-card p{font-size:11px;margin:3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; color: #9aa6b2;}
-    .molho-card div{font-size:11px; font-weight: bold; color: var(--danger, #ac940d);}
-    .molho-card button{font-size:11px;padding:3px 6px;border-radius:6px}
-    .totais{background:#2a201d;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.08);padding:12px;}
-    #modalEndereco{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:110;}
-    .modal-content{background:#272323;padding:15px;border-radius:10px;width:320px;max-width:92vw;text-align:center;}
-    .modal-content input,.modal-content select{width:100%;padding:8px;margin:6px 0;border:1px solid #444;border-radius:8px;font-size:14px;background:#1A1210; color: #e6eef6;}
-    .cupom{background:#1A1210;border:1px dashed #444;padding:10px;margin:10px 0;text-align:left;font-size:13px;}
-    .cupom h4{margin:0 0 8px 0;text-align:center;}
-    .empty{opacity:.7;padding:16px;text-align:center;background:#2a201d;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
-    a{color:inherit}
-    #secret-login-btn {position: fixed;bottom: 5px;right: 5px;width: 20px;height: 20px;background-color: transparent;border: none;cursor: pointer;z-index: 9999;}
-    .footer-actions {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: #1A1210;
-      padding: 12px 16px;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      box-shadow: 0 -2px 8px rgba(0,0,0,0.25);
-      z-index: 100;
-    }
-    .footer-buttons {
-      display: flex;
-      gap: 12px;
-      width: 100%;
-    }
-    .btn.btn-large {
-      padding: 12px 16px;
-      font-size: 16px;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sacola - Pasterry</title>
+<style>
+/* ===== RESET E BASE ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  background: #1A1210;
+  color: #e6eef6;
+  padding: 16px;
+  padding-bottom: 200px;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ===== HEADER ===== */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.header h1 {
+  font-size: 24px;
+  color: #FFD700;
+  margin: 0;
+}
+.header .badge {
+  background: #AC940D;
+  color: #fff;
+  padding: 4px 14px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ===== MENSAGEM LOJA FECHADA ===== */
+.loja-fechada-msg {
+  display: none;
+  background: rgba(244, 67, 54, 0.15);
+  border: 2px solid #f44336;
+  border-radius: 12px;
+  color: #f44336;
+  font-weight: 800;
+  padding: 12px 16px;
+  margin: 8px 0 12px 0;
+  text-align: center;
+  font-size: clamp(14px, 2vw, 18px);
+}
+.loja-fechada-msg strong { color: #fff; }
+
+/* ===== TÍTULOS ===== */
+h3 {
+  margin: 16px 0 10px;
+  font-size: 18px;
+  color: #FFD700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+h3 .count {
+  font-size: 12px;
+  color: #9aa6b2;
+  font-weight: 400;
+}
+
+/* ===== BOTÕES ===== */
+.btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.2s, box-shadow 0.2s;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn:active {
+  transform: scale(0.95);
+}
+.btn.primary {
+  background: #28a745;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+.btn.primary:hover {
+  background: #34ce57;
+  box-shadow: 0 4px 20px rgba(40, 167, 69, 0.4);
+}
+.btn.primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.btn.secondary {
+  background: #2a201d;
+  color: #e6eef6;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.btn.secondary:hover {
+  background: #3d2f2a;
+}
+.btn.danger {
+  background: #dc3545;
+  color: #fff;
+}
+.btn.danger:hover {
+  background: #e74c5c;
+}
+.btn.small {
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+.btn.large {
+  padding: 12px 20px;
+  font-size: 16px;
+}
+.btn.cupom {
+  background: #FFD700;
+  color: #1A1210;
+}
+.btn.cupom:hover {
+  background: #ffe44d;
+}
+.btn.cupom:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn.extra-add {
+  background: #2d5016 !important;
+  color: #fff !important;
+}
+.btn.extra-add:hover {
+  background: #4CAF50 !important;
+}
+.btn.extra-add:disabled {
+  background: #555 !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== ITENS EXTRAS ===== */
+.extras {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  margin: 8px 0 14px;
+  padding: 4px 2px 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x mandatory;
+}
+.extras::-webkit-scrollbar {
+  display: none;
+}
+.extra-card {
+  flex: 0 0 130px;
+  background: #2a201d;
+  border-radius: 12px;
+  padding: 10px 8px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: transform 0.2s, border-color 0.2s;
+  scroll-snap-align: start;
+}
+.extra-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,215,0,0.2);
+}
+.extra-card img {
+  width: 100%;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #0a1420;
+}
+.extra-card .nome {
+  font-size: 12px;
+  font-weight: 600;
+  margin: 6px 0 2px;
+  color: #e6eef6;
+}
+.extra-card .preco {
+  font-size: 13px;
+  color: #FFD700;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.extra-card .btn {
+  width: 100%;
+  padding: 4px;
+  font-size: 13px;
+  border-radius: 6px;
+}
+.extra-card.loja-fechada {
+  opacity: 0.5;
+}
+.extra-card.loja-fechada .btn {
+  background: #555 !important;
+  cursor: not-allowed;
+}
+
+/* ===== CUPOM DE DESCONTO ===== */
+.cupom-area {
+  background: #2a201d;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 10px 0 12px;
+  border: 1px solid rgba(255,255,255,0.04);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.cupom-area input {
+  flex: 1;
+  min-width: 150px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: #0a1420;
+  color: #e6eef6;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+.cupom-area input:focus {
+  outline: none;
+  border-color: #FFD700;
+}
+.cupom-area input:disabled {
+  opacity: 0.5;
+}
+.cupom-area .btn {
+  padding: 10px 20px;
+}
+.cupom-aplicado {
+  background: rgba(40, 167, 69, 0.15);
+  border: 1px solid #28a745;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 8px 0;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.cupom-aplicado.visible {
+  display: flex;
+}
+.cupom-aplicado .info {
+  color: #4caf50;
+  font-weight: 600;
+}
+.cupom-aplicado .remove {
+  color: #dc3545;
+  cursor: pointer;
+  font-weight: 700;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+}
+
+/* ===== CUPOM ESPECIAL PROGRESSIVO ===== */
+.cupom-especial-area {
+  background: #1a2a1a;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 10px 0 12px;
+  border: 2px solid #FFD700;
+  display: none;
+}
+.cupom-especial-area.visible {
+  display: block;
+}
+.cupom-especial-area .titulo {
+  color: #FFD700;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cupom-especial-area .descricao {
+  color: #9aa6b2;
+  font-size: 12px;
+  margin: 4px 0 8px;
+}
+.cupom-especial-area .barra-container {
+  background: #0a1420;
+  border-radius: 20px;
+  height: 20px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255,215,0,0.2);
+}
+.cupom-especial-area .barra-container .barra {
+  height: 100%;
+  background: linear-gradient(90deg, #FFD700, #FF6B00);
+  border-radius: 20px;
+  transition: width 0.5s ease;
+  width: 0%;
+  position: relative;
+}
+.cupom-especial-area .barra-container .barra .label {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  color: #1A1210;
+  white-space: nowrap;
+}
+.cupom-especial-area .info-barra {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #9aa6b2;
+  margin-top: 4px;
+}
+.cupom-especial-area .info-barra .destaque {
+  color: #FFD700;
+  font-weight: 700;
+}
+.cupom-especial-area .info-barra .proximo {
+  color: #4caf50;
+}
+.cupom-especial-area .info-barra .falta {
+  color: #FF6B00;
+}
+.cupom-especial-area .desconto-atual {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: #FFD700;
+  margin: 8px 0 4px;
+}
+.cupom-especial-area .desconto-atual .percent {
+  font-size: 28px;
+}
+.cupom-especial-area .desconto-atual .label {
+  font-size: 14px;
+  color: #9aa6b2;
+  font-weight: 400;
+}
+
+/* ===== CARRINHO ===== */
+.cart-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #9aa6b2;
+}
+.cart-empty .icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #2a201d;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: transform 0.15s;
+}
+.cart-item:hover {
+  transform: scale(1.01);
+}
+.cart-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #0a1420;
+}
+.cart-item .info {
+  flex: 1;
+  min-width: 0;
+}
+.cart-item .info .title {
+  font-weight: 600;
+  font-size: 14px;
+}
+.cart-item .info .extras-list {
+  font-size: 11px;
+  color: #FF6B00;
+  margin-top: 2px;
+}
+.cart-item .info .price {
+  font-size: 12px;
+  color: #FFD700;
+}
+.cart-item .qty-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  padding: 2px;
+}
+.cart-item .qty-control .btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font-size: 16px;
+  border-radius: 6px;
+}
+.cart-item .qty-control .qty {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 700;
+}
+.cart-item .item-total {
+  font-weight: 700;
+  color: #FFD700;
+  font-size: 14px;
+  min-width: 50px;
+  text-align: right;
+}
+.cart-item.extra-item {
+  border-left: 3px solid #FF6B00;
+  opacity: 0.85;
+}
+.cart-item.extra-item .info .title {
+  color: #FF6B00;
+}
+
+/* ===== TOTAIS ===== */
+.totais {
+  background: #2a201d;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.totais .linha {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+  font-size: 14px;
+  color: #9aa6b2;
+}
+.totais .linha.total {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: 6px;
+  padding-top: 10px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+}
+.totais .linha.total .valor {
+  color: #FFD700;
+}
+.totais .linha .destaque {
+  color: #4caf50;
+  font-weight: 600;
+}
+.totais .linha .desconto {
+  color: #4caf50;
+}
+.totais .linha .distancia {
+  font-size: 11px;
+  color: #6a7a8a;
+}
+.totais .linha .nao-atendido {
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+/* ===== RODAPÉ ===== */
+.footer-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(180deg, transparent, #1A1210 20%, #1A1210);
+  padding: 12px 16px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  z-index: 50;
+}
+.footer-buttons {
+  display: flex;
+  gap: 12px;
+}
+.btn-large {
+  padding: 14px 16px;
+  font-size: 16px;
+  flex: 1;
+  border-radius: 12px;
+}
+.btn-large:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== MODAL ===== */
+#modalEndereco {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  justify-content: center;
+  align-items: center;
+  z-index: 110;
+  backdrop-filter: blur(4px);
+  padding: 16px;
+}
+.modal-content {
+  background: #1f1a18;
+  padding: 20px;
+  border-radius: 16px;
+  width: 380px;
+  max-width: 100%;
+  max-height: 90vh;
+  overflow: auto;
+  scrollbar-width: none;
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  animation: modalIn 0.3s ease;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(-20px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.modal-content::-webkit-scrollbar {
+  display: none;
+}
+.modal-content .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.modal-content .modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+}
+.modal-content .close-btn {
+  background: rgba(255,255,255,0.05);
+  border: none;
+  color: #9aa6b2;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.modal-content .close-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 10px 12px;
+  margin: 5px 0;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  background: #0a1420;
+  color: #e6eef6;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+.modal-content input:focus,
+.modal-content select:focus {
+  outline: none;
+  border-color: #FFD700;
+  box-shadow: 0 0 0 3px rgba(255,215,0,0.08);
+}
+.modal-content input::placeholder {
+  color: #5a6a7a;
+}
+.modal-content .field-label {
+  font-size: 12px;
+  color: #9aa6b2;
+  margin-top: 8px;
+  display: block;
+}
+.modal-content .field-label .required {
+  color: #ff6b6b;
+}
+.geo-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #1a5a3a, #2a8a5a);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  margin: 6px 0;
+  cursor: pointer;
+  transition: transform 0.15s, filter 0.2s;
+}
+.geo-btn:hover {
+  filter: brightness(1.1);
+}
+.geo-btn:active {
+  transform: scale(0.97);
+}
+.geo-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.geo-status {
+  text-align: center;
+  font-size: 12px;
+  min-height: 18px;
+  color: #4caf50;
+  margin-bottom: 4px;
+}
+.geo-status.error {
+  color: #ff6b6b;
+}
+.cupom-modal {
+  background: #0a1420;
+  border: 1px dashed rgba(255,255,255,0.06);
+  padding: 12px 14px;
+  margin: 12px 0;
+  border-radius: 10px;
+  font-size: 13px;
+}
+.cupom-modal h4 {
+  margin: 0 0 6px;
+  color: #FFD700;
+  font-size: 14px;
+}
+.cupom-modal .itens {
+  color: #9aa6b2;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.cupom-modal .total {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  font-weight: 700;
+}
+.cupom-modal .total .destaque {
+  color: #FFD700;
+}
+.cupom-modal .total .desconto {
+  color: #4caf50;
+}
+.erro-geral {
+  background: rgba(255,92,92,0.12);
+  color: #ffb4b4;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 10px;
+  display: none;
+  border: 1px solid rgba(255,92,92,0.2);
+  font-size: 13px;
+}
+.erro-geral.visible {
+  display: block;
+}
+#modalEndereco .btn.primary {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 12px;
+}
+
+/* ===== LOADING ===== */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 120;
+  backdrop-filter: blur(6px);
+}
+.loading-overlay.active {
+  display: flex;
+}
+.loading-content {
+  text-align: center;
+  color: #fff;
+}
+.spinner {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 4px solid rgba(255,255,255,0.1);
+  border-top-color: #FFD700;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+.loading-content .text {
+  font-size: 18px;
+  font-weight: 600;
+}
+.loading-content .sub {
+  font-size: 13px;
+  color: #9aa6b2;
+  margin-top: 4px;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== LIMPAR SACOLA ===== */
+.btn-limpar {
+  background: transparent;
+  border: 1px solid rgba(220,53,69,0.3);
+  color: #dc3545;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s;
+  margin-top: 4px;
+}
+.btn-limpar:hover {
+  background: rgba(220,53,69,0.1);
+}
+.btn-limpar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 480px) {
+  body {
+    padding: 12px;
+    padding-bottom: 180px;
+  }
+  .header h1 {
+    font-size: 20px;
+  }
+  .modal-content {
+    padding: 16px;
+  }
+  .extra-card {
+    flex: 0 0 110px;
+  }
+  .cart-item {
+    padding: 8px 10px;
+    flex-wrap: wrap;
+  }
+  .cart-item .item-total {
+    min-width: auto;
+    margin-left: auto;
+  }
+  .footer-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .btn-large {
+    padding: 12px;
+  }
+  .totais .linha.total {
+    font-size: 16px;
+  }
+  .cupom-area {
+    flex-direction: column;
+  }
+  .cupom-area input {
+    width: 100%;
+  }
+  .cupom-area .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .extra-card {
+    flex: 0 0 95px;
+    padding: 6px;
+  }
+  .extra-card img {
+    height: 40px;
+  }
+  .cart-item img {
+    width: 40px;
+    height: 40px;
+  }
+  .cart-item .info .title {
+    font-size: 12px;
+  }
+}
+
+/* ===== TOAST ===== */
+.toast-container {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 130;
+  pointer-events: none;
+}
+.toast {
+  pointer-events: auto;
+  background: rgba(0,0,0,0.9);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.05);
+  animation: toastIn 0.3s ease, toastOut 0.3s ease 2s forwards;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes toastOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-20px); }
+}
+</style>
 </head>
 <body>
-  <div class="toolbar">
-    <button class="btn danger" onclick="limparSacola()">Esvaziar sacola</button>
-  </div>
 
-  <h3>Molhos</h3>
-  <div class="molhos" id="molhos"></div>
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <h1>🛒 Sacola</h1>
+  <span class="badge" id="cartBadge">0 itens</span>
+</div>
 
-  <h3>Itens do Pedido</h3>
-  <div id="cart"></div>
+<!-- ===== MENSAGEM LOJA FECHADA ===== -->
+<div id="lojaFechadaMsg" class="loja-fechada-msg">
+  <span>🔴 <strong>Loja fechada</strong> – Não é possível adicionar itens no momento.</span>
+</div>
 
-  <div class="footer-actions">
-    <div id="totais"></div>
-    <div class="footer-buttons">
-      <button class="btn danger btn-large" onclick="location.href='index.html'">Voltar ao cardápio</button>
-      <button class="btn primary btn-large" onclick="abrirModal()" style="margin-left: auto;">Confirmar pedido</button>
-    </div>
-  </div>
+<!-- ===== ITENS EXTRAS (MOLHOS / ADICIONAIS) ===== -->
+<h3>🧂 Itens Extras <span class="count">(adicione ao seu pedido)</span></h3>
+<div class="extras" id="extrasContainer">
+  <div style="color:#6a7a8a; padding:10px; text-align:center; width:100%;">Carregando itens extras...</div>
+</div>
 
-  <div id="modalEndereco">
-    <div class="modal-content">
-      <button class="btn secondary" style="float:right;" onclick="fecharModal()">X</button>
-      <h3>Informe seus dados</h3>
-      <input type="text" id="nome" placeholder="Nome completo">
-      <input type="text" id="rua" placeholder="Rua">
-      <input type="text" id="numero" placeholder="Número da casa">
-      <input type="text" id="bairro" placeholder="Bairro">
-      <select id="pagamento">
-        <option value="">Forma de pagamento</option>
-        <option value="Débito">Cartão Débito</option>
-        <option value="Crédito">Cartão Crédito</option>
-        <option value="Dinheiro">Dinheiro</option>
-      </select>
-      <input type="text" id="troco" placeholder="Troco para quanto?" style="display:none;">
-      <div class="cupom" id="cupomResumo">
-        <h4>📜 Resumo do Pedido</h4>
-        <div id="cupomItens"></div>
-        <div id="cupomTotal" style="margin-top: 8px; border-top: 1px solid #444; padding-top: 8px;"></div>
-      </div>
-      <button class="btn primary" onclick="enviarPedido()">Confirmar e Enviar</button>
-    </div>
-  </div>
+<!-- ===== CUPOM DE DESCONTO ===== -->
+<div class="cupom-area">
+  <input type="text" id="cupomInput" placeholder="Digite seu cupom de desconto" maxlength="20" />
+  <button class="btn cupom" id="btnAplicarCupom">🎫 Aplicar</button>
+</div>
+<div class="cupom-aplicado" id="cupomAplicado">
+  <span class="info">✅ Cupom aplicado!</span>
+  <button class="remove" id="btnRemoverCupom">✕ Remover</button>
+</div>
 
-  <button id="secret-login-btn" title="Acessar Painel"></button>
-
-<script type="module">
-  // Importa as funções do Firebase
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
-
-  // SUA CONFIGURAÇÃO DO FIREBASE
-  const firebaseConfig = {
-      apiKey: "AIzaSyDV9tPC5XNNmB_REgW1au2NtpP1ETtV1i0",
-      authDomain: "paineldepedidos-8cfff.firebaseapp.com",
-      projectId: "paineldepedidos-8cfff",
-      storageBucket: "paineldepedidos-8cfff.appspot.com",
-      messagingSenderId: "390619980929",
-      appId: "1:390619980929:web:5bb015938e9dcb89389980",
-      measurementId: "G-CMH7LSQ7C0"
-  };
-
-  // Inicializa o Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const pedidosCol = collection(db, 'pedidos');
-
-  const TAXA = 4.00;
-  const CART_KEY = 'pasterry_cart_v1';
-  // A const PEDIDOS_KEY não é mais necessária aqui
-
-  const SAUCES = {
-    'Molho Barbecue': { img: 'img/barbecue.jpg', desc: 'Defumado', price: 5.00 },
-    'Molho Mostarda': { img: 'img/mostarda.jpg', desc: 'Cremoso', price: 5.00 },
-    'Molho Cheddar': { img: 'img/cheddar.jpg', desc: 'Cremoso', price: 5.00 },
-    'Molho Tártaro': { img: 'img/tartaro.jpg', desc: 'Tradicional', price: 5.00 },
-    'Ketchup': { img: 'img/ketchup.jpg', desc: 'Tradicional', price: 5.00 }
-  };
+<!-- ===== CUPOM ESPECIAL PROGRESSIVO (NOVO) ===== -->
+<div class="cupom-especial-area" id="cupomEspecialArea">
+  <div class="titulo">⭐ Cupom Especial Progressivo</div>
+  <div class="descricao">O desconto aumenta conforme o valor da sacola</div>
   
-  // As funções abaixo continuam usando localStorage apenas para o carrinho, o que está correto!
-  function getCart(){ try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); } catch(e){ return []; } }
-  function setCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); }
-  function money(v){ return 'R$ ' + Number(v).toFixed(2).replace('.', ','); }
-  function renderMolhos(){
-    const wrap = document.getElementById('molhos');
-    wrap.innerHTML = Object.entries(SAUCES).map(([nome,s])=>`
-      <div class="molho-card">
-        <img src="${s.img}" alt="${nome}">
-        <strong>${nome}</strong>
-        <p>${s.desc}</p>
-        <div>${money(s.price)}</div>
-        <button class="btn primary" onclick="addMolho('${nome}')">Adicionar</button>
+  <div class="desconto-atual">
+    <span class="percent" id="descontoAtualPercent">0</span><span class="label">% de desconto</span>
+  </div>
+  
+  <div class="barra-container">
+    <div class="barra" id="barraProgresso">
+      <span class="label" id="barraLabel">0%</span>
+    </div>
+  </div>
+  
+  <div class="info-barra">
+    <span>Progresso: <span class="destaque" id="progressoAtual">R$ 0,00</span></span>
+    <span id="proximoDesconto">Próximo: <span class="proximo">R$ 10,00</span></span>
+    <span id="faltaDesconto">Falta: <span class="falta">R$ 10,00</span></span>
+  </div>
+  
+  <div style="font-size:11px; color:#6a7a8a; text-align:center; margin-top:6px;">
+    Código: <strong style="color:#FFD700;">DESCONTO_PROGRESSIVO</strong> (digite no campo acima)
+  </div>
+</div>
+
+<!-- ===== CARRINHO ===== -->
+<h3>📦 Itens do Pedido <span class="count" id="itensCount"></span></h3>
+<div id="cart"></div>
+
+<!-- ===== AÇÕES ===== -->
+<button class="btn-limpar" id="btnLimparSacola" onclick="limparSacola()">🗑️ Esvaziar sacola</button>
+
+<!-- ===== RODAPÉ ===== -->
+<div class="footer-actions">
+  <div id="totais"></div>
+  <div class="footer-buttons">
+    <button class="btn danger btn-large" onclick="location.href='index.html'">← Voltar</button>
+    <button id="btnConfirmar" class="btn primary btn-large" onclick="abrirModal()">✅ Confirmar</button>
+  </div>
+</div>
+
+<!-- ===== MODAL ===== -->
+<div id="modalEndereco">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>📦 Finalizar Pedido</h3>
+      <button class="close-btn" onclick="fecharModal()">✕</button>
+    </div>
+
+    <button id="btnGeo" class="geo-btn" onclick="usarLocalizacao()">📍 Usar minha localização</button>
+    <div id="geoStatus" class="geo-status"></div>
+
+    <label class="field-label"><span class="required">*</span> Nome completo</label>
+    <input id="nome" placeholder="Digite seu nome completo">
+
+    <label class="field-label"><span class="required">*</span> WhatsApp com DDD</label>
+    <input id="telefone" placeholder="(11) 99999-9999">
+
+    <label class="field-label"><span class="required">*</span> Cidade</label>
+    <select id="cidade"><option value="">Selecione sua cidade*</option></select>
+
+    <label class="field-label"><span class="required">*</span> Rua</label>
+    <input id="rua" placeholder="Nome da rua">
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+      <div>
+        <label class="field-label"><span class="required">*</span> Número</label>
+        <input id="numero" placeholder="Número">
       </div>
-    `).join('');
+      <div>
+        <label class="field-label"><span class="required">*</span> Bairro</label>
+        <input id="bairro" placeholder="Bairro">
+      </div>
+    </div>
+
+    <label class="field-label"><span class="required">*</span> Forma de pagamento</label>
+    <select id="pagamento">
+      <option value="">Selecione uma opção*</option>
+      <option value="Dinheiro">💰 Dinheiro</option>
+      <option value="Pix">📱 Pix</option>
+      <option value="Debito">💳 Débito</option>
+      <option value="Credito">💳 Crédito</option>
+    </select>
+
+    <!-- ===== CAMPO TROCO MELHORADO ===== -->
+    <input id="troco" placeholder="Qual o valor que você vai pagar? (ex: 100 ou 100,50)" style="display:none">
+    <div id="trocoPreview" style="font-size:14px; margin-top:4px; min-height:20px; color:#4caf50; font-weight:600;"></div>
+    <!-- ===== FIM CAMPO TROCO ===== -->
+
+    <div class="cupom-modal">
+      <h4>📋 Resumo do Pedido</h4>
+      <div class="itens" id="cupomItens"></div>
+      <div class="total" id="cupomTotal"></div>
+    </div>
+
+    <div id="erroEnvio" class="erro-geral"></div>
+    <button class="btn primary" onclick="enviarPedido()">✅ Confirmar e Enviar</button>
+  </div>
+</div>
+
+<!-- ===== LOADING ===== -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-content">
+    <div class="spinner"></div>
+    <div class="text">Enviando pedido...</div>
+    <div class="sub">Aguarde um momento</div>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ============================================================
+   FIREBASE
+   ============================================================ -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+// ============================================================
+// CONFIGURAÇÃO FIREBASE
+// ============================================================
+var firebaseConfig = {
+  apiKey: "AIzaSyDV9tPC5XNNmB_REgW1au2NtpP1ETtV1i0",
+  authDomain: "paineldepedidos-8cfff.firebaseapp.com",
+  projectId: "paineldepedidos-8cfff",
+  storageBucket: "paineldepedidos-8cfff.firebasestorage.app",
+  messagingSenderId: "390619980929",
+  appId: "1:390619980929:web:5bb015938e9dcb89389980",
+  measurementId: "G-CMH7LSQ7C0"
+};
+firebase.initializeApp(firebaseConfig);
+var db = firebase.firestore();
+
+// ============================================================
+// VARIÁVEIS GLOBAIS
+// ============================================================
+var CART_KEY = 'pasterry_cart_v1';
+var CUPOM_KEY = 'pasterry_cupom_v1';
+var GOOGLE_KEY = localStorage.getItem('gmaps_key') || "AIzaSyDV9tPC5XNNmB_REgW1au2NtpP1ETtV1i0";
+var taxaAtual = null;
+var distanciaAtual = null;
+var configEntrega = null;
+var extras = [];
+var cuponsValidos = [];
+var cupomAplicado = null;
+var lojaAberta = true;
+
+// ===== NOVAS VARIÁVEIS PARA ÁREAS E COORDENADAS DO CLIENTE =====
+var areasEntrega = [];      // áreas carregadas do Firebase
+var clienteLatLng = null;   // coordenadas do cliente (lat, lng)
+
+// ===== CUPOM ESPECIAL PROGRESSIVO =====
+var faixasEspeciais = [];
+var cupomEspecialAtivo = false;
+var cupomEspecialAplicado = false;
+
+var getCart = function() {
+  try {
+    return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+  } catch(e) {
+    return [];
   }
-  function renderCart(){
-    const cart = getCart();
-    const cartEl = document.getElementById('cart');
-    if(!cart.length){
-      cartEl.innerHTML = '<div class="empty">Sua sacola está vazia. Volte ao cardápio e adicione itens.</div>';
-    } else {
-      cartEl.innerHTML = cart.map((item,idx)=>`
-        <div class="cart-item">
-          <img src="${item.img}" alt="${item.title}">
-          <div style="flex:1;">
-            <strong>${item.title}</strong><br>
-            <small>${item.desc || ''}</small><br>
-            <span>Qtd: ${item.qty} | ${money(item.price*item.qty)}</span>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:4px;">
-            <button class="btn secondary" onclick="increaseQty(${idx})">+</button>
-            <button class="btn secondary" onclick="decreaseQty(${idx})">-</button>
-          </div>
-        </div>
-      `).join('');
+};
+
+var setCart = function(c) {
+  localStorage.setItem(CART_KEY, JSON.stringify(c));
+};
+
+var money = function(v) {
+  return 'R$ ' + Number(v || 0).toFixed(2).replace('.', ',');
+};
+
+var distanciaKm = function(a, b, c, d) {
+  var R = 6371;
+  var e = (c - a) * Math.PI / 180;
+  var f = (d - b) * Math.PI / 180;
+  return R * 2 * Math.asin(Math.sqrt(Math.sin(e/2)*Math.sin(e/2) + Math.cos(a * Math.PI / 180) * Math.cos(c * Math.PI / 180) * Math.sin(f/2)*Math.sin(f/2)));
+};
+
+// ============================================================
+// FUNÇÕES DE GEOMETRIA PARA ÁREAS
+// ============================================================
+function pontoDentroPoligono(lat, lng, vertices) {
+  var inside = false;
+  var n = vertices.length;
+  for (var i = 0, j = n - 1; i < n; j = i++) {
+    var xi = vertices[i].lat, yi = vertices[i].lng;
+    var xj = vertices[j].lat, yj = vertices[j].lng;
+    var intersect = ((yi > lng) !== (yj > lng)) &&
+                    (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi);
+    if (intersect) inside = !inside;
+  }
+  return inside;
+}
+
+function pontoDentroCirculo(lat, lng, center, raio) {
+  var R = 6371; // km
+  var dLat = (lat - center.lat) * Math.PI / 180;
+  var dLng = (lng - center.lng) * Math.PI / 180;
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(center.lat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) *
+          Math.sin(dLng/2) * Math.sin(dLng/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var dist = R * c * 1000; // em metros
+  return dist <= raio;
+}
+
+// ============================================================
+// CÁLCULO DE TAXA USANDO ÁREAS
+// ============================================================
+function calcularTaxa(km, lat, lng) {
+  // Se houver áreas carregadas e coordenadas do cliente, verifica cobertura
+  if (areasEntrega.length > 0 && lat !== undefined && lng !== undefined) {
+    for (var i = 0; i < areasEntrega.length; i++) {
+      var area = areasEntrega[i];
+      var dentro = false;
+      if (area.tipo === 'polygon' && area.path) {
+        dentro = pontoDentroPoligono(lat, lng, area.path);
+      } else if (area.tipo === 'circle' && area.center && area.raio) {
+        dentro = pontoDentroCirculo(lat, lng, area.center, area.raio);
+      }
+      if (dentro) {
+        return Number(area.taxa) || 0;
+      }
     }
-    renderTotais();
+    // Se não estiver em nenhuma área, retorna 0 (não atende)
+    return 0;
   }
-  function renderTotais(){
-    const cart = getCart();
-    const subtotal = cart.reduce((s,i)=> s + i.price*i.qty, 0);
-    const total = subtotal + TAXA;
-    document.getElementById('totais').innerHTML = `
-        <div style="display:flex;justify-content:space-between"><div>Subtotal</div><div>${money(subtotal)}</div></div>
-        <div style="display:flex;justify-content:space-between;opacity:.8"><div>Taxa de entrega</div><div>${money(TAXA)}</div></div>
-        <div style="display:flex;justify-content:space-between;border-top:1px solid #444;margin-top:6px;padding-top:6px;font-weight:bold"><div>Total</div><div>${money(total)}</div></div>
-      `;
+
+  // Fallback: usa as faixas por distância (comportamento antigo)
+  if (!configEntrega || !configEntrega.faixas) return 5;
+  var faixas = configEntrega.faixas.sort(function(a, b) { return a.ate - b.ate; });
+  var f = null;
+  for (var j = 0; j < faixas.length; j++) {
+    if (km <= faixas[j].ate) {
+      f = faixas[j];
+      break;
+    }
   }
-  function increaseQty(idx){ const c=getCart(); c[idx].qty++; setCart(c); renderCart(); }
-  function decreaseQty(idx){ 
-    const c=getCart(); 
-    if(c[idx].qty > 1){ c[idx].qty--; } else { c.splice(idx,1); } 
-    setCart(c); 
-    renderCart(); 
+  return f ? Number(f.taxa) : Number(faixas[faixas.length - 1].taxa);
+}
+
+function gerarCodigoPedido() {
+  return Math.floor(1000 + Math.random() * 9000).toString();
+}
+
+function showToast(msg, type) {
+  type = type || 'success';
+  var container = document.getElementById('toastContainer');
+  var toast = document.createElement('div');
+  toast.className = 'toast';
+  var icon = type === 'success' ? '✅' : '⚠️';
+  toast.innerHTML = icon + ' ' + msg;
+  container.appendChild(toast);
+  setTimeout(function() {
+    if (toast.parentNode) toast.remove();
+  }, 2200);
+}
+
+// ============================================================
+// ⭐ CARREGAR CUPOM ESPECIAL PROGRESSIVO
+// ============================================================
+function carregarCupomEspecial() {
+  console.log('⭐ Carregando cupom especial progressivo...');
+  
+  db.collection('config').doc('cupom_especial').get()
+    .then(function(doc) {
+      if (doc.exists) {
+        var data = doc.data();
+        faixasEspeciais = data.faixas || [];
+        cupomEspecialAtivo = data.ativo || false;
+        console.log('✅ Cupom especial carregado:', faixasEspeciais.length, 'faixas, ativo:', cupomEspecialAtivo);
+      } else {
+        faixasEspeciais = [];
+        cupomEspecialAtivo = false;
+        console.log('⚠️ Nenhum cupom especial encontrado');
+      }
+      atualizarCupomEspecial();
+    })
+    .catch(function(err) {
+      console.error('❌ Erro ao carregar cupom especial:', err);
+      faixasEspeciais = [];
+      cupomEspecialAtivo = false;
+      atualizarCupomEspecial();
+    });
+}
+
+// ============================================================
+// ⭐ CALCULAR DESCONTO PROGRESSIVO
+// ============================================================
+function calcularDescontoProgressivo(total) {
+  if (!faixasEspeciais || faixasEspeciais.length === 0 || !cupomEspecialAtivo) return 0;
+  
+  var sorted = [...faixasEspeciais].sort(function(a, b) { return a.minimo - b.minimo; });
+  var desconto = 0;
+  for (var i = 0; i < sorted.length; i++) {
+    if (total >= sorted[i].minimo) {
+      desconto = sorted[i].desconto;
+    } else {
+      break;
+    }
   }
-  function limparSacola(){ 
-    if(confirm('Tem certeza que deseja esvaziar a sacola?')){ 
-      localStorage.removeItem(CART_KEY); 
-      renderCart(); 
-    } 
+  return desconto;
+}
+
+// ============================================================
+// ⭐ ATUALIZAR CUPOM ESPECIAL NA TELA
+// ============================================================
+function atualizarCupomEspecial() {
+  var area = document.getElementById('cupomEspecialArea');
+  var total = getCartTotal();
+  var desconto = calcularDescontoProgressivo(total);
+  
+  // Mostrar/esconder área
+  if (faixasEspeciais.length > 0 && cupomEspecialAtivo) {
+    area.classList.add('visible');
+  } else {
+    area.classList.remove('visible');
+    return;
   }
-  function addMolho(nome){
-    const s = SAUCES[nome]; if(!s) return;
-    const id = 'molho:' + nome;
-    const c = getCart();
-    const ex = c.find(i=>i.id===id);
-    if(ex){ ex.qty++; } else { c.push({ id, title:nome, price:s.price, qty:1, desc:s.desc, img:s.img }); }
-    setCart(c); 
-    renderCart();
+  
+  // Atualizar percentual
+  document.getElementById('descontoAtualPercent').textContent = desconto;
+  
+  // Calcular progresso
+  var sorted = [...faixasEspeciais].sort(function(a, b) { return a.minimo - b.minimo; });
+  var proximo = null;
+  var atual = 0;
+  var maximo = sorted[sorted.length - 1].minimo;
+  
+  for (var i = 0; i < sorted.length; i++) {
+    if (total >= sorted[i].minimo) {
+      atual = sorted[i].minimo;
+    } else {
+      proximo = sorted[i];
+      break;
+    }
   }
-  function abrirModal(){
-    if(getCart().length===0){ alert('Sua sacola está vazia!'); return; }
-    document.getElementById('modalEndereco').style.display='flex';
-    renderCupom();
+  
+  var progresso = 0;
+  var falta = 0;
+  var proximoValor = 0;
+  
+  if (proximo) {
+    proximoValor = proximo.minimo;
+    var intervalo = proximo.minimo - atual;
+    var andado = total - atual;
+    progresso = Math.min(100, (andado / intervalo) * 100);
+    falta = proximo.minimo - total;
+  } else {
+    progresso = 100;
+    falta = 0;
+    proximoValor = maximo;
   }
-  function fecharModal(){ document.getElementById('modalEndereco').style.display='none'; }
-  document.getElementById('pagamento').addEventListener('change', function(){
-    document.getElementById('troco').style.display = (this.value === 'Dinheiro')? 'block' : 'none';
+  
+  // Atualizar barra
+  var barra = document.getElementById('barraProgresso');
+  barra.style.width = Math.min(100, progresso) + '%';
+  document.getElementById('barraLabel').textContent = Math.round(Math.min(100, progresso)) + '%';
+  
+  // Atualizar infos
+  document.getElementById('progressoAtual').textContent = money(total);
+  
+  if (proximo && total < maximo) {
+    document.getElementById('proximoDesconto').innerHTML = 'Próximo: <span class="proximo">' + money(proximoValor) + ' → ' + proximo.desconto + '%</span>';
+    document.getElementById('faltaDesconto').innerHTML = 'Falta: <span class="falta">' + money(falta) + '</span>';
+  } else if (total >= maximo) {
+    document.getElementById('proximoDesconto').innerHTML = 'Próximo: <span class="proximo">✅ Desconto máximo!</span>';
+    document.getElementById('faltaDesconto').innerHTML = 'Falta: <span class="falta">—</span>';
+  } else {
+    document.getElementById('proximoDesconto').innerHTML = 'Próximo: <span class="proximo">' + money(sorted[0].minimo) + ' → ' + sorted[0].desconto + '%</span>';
+    document.getElementById('faltaDesconto').innerHTML = 'Falta: <span class="falta">' + money(sorted[0].minimo - total) + '</span>';
+  }
+  
+  // Aplicar cupom especial automaticamente se houver desconto
+  if (desconto > 0 && !cupomEspecialAplicado) {
+    // Verifica se já tem um cupom normal aplicado
+    if (!cupomAplicado) {
+      cupomEspecialAplicado = true;
+      // Aplica o cupom especial como um cupom normal
+      var cupomEspecial = {
+        codigo: 'DESCONTO_PROGRESSIVO',
+        desconto: desconto,
+        minimo: 0,
+        especial: true
+      };
+      cupomAplicado = cupomEspecial;
+      localStorage.setItem(CUPOM_KEY, JSON.stringify(cupomEspecial));
+      document.getElementById('cupomAplicado').classList.add('visible');
+      document.getElementById('cupomInput').value = 'DESCONTO_PROGRESSIVO';
+      document.getElementById('cupomInput').disabled = true;
+      document.getElementById('btnAplicarCupom').disabled = true;
+      showToast('⭐ Cupom especial aplicado! ' + desconto + '% de desconto.');
+    }
+  }
+  
+  // Se o desconto for 0 e o cupom especial estava aplicado, remove
+  if (desconto === 0 && cupomEspecialAplicado) {
+    if (cupomAplicado && cupomAplicado.especial) {
+      cupomAplicado = null;
+      localStorage.removeItem(CUPOM_KEY);
+      document.getElementById('cupomAplicado').classList.remove('visible');
+      document.getElementById('cupomInput').value = '';
+      document.getElementById('cupomInput').disabled = false;
+      document.getElementById('btnAplicarCupom').disabled = false;
+      cupomEspecialAplicado = false;
+    }
+  }
+  
+  // Atualizar totais
+  renderTotais();
+  renderCupom();
+}
+
+// ============================================================
+// CALCULAR TOTAL DO CARRINHO
+// ============================================================
+function getCartTotal() {
+  var c = getCart();
+  var total = 0;
+  for (var i = 0; i < c.length; i++) {
+    var precoItem = c[i].precoTotal || c[i].price || 0;
+    total += precoItem * (c[i].qty || 1);
+  }
+  return total;
+}
+
+// ============================================================
+// CARREGAR STATUS DA LOJA
+// ============================================================
+function carregarStatusLoja() {
+  db.collection('config').doc('loja').onSnapshot(function(doc) {
+    if (doc.exists) {
+      var data = doc.data();
+      lojaAberta = data.lojaAberta !== undefined ? data.lojaAberta : true;
+    } else {
+      lojaAberta = true;
+    }
+    console.log('🏪 Status da loja:', lojaAberta ? 'ABERTA' : 'FECHADA');
+    atualizarInterfaceLoja();
+  }, function(error) {
+    console.error('Erro ao carregar status da loja:', error);
+    lojaAberta = true;
+    atualizarInterfaceLoja();
   });
-  function renderCupom(){
-    const cart = getCart();
-    const cupomItens = document.getElementById('cupomItens');
-    const cupomTotal = document.getElementById('cupomTotal');
-    cupomItens.innerHTML = cart.map(i => `${i.qty}x ${i.title} - ${money(i.price*i.qty)}`).join('<br>');
-    const subtotal = cart.reduce((s,i)=> s + i.price*i.qty, 0);
-    const total = subtotal + TAXA;
-    cupomTotal.innerHTML = `Subtotal: ${money(subtotal)}<br>Taxa de entrega: ${money(TAXA)}<br><strong>Total: ${money(total)}</strong>`;
+}
+
+// ============================================================
+// ATUALIZAR INTERFACE QUANDO LOJA FECHADA
+// ============================================================
+function atualizarInterfaceLoja() {
+  var msgDiv = document.getElementById('lojaFechadaMsg');
+  var btnConfirmar = document.getElementById('btnConfirmar');
+  var btnLimpar = document.getElementById('btnLimparSacola');
+  
+  if (!lojaAberta) {
+    msgDiv.style.display = 'block';
+    if (btnConfirmar) {
+      btnConfirmar.disabled = true;
+      btnConfirmar.textContent = '🔴 Loja Fechada';
+      btnConfirmar.style.background = '#555';
+    }
+    if (btnLimpar) {
+      btnLimpar.disabled = true;
+    }
+    document.querySelectorAll('.extra-card .btn').forEach(function(btn) {
+      btn.disabled = true;
+      btn.textContent = '🔴 Fechado';
+      btn.style.background = '#555';
+    });
+    document.querySelectorAll('.extra-card').forEach(function(card) {
+      card.classList.add('loja-fechada');
+    });
+  } else {
+    msgDiv.style.display = 'none';
+    if (btnConfirmar) {
+      var c = getCart();
+      btnConfirmar.disabled = c.length === 0;
+      btnConfirmar.textContent = '✅ Confirmar';
+      btnConfirmar.style.background = '';
+    }
+    if (btnLimpar) {
+      btnLimpar.disabled = false;
+    }
+    document.querySelectorAll('.extra-card .btn').forEach(function(btn) {
+      btn.disabled = false;
+      btn.textContent = '+ Adicionar';
+      btn.style.background = '';
+    });
+    document.querySelectorAll('.extra-card').forEach(function(card) {
+      card.classList.remove('loja-fechada');
+    });
+  }
+}
+
+// ============================================================
+// ITENS EXTRAS PADRÃO (FALLBACK)
+// ============================================================
+var EXTRAS_PADRAO = [
+  { nome: 'Molho Barbecue', preco: 5.00, img: '' },
+  { nome: 'Molho Mostarda', preco: 5.00, img: '' },
+  { nome: 'Molho Cheddar', preco: 5.00, img: '' },
+  { nome: 'Molho Tartaro', preco: 5.00, img: '' },
+  { nome: 'Ketchup', preco: 5.00, img: '' }
+];
+
+// ============================================================
+// CUPONS FALLBACK PARA TESTE
+// ============================================================
+var CUPONS_FALLBACK = [
+  { codigo: 'PASTERYY10', desconto: 10, minimo: 30 },
+  { codigo: 'FRETEGRATIS', desconto: 0, minimo: 50 },
+  { codigo: 'TESTE50', desconto: 50, minimo: 0 }
+];
+
+// ============================================================
+// CARREGAR CUPONS COM FALLBACK
+// ============================================================
+function carregarCupons() {
+  console.log('🏷️ Carregando cupons...');
+  
+  db.collection('config').doc('cupons').get()
+    .then(function(doc) {
+      console.log('📄 Documento cupons existe?', doc.exists);
+      
+      if (doc.exists) {
+        var data = doc.data();
+        console.log('📦 Dados do documento:', data);
+        console.log('🔑 Campos:', Object.keys(data));
+        
+        if (data.cupons && Array.isArray(data.cupons) && data.cupons.length > 0) {
+          cuponsValidos = data.cupons;
+          console.log('✅ Cupons carregados do Firebase:', cuponsValidos.length, 'itens');
+        } else if (data.cupom && Array.isArray(data.cupom) && data.cupom.length > 0) {
+          cuponsValidos = data.cupom;
+          console.log('✅ Cupons carregados do Firebase (campo "cupom"):', cuponsValidos.length, 'itens');
+        } else {
+          console.warn('⚠️ Nenhum cupom encontrado no documento. Usando fallback.');
+          cuponsValidos = CUPONS_FALLBACK;
+        }
+      } else {
+        console.warn('⚠️ Documento "cupons" não existe. Usando fallback.');
+        cuponsValidos = CUPONS_FALLBACK;
+      }
+      
+      console.log('🏷️ Cupons disponíveis:', cuponsValidos);
+      
+      var saved = localStorage.getItem(CUPOM_KEY);
+      if (saved) {
+        try {
+          var parsed = JSON.parse(saved);
+          // Verifica se é cupom especial
+          if (parsed.especial) {
+            cupomEspecialAplicado = true;
+            cupomAplicado = parsed;
+            document.getElementById('cupomAplicado').classList.add('visible');
+            document.getElementById('cupomInput').value = parsed.codigo;
+            document.getElementById('cupomInput').disabled = true;
+            document.getElementById('btnAplicarCupom').disabled = true;
+            console.log('✅ Cupom especial restaurado:', parsed.codigo);
+          } else {
+            var aindaValido = cuponsValidos.some(function(c) { return c.codigo === parsed.codigo; });
+            if (aindaValido) {
+              cupomAplicado = parsed;
+              document.getElementById('cupomAplicado').classList.add('visible');
+              document.getElementById('cupomInput').value = parsed.codigo;
+              document.getElementById('cupomInput').disabled = true;
+              document.getElementById('btnAplicarCupom').disabled = true;
+              console.log('✅ Cupom restaurado:', parsed.codigo);
+            } else {
+              localStorage.removeItem(CUPOM_KEY);
+              cupomAplicado = null;
+            }
+          }
+        } catch (e) {
+          localStorage.removeItem(CUPOM_KEY);
+          cupomAplicado = null;
+        }
+      }
+      
+      renderTotais();
+      renderCupom();
+    })
+    .catch(function(err) {
+      console.error('❌ Erro ao carregar cupons:', err);
+      cuponsValidos = CUPONS_FALLBACK;
+      renderTotais();
+      renderCupom();
+    });
+}
+
+// ============================================================
+// APLICAR CUPOM (MODIFICADO PARA SUPORTAR ESPECIAL)
+// ============================================================
+function aplicarCupom() {
+  if (!lojaAberta) {
+    showToast('Loja fechada. Não é possível aplicar cupons.', 'error');
+    return;
+  }
+  
+  var codigo = document.getElementById('cupomInput').value.trim().toUpperCase();
+  if (!codigo) {
+    showToast('Digite um código de cupom.', 'error');
+    return;
   }
 
-  // ===== FUNÇÃO ENVIAR PEDIDO ATUALIZADA =====
-  async function enviarPedido(){
-    const nome = document.getElementById('nome').value.trim();
-    const rua = document.getElementById('rua').value.trim();
-    const numero = document.getElementById('numero').value.trim();
-    const bairro = document.getElementById('bairro').value.trim();
-    const pagamento = document.getElementById('pagamento').value;
-    const troco = document.getElementById('troco').value.trim();
+  // Verifica se é o cupom especial
+  if (codigo === 'DESCONTO_PROGRESSIVO') {
+    var total = getCartTotal();
+    var desconto = calcularDescontoProgressivo(total);
+    if (desconto > 0) {
+      cupomEspecialAplicado = true;
+      var cupomEspecial = {
+        codigo: 'DESCONTO_PROGRESSIVO',
+        desconto: desconto,
+        minimo: 0,
+        especial: true
+      };
+      cupomAplicado = cupomEspecial;
+      localStorage.setItem(CUPOM_KEY, JSON.stringify(cupomEspecial));
+      document.getElementById('cupomAplicado').classList.add('visible');
+      document.getElementById('cupomInput').disabled = true;
+      document.getElementById('btnAplicarCupom').disabled = true;
+      showToast('⭐ Cupom especial aplicado! ' + desconto + '% de desconto.');
+      renderTotais();
+      renderCupom();
+      return;
+    } else {
+      showToast('⚠️ Adicione mais itens para ganhar desconto!', 'error');
+      return;
+    }
+  }
 
-    if (!nome || !rua || !numero || !bairro || !pagamento) {
-      alert('Por favor, preencha todos os campos do endereço e forma de pagamento.');
+  console.log('🔍 Buscando cupom:', codigo);
+  console.log('📋 Cupons disponíveis:', cuponsValidos);
+
+  var cupom = null;
+  for (var i = 0; i < cuponsValidos.length; i++) {
+    if (cuponsValidos[i].codigo === codigo) {
+      cupom = cuponsValidos[i];
+      break;
+    }
+  }
+  
+  if (!cupom) {
+    showToast('Cupom inválido.', 'error');
+    console.warn('❌ Cupom não encontrado:', codigo);
+    return;
+  }
+
+  var subtotal = getCartTotal();
+  
+  if (cupom.minimo && subtotal < cupom.minimo) {
+    showToast('Valor mínimo para este cupom: R$ ' + cupom.minimo.toFixed(2), 'error');
+    return;
+  }
+
+  // Remove cupom especial se estiver aplicado
+  if (cupomEspecialAplicado) {
+    cupomEspecialAplicado = false;
+  }
+
+  cupomAplicado = cupom;
+  localStorage.setItem(CUPOM_KEY, JSON.stringify(cupom));
+  document.getElementById('cupomAplicado').classList.add('visible');
+  document.getElementById('cupomInput').disabled = true;
+  document.getElementById('btnAplicarCupom').disabled = true;
+  showToast('✅ Cupom ' + cupom.codigo + ' aplicado! ' + cupom.desconto + '% de desconto.');
+  renderTotais();
+  renderCupom();
+}
+
+// ============================================================
+// REMOVER CUPOM (MODIFICADO)
+// ============================================================
+function removerCupom() {
+  if (cupomAplicado && cupomAplicado.especial) {
+    cupomEspecialAplicado = false;
+  }
+  cupomAplicado = null;
+  localStorage.removeItem(CUPOM_KEY);
+  document.getElementById('cupomAplicado').classList.remove('visible');
+  document.getElementById('cupomInput').value = '';
+  document.getElementById('cupomInput').disabled = false;
+  document.getElementById('btnAplicarCupom').disabled = false;
+  showToast('Cupom removido.');
+  renderTotais();
+  renderCupom();
+}
+
+// ============================================================
+// CARREGAR ITENS EXTRAS (COM FILTRO DE ATIVOS)
+// ============================================================
+function carregarExtras() {
+  console.log('🔍 Iniciando carregamento de extras...');
+  
+  db.collection('config').doc('extras').get()
+    .then(function(doc) {
+      console.log('📄 Documento existe?', doc.exists);
+      
+      if (doc.exists) {
+        var data = doc.data();
+        console.log('📦 Dados:', data);
+        console.log('🔑 Campos:', Object.keys(data));
+        
+        var dadosExtras = null;
+        
+        if (data.extra && Array.isArray(data.extra)) {
+          dadosExtras = data.extra;
+          console.log('✅ Campo "extra" com', dadosExtras.length, 'itens');
+        } else if (data.extras && Array.isArray(data.extras)) {
+          dadosExtras = data.extras;
+          console.log('✅ Campo "extras" com', dadosExtras.length, 'itens');
+        }
+        
+        if (dadosExtras && dadosExtras.length > 0) {
+          extras = dadosExtras
+            .filter(function(item) {
+              return item.ativo !== false;
+            })
+            .map(function(item) {
+              return {
+                nome: item.name || item.nome || 'Item',
+                preco: item.preco || item.price || 0,
+                img: item.img || ''
+              };
+            });
+          console.log('✅ Extras processados (apenas ativos):', extras);
+        } else {
+          console.warn('⚠️ Nenhum item extra. Usando fallback.');
+          extras = EXTRAS_PADRAO.slice();
+        }
+      } else {
+        console.warn('❌ Documento não existe. Usando fallback.');
+        extras = EXTRAS_PADRAO.slice();
+      }
+      
+      renderExtras();
+      atualizarInterfaceLoja();
+    })
+    .catch(function(err) {
+      console.error('❌ Erro ao carregar extras:', err);
+      extras = EXTRAS_PADRAO.slice();
+      renderExtras();
+      atualizarInterfaceLoja();
+    });
+}
+
+// ============================================================
+// RENDERIZAR ITENS EXTRAS
+// ============================================================
+function renderExtras() {
+  var container = document.getElementById('extrasContainer');
+  console.log('🎨 Renderizando extras...');
+  
+  if (!container) {
+    console.error('❌ Container não encontrado!');
+    return;
+  }
+  
+  if (!extras || extras.length === 0) {
+    console.warn('⚠️ Nenhum extra para renderizar.');
+    container.innerHTML = '<div style="color:#6a7a8a; padding:20px; text-align:center; width:100%;"><div style="font-size:32px; margin-bottom:8px;">🧂</div>Nenhum item extra disponível.<br><small style="font-size:11px;">Adicione no Painel Admin</small></div>';
+    return;
+  }
+  
+  console.log('🎨 Renderizando', extras.length, 'itens');
+  
+  var html = '';
+  for (var i = 0; i < extras.length; i++) {
+    var extra = extras[i];
+    var nome = extra.nome || extra.name || 'Item';
+    var preco = extra.preco || extra.price || 0;
+    var img = extra.img || '';
+    var nomeEscapado = nome.replace(/'/g, "\\'");
+    
+    var imgSrc = img || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%2248%22%3E%3Crect width=%22120%22 height=%2248%22 fill=%22%230a1420%22/%3E%3Ctext x=%2260%22 y=%2230%22 text-anchor=%22middle%22 fill=%22%239aa6b2%22 font-size=%2214%22%3E🧂%3C/text%3E%3C/svg%3E';
+    
+    var btnDisabled = !lojaAberta ? 'disabled' : '';
+    var btnText = lojaAberta ? '+ Adicionar' : '🔴 Fechado';
+    var cardClass = lojaAberta ? '' : 'loja-fechada';
+    
+    html += '<div class="extra-card ' + cardClass + '">';
+    html += '<img src="' + imgSrc + '" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%2248%22%3E%3Crect width=%22120%22 height=%2248%22 fill=%22%230a1420%22/%3E%3Ctext x=%2260%22 y=%2230%22 text-anchor=%22middle%22 fill=%22%239aa6b2%22 font-size=%2214%22%3E🧂%3C/text%3E%3C/svg%3E\'" />';
+    html += '<div class="nome">' + nome + '</div>';
+    html += '<div class="preco">' + money(preco) + '</div>';
+    html += '<button class="btn primary small extra-add" ' + btnDisabled + ' onclick="addExtra(\'' + nomeEscapado + '\', ' + preco + ', \'' + (img || '') + '\')">' + btnText + '</button>';
+    html += '</div>';
+  }
+  
+  container.innerHTML = html;
+}
+
+// ============================================================
+// FUNÇÕES DO CARRINHO - ITENS EXTRAS
+// ============================================================
+window.addExtra = function(nome, preco, img) {
+  if (!lojaAberta) {
+    showToast('🔴 Loja fechada. Não é possível adicionar itens.', 'error');
+    return;
+  }
+  
+  var c = getCart();
+  var id = 'extra_' + nome.replace(/\s/g, '_');
+  var existente = null;
+  for (var i = 0; i < c.length; i++) {
+    if (c[i].id === id) {
+      existente = c[i];
+      break;
+    }
+  }
+  if (existente) {
+    existente.qty++;
+  } else {
+    c.push({
+      id: id,
+      title: nome,
+      price: preco,
+      precoTotal: preco,
+      qty: 1,
+      img: img || '',
+      tipo: 'extra',
+      isExtra: true
+    });
+  }
+  setCart(c);
+  renderCart();
+  showToast(nome + ' adicionado!');
+};
+
+// ============================================================
+// RENDERIZAR CARRINHO (COM PRECO TOTAL)
+// ============================================================
+function renderCart() {
+  var c = getCart();
+  var container = document.getElementById('cart');
+  var countEl = document.getElementById('itensCount');
+  var badgeEl = document.getElementById('cartBadge');
+  var totalItens = 0;
+  for (var i = 0; i < c.length; i++) {
+    totalItens += c[i].qty;
+  }
+
+  if (badgeEl) badgeEl.textContent = totalItens + ' itens';
+  if (countEl) countEl.textContent = '(' + totalItens + ' itens)';
+
+  if (c.length === 0) {
+    container.innerHTML = '<div class="cart-empty"><div class="icon">🛒</div><div style="font-weight:600;margin-bottom:4px;">Sacola vazia</div><div style="font-size:13px;color:#6a7a8a;">Adicione um pastel ou item extra</div></div>';
+  } else {
+    var html = '';
+    for (var j = 0; j < c.length; j++) {
+      var it = c[j];
+      
+      var precoItem = it.precoTotal || it.price || 0;
+      var sub = precoItem * (it.qty || 1);
+      var isExtra = it.tipo === 'extra' || it.isExtra === true;
+      
+      var imgSrc = it.img || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect width=%2250%22 height=%2250%22 fill=%22%230a1420%22/%3E%3Ctext x=%2225%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%239aa6b2%22 font-size=%2214%22%3E' + (isExtra ? '🧂' : '🍕') + '%3C/text%3E%3C/svg%3E';
+      
+      var extrasHtml = '';
+      if (it.extras && it.extras.length > 0) {
+        var nomesExtras = it.extras.map(function(e) { return e.nome; }).join(', ');
+        extrasHtml = '<div class="extras-list">➕ ' + nomesExtras + '</div>';
+      }
+      
+      html += '<div class="cart-item' + (isExtra ? ' extra-item' : '') + '">';
+      html += '<img src="' + imgSrc + '" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect width=%2250%22 height=%2250%22 fill=%22%230a1420%22/%3E%3Ctext x=%2225%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%239aa6b2%22 font-size=%2214%22%3E' + (isExtra ? '🧂' : '🍕') + '%3C/text%3E%3C/svg%3E\'" />';
+      html += '<div class="info">';
+      html += '<div class="title">' + it.title + (isExtra ? ' 🧂' : '') + '</div>';
+      html += extrasHtml;
+      html += '<div class="price">' + money(precoItem) + ' cada</div>';
+      html += '</div>';
+      html += '<div class="qty-control">';
+      html += '<button class="btn secondary small" onclick="alterarQtd(' + j + ',-1)">−</button>';
+      html += '<span class="qty">' + it.qty + '</span>';
+      html += '<button class="btn primary small" onclick="alterarQtd(' + j + ',1)">+</button>';
+      html += '</div>';
+      html += '<div class="item-total">' + money(sub) + '</div>';
+      html += '</div>';
+    }
+    container.innerHTML = html;
+  }
+  renderTotais();
+  var btn = document.getElementById('btnConfirmar');
+  if (btn) {
+    if (!lojaAberta) {
+      btn.disabled = true;
+      btn.textContent = '🔴 Loja Fechada';
+      btn.style.background = '#555';
+    } else {
+      btn.disabled = c.length === 0;
+      btn.textContent = '✅ Confirmar';
+      btn.style.background = '';
+    }
+  }
+  
+  // Atualizar cupom especial após renderizar
+  atualizarCupomEspecial();
+}
+
+function alterarQtd(i, delta) {
+  var c = getCart();
+  c[i].qty = (c[i].qty || 1) + delta;
+  if (c[i].qty <= 0) c.splice(i, 1);
+  setCart(c);
+  renderCart();
+}
+
+function limparSacola() {
+  if (!lojaAberta) {
+    showToast('Loja fechada. Não é possível esvaziar a sacola.', 'error');
+    return;
+  }
+  if (getCart().length === 0) {
+    showToast('Sacola já está vazia', 'warning');
+    return;
+  }
+  if (confirm('Tem certeza que deseja esvaziar a sacola?')) {
+    localStorage.removeItem(CART_KEY);
+    localStorage.removeItem(CUPOM_KEY);
+    cupomAplicado = null;
+    cupomEspecialAplicado = false;
+    document.getElementById('cupomAplicado').classList.remove('visible');
+    document.getElementById('cupomInput').value = '';
+    document.getElementById('cupomInput').disabled = false;
+    document.getElementById('btnAplicarCupom').disabled = false;
+    renderCart();
+    showToast('Sacola esvaziada');
+  }
+}
+
+// ============================================================
+// TOTAIS COM DESCONTO
+// ============================================================
+function renderTotais() {
+  var sub = getCartTotal();
+  
+  var desconto = 0;
+  if (cupomAplicado) {
+    desconto = sub * (cupomAplicado.desconto / 100);
+  }
+  
+  var totalComDesconto = sub - desconto;
+  var totalFinal = totalComDesconto + (taxaAtual || 0);
+  
+  var container = document.getElementById('totais');
+  
+  // Verifica se a área não é atendida (taxa == 0 e há áreas definidas)
+  var naoAtendido = (areasEntrega.length > 0 && taxaAtual === 0);
+  var entregaTexto = naoAtendido ? '🚫 Não atendemos' : (taxaAtual !== null ? money(taxaAtual) : '—');
+  
+  container.innerHTML = 
+    '<div class="linha"><span>Subtotal</span><span>' + money(sub) + '</span></div>' +
+    (cupomAplicado ? '<div class="linha"><span>Desconto (' + cupomAplicado.desconto + '%)</span><span class="desconto">-' + money(desconto) + '</span></div>' : '') +
+    '<div class="linha"><span>Entrega</span><span class="' + (naoAtendido ? 'nao-atendido' : '') + '">' + entregaTexto + (distanciaAtual ? ' <span class="distancia">(' + distanciaAtual.toFixed(1) + ' km)</span>' : '') + '</span></div>' +
+    '<div class="linha total"><span>Total</span><span class="valor">' + money(totalFinal) + '</span></div>';
+}
+
+// ============================================================
+// RENDER CUPOM / RESUMO DO MODAL (MODIFICADO PARA MOSTRAR TROCO)
+// ============================================================
+function renderCupom() {
+  var c = getCart();
+  var containerItens = document.getElementById('cupomItens');
+  var containerTotal = document.getElementById('cupomTotal');
+  var sub = getCartTotal();
+  
+  var desconto = 0;
+  if (cupomAplicado) {
+    desconto = sub * (cupomAplicado.desconto / 100);
+  }
+  
+  var total = sub - desconto + (taxaAtual || 0);
+
+  if (c.length === 0) {
+    containerItens.innerHTML = '<span style="color:#6a7a8a;">Nenhum item</span>';
+    containerTotal.innerHTML = '<div style="color:#6a7a8a;">Total: <span style="color:#FFD700;">' + money(0) + '</span></div>';
+    return;
+  }
+
+  var itensHtml = '';
+  for (var j = 0; j < c.length; j++) {
+    var precoItem = c[j].precoTotal || c[j].price || 0;
+    itensHtml += c[j].qty + 'x ' + c[j].title + (c[j].tipo === 'extra' ? ' 🧂' : '') + ' - ' + money(precoItem) + '<br>';
+  }
+  containerItens.innerHTML = itensHtml;
+
+  // ===== EXIBIR VALOR RECEBIDO E TROCO =====
+  var pagamentoSelecionado = document.getElementById('pagamento') ? document.getElementById('pagamento').value : '';
+  var valorPagoRaw = document.getElementById('troco') ? document.getElementById('troco').value : '';
+  // Converte vírgula para ponto e extrai números
+  var valorNumerico = parseFloat(valorPagoRaw.replace(/[^\d,]/g, '').replace(',', '.'));
+  var valorRecebidoExibicao = isNaN(valorNumerico) ? 0 : valorNumerico;
+  var trocoExibicao = (valorRecebidoExibicao > 0) ? (valorRecebidoExibicao - total) : null;
+
+  var htmlExtra = '';
+  if (pagamentoSelecionado === 'Dinheiro' && valorRecebidoExibicao > 0) {
+    htmlExtra += '<div>💵 Valor Recebido: ' + money(valorRecebidoExibicao) + '</div>';
+    if (trocoExibicao !== null && trocoExibicao >= 0) {
+      htmlExtra += '<div style="color:#FFD700;">🔄 Troco a devolver: ' + money(trocoExibicao) + '</div>';
+    } else if (trocoExibicao !== null && trocoExibicao < 0) {
+      htmlExtra += '<div style="color:#ff6b6b;">⚠️ Faltam ' + money(Math.abs(trocoExibicao)) + ' para pagar</div>';
+    }
+  }
+
+  containerTotal.innerHTML = 
+    '<div>Subtotal: ' + money(sub) + '</div>' +
+    (cupomAplicado ? '<div style="color:#4caf50;">Desconto: -' + money(desconto) + '</div>' : '') +
+    '<div>Entrega: <span style="color:#4caf50;">' + (taxaAtual !== null ? money(taxaAtual) : '—') + '</span></div>' +
+    htmlExtra +
+    '<div style="margin-top:4px;font-size:16px;color:#FFD700;">Total: ' + money(total) + '</div>';
+}
+
+// ============================================================
+// CONFIGURAÇÕES (MODIFICADO PARA CARREGAR ÁREAS)
+// ============================================================
+function carregarConfig() {
+  db.collection('config').doc('entrega').get()
+    .then(function(snap) {
+      if (snap.exists) {
+        configEntrega = snap.data();
+        // Carrega as áreas (polígonos e círculos)
+        if (configEntrega.areas && Array.isArray(configEntrega.areas)) {
+          areasEntrega = configEntrega.areas;
+          console.log('📦 Áreas carregadas:', areasEntrega.length);
+        } else {
+          areasEntrega = [];
+        }
+      } else {
+        configEntrega = {
+          loja: {lat: -23.27824, lon: -46.73661},
+          faixas: [{ate: 3, taxa: 5}, {ate: 5, taxa: 7}, {ate: 8, taxa: 10}],
+          cidades: ['Franco da Rocha', 'Francisco Morato', 'Caieiras']
+        };
+        areasEntrega = [];
+      }
+      if (configEntrega.googleMapsApiKey) GOOGLE_KEY = configEntrega.googleMapsApiKey;
+      var select = document.getElementById('cidade');
+      select.innerHTML = '<option value="">Selecione sua cidade*</option>';
+      var cidades = configEntrega.cidades || [];
+      for (var i = 0; i < cidades.length; i++) {
+        var opt = document.createElement('option');
+        opt.value = cidades[i];
+        opt.textContent = cidades[i];
+        select.appendChild(opt);
+      }
+      renderTotais();
+    })
+    .catch(function(err) {
+      console.error('Erro ao carregar configurações:', err);
+      configEntrega = {
+        loja: {lat: -23.27824, lon: -46.73661},
+        faixas: [{ate: 3, taxa: 5}, {ate: 5, taxa: 7}, {ate: 8, taxa: 10}],
+        cidades: ['Franco da Rocha', 'Francisco Morato', 'Caieiras']
+      };
+      areasEntrega = [];
+      var select = document.getElementById('cidade');
+      select.innerHTML = '<option value="">Selecione sua cidade*</option>';
+      for (var j = 0; j < configEntrega.cidades.length; j++) {
+        var opt2 = document.createElement('option');
+        opt2.value = configEntrega.cidades[j];
+        opt2.textContent = configEntrega.cidades[j];
+        select.appendChild(opt2);
+      }
+    });
+}
+
+// ============================================================
+// DEBOUNCE PARA CALCULAR TAXA
+// ============================================================
+function debounce(fn, d) {
+  var t;
+  return function() {
+    var args = arguments;
+    clearTimeout(t);
+    t = setTimeout(function() { fn.apply(null, args); }, d);
+  };
+}
+
+// ============================================================
+// CALCULAR TAXA A PARTIR DO ENDEREÇO (MODIFICADO)
+// ============================================================
+function calcularTaxaEndereco() {
+  var rua = document.getElementById('rua');
+  var numero = document.getElementById('numero');
+  var cidade = document.getElementById('cidade');
+  if (rua.value.length < 3 || !numero.value || !cidade.value) return;
+  
+  var end = rua.value + ', ' + numero.value + ', ' + cidade.value + ', SP';
+  fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURIComponent(end) + '&key=' + GOOGLE_KEY)
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.results[0] && configEntrega && configEntrega.loja) {
+        var loc = d.results[0].geometry.location;
+        clienteLatLng = { lat: loc.lat, lng: loc.lng };
+        distanciaAtual = distanciaKm(configEntrega.loja.lat, configEntrega.loja.lon, loc.lat, loc.lng);
+        taxaAtual = calcularTaxa(distanciaAtual, loc.lat, loc.lng);
+        renderTotais();
+        renderCupom();
+      }
+    })
+    .catch(function(e) {
+      console.error('Erro ao calcular taxa:', e);
+    });
+}
+var calcDebounced = debounce(calcularTaxaEndereco, 800);
+
+// ============================================================
+// MODAL ENDEREÇO
+// ============================================================
+function abrirModal() {
+  if (!lojaAberta) {
+    showToast('🔴 Loja fechada. Não é possível finalizar o pedido.', 'error');
+    return;
+  }
+  
+  var c = getCart();
+  if (!c.length) {
+    alert('Adicione pelo menos 1 item na sacola');
+    return;
+  }
+  document.getElementById('modalEndereco').style.display = 'flex';
+  renderCupom();
+  document.getElementById('erroEnvio').classList.remove('visible');
+}
+
+function fecharModal() {
+  document.getElementById('modalEndereco').style.display = 'none';
+}
+
+// ============================================================
+// GEOLOCALIZAÇÃO (MODIFICADO)
+// ============================================================
+function usarLocalizacao() {
+  var btn = document.getElementById('btnGeo');
+  var status = document.getElementById('geoStatus');
+  if (!navigator.geolocation) {
+    status.textContent = '❌ Seu navegador não suporta GPS';
+    status.className = 'geo-status error';
+    return;
+  }
+  btn.disabled = true;
+  status.textContent = '⏳ Buscando sua localização...';
+  status.className = 'geo-status';
+  navigator.geolocation.getCurrentPosition(
+    function(pos) {
+      var lat = pos.coords.latitude, lon = pos.coords.longitude;
+      clienteLatLng = { lat: lat, lng: lon };
+      if (configEntrega && configEntrega.loja) {
+        distanciaAtual = distanciaKm(configEntrega.loja.lat, configEntrega.loja.lon, lat, lon);
+        taxaAtual = calcularTaxa(distanciaAtual, lat, lon);
+      }
+      fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lon + '&key=' + GOOGLE_KEY + '&language=pt-BR')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.results[0]) {
+            var comp = data.results[0].address_components;
+            var get = function(t) {
+              var found = null;
+              for (var i = 0; i < comp.length; i++) {
+                if (comp[i].types.indexOf(t) !== -1) {
+                  found = comp[i];
+                  break;
+                }
+              }
+              return found ? found.long_name : '';
+            };
+            document.getElementById('rua').value = get('route');
+            document.getElementById('numero').value = get('street_number');
+            document.getElementById('bairro').value = get('sublocality') || get('sublocality_level_1') || get('neighborhood');
+            var cid = get('administrative_area_level_2') || get('locality');
+            var select = document.getElementById('cidade');
+            var existe = false;
+            for (var k = 0; k < select.options.length; k++) {
+              if (select.options[k].value === cid) {
+                existe = true;
+                break;
+              }
+            }
+            if (cid && !existe) {
+              var opt = document.createElement('option');
+              opt.value = cid;
+              opt.textContent = cid;
+              select.appendChild(opt);
+            }
+            if (cid) select.value = cid;
+          }
+          renderTotais();
+          renderCupom();
+          status.textContent = '✅ Localização encontrada - ' + distanciaAtual.toFixed(1) + ' km';
+          status.className = 'geo-status';
+          btn.disabled = false;
+        })
+        .catch(function(e) {
+          status.textContent = '❌ Erro ao buscar endereço';
+          status.className = 'geo-status error';
+          btn.disabled = false;
+        });
+    },
+    function(err) {
+      status.textContent = '⚠️ Permita o acesso à localização';
+      status.className = 'geo-status error';
+      btn.disabled = false;
+    },
+    {enableHighAccuracy: true, timeout: 12000}
+  );
+}
+
+// ============================================================
+// ENVIAR PEDIDO (MODIFICADO – COM VALOR RECEBIDO E TROCO)
+// ============================================================
+function enviarPedido() {
+  if (!lojaAberta) {
+    showToast('🔴 Loja fechada. Não é possível enviar pedidos.', 'error');
+    return;
+  }
+  
+  var c = getCart();
+  var erroEl = document.getElementById('erroEnvio');
+  erroEl.classList.remove('visible');
+  erroEl.textContent = '';
+
+  if (!c.length) {
+    alert('Sacola vazia');
+    return;
+  }
+
+  var nome = document.getElementById('nome');
+  var telefone = document.getElementById('telefone');
+  var cidade = document.getElementById('cidade');
+  var rua = document.getElementById('rua');
+  var numero = document.getElementById('numero');
+  var bairro = document.getElementById('bairro');
+  var pagamento = document.getElementById('pagamento');
+  var trocoInput = document.getElementById('troco');
+
+  if (!nome.value.trim()) {
+    alert('Digite seu nome completo');
+    nome.focus();
+    return;
+  }
+  var telDigits = telefone.value.replace(/\D/g, '');
+  if (telDigits.length < 10) {
+    alert('WhatsApp com DDD (ex: 11999999999)');
+    telefone.focus();
+    return;
+  }
+  if (!cidade.value || !rua.value.trim() || !numero.value.trim() || !bairro.value.trim() || !pagamento.value) {
+    alert('Preencha todos os campos obrigatórios (*)');
+    return;
+  }
+  if (taxaAtual === null) taxaAtual = 5;
+
+  var btn = document.querySelector('#modalEndereco .btn.primary');
+  btn.disabled = true;
+  btn.textContent = '⏳ Enviando...';
+  document.getElementById('loadingOverlay').classList.add('active');
+
+  var codigoPedido = gerarCodigoPedido();
+  var subTotal = getCartTotal();
+  
+  var descTotal = 0;
+  if (cupomAplicado) {
+    descTotal = subTotal * (cupomAplicado.desconto / 100);
+  }
+  var totalFinal = subTotal - descTotal + (taxaAtual || 0);
+  
+  // ===== CONVERTER VALOR DIGITADO (ACEITA VÍRGULA E PONTO) =====
+  var valorDigitado = trocoInput.value || '';
+  var valorNumerico = parseFloat(valorDigitado.replace(/[^\d,]/g, '').replace(',', '.'));
+  var valorRecebido = isNaN(valorNumerico) ? 0 : valorNumerico;
+  var trocoCalculado = (valorRecebido > 0) ? (valorRecebido - totalFinal) : null;
+
+  // ===== VALIDAÇÃO: SE FOR DINHEIRO, O VALOR PAGO PRECISA SER SUFICIENTE =====
+  if (pagamento.value === 'Dinheiro' && valorRecebido > 0 && trocoCalculado < 0) {
+    alert('⚠️ O valor pago (R$ ' + valorRecebido.toFixed(2).replace('.', ',') + ') é insuficiente para pagar o total do pedido (R$ ' + totalFinal.toFixed(2).replace('.', ',') + ').');
+    document.getElementById('loadingOverlay').classList.remove('active');
+    btn.disabled = false;
+    btn.textContent = '✅ Confirmar e Enviar';
+    return;
+  }
+
+  // ===== SE FOR DINHEIRO E O CAMPO ESTIVER VAZIO, AVISA =====
+  if (pagamento.value === 'Dinheiro' && !valorDigitado.trim()) {
+    alert('⚠️ Para pagamento em Dinheiro, informe o valor que você vai pagar (ex: 100 ou 100,50).');
+    document.getElementById('loadingOverlay').classList.remove('active');
+    btn.disabled = false;
+    btn.textContent = '✅ Confirmar e Enviar';
+    trocoInput.focus();
+    return;
+  }
+
+  var itensFormatados = [];
+  for (var j = 0; j < c.length; j++) {
+    var precoItem = c[j].precoTotal || c[j].price || 0;
+    itensFormatados.push({
+      id: c[j].id,
+      nome: c[j].title,
+      title: c[j].title,
+      preco: precoItem,
+      price: precoItem,
+      valor: precoItem,
+      quantidade: Number(c[j].qty),
+      qty: Number(c[j].qty),
+      total: precoItem * Number(c[j].qty),
+      img: c[j].img || '',
+      tipo: c[j].tipo || 'produto',
+      extras: c[j].extras || []
+    });
+  }
+
+  // ===== PEDIDO COM OS NOVOS CAMPOS =====
+  var pedido = {
+    id: codigoPedido,
+    numeroPedido: codigoPedido,
+    origem: 'cardapio',
+    cliente: {
+      nome: nome.value.trim(),
+      telefone: telDigits,
+      cidade: cidade.value,
+      rua: rua.value.trim(),
+      numero: numero.value.trim(),
+      bairro: bairro.value.trim(),
+      pagamento: pagamento.value,
+      troco: valorDigitado ? Math.round(valorRecebido * 100) : null, // Mantido para compatibilidade
+      lat: clienteLatLng ? clienteLatLng.lat : null,
+      lng: clienteLatLng ? clienteLatLng.lng : null
+    },
+    itens: itensFormatados,
+    subtotal: subTotal,
+    taxa: taxaAtual,
+    taxaEntrega: taxaAtual,
+    distanciaKm: distanciaAtual ? Number(distanciaAtual.toFixed(2)) : null,
+    total: totalFinal,
+    pagamento: pagamento.value,
+    // ===== NOVOS CAMPOS PARA O PAINEL =====
+    valorRecebido: valorRecebido,         // Ex: 100.00 ou 100.50
+    trocoDevolver: trocoCalculado,        // Ex: 94.00 ou 94.50
+    // ===== FIM NOVOS CAMPOS =====
+    cupom: cupomAplicado || null,
+    desconto: descTotal,
+    status: 'novo',
+    criadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+    criadoEmMs: Date.now()
+  };
+
+  db.collection('pedidos').doc(codigoPedido).set(pedido)
+    .then(function() {
+      localStorage.setItem('pasterry_cliente_v1', JSON.stringify(pedido.cliente));
+      var hist = JSON.parse(localStorage.getItem('pedidos_pasterry_v1') || '[]');
+      hist.push({...pedido, criadoEm: new Date().toISOString()});
+      localStorage.setItem('pedidos_pasterry_v1', JSON.stringify(hist));
+      localStorage.removeItem(CART_KEY);
+      localStorage.removeItem(CUPOM_KEY);
+      alert('✅ Pedido #' + codigoPedido + ' confirmado!\n\n' + (cupomAplicado ? 'Cupom ' + cupomAplicado.codigo + ' aplicado: ' + cupomAplicado.desconto + '% de desconto' : ''));
+      location.href = 'status.html?id=' + codigoPedido;
+    })
+    .catch(function(err) {
+      console.error('Erro ao enviar pedido:', err);
+      erroEl.textContent = '❌ Erro ao enviar pedido: ' + (err.message || 'Erro desconhecido. Tente novamente.');
+      erroEl.classList.add('visible');
+      btn.disabled = false;
+      btn.textContent = 'Confirmar e Enviar';
+      document.getElementById('loadingOverlay').classList.remove('active');
+    });
+}
+
+// ============================================================
+// MÁSCARA DE TELEFONE
+// ============================================================
+function mascaraTelefone(input) {
+  var v = input.value.replace(/\D/g, '');
+  if (v.length > 11) v = v.slice(0, 11);
+  if (v.length <= 2) {
+    input.value = v ? '(' + v : '';
+  } else if (v.length <= 7) {
+    input.value = '(' + v.slice(0,2) + ') ' + v.slice(2);
+  } else {
+    input.value = '(' + v.slice(0,2) + ') ' + v.slice(2,7) + '-' + v.slice(7);
+  }
+}
+
+// ============================================================
+// FUNÇÃO PARA FORMATAR VALOR EM MOEDA (USADA NO PREVIEW DO TROCO)
+// ============================================================
+function formatarMoeda(valor) {
+  return 'R$ ' + valor.toFixed(2).replace('.', ',');
+}
+
+// ============================================================
+// INICIALIZAÇÃO
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('🚀 Inicializando carrinho...');
+  
+  carregarStatusLoja();
+  carregarConfig();
+  carregarCupons();
+  carregarCupomEspecial();
+  carregarExtras();
+  renderCart();
+
+  var rua = document.getElementById('rua');
+  var numero = document.getElementById('numero');
+  var cidade = document.getElementById('cidade');
+  rua.addEventListener('input', calcDebounced);
+  numero.addEventListener('input', calcDebounced);
+  cidade.addEventListener('change', calcDebounced);
+
+  var pagamento = document.getElementById('pagamento');
+  var trocoInput = document.getElementById('troco');
+  var trocoPreview = document.getElementById('trocoPreview');
+
+  // ===== MOSTRA/ESCONDE CAMPO DE TROCO =====
+  pagamento.addEventListener('change', function() {
+    if (pagamento.value === 'Dinheiro') {
+      trocoInput.style.display = 'block';
+      trocoInput.placeholder = 'Qual o valor que você vai pagar? (ex: 100 ou 100,50)';
+      if (trocoInput.value) {
+        trocoInput.dispatchEvent(new Event('input'));
+      }
+    } else {
+      trocoInput.style.display = 'none';
+      trocoPreview.innerHTML = '';
+      trocoInput.value = '';
+    }
+    renderCupom();
+  });
+
+  // ===== CALCULAR TROCO AO VIVO (ACEITA VÍRGULA E PONTO) =====
+  trocoInput.addEventListener('input', function() {
+    var sub = getCartTotal();
+    var desconto = cupomAplicado ? sub * (cupomAplicado.desconto / 100) : 0;
+    var totalFinal = sub - desconto + (taxaAtual || 0);
+
+    var valorDigitado = this.value;
+    // Remove tudo exceto números e vírgula
+    var apenasNumeros = valorDigitado.replace(/[^\d,]/g, '');
+    // Substitui vírgula por ponto para converter
+    var valorNumerico = parseFloat(apenasNumeros.replace(',', '.'));
+    
+    if (isNaN(valorNumerico) || valorNumerico <= 0) {
+      trocoPreview.innerHTML = '';
+      renderCupom();
       return;
     }
 
-    const cart = getCart();
-    const subtotal = cart.reduce((s,i)=> s + i.price*i.qty, 0);
-    const total = subtotal + TAXA;
+    var troco = valorNumerico - totalFinal;
 
-    // 1. Cria o objeto do pedido para salvar no Firebase
-    const pedido = {
-      criadoEm: serverTimestamp(), // Usa a hora do servidor do Firebase. MUITO IMPORTANTE!
-      cliente: { nome, rua, numero, bairro },
-      pagamento,
-      troco: pagamento === 'Dinheiro' ? troco : '',
-      itens: cart,
-      subtotal: Number(subtotal.toFixed(2)),
-      taxa: Number(TAXA.toFixed(2)),
-      total: Number(total.toFixed(2)),
-      status: 'novo'
-    };
-    
-    // Desativa o botão para evitar cliques duplos
-    const btnConfirmar = document.querySelector('.modal-content .btn.primary');
-    btnConfirmar.disabled = true;
-    btnConfirmar.textContent = 'Enviando...';
-
-    try {
-      // 2. SALVA O PEDIDO NO FIREBASE!
-      const docRef = await addDoc(pedidosCol, pedido);
-      console.log("Pedido salvo na nuvem com o ID: ", docRef.id);
-      
-      // 3. (Opcional) Envia a notificação para o WhatsApp
-      const itensMsg = cart.map(i => `• ${i.qty}x ${i.title} — ${money(i.price*i.qty)}`).join('%0A');
-      let pagamentoInfo = `Forma de pagamento: ${pagamento}`;
-      if (pagamento === 'Dinheiro' && troco) pagamentoInfo += `%0A*Troco para: ${troco}*`;
-      const endereco = `*Cliente:* ${nome}%0A*Endereço:* Rua ${rua}, Nº ${numero} — Bairro ${bairro}`;
-      const mensagem = `*=== NOVO PEDIDO PASTERRY ===*%0A%0A*ID: ${docRef.id.substring(0,6).toUpperCase()}*%0A%0A${itensMsg}%0A%0A------------------------------------%0ASubtotal: ${money(subtotal)}%0ATaxa de Entrega: ${money(TAXA)}%0A*Total: ${money(total)}*%0A------------------------------------%0A%0A${endereco}%0A%0A${pagamentoInfo}`;
-      const numeroWhatsApp = "5511994046432";
-      const url = `https://wa.me/${numeroWhatsApp}?text=${mensagem}`;
-      window.open(url, '_blank');
-
-      // 4. Limpa tudo e avisa o usuário
-      localStorage.removeItem(CART_KEY);
-      fecharModal();
-      alert("Pedido enviado com sucesso! Acompanhe seu pedido no painel.");
-      renderCart();
-
-    } catch (e) {
-        console.error("Erro ao salvar pedido no Firebase: ", e);
-        alert("Ops! Tivemos um problema ao registrar seu pedido. Por favor, tente novamente.");
-    } finally {
-        // Reativa o botão
-        btnConfirmar.disabled = false;
-        btnConfirmar.textContent = 'Confirmar e Enviar';
-    }
-  }
-
-  // Deixando todas as funções globais para o HTML acessá-las
-  window.limparSacola = limparSacola;
-  window.addMolho = addMolho;
-  window.increaseQty = increaseQty;
-  window.decreaseQty = decreaseQty;
-  window.abrirModal = abrirModal;
-  window.fecharModal = fecharModal;
-  window.enviarPedido = enviarPedido;
-  
-  document.getElementById('secret-login-btn').addEventListener('click', () => {
-    const login = prompt("Login:");
-    const senha = prompt("Senha:");
-    if (login === "admin" && senha === "admin") {
-        window.location.href = "painel.html"; // Mude para o nome correto se for diferente
+    if (troco >= 0) {
+      trocoPreview.innerHTML = '💵 Valor Recebido: ' + formatarMoeda(valorNumerico) + ' &nbsp;|&nbsp; 🔄 Troco a devolver: <strong style="color:#FFD700;">' + formatarMoeda(troco) + '</strong>';
+      trocoPreview.style.color = '#4caf50';
     } else {
-        alert("Login ou senha incorretos!");
+      trocoPreview.innerHTML = '⚠️ Valor insuficiente. Faltam ' + formatarMoeda(Math.abs(troco)) + ' para pagar o pedido.';
+      trocoPreview.style.color = '#ff6b6b';
     }
+    
+    renderCupom();
   });
 
-  document.addEventListener('DOMContentLoaded', () => {
-    renderMolhos();
-    renderCart();
+  var telEl = document.getElementById('telefone');
+  if (!telEl.value) telEl.value = '(11) ';
+  telEl.addEventListener('input', function() { mascaraTelefone(telEl); });
+  
+  document.getElementById('btnAplicarCupom').addEventListener('click', aplicarCupom);
+  document.getElementById('btnRemoverCupom').addEventListener('click', removerCupom);
+  document.getElementById('cupomInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') aplicarCupom();
   });
+});
+
+// ============================================================
+// FUNÇÕES GLOBAIS
+// ============================================================
+window.addExtra = addExtra;
+window.alterarQtd = alterarQtd;
+window.limparSacola = limparSacola;
+window.abrirModal = abrirModal;
+window.fecharModal = fecharModal;
+window.usarLocalizacao = usarLocalizacao;
+window.enviarPedido = enviarPedido;
+window.renderCart = renderCart;
 </script>
 </body>
 </html>
