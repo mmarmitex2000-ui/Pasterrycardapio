@@ -1,2638 +1,3005 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-  <title>Pasterry - Totem</title>
-  <style>
-    /* ===== CSS BASE ===== */
-    :root {
-      --bg-site: #1A1210;
-      --bg-container: #1A1A1A;
-      --bg-topo: #1A1210;
-      --cor-categoria-ativa: #FFE066;
-      --cor-botao-adicionar: #2B7245;
-      --cor-categoria: #FFD700;
-      --cor-menu: #DC3545;
-      --cor-group-header: #FFD700;
-      --cor-cart: #AC940D;
-      --cor-fonte: #E6EEF6;
-      --cor-fonte-titulo: #FFFFFF;
-      --cor-fonte-preco: #AC940D;
-      --cor-fonte-muted: #9AA6B2;
-    }
-    *, *::before, *::after { box-sizing: border-box; }
-    html, body {
-      height: 100%;
-      margin: 0;
-      background: var(--bg-site);
-      color: var(--cor-fonte);
-      -webkit-font-smoothing: antialiased;
-      scroll-behavior: smooth;
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0; height: 0; }
-    .app {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background: var(--bg-site);
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 60;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 24px;
-      background: var(--bg-topo) !important;
-      backdrop-filter: none !important;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
-      min-height: 70px;
-      gap: 16px;
-    }
-    .logo {
-      width: 60px;
-      height: 60px;
-      border-radius: 100px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(26, 18, 16, 0.7);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-      flex-shrink: 0;
-    }
-    .logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .status-horario {
-      flex: 1;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.3);
-      backdrop-filter: blur(4px);
-      border-radius: 12px;
-      padding: 4px 10px;
-      text-align: center;
-      line-height: 1.2;
-      font-size: clamp(11px, 1.6vw, 15px);
-    }
-    .status-horario .status {
-      font-weight: 800;
-      letter-spacing: 0.5px;
-    }
-    .status-horario .status.aberto { color: #4caf50; }
-    .status-horario .status.fechado { color: #f44336; }
-    .status-horario .horario {
-      font-weight: 600;
-      color: var(--cor-fonte-muted);
-      font-size: clamp(9px, 1.2vw, 13px);
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-    .search-box {
-      display: flex;
-      align-items: center;
-      background: rgba(0,0,0,0.3);
-      border-radius: 30px;
-      padding: 4px 12px;
-      gap: 6px;
-      max-width: 200px;
-      flex: 0 0 auto;
-      height: 36px;
-    }
-    .search-box input {
-      background: transparent;
-      border: none;
-      color: var(--cor-fonte);
-      padding: 4px 0;
-      outline: none;
-      width: 100%;
-      font-size: 14px;
-    }
-    .search-box input::placeholder { color: var(--cor-fonte-muted); font-size: 12px; }
-    .search-box button {
-      background: transparent;
-      border: none;
-      color: var(--cor-fonte);
-      cursor: pointer;
-      font-size: 18px;
-      padding: 2px;
-      line-height: 1;
-    }
-
-    .menu-btn {
-      background: var(--cor-menu);
-      border: none;
-      border-radius: 30px;
-      width: 44px;
-      height: 44px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      transition: transform .15s ease, background .3s ease;
-      padding: 0 4px;
-      flex-shrink: 0;
-    }
-    .menu-btn:active { transform: scale(0.95); }
-    .menu-btn .bar {
-      display: block;
-      width: 22px;
-      height: 2.5px;
-      background: #fff;
-      border-radius: 2px;
-      transition: all 0.2s ease;
-    }
-
-    .menu-dropdown {
-      position: absolute;
-      top: 60px;
-      right: 24px;
-      background: #272323;
-      border-radius: 12px;
-      min-width: 200px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.7);
-      border: 1px solid rgba(255,255,255,0.05);
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-      z-index: 100;
-      padding: 4px 0;
-    }
-    .menu-dropdown.open { display: flex; }
-    .menu-dropdown .item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      color: var(--cor-fonte);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 14px;
-      transition: background 0.15s ease;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-    }
-    .menu-dropdown .item:last-child { border-bottom: none; }
-    .menu-dropdown .item:hover { background: rgba(255,255,255,0.08); }
-    .menu-dropdown .item .icon { font-size: 20px; width: 28px; text-align: center; }
-    .menu-dropdown .item.tempo-entrega {
-      color: #FFD700;
-      font-weight: 700;
-      pointer-events: none;
-      background: rgba(255,215,0,0.05);
-      border-top: 1px solid rgba(255,215,0,0.1);
-    }
-    .menu-dropdown .item.tempo-entrega .icon { font-size: 18px; }
-
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding: 8px 24px 80px 24px;
-      max-width: 1400px;
-      margin: 0 auto;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    /* ===== CATEGORIAS ===== */
-    .categories {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding: 8px 4px 12px 4px;
-      background: transparent !important;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      align-items: stretch;
-      scroll-behavior: smooth;
-      flex-wrap: nowrap;
-      -webkit-overflow-scrolling: touch;
-      border-radius: 0;
-      scroll-snap-type: x mandatory;
-    }
-    .categories::-webkit-scrollbar { display: none; }
-    .cat {
-      flex: 0 0 calc(16% - 8px);
-      min-width: 80px;
-      padding: 10px 8px;
-      background: var(--cor-categoria);
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-weight: 900;
-      font-size: clamp(12px, 1.4vw, 15px);
-      letter-spacing: 0.2px;
-      color: #1a1600;
-      text-align: center;
-      word-break: break-word;
-      white-space: normal;
-      line-height: 1.2;
-      transition: transform .08s ease, background 0.2s;
-      border: none;
-      min-height: 42px;
-      flex-shrink: 0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      scroll-snap-align: start;
-    }
-    .cat.active {
-      outline: 3px solid var(--cor-categoria-ativa);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-      transform: scale(1.05);
-      background: var(--cor-categoria-ativa) !important;
-    }
-
-    .cat-section {
-      display: block;
-      margin: 4px 0 12px;
-      padding-top: 2px;
-      border-top: none;
-    }
-    .cat-section:first-child { border-top: 0; margin-top: 0; }
-    .cat-section > .muted {
-      font-weight: 800;
-      letter-spacing: .2px;
-      margin: 2px 2px 8px;
-      opacity: .7;
-      font-size: clamp(15px, 2.2vw, 20px);
-      color: var(--cor-fonte-muted);
-    }
-
-    /* ===== PRODUTOS - GRID RESPONSIVO ===== */
-    .cat-section .products {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      align-content: start;
-    }
-
-    @media (max-width: 768px) {
-      .cat-section .products {
-        grid-template-columns: 1fr;
-        gap: 10px;
+{
+  "produtos": [
+    {
+      "id": "0QtKT1P1dKMpAxjyRJ0z",
+      "ativo": true,
+      "unidade": "cm",
+      "extras": [
+        "1wvvE1lR7TjGz7tzaR3X",
+        "3oRfpkH67eY5kKMiWIr0",
+        "50ifNSgW4fdgu563R8O9",
+        "5NCUZjWgDjG49d1AGsDg",
+        "666EkDLD5wmuJyexg4I2",
+        "ASJ6AyJeNvmBo9XsjGQg",
+        "AjvZfjZk56PnFStZMAWB",
+        "B5A77OYEsyixZ8yv4G4Q",
+        "CjYVCoUIkLJXO5db7nOf",
+        "DgSo8pTOBjp5QJdPoQlU",
+        "FhrG7US6Sv5r8wKsYFiM",
+        "KxEJjFZDjgdv8wCbvi7N",
+        "LI5sHqdrlkQjZjSO2g2u",
+        "Oovmor8ViUSRCoIKDjhi",
+        "Q8OMqop581kk67nCvjiU",
+        "QHYm92ME7Qw4MSk8Gt0L",
+        "UCDi7dh4h2FTtI0oVa1I",
+        "UmPlD3woOdXV4zThJucH",
+        "WSZEjcvjVtu5EYHTSCv8",
+        "aj2BtJVPY2g58FQurBbD",
+        "cN19krnkn2PAnG5wU4hG",
+        "cP7crmvTLxwmy1NmeJlC",
+        "dpounrerz9pA4XFeL1kt",
+        "fEnZy2msFN1CMJAbnSr7",
+        "gRUSGZwF30Xjo9rfORa1",
+        "ghZlMuGSULb3199lanNO",
+        "iEzrH0XDDuCEji6AsloH",
+        "kkOuOC9SNduLVQrvIOe0",
+        "mpqJv5YgVVOnwss525OI",
+        "msbZLeey2CIYSVXtGFYE",
+        "ozI1yUdKOIqMV77TH9D9",
+        "q7GNrakmArSvlKrMt8Ib",
+        "qDpybGfjpmTEKGsNfKlY",
+        "qYNEsHn48Bvxwjsd7Qcb",
+        "qx9ybTMFA4dTvUrGMkpu",
+        "tZ1WyIDPCOrdTVpS3Aay",
+        "u5DsUizqQ6mmnCJObcra",
+        "zN8nwUabkAZyfpXC3mPt",
+        "zRt0lHvscePjpMObPx7i",
+        "zpVonWy8yoPV3GEZt8EA"
+      ],
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786990652774.jfif?alt=media&token=43b81a36-8108-49b4-a242-34a63ec45ce3",
+      "categoria": "39LfLcamvrUcc58X0Bz2",
+      "title": "Monte o seu Pastel",
+      "sizes": {
+        "15": 10,
+        "25": 15,
+        "30": 17,
+        "35": 22
+      },
+      "desc": "Monte o seu pastel a sua maneira, escolha os adicionas"
+    },
+    {
+      "id": "3718ORl79zS15zODQsMR",
+      "categoria": "acai",
+      "title": "Casadinho",
+      "sizes": {
+        "480": 30,
+        "1000": 55
+      },
+      "extras": [],
+      "desc": "Cupuaçu e Açai \nleite condensado, banana e leite em pó",
+      "unidade": "ml",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1788486896410.jfif?alt=media&token=9e26f4c5-9637-4713-9fe8-c97730d91e36"
+    },
+    {
+      "id": "CHT0KrOy8sAeXZrdPqmB",
+      "unidade": "unidade",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787076438966.png?alt=media&token=c9f2fbb4-8122-49d3-8943-8ba07d07a8c6",
+      "extras": [],
+      "price": 34.98,
+      "ativo": true,
+      "categoria": "churros",
+      "units": null,
+      "title": "Mini Churros Doce de leite (25 unid.)",
+      "sizes": {
+        "25": 24.99,
+        "50": 45.99
+      },
+      "desc": "Porção de mini churros de doce de leite"
+    },
+    {
+      "id": "WnhWj1hkEKVgyVHJJZMJ",
+      "desc": "salgados sortidos \ncoxinha, risole e bolinha de queijo",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787076290093.png?alt=media&token=0c97fea2-2e67-4dd7-82f8-049591d479b6",
+      "title": "Solgados sortidos",
+      "sizes": {
+        "25": 24.99,
+        "50": 49.98,
+        "75": 74.97,
+        "100": 99.96
+      },
+      "unidade": "unidade",
+      "categoria": "salgados",
+      "ativo": true
+    },
+    {
+      "id": "acai1",
+      "extras": [],
+      "title": "Açaí Tradicional 1",
+      "sizes": {
+        "480": 22.99,
+        "1000": 45.98
+      },
+      "desc": "Banana, Leite em Pó e Leite Condensado.",
+      "units": null,
+      "ativo": true,
+      "unidade": "",
+      "price": null,
+      "categoria": "acai",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077379103.png?alt=media&token=e06ddd93-0ff8-4209-ae37-8cd96e68fd50"
+    },
+    {
+      "id": "acai2",
+      "unidade": "",
+      "price": null,
+      "extras": [],
+      "desc": "Banana, Granola, Paçoca e Leite Condensado.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077399572.png?alt=media&token=969ffea8-8a41-4cc0-b229-32930927632f",
+      "ativo": true,
+      "sizes": {
+        "480": 23.99,
+        "1000": 45.98
+      },
+      "title": "Açaí Tradicional 2",
+      "categoria": "acai",
+      "units": null
+    },
+    {
+      "id": "acai3",
+      "unidade": "",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077423048.png?alt=media&token=3ba5eb17-9363-4204-bf5c-5e75afbba81e",
+      "desc": "Chocolate ao leite, Leite em pó, Chocoboll, Granulado e Leite Condensado.",
+      "extras": [],
+      "units": null,
+      "categoria": "acai",
+      "sizes": {
+        "480": 29.98,
+        "1000": 49.98
+      },
+      "title": "Açaí Trufadão",
+      "ativo": true
+    },
+    {
+      "id": "acai4",
+      "sizes": {
+        "480": 32.98,
+        "1000": 54.98
+      },
+      "title": "Açaí Choco White",
+      "desc": "Chocolate branco, Leite em pó, Chocoboll e Leite Condensado.",
+      "units": null,
+      "categoria": "acai",
+      "unidade": "",
+      "ativo": true,
+      "extras": [],
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077333813.png?alt=media&token=801a0080-6ce3-46ca-9730-5f592aa8b86a"
+    },
+    {
+      "id": "alho-poro",
+      "categoria": "pasteis_especiais",
+      "unidade": "",
+      "price": null,
+      "extras": [],
+      "ativo": true,
+      "desc": "Alho-poró, mussarela, requeijão, bacon e milho.",
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "title": "ALHO PORÓ — Mussarela, requeijão, bacon, milho",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070139597.png?alt=media&token=22f47b3e-4c4a-493b-bb88-fe262df2d33b",
+      "units": null
+    },
+    {
+      "id": "b1",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077484608.png?alt=media&token=ead5e390-a3ce-48bc-8f55-4dde7960cf89",
+      "units": null,
+      "extras": [],
+      "title": "Coca-Cola 350ml",
+      "sizes": null,
+      "desc": "Lata 350ml.",
+      "ativo": true,
+      "unidade": "",
+      "categoria": "bebidas",
+      "price": 7.99
+    },
+    {
+      "id": "b10",
+      "price": 9.99,
+      "categoria": "bebidas",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077528403.png?alt=media&token=630e8e0a-610a-4b85-8175-b3fa2408db52",
+      "desc": "pet 450ml.",
+      "units": null,
+      "sizes": null,
+      "title": "Dell Vale Uva 450ml",
+      "ativo": true,
+      "extras": [],
+      "unidade": ""
+    },
+    {
+      "id": "b11",
+      "price": 9.99,
+      "desc": "Garrafa 2 litros.",
+      "categoria": "bebidas",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077502652.png?alt=media&token=f207730f-85d6-4cf3-9ddf-c38c736d3fe0",
+      "sizes": null,
+      "title": "Convenção Guaraná 2L",
+      "units": null,
+      "extras": [],
+      "unidade": "",
+      "ativo": true
+    },
+    {
+      "id": "b12",
+      "ativo": true,
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/convencao-frutbaina-2l.png?alt=media&token=06c45d4c-9fee-4a09-bb92-4774898d13fc",
+      "desc": "Garrafa 2 litros.",
+      "sizes": null,
+      "title": "Convenção Frutbaína 2L",
+      "categoria": "bebidas",
+      "price": 9.99
+    },
+    {
+      "id": "b13",
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077467643.png?alt=media&token=83adf066-c54d-428f-8e9f-512a6531af8c",
+      "extras": [],
+      "price": 19.99,
+      "ativo": true,
+      "units": null,
+      "categoria": "bebidas",
+      "sizes": null,
+      "title": "Coca-Cola 2L",
+      "desc": "Garrafa 2 litros."
+    },
+    {
+      "id": "b14",
+      "categoria": "bebidas",
+      "ativo": true,
+      "unidade": "",
+      "sizes": null,
+      "title": "Heineken Long Neck 350ml",
+      "units": null,
+      "desc": "Cerveja Heineken garrafa long neck 350ml.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077834977.png?alt=media&token=fd3dba39-79b8-4512-831e-56cd7a51bfd9",
+      "extras": [],
+      "price": 12.99
+    },
+    {
+      "id": "b15",
+      "unidade": "",
+      "units": null,
+      "extras": [],
+      "title": "Budweiser Long Neck 350ml",
+      "sizes": null,
+      "ativo": true,
+      "categoria": "bebidas",
+      "desc": "Cerveja Budweiser garrafa long neck 350ml.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077804268.png?alt=media&token=4754a0f4-4b6f-4fdc-beb4-18d5602e98cc",
+      "price": 12.99
+    },
+    {
+      "id": "b2",
+      "price": 7.99,
+      "categoria": "bebidas",
+      "desc": "Lata 350ml.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077682856.png?alt=media&token=916f494c-cb9d-43b6-a34e-7e2b12646db6",
+      "ativo": true,
+      "title": "Guaraná 350ml",
+      "sizes": null,
+      "extras": [],
+      "units": null,
+      "unidade": ""
+    },
+    {
+      "id": "b3",
+      "units": null,
+      "title": "Fanta Uva 350ml",
+      "sizes": null,
+      "ativo": true,
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077661344.png?alt=media&token=5a933b2f-5f2c-4385-acc1-4db158511a85",
+      "categoria": "bebidas",
+      "desc": "Lata 350ml.",
+      "extras": [],
+      "price": 7.99
+    },
+    {
+      "id": "b4",
+      "price": 7.99,
+      "desc": "Lata 350ml.",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077643776.png?alt=media&token=6abd2065-88d7-4ae7-9adf-016dfec4e278",
+      "sizes": null,
+      "title": "Fanta Laranja 350ml",
+      "categoria": "bebidas",
+      "extras": [],
+      "unidade": "",
+      "units": null
+    },
+    {
+      "id": "b5",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077704437.png?alt=media&token=bbda6054-ca24-468c-bee3-3f69322d3485",
+      "unidade": "",
+      "units": null,
+      "sizes": null,
+      "title": "Itubaína 350ml",
+      "extras": [],
+      "desc": "Lata 350ml.",
+      "price": 7.99,
+      "categoria": "bebidas"
+    },
+    {
+      "id": "b6",
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/pepsi-lata-350.png?alt=media&token=82e24e95-3f4e-444e-8a95-20735aaffe60",
+      "price": 7.99,
+      "sizes": null,
+      "title": "Pepsi 350ml",
+      "desc": "Lata 350ml.",
+      "ativo": true,
+      "categoria": "bebidas"
+    },
+    {
+      "id": "b7",
+      "price": 7.99,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077611622.png?alt=media&token=b7606456-9bce-4005-b2fd-1f987a84b434",
+      "desc": "Lata 350ml.",
+      "unidade": "",
+      "units": null,
+      "sizes": null,
+      "title": "Sukita Laranja 350ml",
+      "categoria": "bebidas",
+      "ativo": true,
+      "extras": []
+    },
+    {
+      "id": "b8",
+      "price": 7.99,
+      "categoria": "bebidas",
+      "unidade": "",
+      "ativo": true,
+      "desc": "Lata 350ml.",
+      "title": "Sukita Uva 350ml",
+      "sizes": null,
+      "units": null,
+      "extras": [],
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077725672.png?alt=media&token=61d60bdf-00be-4b00-8219-97521cd7c495"
+    },
+    {
+      "id": "b9",
+      "ativo": true,
+      "categoria": "bebidas",
+      "sizes": null,
+      "title": "Dell Vale laranja 450ml",
+      "unidade": "",
+      "units": null,
+      "extras": [],
+      "desc": "pet 450ml.",
+      "price": 9.99,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077550539.png?alt=media&token=c27e30a9-b784-4862-904e-f481f7a42bea"
+    },
+    {
+      "id": "baiano1",
+      "price": null,
+      "unidade": "",
+      "categoria": "pasteis",
+      "desc": "Calabresa com pimenta.",
+      "img": "img/baiano1.png",
+      "ativo": false,
+      "title": "BAIANO 1 — Calabresa e piment",
+      "sizes": {
+        "15": 14.99,
+        "25": 16.99
+      },
+      "units": null
+    },
+    {
+      "id": "baiano2",
+      "price": null,
+      "ativo": false,
+      "desc": "Calabresa, mussarela e pimenta.",
+      "unidade": "cm",
+      "sizes": {
+        "15": 15.99,
+        "25": 19.99
+      },
+      "title": "BAIANO 2 — Calabresa, mussarela, pimenta",
+      "categoria": "pasteis",
+      "units": null,
+      "img": "img/baiano2.png"
+    },
+    {
+      "id": "baiano3",
+      "title": "BAIANO 3 — Calabresa, requeijão, pimenta",
+      "sizes": {
+        "15": 15.99,
+        "25": 19.99
+      },
+      "price": null,
+      "desc": "Calabresa, requeijão e pimenta.",
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/baiano3.png?alt=media&token=82440db8-e9ee-41db-a3e8-90150868d763",
+      "categoria": "pasteis",
+      "ativo": false
+    },
+    {
+      "id": "baiano4",
+      "ativo": false,
+      "desc": "Calabresa, cheddar e pimenta.",
+      "title": "BAIANO 4 — Calabresa, cheddar, pimenta",
+      "sizes": {
+        "15": 15.99,
+        "25": 19.99
+      },
+      "price": null,
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/baiano4.png?alt=media&token=9e76dd63-655d-49c0-9cc9-46cbc978cfdd",
+      "categoria": "pasteis"
+    },
+    {
+      "id": "baiano5",
+      "categoria": "pasteis",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/baiano5.png?alt=media&token=1e97d051-e434-48d0-ba5d-21a2a87f53f9",
+      "desc": "Calabresa, purê e pimenta.",
+      "title": "BAIANO 5 — Calabresa, purê e pimenta",
+      "sizes": {
+        "15": 15.99,
+        "25": 19.99
+      },
+      "units": null,
+      "ativo": false
+    },
+    {
+      "id": "baiano6",
+      "price": null,
+      "sizes": {
+        "15": 17.99,
+        "25": 21.99
+      },
+      "title": "BAIANO 6 — Calabresa e palmito",
+      "desc": "Calabresa, palmito e pimenta.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/baiano6.png?alt=media&token=3301e9ba-1180-4b94-aed1-c8c87519172a",
+      "units": null,
+      "categoria": "pasteis",
+      "ativo": false
+    },
+    {
+      "id": "baiano7",
+      "title": "BAIANO 7 — Calabresa, Catupiry original",
+      "sizes": {
+        "15": 20.99,
+        "25": 23.99
+      },
+      "price": null,
+      "categoria": "pasteis",
+      "desc": "Calabresa com Catupiry original.",
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/baiano7.png?alt=media&token=9827e50d-c737-41d2-b5b5-f99fa225399c",
+      "ativo": false
+    },
+    {
+      "id": "baiano8",
+      "categoria": "pasteis",
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/baiano8.png?alt=media&token=d1a10efd-f290-4e89-9452-6e2f75a82b46",
+      "price": null,
+      "title": "BAIANO 8 — Calabresa, cheddar polenghi",
+      "sizes": {
+        "15": 20.99,
+        "25": 23.99
+      },
+      "desc": "Calabresa com cheddar Polenghi.",
+      "ativo": false
+    },
+    {
+      "id": "banana-com-mussarela",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/banana-mussarela.png?alt=media&token=62858acd-2870-4809-9eb2-bd9157e228f8",
+      "units": null,
+      "categoria": "pasteis_doces",
+      "price": null,
+      "sizes": {
+        "15": 14.99,
+        "25": 18.99
+      },
+      "title": "BANANA COM MUSSARELA",
+      "desc": "Banana com mussarela.",
+      "ativo": true
+    },
+    {
+      "id": "barra-chocolate",
+      "price": null,
+      "desc": "Barra de chocolate (ao leite ou branco).\n15 cm vai uma barra de 90g\n25 cm vai duas barra de 90g",
+      "extras": [],
+      "title": "BARRA CHOCOLATE (ao leite / branco)",
+      "sizes": {
+        "15": 23.99,
+        "25": 35.99
+      },
+      "unidade": "",
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787071702368.jfif?alt=media&token=95ac8550-e45e-43c3-9ee1-0a41e78b6c1e",
+      "ativo": true,
+      "categoria": "pasteis_doces"
+    },
+    {
+      "id": "bauru1",
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/bauru1.png?alt=media&token=5400fb98-34f0-44a3-a10a-7f392a4b624e",
+      "price": null,
+      "title": "BAURU 1 — Queijo, presunto, tomate, orég.",
+      "sizes": {
+        "15": 15.99,
+        "25": 17.99
+      },
+      "categoria": "pasteis",
+      "ativo": true,
+      "desc": "Mussarela, presunto, tomate e orégano."
+    },
+    {
+      "id": "bauru2",
+      "desc": "Mussarela, presunto, tomate, orégano e requeijão.",
+      "ativo": true,
+      "title": "BAURU 2 — Queijo, pres., tomate, orég., req.",
+      "sizes": {
+        "15": 17.99,
+        "25": 19.99
+      },
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/bauru2.png?alt=media&token=b513fb41-ab43-41fc-bfff-95b62f0f584b",
+      "units": null,
+      "categoria": "pasteis"
+    },
+    {
+      "id": "bauru3",
+      "unidade": "",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786220845156.png?alt=media&token=a51849c4-af08-4658-a0f4-29081f3e964b",
+      "desc": "Mussarela, presunto, tomate, orégano e cheddar.",
+      "units": null,
+      "categoria": "pasteis",
+      "title": "BAURU 3 — Queijo, pres., tomate, orég., cheddar",
+      "sizes": {
+        "15": 17.99,
+        "25": 19.99
+      },
+      "ativo": true
+    },
+    {
+      "id": "bauru4",
+      "title": "BAURU 4 — Queijo, pres., tomate, orég., Catupiry org.",
+      "sizes": {
+        "15": 20.99,
+        "25": 23.99
+      },
+      "price": null,
+      "categoria": "pasteis",
+      "units": null,
+      "desc": "Mussarela, presunto, tomate, orégano e Catupiry original.",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/bauru4.png?alt=media&token=c3446804-09d7-4de6-92a8-ef087fa31780"
+    },
+    {
+      "id": "bauru5",
+      "desc": "Mussarela, presunto, tomate, orégano e cheddar Polenghi.",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/bauru5.png?alt=media&token=eede9313-176b-4cd4-a9b5-bbbc4530ba71",
+      "title": "BAURU 5 — Queijo, pres., tomate, orég., ched. polenghi",
+      "sizes": {
+        "15": 20.99,
+        "25": 23.99
+      },
+      "price": null,
+      "units": null,
+      "categoria": "pasteis"
+    },
+    {
+      "id": "beef1",
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786977298040.png?alt=media&token=353f0955-e0bb-4221-9704-edc393092ac8",
+      "extras": [],
+      "price": null,
+      "ativo": true,
+      "units": null,
+      "sizes": {
+        "15": 15.98,
+        "25": 16.99
+      },
+      "title": "BEEF 1 — Só carne moída",
+      "desc": "Pastel de carne moída bem temperada.",
+      "categoria": "pasteis"
+    },
+    {
+      "id": "beef2",
+      "units": null,
+      "unidade": "",
+      "sizes": {
+        "15": 16.99,
+        "25": 21.99
+      },
+      "title": "BEEF 2 — Carne com mussarela",
+      "ativo": true,
+      "desc": "Carne moída com mussarela derretida.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786977419059.png?alt=media&token=e473ffc6-bef5-42c8-8b52-8800a2017dd0",
+      "price": null,
+      "categoria": "pasteis"
+    },
+    {
+      "id": "beef3",
+      "price": null,
+      "desc": "Carne moída com requeijão cremoso.",
+      "categoria": "pasteis",
+      "sizes": {
+        "15": 16.99,
+        "25": 21.99
+      },
+      "title": "BEEF 3 — Carne com requeijão",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/beef3.png?alt=media&token=c472d80f-3ac1-4a51-88e0-e96b6a58cc41",
+      "units": null,
+      "unidade": "",
+      "ativo": true
+    },
+    {
+      "id": "beef4",
+      "price": null,
+      "categoria": "pasteis",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786978735046.png?alt=media&token=250402f5-3fbe-444c-a54e-6a51b25d257a",
+      "desc": "Carne moída com cheddar.",
+      "ativo": true,
+      "sizes": {
+        "15": 16.99,
+        "25": 21.99
+      },
+      "title": "BEEF 4 — Carne com cheddar",
+      "units": null,
+      "unidade": ""
+    },
+    {
+      "id": "beef5",
+      "ativo": true,
+      "units": null,
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786978774263.png?alt=media&token=3d2e270f-cabc-4499-a67c-93e5a2966eed",
+      "sizes": {
+        "15": 16.99,
+        "25": 21.99
+      },
+      "title": "BEEF 5 — Carne com purê",
+      "categoria": "pasteis",
+      "price": null,
+      "desc": "Carne moída com purê de batata."
+    },
+    {
+      "id": "beef6",
+      "price": null,
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786978909636.png?alt=media&token=d79eafc2-392a-413b-99b1-bd191d8d80f9",
+      "desc": "Carne, requeijão e palmito em cubos.",
+      "categoria": "pasteis",
+      "units": null,
+      "sizes": {
+        "15": 18.99,
+        "25": 23.99
+      },
+      "title": "BEEF 6 — Carne, requeijão e palmito",
+      "ativo": true
+    },
+    {
+      "id": "beef7",
+      "price": null,
+      "desc": "Carne com Catupiry original.",
+      "categoria": "pasteis",
+      "title": "BEEF 7 — Carne Catupiry original",
+      "sizes": {
+        "15": 27.99,
+        "25": 34.99
+      },
+      "unidade": "",
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786979181648.png?alt=media&token=a57072cb-24e1-43ef-bee4-1cb8784c9bee",
+      "ativo": true
+    },
+    {
+      "id": "beef8",
+      "categoria": "pasteis",
+      "ativo": true,
+      "title": "BEEF 8 — Carne com cheddar polenghi",
+      "sizes": {
+        "15": 27.99,
+        "25": 34.99
+      },
+      "unidade": "",
+      "units": null,
+      "desc": "Carne moida com cheddar Polenghi.",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786979254040.png?alt=media&token=f37d08fc-5064-4ea6-bfa4-c8cffd6d841d"
+    },
+    {
+      "id": "beijinho-coco",
+      "unidade": "",
+      "categoria": "pasteis_doces",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787071832766.jfif?alt=media&token=43422715-5895-4b46-b868-077333304b68",
+      "extras": [],
+      "price": null,
+      "ativo": true,
+      "units": null,
+      "title": "BEIJINHO COM COCO RALADO",
+      "sizes": {
+        "15": 15.99,
+        "25": 19.99
+      },
+      "desc": "Beijinho com coco ralado."
+    },
+    {
+      "id": "bis1-choco-leite-bis-branco",
+      "sizes": {
+        "15": 17.99,
+        "25": 20.99
+      },
+      "title": "BIS 1 CHOCO AO LEITE COM BIS BRANCO",
+      "units": null,
+      "desc": "Chocolate ao leite com Bis branco.",
+      "unidade": "",
+      "ativo": true,
+      "categoria": "pasteis_doces",
+      "extras": [],
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787072044804.jfif?alt=media&token=b09e0c08-35c4-4393-be78-b81f066f3f7b"
+    },
+    {
+      "id": "bis2-chocolate-branco-bis-preto",
+      "sizes": {
+        "15": 17.99,
+        "25": 20.99
+      },
+      "title": "BIS 2 CHOCOLATE BRANCO, BIS PRETO",
+      "desc": "Chocolate branco, Bis preto.",
+      "units": null,
+      "ativo": true,
+      "extras": [],
+      "price": null,
+      "categoria": "pasteis_doces",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787072215042.jfif?alt=media&token=2df02285-7602-41d2-b0f4-c0110bd71344",
+      "unidade": ""
+    },
+    {
+      "id": "bis3-beijinho-bis-preto",
+      "unidade": "",
+      "extras": [],
+      "units": null,
+      "title": "BIS 3 BEIJINHO COM BIS PRETO",
+      "sizes": {
+        "15": 17.99,
+        "25": 20.99
+      },
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787072293993.jfif?alt=media&token=4023c4f5-d141-4065-ae19-d9fb4d2501b7",
+      "ativo": true,
+      "desc": "Beijinho com Bis preto.",
+      "price": null,
+      "categoria": "pasteis_doces"
+    },
+    {
+      "id": "brocolis1",
+      "price": null,
+      "unidade": "",
+      "categoria": "pasteis",
+      "ativo": true,
+      "desc": "Brócolis com mussarela.",
+      "sizes": {
+        "15": 24.99,
+        "25": 27.99
+      },
+      "title": "BRÓCOLIS 1 — Brócolis com mussarela",
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/brocolis1.png?alt=media&token=7f71bd2c-74ec-41d9-b8e3-f3dc21da5b35"
+    },
+    {
+      "id": "brocolis2",
+      "ativo": true,
+      "title": "BRÓCOLIS 2 — Brócolis com requeijão",
+      "sizes": {
+        "15": 24.99,
+        "25": 27.99
+      },
+      "units": null,
+      "unidade": "",
+      "desc": "Brócolis com requeijão.",
+      "price": null,
+      "categoria": "pasteis",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786979668515.png?alt=media&token=6bdfdcbc-83f2-4ebc-b13c-b67c9dcb51f6"
+    },
+    {
+      "id": "brocolis3",
+      "unidade": "",
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/brocolis3.png?alt=media&token=04d184f6-59b4-4063-8573-509530e223c7",
+      "categoria": "pasteis",
+      "title": "BRÓCOLIS 3 — Brócolis com cheddar",
+      "sizes": {
+        "15": 24.99,
+        "25": 27.99
+      },
+      "desc": "Brócolis com cheddar.",
+      "ativo": true,
+      "price": null
+    },
+    {
+      "id": "brocolis4",
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786979731669.png?alt=media&token=dabf31d3-e71d-4e72-ad5d-6e8b01dc6e51",
+      "sizes": {
+        "15": 29.99,
+        "25": 34.99
+      },
+      "title": "BRÓCOLIS 4 — Brócolis, mussarela e bacon",
+      "unidade": "",
+      "ativo": true,
+      "desc": "Brócolis, mussarela e bacon.",
+      "categoria": "pasteis",
+      "price": null
+    },
+    {
+      "id": "brocolis5",
+      "unidade": "",
+      "ativo": true,
+      "title": "BRÓCOLIS 5 — Brócolis, tomate, ovo, milho, azeitona e requeijão",
+      "sizes": {
+        "15": 31.99,
+        "25": 37.99
+      },
+      "units": null,
+      "desc": "Brócolis, tomate, ovo, milho, azeitona e requeijão",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/brocolis5.png?alt=media&token=cdfb83f0-7c9b-429f-bdf7-06805fa0a880",
+      "categoria": "pasteis",
+      "price": null
+    },
+    {
+      "id": "brocolis6",
+      "categoria": "pasteis",
+      "price": null,
+      "ativo": true,
+      "unidade": "",
+      "desc": "Brócolis com Catupiry Original",
+      "title": "BRÓCOLIS 6 — Brócolis com Catupiry Original",
+      "sizes": {
+        "15": 32.99,
+        "25": 35.99
+      },
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/brocolis6.png?alt=media&token=91704345-76ba-4619-b115-4c3f7c51c911"
+    },
+    {
+      "id": "brocolis7",
+      "ativo": true,
+      "categoria": "pasteis",
+      "sizes": {
+        "15": 32.99,
+        "25": 35.99
+      },
+      "title": "BRÓCOLIS 7 — Brócolis com cheddar polenghi",
+      "units": null,
+      "unidade": "",
+      "desc": "Brócolis com cheddar Polenghi.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786979953076.png?alt=media&token=1f889d15-d681-4b5f-b16e-71e49960fb70",
+      "price": null
+    },
+    {
+      "id": "brocolis8",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077911315.png?alt=media&token=3a7cd736-4dde-4529-8464-1ef0f73ee18a",
+      "extras": [],
+      "price": null,
+      "ativo": true,
+      "unidade": "",
+      "units": null,
+      "categoria": "pasteis",
+      "sizes": {
+        "15": 37.99,
+        "25": 43.99
+      },
+      "title": "BRÓCOLIS 8 — Brócolis, tomate, ovo, milho, azeitona e catupiry original",
+      "desc": "Brócolis, tomate, ovo, milho, azeitona e catupiry original"
+    },
+    {
+      "id": "caipira1",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070246095.png?alt=media&token=8854ff65-ecc0-498d-8cfe-a47d4127b169",
+      "ativo": true,
+      "units": null,
+      "categoria": "pasteis_especiais",
+      "title": "CAIPIRA 1 — Frango, milho, bacon, queijo",
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "extras": [],
+      "desc": "Frango, milho, bacon e queijo.",
+      "unidade": "",
+      "price": null
+    },
+    {
+      "id": "caipira2",
+      "price": null,
+      "desc": "Frango, milho, bacon e requeijão.",
+      "extras": [],
+      "categoria": "pasteis_especiais",
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "title": "CAIPIRA 2 — Frango, milho, bacon, requeijão",
+      "units": null,
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070273577.png?alt=media&token=6c7760f5-7c71-4799-9a9a-5d97512782e8",
+      "ativo": true
+    },
+    {
+      "id": "caipira3",
+      "price": null,
+      "desc": "Frango, milho, bacon e cheddar.",
+      "title": "CAIPIRA 3 — Frango, milho, bacon, cheddar.",
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "categoria": "pasteis_especiais",
+      "units": null,
+      "extras": [],
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/caipira3.png?alt=media&token=5412744f-525c-4cc5-9578-666a22534518",
+      "ativo": true,
+      "unidade": ""
+    },
+    {
+      "id": "chicken1",
+      "title": "CHICKEN 1 — Só frango desfiado",
+      "sizes": {
+        "15": 14.99,
+        "25": 17.99
+      },
+      "units": null,
+      "desc": "Frango desfiado temperado.",
+      "categoria": "pasteis",
+      "ativo": true,
+      "price": null,
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786027297950.png?alt=media&token=6f153ed4-288c-43e7-84da-4e0841a897e4"
+    },
+    {
+      "id": "chicken2",
+      "units": null,
+      "sizes": {
+        "15": 16.99,
+        "25": 21.99
+      },
+      "title": "CHICKEN 2 — Frango com mussarela",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/chicken2.png?alt=media&token=217db7c0-d7b4-4efc-ab53-ccf57094b00e",
+      "desc": "Frango desfiado com mussarela.",
+      "unidade": "",
+      "price": null,
+      "categoria": "pasteis"
+    },
+    {
+      "id": "chicken3",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786980190531.png?alt=media&token=750a0bb9-5257-42dc-a2d1-4e622244cccc",
+      "price": null,
+      "ativo": true,
+      "unidade": "",
+      "categoria": "pasteis",
+      "desc": "Frango desfiado com requeijão cremoso.",
+      "units": null,
+      "sizes": {
+        "15": 16.99,
+        "25": 21.99
+      },
+      "title": "CHICKEN 3 — Frango com requeijão"
+    },
+    {
+      "id": "chicken4",
+      "categoria": "pasteis",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/chicken4.png?alt=media&token=45225bfd-c6c7-4fcf-8e0e-f39172dc1aa7",
+      "desc": "Frango desfiado com cheddar.",
+      "units": null,
+      "unidade": "",
+      "sizes": {
+        "15": 16.99,
+        "25": 21.99
+      },
+      "title": "CHICKEN 4 — Frango com cheddar",
+      "ativo": true
+    },
+    {
+      "id": "chicken5",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786980266189.png?alt=media&token=f4a46035-77af-4f0c-802d-f01f710f93c9",
+      "price": null,
+      "ativo": true,
+      "categoria": "pasteis",
+      "unidade": "",
+      "units": null,
+      "sizes": {
+        "15": 16.99,
+        "25": 21.99
+      },
+      "title": "CHICKEN 5 — Frango com purê",
+      "desc": "Frango desfiado com purê de batata."
+    },
+    {
+      "id": "chicken6",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786980349058.png?alt=media&token=e0b72818-f6ef-438f-9239-c9c2e3efcbba",
+      "units": null,
+      "categoria": "pasteis",
+      "sizes": {
+        "15": 18.99,
+        "25": 23.99
+      },
+      "title": "CHICKEN 6 — Frango, requeijão e palmito",
+      "desc": "Frango, requeijão e palmito em cubos.",
+      "ativo": true,
+      "unidade": "",
+      "price": null
+    },
+    {
+      "id": "chicken7",
+      "ativo": true,
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786980520494.png?alt=media&token=4f7be11e-f486-4512-8517-dc2a86e181bb",
+      "units": null,
+      "title": "CHICKEN 7 — Frango com Catupiry original",
+      "sizes": {
+        "15": 27.99,
+        "25": 34.99
+      },
+      "categoria": "pasteis",
+      "desc": "Frango desfiado com Catupiry original.",
+      "price": null
+    },
+    {
+      "id": "chicken8",
+      "price": null,
+      "categoria": "pasteis",
+      "ativo": true,
+      "unidade": "",
+      "desc": "Frango desfiado com cheddar Polenghi.",
+      "title": "CHICKEN 8 — Frango com cheddar polenghi",
+      "sizes": {
+        "15": 27.99,
+        "25": 34.99
+      },
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786980572457.png?alt=media&token=cdeb66ab-d669-410b-8c97-a9c52a2aed9b",
+      "units": null
+    },
+    {
+      "id": "choco1-so-chocolate-ao-leite",
+      "categoria": "pasteis_doces",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787072556199.jfif?alt=media&token=632767b2-4ad9-4a29-b25e-82ef56b73acf",
+      "price": null,
+      "ativo": true,
+      "units": null,
+      "title": "CHOCO 1 SÓ CHOCOLATE AO LEITE",
+      "sizes": {
+        "15": 17.99,
+        "25": 20.99
+      },
+      "unidade": "",
+      "desc": "Só chocolate ao leite.",
+      "extras": []
+    },
+    {
+      "id": "choco2-chocolate-ao-leite-banana",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787072735052.jfif?alt=media&token=1818d494-70e4-4ac5-873e-0f393bc4980f",
+      "unidade": "",
+      "desc": "Chocolate ao leite com banana.",
+      "units": null,
+      "title": "CHOCO 2 CHOCOLATE AO LEITE COM BANANA",
+      "sizes": {
+        "15": 17.99,
+        "25": 20.99
+      },
+      "ativo": true,
+      "extras": [],
+      "categoria": "pasteis_doces"
+    },
+    {
+      "id": "choco3-sonho-de-valsa",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787072868923.jfif?alt=media&token=c01571c4-7ba7-4097-a9df-19e4189a8f0d",
+      "price": null,
+      "ativo": true,
+      "desc": "Chocolate ao leite, Sonho de Valsa.",
+      "units": null,
+      "categoria": "pasteis_doces",
+      "extras": [],
+      "unidade": "",
+      "title": "CHOCO 3 CHOCO AO LEITE, SONHO DE VALSA",
+      "sizes": {
+        "15": 19.99,
+        "25": 23.99
       }
-      main { padding: 6px 16px 80px 16px; }
-      header { padding: 10px 16px; gap: 10px; }
-      .search-box { max-width: 150px; height: 32px; }
-      .search-box input { font-size: 12px; }
-      .cat { flex: 0 0 calc(30% - 8px); min-width: 60px; padding: 8px 4px; font-size: 11px; }
-      .footer-cart { padding: 12px 16px; }
-    }
-
-    @media (max-width: 420px) {
-      .cat-section .products { gap: 8px; }
-      main { padding: 4px 12px 80px 12px; }
-      header { padding: 8px 12px; gap: 8px; min-height: 56px; }
-      .logo { width: 44px; height: 44px; }
-      .search-box { max-width: 100px; height: 28px; }
-      .search-box input { font-size: 10px; }
-      .search-box button { font-size: 14px; }
-      .menu-btn { width: 36px; height: 36px; }
-      .menu-btn .bar { width: 18px; height: 2px; }
-      .menu-dropdown { min-width: 170px; right: -10px; top: 50px; }
-      .cat { flex: 0 0 calc(33% - 6px); min-width: 50px; padding: 6px 2px; font-size: 10px; min-height: 32px; }
-      .footer-cart { padding: 10px 14px; font-size: 14px; }
-      .footer-cart .cart-label { display: none; }
-      .footer-cart .cart-total { font-size: 14px; }
-      .footer-cart .cart-badge { min-width: 22px; height: 22px; font-size: 11px; padding: 0 6px; }
-      .footer-bar { padding: 8px 12px; }
-    }
-
-    .products-wrap {
-      padding: 2px 0 12px;
-      overflow-y: auto;
-      max-height: calc(100vh - 200px);
-      scroll-behavior: smooth;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    .products-wrap::-webkit-scrollbar { display: none; }
-    .content { display: flex; gap: 8px; }
-    .left { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-
-    /* ===== CARDS ===== */
-    .product {
-      background: var(--bg-container);
-      padding: 16px;
-      border-radius: 14px;
-      display: flex;
-      flex-direction: row;
-      gap: 16px;
-      align-items: center;
-      min-height: 160px;
-      overflow: hidden;
-      scroll-margin-top: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(2px);
-      position: relative;
-    }
-    .share-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: rgba(0, 0, 0, 0.4);
-      border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: #fff;
-      transition: background 0.2s, transform 0.2s;
-      z-index: 5;
-      backdrop-filter: blur(4px);
-      padding: 4px;
-    }
-    .share-btn:hover { background: rgba(255, 255, 255, 0.2); }
-    .share-btn:active { transform: scale(0.85); }
-    .share-btn svg {
-      width: 14px;
-      height: 14px;
-      stroke: #fff;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      fill: none;
-    }
-
-    .product .media {
-      flex: 0 0 130px;
-      width: 130px;
-      height: 130px;
-      border-radius: 12px;
-      overflow: hidden;
-      background: #0c1220;
-      flex-shrink: 0;
-      position: relative;
-    }
-    .product .media > img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .product .media .logo-marca {
-      position: absolute;
-      bottom: 6px;
-      left: 6px;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-      background: rgba(0,0,0,0.3);
-      padding: 2px;
-      object-fit: contain;
-      z-index: 2;
-      pointer-events: none;
-      display: none;
-    }
-
-    .product .info {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      min-width: 0;
-    }
-    .title {
-      font-weight: 700;
-      font-size: clamp(14px, 1.8vw, 17px);
-      line-height: 1.2;
-      color: var(--cor-fonte-titulo);
-    }
-    .price {
-      color: var(--cor-fonte-preco);
-      font-weight: 700;
-      font-size: clamp(13px, 1.6vw, 16px);
-    }
-    .muted {
-      color: var(--cor-fonte-muted);
-      font-size: clamp(11px, 1.4vw, 13px);
-    }
-    .add-btn {
-      width: auto;
-      padding: 6px 16px;
-      border-radius: 6px;
-      background: var(--cor-botao-adicionar);
-      border: 0;
-      color: #fff;
-      font-weight: 800;
-      cursor: pointer;
-      font-size: clamp(12px, 1.4vw, 14px);
-      align-self: flex-start;
-      margin-top: 2px;
-      flex-shrink: 0;
-      transition: background 0.3s ease, transform 0.08s;
-      min-height: 32px;
-    }
-    .add-btn:active {
-      transform: scale(0.97);
-      filter: brightness(0.9);
-      box-shadow: inset 0 3px 6px rgba(0, 0, 0, .25);
-    }
-    .add-btn.loja-fechada {
-      background: #666 !important;
-      cursor: not-allowed;
-      opacity: 0.5;
-    }
-
-    @media (max-width: 768px) {
-      .product { padding: 12px; gap: 12px; min-height: 120px; }
-      .product .media { flex: 0 0 80px; width: 80px; height: 80px; }
-      .product .media .logo-marca { width: 24px; height: 24px; bottom: 4px; left: 4px; }
-      .share-btn { width: 24px; height: 24px; top: 4px; right: 4px; padding: 3px; }
-      .share-btn svg { width: 12px; height: 12px; }
-      .title { font-size: clamp(13px, 2.5vw, 15px); }
-      .price { font-size: clamp(12px, 2.2vw, 14px); }
-      .add-btn { padding: 5px 12px; font-size: clamp(11px, 2vw, 13px); min-height: 28px; }
-    }
-
-    @media (max-width: 420px) {
-      .product { padding: 10px; gap: 10px; min-height: 100px; }
-      .product .media { flex: 0 0 60px; width: 60px; height: 60px; }
-      .product .media .logo-marca { width: 20px; height: 20px; bottom: 3px; left: 3px; }
-      .share-btn { width: 20px; height: 20px; top: 3px; right: 3px; padding: 2px; }
-      .share-btn svg { width: 10px; height: 10px; }
-      .title { font-size: 12px; }
-      .price { font-size: 11px; }
-      .muted { font-size: 10px; }
-      .add-btn { padding: 4px 10px; font-size: 10px; min-height: 24px; }
-    }
-
-    @media (max-width: 360px) {
-      .product { padding: 8px; gap: 8px; min-height: 80px; }
-      .product .media { flex: 0 0 50px; width: 50px; height: 50px; }
-      .title { font-size: 11px; }
-      .price { font-size: 10px; }
-      .add-btn { padding: 3px 8px; font-size: 9px; min-height: 20px; }
-      .product .media .logo-marca { width: 16px; height: 16px; }
-    }
-
-    .btn {
-      flex: 1;
-      padding: 12px;
-      border-radius: 10px;
-      border: 0;
-      background: var(--cor-categoria);
-      color: #1a1600;
-      cursor: pointer;
-      font-weight: 800;
-      font-size: clamp(14px, 2vw, 16px);
-    }
-    .btn.secondary { background: var(--cor-categoria); opacity: .9; }
-    .btn:disabled { opacity: .6; cursor: not-allowed; }
-
-    .loja-fechada-msg {
-      display: none;
-      background: rgba(244, 67, 54, 0.15);
-      border: 2px solid #f44336;
-      border-radius: 12px;
-      color: #f44336;
-      font-weight: 800;
-      padding: 12px 16px;
-      margin: 8px 0 12px 0;
-      text-align: center;
-      font-size: clamp(14px, 2vw, 18px);
-    }
-    .loja-fechada-msg strong { color: #fff; }
-
-    .overlay {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: 80;
-      backdrop-filter: blur(4px);
-    }
-    .dialog {
-      width: 90%;
-      max-width: 420px;
-      background: #272323;
-      border-radius: 12px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      box-shadow: 0 20px 60px rgba(2, 6, 23, 0.8);
-      margin: 10px auto;
-    }
-    .left-panel { flex: 1; display: flex; flex-direction: column; gap: 10px; }
-    .kbd {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-    }
-    .kbd button {
-      padding: 14px 8px;
-      font-size: 18px;
-      border-radius: 8px;
-      background: var(--cor-categoria);
-      border: 1px solid rgba(255, 255, 255, 0.03);
-      color: #1a1600;
-      font-weight: 800;
-      cursor: pointer;
-    }
-    .num-display {
-      font-size: 32px;
-      background: #021522;
-      padding: 10px;
-      border-radius: 8px;
-      text-align: right;
-      color: var(--cor-categoria-ativa);
-      font-weight: 800;
-    }
-
-    .share-overlay {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: 150;
-      backdrop-filter: blur(8px);
-      padding: 20px;
-    }
-    .share-overlay.active { display: flex; }
-    .share-modal {
-      background: #272323;
-      border-radius: 20px;
-      padding: 28px 30px;
-      max-width: 400px;
-      width: 100%;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.8);
-      animation: shareIn 0.3s ease;
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-    @keyframes shareIn {
-      from { opacity: 0; transform: scale(0.9) translateY(20px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    .share-modal h3 { font-size: 22px; font-weight: 800; margin: 0 0 8px 0; color: #fff; text-align: center; }
-    .share-modal .subtitle { color: var(--cor-fonte-muted); text-align: center; font-size: 14px; margin-bottom: 20px; }
-    .share-modal .share-options { display: flex; flex-direction: column; gap: 12px; }
-    .share-btn-option {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 18px;
-      border-radius: 14px;
-      border: none;
-      background: rgba(255,255,255,0.05);
-      color: var(--cor-fonte);
-      font-weight: 700;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      width: 100%;
-    }
-    .share-btn-option:active { transform: scale(0.97); }
-    .share-btn-option svg { width: 28px; height: 28px; flex-shrink: 0; }
-    .share-btn-option.whatsapp {
-      background: rgba(37, 211, 102, 0.2);
-      border: 1px solid rgba(37, 211, 102, 0.3);
-    }
-    .share-btn-option.whatsapp:hover { background: rgba(37, 211, 102, 0.35); }
-    .share-btn-option.copy {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    .share-btn-option.copy:hover { background: rgba(255,255,255,0.15); }
-    .share-btn-option .label { flex: 1; text-align: left; }
-    .share-btn-option .icon-wrap { display: flex; align-items: center; justify-content: center; }
-    .share-modal .close-share {
-      margin-top: 16px;
-      background: none;
-      border: none;
-      color: var(--cor-fonte-muted);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 8px;
-      width: 100%;
-      text-align: center;
-    }
-    .share-modal .close-share:hover { color: var(--cor-fonte); }
-
-    #toastWrap {
-      position: fixed;
-      left: 0;
-      right: 0;
-      top: 14px;
-      z-index: 120;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      pointer-events: none;
-    }
-    .toast {
-      pointer-events: auto;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(7, 20, 40, .92);
-      color: var(--cor-fonte);
-      border: 1px solid rgba(255, 255, 255, .06);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, .5);
-      padding: 12px 14px;
-      border-radius: 12px;
-      min-width: 200px;
-      max-width: 90vw;
-      transform: translateY(-12px);
-      opacity: 0;
-      animation: toastIn .18s ease forwards, toastOut .18s ease forwards 1.6s;
-    }
-    .toast .check {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      background: var(--cor-botao-adicionar);
-      display: grid;
-      place-items: center;
-      font-weight: 900;
-      color: #fff;
-    }
-    .toast .title { font-weight: 800; font-size: 15px; line-height: 1.2; }
-    .toast .sub { color: var(--cor-fonte-muted); font-size: 13px; }
-    @keyframes toastIn { to { transform: translateY(0); opacity: 1; } }
-    @keyframes toastOut { to { transform: translateY(-8px); opacity: 0; } }
-
-    .footer-bar {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      padding: 10px 24px calc(10px + env(safe-area-inset-bottom));
-      background: linear-gradient(180deg, rgba(7, 20, 40, 0.0), rgba(7, 20, 40, 0.85) 30%, rgba(7, 20, 40, 0.95));
-      backdrop-filter: blur(6px);
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      z-index: 70;
-    }
-    .footer-cart {
-      width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px 20px;
-      border-radius: 12px;
-      background: var(--cor-cart);
-      color: #fff;
-      font-weight: 900;
-      font-size: clamp(16px, 3vw, 20px);
-      border: 0;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, .45), inset 0 -2px 0 rgba(0, 0, 0, .15);
-      transition: transform 0.2s, background .3s ease;
-    }
-    .footer-cart:hover { transform: scale(1.02); }
-    .footer-cart .cart-ico { display: grid; place-items: center; }
-    .footer-cart .cart-label {
-      flex: 1;
-      text-align: left;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: clamp(14px, 2vw, 18px);
-    }
-    .footer-cart .cart-total { font-weight: 900; margin-right: 6px; white-space: nowrap; font-size: clamp(16px, 2.5vw, 20px); }
-    .footer-cart .cart-badge {
-      min-width: 28px;
-      height: 28px;
-      padding: 0 10px;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 0, 0, .25);
-      color: #fff;
-      font-weight: 900;
-      font-size: 14px;
-      box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .2);
-    }
-
-    .group-header {
-      font-weight: 900;
-      font-size: clamp(18px, 3.5vw, 24px);
-      background: var(--cor-group-header);
-      color: #1a1600;
-      padding: 8px 18px;
-      border-radius: 30px;
-      display: inline-block;
-      margin-bottom: 10px;
-      letter-spacing: 0.3px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      text-transform: uppercase;
-      transition: background .3s ease;
-    }
-
-    #centerToast {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0.8);
-      z-index: 200;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      border-radius: 20px;
-      padding: 24px 30px;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      min-width: 200px;
-      max-width: 80vw;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-      opacity: 0;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      pointer-events: none;
-    }
-    #centerToast.show {
-      display: flex;
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-    }
-    #centerToast .check-icon { font-size: 40px; color: #22c55e; }
-    #centerToast .msg { color: var(--cor-fonte); font-weight: 800; font-size: clamp(18px, 4vw, 22px); text-align: center; }
-    #centerToast .sub-msg { color: var(--cor-fonte-muted); font-size: clamp(14px, 2.5vw, 16px); }
-    @keyframes descerCarrinho {
-      0% { top: 50%; opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      100% { top: 110%; opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
-    }
-    #centerToast.voando { animation: descerCarrinho 0.8s ease-in forwards; }
-    @keyframes vibrar {
-      0% { transform: scale(1); }
-      25% { transform: scale(1.05) rotate(-1deg); }
-      50% { transform: scale(1.1) rotate(1deg); }
-      75% { transform: scale(1.05) rotate(-1deg); }
-      100% { transform: scale(1); }
-    }
-    .footer-cart.vibrar { animation: vibrar 0.4s ease-in-out; }
-
-    button:focus { outline: 3px solid rgba(221, 2, 2, 0.12); }
-    button, .btn, .big-btn, .cat {
-      transition: transform .08s ease, box-shadow .12s ease, filter .12s ease;
-    }
-    button:active, .btn:active, .big-btn:active, .cat:active {
-      transform: scale(0.97);
-      filter: brightness(0.96);
-      box-shadow: inset 0 6px 14px rgba(0, 0, 0, .25);
-    }
-    .press { animation: pressPop .18s ease; }
-    @keyframes pressPop {
-      0% { transform: scale(1); }
-      40% { transform: scale(0.95); }
-      100% { transform: scale(1); }
-    }
-
-    #successOverlay .dialog { max-width: 90%; }
-    #successImg { width: 150px; height: 150px; }
-    @media (max-width: 480px) {
-      #successImg { width: 120px; height: 120px; }
-      #successTitle { font-size: 20px; }
-    }
-
-    .adicionais-section {
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-    .adicionais-section .label {
-      font-weight: 900;
-      font-size: 13px;
-      color: #FF6B00;
-      margin-bottom: 4px;
-      display: block;
-      text-shadow: 0 0 20px rgba(255,107,0,0.2);
-      letter-spacing: 0.5px;
-    }
-    .adicionais-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 4px;
-      max-height: 120px;
-      overflow-y: auto;
-      padding: 2px 0;
-    }
-    .adicionais-grid .btn-extra {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
-      padding: 4px 8px;
-      color: #fff;
-      font-size: 10px;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-weight: 600;
-      text-align: left;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-    }
-    .adicionais-grid .btn-extra:hover { background: rgba(255,255,255,0.12); }
-    .adicionais-grid .btn-extra.selecionado {
-      background: #FF6B00;
-      border-color: #FF6B00;
-      color: #fff;
-      box-shadow: 0 0 30px rgba(255,107,0,0.4);
-    }
-    .adicionais-grid .btn-extra .preco-extra { color: #FF6B00; font-weight: 700; }
-    .adicionais-grid .btn-extra.selecionado .preco-extra { color: #fff; }
-
-    .btn-tamanho {
-      background: #2d5016 !important;
-      border: 1px solid #2d5016 !important;
-      color: #fff !important;
-      transition: all 0.3s ease !important;
-    }
-    .btn-tamanho:hover { background: #3a6b1d !important; transform: scale(1.02); }
-    .btn-tamanho.selecionado {
-      background: #FF6B00 !important;
-      border-color: #FF6B00 !important;
-      color: #fff !important;
-      box-shadow: 0 0 30px rgba(255, 107, 0, 0.4) !important;
-    }
-
-    .add-btn {
-      background: #2d5016 !important;
-      border: 0 !important;
-      color: #fff !important;
-      font-weight: 800 !important;
-      transition: all 0.3s ease !important;
-    }
-    .add-btn:hover { background: #4CAF50 !important; transform: scale(1.02); }
-    .add-btn:active { transform: scale(0.97) !important; }
-
-    .products-wrap { max-height: calc(100vh - 200px) !important; }
-
-    .size-fechada-msg {
-      color: #f44336;
-      font-weight: 700;
-      text-align: center;
-      padding: 3px 0;
-      font-size: 12px;
-      background: rgba(244, 67, 54, 0.1);
-      border-radius: 6px;
-    }
-
-    .modal-image-wrap {
-      width: 100%;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #0c1220;
-      position: relative;
-    }
-    .modal-image-wrap img {
-      width: 100%;
-      height: auto;
-      max-height: 150px;
-      object-fit: cover;
-      display: block;
-    }
-    .modal-image-wrap .logo-marca-detalhe {
-      position: absolute;
-      bottom: 8px;
-      left: 8px;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-      background: rgba(0,0,0,0.3);
-      padding: 2px;
-      object-fit: contain;
-      z-index: 2;
-      pointer-events: none;
-      display: none;
-    }
-    .modal-image-wrap .muted { text-align: center; font-size: 10px; padding: 3px 0; }
-
-    .footer-cart:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none !important;
-      background: #555 !important;
-    }
-    .footer-cart:disabled:hover { transform: none !important; }
-
-    .detalhes-close {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: rgba(255,255,255,0.1);
-      border: none;
-      color: #fff;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-      transition: background 0.2s;
-    }
-    .detalhes-close:hover { background: rgba(255,255,255,0.25); }
-
-    @media (max-width: 480px) {
-      .status-horario { font-size: 10px; padding: 2px 8px; }
-      .status-horario .horario { font-size: 8px; }
-      .menu-dropdown .item { padding: 10px 14px; font-size: 13px; }
-      .menu-dropdown .item .icon { font-size: 18px; width: 24px; }
-    }
-  </style>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-</head>
-<body>
-  <div id="toastWrap" aria-live="polite" aria-atomic="true"></div>
-  <div id="centerToast">
-    <div class="check-icon">✅</div>
-    <div class="msg" id="centerToastMsg">Item adicionado!</div>
-    <div class="sub-msg" id="centerToastSub">Adicionado ao carrinho</div>
-  </div>
-  <div class="overlay" id="successOverlay" aria-hidden="true" style="display:none">
-    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="successTitle" style="max-width:500px; flex-direction:column; align-items:center; text-align:center; gap:12px">
-      <img id="successImg" src="img/sucesso.png" alt="Pedido finalizado com sucesso" style="width:180px;height:180px;object-fit:contain;border-radius:16px;background:#021522;box-shadow:0 10px 30px rgba(0,0,0,.5)">
-      <div id="successTitle" style="font-weight:900;font-size:22px;color:var(--cor-categoria-ativa)">Pedido confirmado!</div>
-      <div class="muted" id="successMsg" style="font-size:14px">Seu pedido foi enviado para a cozinha e está sendo impresso.</div>
-      <button class="btn" id="okSuccess" type="button" style="width:160px">OK</button>
-    </div>
-  </div>
-  <div id="printArea" aria-hidden="true"></div>
-  <div class="share-overlay" id="shareOverlay">
-    <div class="share-modal">
-      <h3>Compartilhar</h3>
-      <p class="subtitle">Escolha como deseja compartilhar este produto</p>
-      <div class="share-options">
-        <button class="share-btn-option whatsapp" id="shareWhatsapp">
-          <span class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></span>
-          <span class="label">WhatsApp</span>
-          <span style="color:#9aa6b2;font-size:13px;">Enviar link</span>
-        </button>
-        <button class="share-btn-option copy" id="shareCopy">
-          <span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></span>
-          <span class="label">Copiar link</span>
-          <span style="color:#9aa6b2;font-size:13px;">📋</span>
-        </button>
-      </div>
-      <button class="close-share" id="closeShare">Cancelar</button>
-    </div>
-  </div>
-
-  <div class="app" id="app">
-    <header id="mainHeader">
-      <div class="logo" aria-hidden="true"><img id="logoImg" src="img/logo.jpg" alt="Logo Pasterry"></div>
-      <div class="status-horario" id="statusHorario">
-        <span class="status" id="statusAberto">Carregando...</span>
-        <span class="horario" id="horarioTexto"></span>
-      </div>
-      <div class="header-actions">
-        <div class="search-box">
-          <input type="text" id="searchInput" placeholder="Buscar..." />
-          <button id="searchBtn" aria-label="Buscar">🔍</button>
-        </div>
-        <button class="menu-btn" id="menuToggle" aria-label="Menu">
-          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-        </button>
-        <div class="menu-dropdown" id="menuDropdown"></div>
-      </div>
-    </header>
-
-    <main>
-      <div class="categories" id="categories" role="tablist" aria-label="Categorias"></div>
-      <div class="content">
-        <div class="left" aria-live="polite">
-          <div id="lojaFechadaMsg" class="loja-fechada-msg">
-            <span>🔴 <strong>Loja fechada</strong> – Não é possível fazer pedidos no momento.</span>
-          </div>
-          <div class="products-wrap" id="productsWrap">
-            <div class="products" id="products" role="list"></div>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <div class="overlay" id="overlay" aria-hidden="true">
-      <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
-        <div class="left-panel">
-          <div id="dialogTitle" style="font-weight:800;font-size:18px;color:var(--cor-fonte-titulo)">Editar quantidade</div>
-          <div class="num-display" id="numDisplay">1</div>
-          <div class="kbd" id="kbd">
-            <button data-key="1">1</button><button data-key="2">2</button><button data-key="3">3</button>
-            <button data-key="4">4</button><button data-key="5">5</button><button data-key="6">6</button>
-            <button data-key="7">7</button><button data-key="8">8</button><button data-key="9">9</button>
-            <button data-key="back">⌫</button><button data-key="0">0</button><button data-key="clear">C</button>
-          </div>
-        </div>
-        <div style="width:100%;display:flex;flex-direction:column;gap:8px;align-items:stretch">
-          <button class="btn" id="saveQty" type="button">Salvar</button>
-          <button class="btn secondary" id="cancelQty" type="button">Cancelar</button>
-          <div style="color:var(--cor-fonte-muted);font-size:12px">Para quantidades grandes, use os botões 0-9</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="overlay" id="sizeOverlay" aria-hidden="true" style="display:none">
-      <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="sizeTitle" style="max-width:420px; position:relative; padding:12px;">
-        <button class="detalhes-close" id="fecharDetalhesBtn" aria-label="Fechar detalhes">✕</button>
-
-        <div id="sizeTitle" style="font-weight:800;font-size:17px;color:var(--cor-fonte-titulo);text-align:center;"></div>
-        <div id="sizeDesc" class="muted" style="text-align:center;font-size:12px;"></div>
-
-        <div class="modal-image-wrap" id="modalImageWrap">
-          <img id="sizeImg" src="" alt="Produto" />
-          <img id="logoMarcaDetalhe" class="logo-marca-detalhe" src="img/logo.jpg" alt="Logo Pasterry" />
-          <div class="muted" style="text-align:center;font-size:10px;padding:3px 0;">Toque no tamanho e nos extras desejados</div>
-        </div>
-
-        <div id="sizeOptions" style="display:grid;gap:6px;margin-top:4px;"></div>
-
-        <div class="adicionais-section" id="adicionaisSection" style="display:none;">
-          <span class="label">➕ Adicionar Extras</span>
-          <div class="adicionais-grid" id="adicionaisGrid"></div>
-        </div>
-
-        <div id="sizeFechadaMsg" class="size-fechada-msg" style="display:none;">🔒 Loja fechada</div>
-
-        <div style="margin-top:6px;display:flex;gap:6px;">
-          <button class="btn" id="addWithExtras" type="button" style="background:var(--cor-botao-adicionar);color:#fff;flex:1;padding:8px 12px;font-size:14px;border-radius:8px;">Selecione um tamanho</button>
-          <button class="btn secondary" id="cancelSize" type="button" style="flex:0 0 auto;padding:8px 14px;font-size:14px;border-radius:8px;">Cancelar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer-bar">
-    <button class="btn cart-btn footer-cart" id="checkoutBtn" type="button" aria-label="Ver carrinho">
-      <span class="cart-ico" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M7 4h-2l-1 2h2l3.6 7.59-1.35 2.44C8.52 16.37 8.92 17 9.5 17h9v-2h-8.6l1.1-2h6.45c.75 0 1.41-.41 1.75-1.03L22 7H6.42l-.7-1.5C5.52 5.2 5.27 5 5 5H3V3h2c.83 0 1.55.52 1.83 1.3L7 4zm5 13c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm-6 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
-      </span>
-      <span class="cart-label">Ver carrinho</span>
-      <span class="cart-total" id="cartTotal">R$ 0,00</span>
-      <span class="cart-badge" id="cartBadge">0</span>
-    </button>
-  </div>
-
-  <script>
-    // ============================================================
-    // FIREBASE (apenas para cores, horários, status loja, menu, adicionais)
-    // ============================================================
-    const firebaseConfig = {
-      apiKey: "AIzaSyDV9tPC5XNNmB_REgW1au2NtpP1ETtV1i0",
-      authDomain: "paineldepedidos-8cfff.firebaseapp.com",
-      projectId: "paineldepedidos-8cfff",
-      storageBucket: "paineldepedidos-8cfff.firebasestorage.app",
-      messagingSenderId: "390619980929",
-      appId: "1:390619980929:web:5bb015938e9dcb89389980",
-      measurementId: "G-CMH7LSQ7C0"
-    };
-
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-    const db = firebase.firestore();
-
-    // ============================================================
-    // VARIÁVEIS GLOBAIS
-    // ============================================================
-    let CATEGORIES = [];
-    let PRODUCTS = {};
-    let menuItems = [];
-    let lojaAberta = true;
-    let termoBusca = '';
-    let logoMarcaAtual = '';
-    let fechamentoExtra = '';
-    let adicionaisCache = [];
-    let lojaAbertaManual = true;
-    let fechamentoProgramado = null;
-
-    const DIAS_SEMANA = ['domingo','segunda','terca','quarta','quinta','sexta','sabado'];
-    let horariosCache = {};
-    let cores = {};
-
-    function logDebug(mensagem, dados = null) {
-      console.log(`[DEBUG] ${mensagem}`, dados || '');
-    }
-
-    // ============================================================
-    // CORES
-    // ============================================================
-    function carregarCores() {
-      try {
-        db.collection('config').doc('cores').onSnapshot((doc) => {
-          if (doc.exists) {
-            cores = doc.data();
-          } else {
-            cores = {
-              corFundoSite: '#1A1210', corContainer: '#1A1A1A', corTopo: '#1A1210',
-              corCategoriaAtiva: '#FFE066', corBotaoAdicionar: '#2B7245',
-              corCategoria: '#FFD700', corMenu: '#DC3545',
-              corGroupHeader: '#FFD700', corCart: '#AC940D',
-              corFonte: '#E6EEF6', corFonteTitulo: '#FFFFFF',
-              corFontePreco: '#AC940D', corFonteMuted: '#9AA6B2'
-            };
-          }
-          aplicarCores(cores);
-        }, (error) => logDebug('Erro ao carregar cores', error));
-      } catch (error) {
-        logDebug('Erro crítico ao carregar cores', error);
+    },
+    {
+      "id": "choco4-ouro-branco",
+      "price": null,
+      "extras": [],
+      "desc": "Chocolate ao leite, Ouro Branco.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787073101704.jfif?alt=media&token=8596c8c1-a25c-4bbd-a881-2a094c3cb0a6",
+      "units": null,
+      "sizes": {
+        "15": 19.99,
+        "25": 23.99
+      },
+      "title": "CHOCO 4 CHOCO AO LEITE, OURO BRANCO",
+      "unidade": "",
+      "categoria": "pasteis_doces",
+      "ativo": true
+    },
+    {
+      "id": "choco5-so-chocolate-branco",
+      "ativo": true,
+      "title": "CHOCO 5 SÓ CHOCOLATE BRANCO",
+      "sizes": {
+        "15": 17.99,
+        "25": 20.99
+      },
+      "units": null,
+      "desc": "Só chocolate branco.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787073198527.jfif?alt=media&token=2c812658-c49d-4c55-b0d9-beec57b88acc",
+      "extras": [],
+      "price": null,
+      "unidade": "",
+      "categoria": "pasteis_doces"
+    },
+    {
+      "id": "choco6-branco-sonho-de-valsa",
+      "price": null,
+      "desc": "Chocolate branco, Sonho de Valsa.",
+      "unidade": "",
+      "extras": [],
+      "categoria": "pasteis_doces",
+      "sizes": {
+        "15": 19.99,
+        "25": 23.99
+      },
+      "title": "CHOCO 6 CHOCOLATE BRANCO, SONHO DE VALSA",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787073304638.jfif?alt=media&token=ca43a966-90fe-4549-96b5-e161a917eb41",
+      "units": null,
+      "ativo": true
+    },
+    {
+      "id": "choco7-branco-ouro-branco",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787073500916.jfif?alt=media&token=a75bc3ae-3971-433d-92f0-33853b64d85d",
+      "unidade": "",
+      "price": null,
+      "extras": [],
+      "ativo": true,
+      "categoria": "pasteis_doces",
+      "desc": "Chocolate branco, Ouro Branco.",
+      "units": null,
+      "title": "CHOCO 7 CHOCOLATE BRANCO, OURO BRANCO",
+      "sizes": {
+        "15": 19.99,
+        "25": 23.99
       }
-    }
-
-    function aplicarCores(coresObj) {
-      const root = document.documentElement;
-      root.style.setProperty('--bg-site', coresObj.corFundoSite || '#1A1210');
-      root.style.setProperty('--bg-container', coresObj.corContainer || '#1A1A1A');
-      root.style.setProperty('--bg-topo', coresObj.corTopo || '#1A1210');
-      root.style.setProperty('--cor-categoria-ativa', coresObj.corCategoriaAtiva || '#FFE066');
-      root.style.setProperty('--cor-botao-adicionar', coresObj.corBotaoAdicionar || '#2B7245');
-      root.style.setProperty('--cor-categoria', coresObj.corCategoria || '#FFD700');
-      root.style.setProperty('--cor-menu', coresObj.corMenu || '#DC3545');
-      root.style.setProperty('--cor-group-header', coresObj.corGroupHeader || '#FFD700');
-      root.style.setProperty('--cor-cart', coresObj.corCart || '#AC940D');
-      root.style.setProperty('--cor-fonte', coresObj.corFonte || '#E6EEF6');
-      root.style.setProperty('--cor-fonte-titulo', coresObj.corFonteTitulo || '#FFFFFF');
-      root.style.setProperty('--cor-fonte-preco', coresObj.corFontePreco || '#AC940D');
-      root.style.setProperty('--cor-fonte-muted', coresObj.corFonteMuted || '#9AA6B2');
-    }
-
-    // ============================================================
-    // HORÁRIOS E STATUS
-    // ============================================================
-    function carregarStatusHorarios() {
-      try {
-        db.collection('config').doc('horarios').onSnapshot((doc) => {
-          if (doc.exists) {
-            horariosCache = doc.data() || {};
-          } else {
-            horariosCache = {};
-          }
-          DIAS_SEMANA.forEach(dia => {
-            if (!horariosCache[dia]) horariosCache[dia] = [];
-          });
-          atualizarStatusCompleto();
-        }, (error) => logDebug('Erro ao carregar horários', error));
-
-        db.collection('config').doc('loja').onSnapshot((doc) => {
-          if (doc.exists) {
-            const data = doc.data();
-            if (data.logoUrl) {
-              document.getElementById('logoImg').src = data.logoUrl;
-            }
-            logoMarcaAtual = data.logoMarca || '';
-            lojaAbertaManual = data.lojaAberta !== undefined ? data.lojaAberta : true;
-            fechamentoProgramado = data.fechamentoProgramado || null;
-          } else {
-            lojaAbertaManual = true;
-            fechamentoProgramado = null;
-          }
-          atualizarStatusCompleto();
-        }, (error) => logDebug('Erro ao carregar status da loja', error));
-      } catch (error) {
-        logDebug('Erro crítico ao carregar status', error);
+    },
+    {
+      "id": "creme-avela-banana-buello",
+      "unidade": "",
+      "price": null,
+      "extras": [],
+      "categoria": "pasteis_doces",
+      "ativo": true,
+      "desc": "Creme de avelã Buello com banana.",
+      "sizes": {
+        "15": 23.99,
+        "25": 28.99
+      },
+      "title": "CREME DE AVELÃ COM BANANA (BUELLO)",
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787073955421.jfif?alt=media&token=c4ac6648-6d36-461b-baeb-3438c05b4990"
+    },
+    {
+      "id": "creme-avela-coco-buello",
+      "unidade": "",
+      "price": null,
+      "extras": [],
+      "desc": "Creme de avelã Buello com coco ralado.",
+      "img": "img/creme-avela-coco.png",
+      "ativo": true,
+      "categoria": "pasteis_doces",
+      "title": "CREME DE AVELÃ COM COCO RALADO (BUELLO)",
+      "sizes": {
+        "15": 22.99,
+        "25": 28.99
+      },
+      "units": null
+    },
+    {
+      "id": "cruzeiro1",
+      "ativo": true,
+      "categoria": "pasteis_especiais",
+      "unidade": "",
+      "title": "CRUZEIRO 1 — Carne, ovo, azeitona, cebola",
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "units": null,
+      "desc": "Carne, ovo, azeitona e cebola.",
+      "extras": [],
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070320812.png?alt=media&token=ad304465-d2fc-4681-8a33-5195f6bc6058",
+      "price": null
+    },
+    {
+      "id": "cruzeiro2",
+      "ativo": true,
+      "title": "CRUZEIRO 2 — Carne, ovo, azeitona, queijo mussarela",
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "unidade": "",
+      "units": null,
+      "desc": "Carne, ovo, azeitona e queijo.",
+      "categoria": "pasteis_especiais",
+      "extras": [],
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/cruzeiro2.png?alt=media&token=75e00763-d3ff-4ac0-9839-695ef9ee1f9e",
+      "price": null
+    },
+    {
+      "id": "cruzeiro3",
+      "ativo": true,
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "title": "CRUZEIRO 3 — Carne, ovo, azeitona, requeijão",
+      "units": null,
+      "categoria": "pasteis_especiais",
+      "extras": [],
+      "desc": "Carne, ovo, azeitona e requeijão.",
+      "unidade": "",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/cruzeiro3.png?alt=media&token=36c6d0d9-e8b7-4b08-8d99-c18271899e0b"
+    },
+    {
+      "id": "cruzeiro4",
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "title": "CRUZEIRO 4 — Carne, ovo, azeitona, cheddar",
+      "extras": [],
+      "units": null,
+      "desc": "Carne, ovo, azeitona e cheddar.",
+      "ativo": true,
+      "categoria": "pasteis_especiais",
+      "unidade": "",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070460152.png?alt=media&token=9530d1b5-0a91-4a94-a346-ac197703c145"
+    },
+    {
+      "id": "doce-de-leite-mussarela-banana",
+      "img": "img/doce-leite-mussarela-banana.png",
+      "unidade": "",
+      "price": null,
+      "ativo": true,
+      "categoria": "pasteis_doces",
+      "units": null,
+      "title": "DOCE DE LEITE, MUSSARELA, BANANA",
+      "sizes": {
+        "15": 19.99,
+        "25": 25.99
+      },
+      "extras": [],
+      "desc": "Doce de leite, mussarela, banana."
+    },
+    {
+      "id": "dois-amores",
+      "units": null,
+      "unidade": "",
+      "extras": [],
+      "title": "DOIS AMORES (CHOCO AO LEITE / BRANCO)",
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/dois-amores.png?alt=media&token=1a5a40d0-f475-4019-824b-4543c6bc8820",
+      "desc": "Chocolate ao leite e chocolate branco.",
+      "price": null,
+      "categoria": "pasteis_doces"
+    },
+    {
+      "id": "embarque1",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/embarque1.png?alt=media&token=857fd7a3-aace-49d0-aebe-657442b4effd",
+      "price": null,
+      "extras": [],
+      "desc": "Frango, milho e mussarela.",
+      "units": null,
+      "unidade": "",
+      "categoria": "pasteis_especiais",
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "title": "EMBARQUE 1 — Frango, milho, mussarela",
+      "ativo": true
+    },
+    {
+      "id": "embarque2",
+      "price": null,
+      "extras": [],
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070514639.png?alt=media&token=9fe13150-e6ce-427d-bda3-ab243f0ee313",
+      "ativo": true,
+      "unidade": "",
+      "categoria": "pasteis_especiais",
+      "units": null,
+      "title": "EMBARQUE 2 — Frango, milho, requeijão",
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "desc": "Frango, milho e requeijão."
+    },
+    {
+      "id": "embarque3",
+      "categoria": "pasteis_especiais",
+      "price": null,
+      "extras": [],
+      "ativo": true,
+      "unidade": "",
+      "desc": "Frango, milho e cheddar.",
+      "title": "EMBARQUE 3 — Frango, milho, cheddar",
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/embarque3.png?alt=media&token=4e3a2e19-d665-4d30-a10c-de0d04478b48"
+    },
+    {
+      "id": "gaucho1",
+      "ativo": true,
+      "title": "GAÚCHO 1 — Só costela desfiada",
+      "sizes": {
+        "15": 20.99,
+        "25": 25.99
+      },
+      "unidade": "",
+      "units": null,
+      "categoria": "pasteis",
+      "desc": "Costela bovina desfiada.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/gaucho1.png?alt=media&token=9461b33b-c30e-4dcc-afbc-cea6bcc5cc39",
+      "price": null
+    },
+    {
+      "id": "gaucho2",
+      "units": null,
+      "sizes": {
+        "15": 29.99,
+        "25": 33.99
+      },
+      "title": "GAÚCHO 2 — Costela, mussarela",
+      "ativo": true,
+      "categoria": "pasteis",
+      "desc": "Costela com mussarela.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/gaucho2.png?alt=media&token=27cf1ce0-2a8d-4824-9271-7d2c7c5bde98",
+      "price": null,
+      "unidade": ""
+    },
+    {
+      "id": "gaucho3",
+      "desc": "Costela com requeijão.",
+      "sizes": {
+        "15": 29.99,
+        "25": 33.99
+      },
+      "title": "GAÚCHO 3 — Costela com requeijão",
+      "units": null,
+      "ativo": true,
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786982157987.png?alt=media&token=cf8fe281-5157-48fe-ad44-ad86880a41d3",
+      "categoria": "pasteis",
+      "unidade": ""
+    },
+    {
+      "id": "gaucho4",
+      "price": null,
+      "desc": "Costela com cheddar.",
+      "categoria": "pasteis",
+      "title": "GAÚCHO 4 — Costela com cheddar",
+      "sizes": {
+        "15": 29.99,
+        "25": 33.99
+      },
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786982192937.png?alt=media&token=b0acbb31-5588-4b30-8e1c-10d85cc5754d",
+      "unidade": "",
+      "ativo": true
+    },
+    {
+      "id": "gaucho5",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786982314620.png?alt=media&token=1648b595-ccce-4030-9092-2dc9f69f3be9",
+      "desc": "Costela com purê.",
+      "unidade": "",
+      "units": null,
+      "sizes": {
+        "15": 29.99,
+        "25": 33.99
+      },
+      "title": "GAÚCHO 5 — Costela com purê",
+      "ativo": true,
+      "categoria": "pasteis"
+    },
+    {
+      "id": "gaucho6",
+      "ativo": true,
+      "title": "GAÚCHO 6 — Costela com requeijão e palmito",
+      "sizes": {
+        "15": 31.99,
+        "25": 35.99
+      },
+      "units": null,
+      "categoria": "pasteis",
+      "unidade": "",
+      "desc": "Costela com requeijão e palmito.",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/gaucho6.png?alt=media&token=af458d49-1b8a-4a42-83cb-4dbf93e50a75"
+    },
+    {
+      "id": "gaucho7",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/gaucho7.png?alt=media&token=ecd29fcd-304a-4f4a-9ba0-0e211f8dc304",
+      "units": null,
+      "unidade": "",
+      "sizes": {
+        "15": 32.99,
+        "25": 37.99
+      },
+      "title": "GAÚCHO 6 — Costela, Catupiry original",
+      "categoria": "pasteis",
+      "desc": "Costela com Catupiry original.",
+      "price": null
+    },
+    {
+      "id": "gaucho8",
+      "units": null,
+      "sizes": {
+        "15": 32.99,
+        "25": 37.99
+      },
+      "title": "GAÚCHO 8 — Costela, cheddar polenghi",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786226548883.png?alt=media&token=c04badf6-9d55-499d-a508-ca66f039a6cc",
+      "desc": "Costela com cheddar Polenghi.",
+      "price": null,
+      "unidade": "",
+      "categoria": "pasteis"
+    },
+    {
+      "id": "hotdog",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/hotdog.png?alt=media&token=cd14f5ef-82f1-4aa2-b87d-3dde6b65ad1d",
+      "price": null,
+      "desc": "Salsicha, purê e batata palha.\n15 cm vai uma salsicha.\n25 cm vai duas salsichas.",
+      "units": null,
+      "sizes": {
+        "15": 17.99,
+        "25": 22.99
+      },
+      "title": "HOT DOG — Salsicha, purê, batata palha",
+      "extras": [],
+      "ativo": true,
+      "unidade": "",
+      "categoria": "pasteis_especiais"
+    },
+    {
+      "id": "italian1",
+      "unidade": "",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786982616506.png?alt=media&token=46cf5885-77f1-45f8-9467-8f91f92c3368",
+      "desc": "Calabresa fatiada.",
+      "units": null,
+      "sizes": {
+        "15": 12.99,
+        "25": 14.99
+      },
+      "title": "ITALIAN 1 — Só calabresa fatiada",
+      "categoria": "pasteis",
+      "ativo": true
+    },
+    {
+      "id": "italian2",
+      "categoria": "pasteis",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/italian2.png?alt=media&token=1e981c59-d6d2-4359-bf69-a7fca97690ee",
+      "ativo": true,
+      "units": null,
+      "sizes": {
+        "15": 15.99,
+        "25": 20.99
+      },
+      "title": "ITALIAN 2 — Calabresa com mussarela",
+      "desc": "Calabresa com mussarela.",
+      "unidade": ""
+    },
+    {
+      "id": "italian3",
+      "price": null,
+      "ativo": true,
+      "desc": "Calabresa com requeijão cremoso.",
+      "sizes": {
+        "15": 15.99,
+        "25": 20.99
+      },
+      "title": "ITALIAN 3 — Calabresa com requeijão",
+      "categoria": "pasteis",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/italian3.png?alt=media&token=df1a645e-bafc-4119-8007-70f912d9fa1a",
+      "units": null,
+      "unidade": ""
+    },
+    {
+      "id": "italian4",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/italian4.png?alt=media&token=384205c2-aa4f-47af-b407-9499c4285a8c",
+      "units": null,
+      "categoria": "pasteis",
+      "sizes": {
+        "15": 15.99,
+        "25": 20.99
+      },
+      "title": "ITALIAN 4 — Calabresa com cheddar",
+      "unidade": "",
+      "desc": "Calabresa com cheddar.",
+      "ativo": true,
+      "price": null
+    },
+    {
+      "id": "italian5",
+      "price": null,
+      "categoria": "pasteis",
+      "unidade": "",
+      "ativo": true,
+      "desc": "Calabresa com purê de batata.",
+      "title": "ITALIAN 5 — Calabresa com purê",
+      "sizes": {
+        "15": 15.99,
+        "25": 20.99
+      },
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786982846320.png?alt=media&token=f12778e7-78e8-429e-930c-3331ccd5ecff"
+    },
+    {
+      "id": "italian6",
+      "price": null,
+      "desc": "Calabresa, requeijão e palmito em cubos.",
+      "unidade": "",
+      "categoria": "pasteis",
+      "title": "ITALIAN 6 — Calabresa, requeijão e palmito",
+      "sizes": {
+        "15": 18.99,
+        "25": 23.99
+      },
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/italian6.png?alt=media&token=d55f714f-ebcf-4ea8-83f8-2e5aca5f07a9",
+      "ativo": true
+    },
+    {
+      "id": "italian7",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786983095673.png?alt=media&token=4f937282-a4d3-4c96-9f95-b5d9eee83122",
+      "units": null,
+      "title": "ITALIAN 7 — Calabresa Catupiry original",
+      "sizes": {
+        "15": 27.99,
+        "25": 34.99
+      },
+      "desc": "Calabresa fatiada com Catupiry original.",
+      "ativo": true,
+      "categoria": "pasteis",
+      "price": null,
+      "unidade": ""
+    },
+    {
+      "id": "italian8",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/italian8.png?alt=media&token=714d2e05-3d1b-44ef-9f4d-594859ee2c50",
+      "unidade": "",
+      "price": null,
+      "desc": "Calabresa fatiada com cheddar Polenghi.",
+      "units": null,
+      "sizes": {
+        "15": 27.99,
+        "25": 34.99
+      },
+      "title": "ITALIAN 8 — Calabresa cheddar polenghi",
+      "categoria": "pasteis",
+      "ativo": true
+    },
+    {
+      "id": "lampiao1",
+      "ativo": true,
+      "sizes": {
+        "15": 20.99,
+        "25": 25.99
+      },
+      "title": "LAMPIÃO 1 — Só carne seca (jabá)",
+      "units": null,
+      "unidade": "",
+      "desc": "Carne seca (jabá).",
+      "price": null,
+      "categoria": "pasteis",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/lampiao1.png?alt=media&token=8d0eb9f4-4edf-4da7-95f3-9455e33df518"
+    },
+    {
+      "id": "lampiao2",
+      "categoria": "pasteis",
+      "unidade": "",
+      "price": null,
+      "ativo": true,
+      "desc": "Carne seca com mussarela.",
+      "title": "LAMPIÃO 2 — Carne seca, mussarela",
+      "sizes": {
+        "15": 29.99,
+        "25": 33.99
+      },
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786983273617.png?alt=media&token=e4fa24e0-3275-414c-b87e-41ca2e2496f7"
+    },
+    {
+      "id": "lampiao3",
+      "ativo": true,
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786983297142.png?alt=media&token=974c09a5-e4a8-4602-ade7-66765ade9dad",
+      "title": "LAMPIÃO 3 — Carne seca com requeijão",
+      "sizes": {
+        "15": 29.99,
+        "25": 33.99
+      },
+      "categoria": "pasteis",
+      "unidade": "",
+      "desc": "Carne seca com requeijão.",
+      "price": null
+    },
+    {
+      "id": "lampiao4",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786983316866.png?alt=media&token=1bca7a81-7a19-47a8-a3fa-1f93e9363526",
+      "unidade": "",
+      "categoria": "pasteis",
+      "price": null,
+      "ativo": true,
+      "desc": "Carne seca com cheddar.",
+      "units": null,
+      "title": "LAMPIÃO 4 — Carne seca com cheddar",
+      "sizes": {
+        "15": 29.99,
+        "25": 33.99
       }
+    },
+    {
+      "id": "lampiao5",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/lampiao5.png?alt=media&token=2e4fbf0c-b82d-49fd-b5b8-9f897cad088c",
+      "categoria": "pasteis",
+      "price": null,
+      "ativo": true,
+      "unidade": "",
+      "desc": "Carne seca com purê.",
+      "units": null,
+      "sizes": {
+        "15": 29.99,
+        "25": 33.99
+      },
+      "title": "LAMPIÃO 5 — Carne seca com purê"
+    },
+    {
+      "id": "lampiao6",
+      "units": null,
+      "unidade": "",
+      "title": "LAMPIÃO 6 — Carne seca com requeijão e palmito",
+      "sizes": {
+        "15": 31.99,
+        "25": 35.99
+      },
+      "categoria": "pasteis",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786983391675.png?alt=media&token=7df5ac96-6b55-49ec-8608-1330c0edb366",
+      "desc": "Carne seca com requeijão e palmito.",
+      "price": null
+    },
+    {
+      "id": "lampiao7",
+      "categoria": "pasteis",
+      "price": null,
+      "desc": "Carne seca com Catupiry original.",
+      "sizes": {
+        "15": 32.99,
+        "25": 37.99
+      },
+      "title": "LAMPIÃO 7 — Carne seca, Catupiry original",
+      "unidade": "",
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786983423554.png?alt=media&token=22e2e81b-805c-4198-b8d6-ee7e6e3b0d96",
+      "ativo": true
+    },
+    {
+      "id": "lampiao8",
+      "price": null,
+      "unidade": "",
+      "desc": "Carne seca com cheddar Polenghi.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786983459909.png?alt=media&token=d477175f-850c-4722-97ce-ccc8ee314e5f",
+      "ativo": true,
+      "title": "LAMPIÃO 8 — Carne seca, cheddar polenghi",
+      "sizes": {
+        "15": 32.99,
+        "25": 37.99
+      },
+      "categoria": "pasteis",
+      "units": null
+    },
+    {
+      "id": "lasanha",
+      "extras": [],
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "title": "LASANHA — Carne, presunto, queijo, orégano",
+      "units": null,
+      "desc": "Carne, presunto, queijo e orégano.",
+      "ativo": true,
+      "unidade": "",
+      "price": null,
+      "categoria": "pasteis_especiais",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070775732.png?alt=media&token=e23ce39f-001a-4db2-a916-93979cde4f0c"
+    },
+    {
+      "id": "lombo1",
+      "unidade": "",
+      "sizes": {
+        "15": 26.99,
+        "25": 29.99
+      },
+      "title": "LOMBO 1 — Lombo, mussarela e champignon",
+      "desc": "Lombo suíno, mussarela e champignon.",
+      "units": null,
+      "ativo": true,
+      "price": null,
+      "categoria": "pasteis",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/lombo1.png?alt=media&token=02a33d33-ba30-4879-bfa9-edc4db2906ff"
+    },
+    {
+      "id": "lombo2",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786987640101.png?alt=media&token=53ee7a7a-71fb-400f-918a-187cc2828cb8",
+      "units": null,
+      "title": "LOMBO 2 — Lombo, requeijão e champignon",
+      "sizes": {
+        "15": 26.99,
+        "25": 29.99
+      },
+      "unidade": "",
+      "desc": "Lombo suíno, requeijão e champignon",
+      "categoria": "pasteis",
+      "price": null
+    },
+    {
+      "id": "lombo3",
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/lombo3.png?alt=media&token=713b0e69-4eac-4c3d-805f-0cd5626a8705",
+      "sizes": {
+        "15": 26.99,
+        "25": 29.99
+      },
+      "title": "LOMBO 3 — lombo, cheddar e champignon",
+      "categoria": "pasteis",
+      "unidade": "",
+      "desc": "Lombo suíno, cheddar e champignon",
+      "ativo": true,
+      "price": null
+    },
+    {
+      "id": "lombo4",
+      "price": null,
+      "desc": "Lombo suíno, Catupiry Original, champignon.",
+      "sizes": {
+        "15": 32.99,
+        "25": 35.99
+      },
+      "title": "LOMBO 4 — Lombo, Catupiry Original e champignon",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786987817242.png?alt=media&token=66bedf21-dfc4-4f72-841a-2a8ad25870cc",
+      "categoria": "pasteis",
+      "units": null,
+      "unidade": "",
+      "ativo": true
+    },
+    {
+      "id": "lombo5",
+      "price": null,
+      "desc": "Lombo suíno com cheddar Polenghi e champginon",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786987796329.png?alt=media&token=fb2fe767-fab2-40c2-9c6c-106e393f8709",
+      "ativo": true,
+      "unidade": "",
+      "title": "LOMBO 5 — Lombo, cheddar polenghi e champignon",
+      "sizes": {
+        "15": 32.99,
+        "25": 35.99
+      },
+      "categoria": "pasteis",
+      "units": null
+    },
+    {
+      "id": "louca1",
+      "price": null,
+      "categoria": "pasteis",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786987962104.png?alt=media&token=b8f44930-4557-4523-b7f9-035a3f6a474c",
+      "desc": "Carne louca desfiada.",
+      "units": null,
+      "title": "LOUCA 1 — Só carne louca",
+      "sizes": {
+        "15": 20.99,
+        "25": 25.99
+      },
+      "ativo": true,
+      "unidade": ""
+    },
+    {
+      "id": "louca2",
+      "ativo": true,
+      "sizes": {
+        "15": 29.99,
+        "25": 33.99
+      },
+      "title": "LOUCA 2 — Carne louca, mussarela",
+      "units": null,
+      "unidade": "",
+      "desc": "Carne louca com mussarela.",
+      "categoria": "pasteis",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/louca2.png?alt=media&token=59dd5922-94ec-4933-8860-e6c42829aa47"
+    },
+    {
+      "id": "louca3",
+      "desc": "Carne louca com requeijão.",
+      "sizes": {
+        "15": 29.99,
+        "25": 33.99
+      },
+      "title": "LOUCA 3 — Carne louca com requeijão",
+      "units": null,
+      "ativo": true,
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786988059230.png?alt=media&token=616eab2d-bd3b-4550-89cd-7351e482e4f4",
+      "categoria": "pasteis",
+      "unidade": ""
+    },
+    {
+      "id": "louca4",
+      "price": null,
+      "desc": "Carne louca com cheddar.",
+      "categoria": "pasteis",
+      "sizes": {
+        "15": 29.99,
+        "25": 33.99
+      },
+      "title": "LOUCA 4 — Carne louca com cheddar",
+      "units": null,
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786988090316.png?alt=media&token=ab56e969-7003-4779-a09a-31a79739f145",
+      "ativo": true
+    },
+    {
+      "id": "louca5",
+      "price": null,
+      "desc": "Carne louca com purê.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786988112589.png?alt=media&token=cae40856-572c-4bc2-bde4-64f0b1cc711c",
+      "units": null,
+      "title": "LOUCA 5 — Carne louca com purê",
+      "sizes": {
+        "15": 33.98,
+        "25": 37.98
+      },
+      "ativo": true,
+      "unidade": "",
+      "categoria": "pasteis"
+    },
+    {
+      "id": "louca6",
+      "price": null,
+      "categoria": "pasteis",
+      "desc": "Carne louca com requeijão e palmito.",
+      "unidade": "",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/louca6.png?alt=media&token=43202f0c-cceb-459b-8cc8-e4c5979978ff",
+      "title": "LOUCA 6 — Carne louca com requeijão e palmito",
+      "sizes": {
+        "15": 31.99,
+        "25": 35.99
+      },
+      "units": null
+    },
+    {
+      "id": "louca7",
+      "unidade": "",
+      "units": null,
+      "title": "LOUCA 7 — Carne louca, Catupiry original",
+      "sizes": {
+        "15": 32.99,
+        "25": 37.99
+      },
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786988307224.png?alt=media&token=84c6c1cf-1669-4d8b-a5d7-da1729cc8c2c",
+      "desc": "Carne louca com Catupiry original.",
+      "categoria": "pasteis",
+      "price": null
+    },
+    {
+      "id": "louca8",
+      "unidade": "",
+      "units": null,
+      "title": "LOUCA 8 — Carne louca, cheddar polenghi",
+      "sizes": {
+        "15": 32.99,
+        "25": 37.99
+      },
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786988345193.png?alt=media&token=6af217fa-0242-4d6d-93bb-56f2a96ae654",
+      "desc": "Carne louca com cheddar Polenghi.",
+      "price": null,
+      "categoria": "pasteis"
+    },
+    {
+      "id": "m1_calabresa_cheddar",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+      "unidade": "un",
+      "price": 38.98,
+      "extras": [],
+      "categoria": "porcoes",
+      "ativo": true,
+      "units": 30,
+      "desc": "Porção de 30 unidades de Calabresa com Cheddar.",
+      "sizes": {
+        "30": 26.99,
+        "60": 53.98
+      },
+      "title": "Mini Pastéis Calabresa c/ Cheddar"
+    },
+    {
+      "id": "m1_calabresa_req",
+      "units": 30,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+      "sizes": {
+        "60 unidades": 53.98,
+        "30 unidades": 26.99
+      },
+      "title": "Mini Pastéis Calabresa c/ Requeijão (30un)",
+      "unidade": "",
+      "ativo": true,
+      "desc": "Porção de 30 unidades de Calabresa com Requeijão.",
+      "categoria": "porcoes",
+      "extras": [],
+      "price": 38.98
+    },
+    {
+      "id": "m1_carne",
+      "units": 30,
+      "title": "Mini Pastéis Carne ao Creme (30un)",
+      "sizes": {
+        "30": 26.99,
+        "60": 53.98
+      },
+      "unidade": "",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+      "desc": "Porção de 30 unidades de Carne ao Creme.",
+      "extras": [],
+      "categoria": "porcoes",
+      "price": 38.98
+    },
+    {
+      "id": "m1_frango",
+      "categoria": "porcoes",
+      "price": 38.98,
+      "unidade": "",
+      "desc": "Porção de 30 unidades de Frango ao Creme.",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+      "sizes": {
+        "30": 26.99,
+        "60": 53.98
+      },
+      "title": "Mini Pastéis Frango ao Creme (30un)",
+      "extras": [],
+      "units": 30
+    },
+    {
+      "id": "m1_presunto_req",
+      "ativo": true,
+      "sizes": {
+        "30": 26.99,
+        "60": 53.98
+      },
+      "title": "Mini Pastéis Presunto e Requeijão (30un)",
+      "units": 30,
+      "desc": "Porção de 30 unidades de Presunto e Requeijão.",
+      "extras": [],
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+      "price": 38.98,
+      "categoria": "porcoes",
+      "unidade": ""
+    },
+    {
+      "id": "m1_so_cheddar",
+      "unidade": "",
+      "sizes": {
+        "30": 26.99,
+        "60": 53.98
+      },
+      "title": "Mini Pastéis Só Cheddar (30un)",
+      "extras": [],
+      "units": 30,
+      "desc": "Porção de 30 unidades de Só Cheddar.",
+      "ativo": true,
+      "price": 38.98,
+      "categoria": "porcoes",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10"
+    },
+    {
+      "id": "m1_so_req",
+      "price": 38.98,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+      "desc": "Porção de 30 unidades de Só Requeijão.",
+      "unidade": "",
+      "units": 30,
+      "sizes": {
+        "30": 26.99,
+        "60": 53.98
+      },
+      "title": "Mini Pastéis Só Requeijão (30un)",
+      "categoria": "porcoes",
+      "ativo": true,
+      "extras": []
+    },
+    {
+      "id": "m2_catupiry",
+      "price": 42.98,
+      "desc": "Porção de 30 unidades de Catupiry Original.",
+      "extras": [],
+      "categoria": "porcoes",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+      "sizes": {
+        "30": 34.99,
+        "60": 69.98
+      },
+      "title": "Mini Pastéis Catupiry Original (30un)",
+      "unidade": "",
+      "units": 30,
+      "ativo": true
+    },
+    {
+      "id": "m2_polenghi",
+      "price": 42.98,
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+      "desc": "Porção de 30 unidades de Cheddar Polenghi.",
+      "units": 30,
+      "sizes": {
+        "30": 34.99,
+        "60": 69.98
+      },
+      "title": "Mini Pastéis Cheddar Polenghi (30un)",
+      "ativo": true,
+      "extras": [],
+      "categoria": "porcoes"
+    },
+    {
+      "id": "m3_brigadeiro",
+      "price": 40.98,
+      "unidade": "",
+      "desc": "Porção de 30 unidades de Brigadeiro.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+      "ativo": true,
+      "sizes": {
+        "30": 29.99,
+        "60": 59.98
+      },
+      "title": "Mini Pastéis Brigadeiro (30un)",
+      "extras": [],
+      "categoria": "porcoes",
+      "units": 30
+    },
+    {
+      "id": "m3_leite",
+      "price": 40.98,
+      "categoria": "porcoes",
+      "unidade": "",
+      "desc": "Porção de 30 unidades de Doce de Leite.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+      "ativo": true,
+      "sizes": {
+        "30": 29.99,
+        "60": 59.98
+      },
+      "title": "Mini Pastéis Doce de Leite (30un)",
+      "extras": [],
+      "units": 30
+    },
+    {
+      "id": "madre1-doce-de-leite-banana",
+      "units": null,
+      "unidade": "",
+      "extras": [],
+      "title": "MADRE 1 DOCE DE LEITE COM BANANA",
+      "sizes": {
+        "15": 15.99,
+        "25": 20.99
+      },
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/madre1.png?alt=media&token=8ffa34e0-22c9-406f-b1bc-ce588cc0feb9",
+      "desc": "Doce de leite com banana.",
+      "price": null,
+      "categoria": "pasteis_doces"
+    },
+    {
+      "id": "madre2-doce-de-leite-pacoca",
+      "ativo": true,
+      "img": "img/madre2.png",
+      "categoria": "pasteis_doces",
+      "units": null,
+      "title": "MADRE 2 DOCE DE LEITE COM PAÇOCA",
+      "sizes": {
+        "15": 15.99,
+        "25": 20.99
+      },
+      "extras": [],
+      "unidade": "",
+      "desc": "Doce de leite com paçoca.",
+      "price": null
+    },
+    {
+      "id": "madre3-doce-de-leite-coco",
+      "img": "img/madre3.png",
+      "price": null,
+      "unidade": "",
+      "ativo": true,
+      "desc": "Doce de leite com coco.",
+      "categoria": "pasteis_doces",
+      "units": null,
+      "extras": [],
+      "sizes": {
+        "15": 15.99,
+        "25": 20.99
+      },
+      "title": "MADRE 3 DOCE DE LEITE COM COCO"
+    },
+    {
+      "id": "madre4-doce-de-leite-banana-pacoca",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/madre4.png?alt=media&token=07375bee-9662-4db0-9371-ef8ebf1bef27",
+      "price": null,
+      "extras": [],
+      "categoria": "pasteis_doces",
+      "ativo": true,
+      "unidade": "",
+      "desc": "Doce de leite, banana, paçoca.",
+      "units": null,
+      "sizes": {
+        "15": 16.99,
+        "25": 22.99
+      },
+      "title": "MADRE 4 DOCE DE LEITE, BANANA, PAÇOCA"
+    },
+    {
+      "id": "metro1",
+      "ativo": true,
+      "categoria": "pasteis_especiais",
+      "extras": [],
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/metro1.png?alt=media&token=81282309-77d9-4695-b8f6-ebaeeb98b063",
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "title": "METRÔ 1 — Carne, azeitona, queijo, tomate, orégano",
+      "unidade": "",
+      "desc": "Carne, azeitona, queijo, tomate e orégano.",
+      "price": null
+    },
+    {
+      "id": "metro2",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/metro2.png?alt=media&token=0df75223-0ea8-41c2-a7a3-dca57fd877e0",
+      "desc": "Mussarela, requeijão, bacon e milho.",
+      "units": null,
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "title": "METRÔ 2 — Mussarela, requeião, bacon, milho",
+      "categoria": "pasteis_especiais",
+      "ativo": true,
+      "extras": [],
+      "unidade": ""
+    },
+    {
+      "id": "mexicana",
+      "price": null,
+      "desc": "Calabresa, carne, milho, pimentão, cebola, tomate e pimenta.",
+      "unidade": "",
+      "extras": [],
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "title": "MEXICANA — Calabresa, carne, milho, pimentão, cebola, tomate, pimenta",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070918026.png?alt=media&token=ffe013c8-8ccb-4bab-8d29-ef3a0b4c059e",
+      "units": null,
+      "categoria": "pasteis_especiais",
+      "ativo": true
+    },
+    {
+      "id": "mineiro1",
+      "categoria": "pasteis",
+      "price": null,
+      "unidade": "",
+      "desc": "Pastel de queijo mussarela.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786984024241.png?alt=media&token=46e9a43a-2972-4ea3-98f0-d0af57e3c12d",
+      "ativo": true,
+      "title": "MINEIRO 1 — Só queijo mussarela",
+      "sizes": {
+        "15": 12.99,
+        "25": 15.99
+      },
+      "units": null
+    },
+    {
+      "id": "mineiro2",
+      "sizes": {
+        "15": 18.99,
+        "25": 21.99
+      },
+      "title": "MINEIRO 2 — Queijo Mussarela com requeijão",
+      "units": null,
+      "desc": "Queijo mussarela com requeijão.",
+      "ativo": true,
+      "price": null,
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/mineiro2.png?alt=media&token=4b7a966e-e127-4738-95ef-0a4b7b1b490a",
+      "categoria": "pasteis"
+    },
+    {
+      "id": "mineiro3",
+      "price": null,
+      "categoria": "pasteis",
+      "desc": "Mussarela com cheddar.",
+      "title": "MINEIRO 3 — Mussarela com cheddar",
+      "sizes": {
+        "15": 18.99,
+        "25": 21.99
+      },
+      "units": null,
+      "ativo": true,
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/mineiro3.png?alt=media&token=271f8350-3038-46e8-b731-ab40bbd07bb5"
+    },
+    {
+      "id": "mineiro4",
+      "units": null,
+      "sizes": {
+        "15": 21.99,
+        "25": 24.99
+      },
+      "title": "MINEIRO 4 — Mussarela, requeijão, cheddar",
+      "ativo": true,
+      "categoria": "pasteis",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786987235292.png?alt=media&token=118859ad-2aaa-4b7f-af35-26f0c68f4514",
+      "desc": "Mussarela, requeijão e cheddar.",
+      "price": null,
+      "unidade": ""
+    },
+    {
+      "id": "mineiro5",
+      "ativo": true,
+      "title": "MINEIRO 5 — Mussarela, Catupiry original",
+      "sizes": {
+        "15": 24.99,
+        "25": 27.99
+      },
+      "units": null,
+      "categoria": "pasteis",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786987347791.png?alt=media&token=eab401fb-65e9-4d2c-ac35-33a144480ea8",
+      "desc": "Mussarela com Catupiry original.",
+      "price": null,
+      "unidade": ""
+    },
+    {
+      "id": "mineiro6",
+      "ativo": true,
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/mineiro6.png?alt=media&token=55c5a09b-dced-41bd-81db-33af53c2ad7d",
+      "sizes": {
+        "15": 24.99,
+        "25": 27.99
+      },
+      "title": "MINEIRO 6 — Mussarela, cheddar polenghi",
+      "unidade": "",
+      "categoria": "pasteis",
+      "desc": "Mussarela com cheddar Polenghi.",
+      "price": null
+    },
+    {
+      "id": "misto1",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786988387448.png?alt=media&token=919d3e9b-b3d9-4167-8f8f-93390a070f49",
+      "price": null,
+      "unidade": "",
+      "ativo": true,
+      "units": null,
+      "categoria": "pasteis",
+      "desc": "Mussarela e presunto.",
+      "sizes": {
+        "15": 15.99,
+        "25": 20.99
+      },
+      "title": "MISTO 1 — Queijo, presunto"
+    },
+    {
+      "id": "misto2",
+      "price": null,
+      "desc": "Mussarela, presunto e requeijão.",
+      "categoria": "pasteis",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786988412007.png?alt=media&token=873ca9d8-beae-49a9-9e7f-d3bdea206a55",
+      "sizes": {
+        "15": 18.99,
+        "25": 24.99
+      },
+      "title": "MISTO 2 — Queijo, presunto, requeijão",
+      "units": null,
+      "unidade": "",
+      "ativo": true
+    },
+    {
+      "id": "misto3",
+      "categoria": "pasteis",
+      "price": null,
+      "unidade": "",
+      "desc": "Mussarela, presunto e cheddar.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989100348.png?alt=media&token=ed840a0a-069e-4cb5-8927-38946aff97aa",
+      "ativo": true,
+      "sizes": {
+        "15": 18.99,
+        "25": 24.99
+      },
+      "title": "MISTO 3 — Queijo, presunto, cheddar",
+      "units": null
+    },
+    {
+      "id": "misto4",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/misto4.png?alt=media&token=f473b90a-708f-4818-a601-ba4a9ecb9cc3",
+      "desc": "Mussarela, presunto e Catupiry original.",
+      "categoria": "pasteis",
+      "units": null,
+      "unidade": "",
+      "sizes": {
+        "15": 24.99,
+        "25": 29.99
+      },
+      "title": "MISTO 4 — Queijo, presunto, Catupiry original",
+      "ativo": true
+    },
+    {
+      "id": "misto5",
+      "price": null,
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989192322.png?alt=media&token=6af2d05b-a2ba-419d-a555-7846150e9684",
+      "desc": "Mussarela, presunto e cheddar Polenghi.",
+      "categoria": "pasteis",
+      "ativo": true,
+      "sizes": {
+        "15": 24.99,
+        "25": 29.99
+      },
+      "title": "MISTO 5 — Queijo, presunto, cheddar polenghi",
+      "units": null
+    },
+    {
+      "id": "ninho1-so-leite-ninho",
+      "categoria": "pasteis_doces",
+      "price": null,
+      "desc": "Só leite Ninho.",
+      "img": "img/ninho1.png",
+      "units": null,
+      "title": "NINHO 1 SÓ LEITE NINHO",
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "ativo": true,
+      "extras": [],
+      "unidade": ""
+    },
+    {
+      "id": "ninho2-ninho-banana",
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "title": "NINHO 2 LEITE NINHO COM BANANA",
+      "units": null,
+      "desc": "Leite Ninho com banana.",
+      "unidade": "",
+      "categoria": "pasteis_doces",
+      "ativo": true,
+      "extras": [],
+      "price": null,
+      "img": "img/ninho2.png"
+    },
+    {
+      "id": "nutella-banana",
+      "price": null,
+      "extras": [],
+      "desc": "Nutella com banana.",
+      "img": "img/creme-avela-banana.png",
+      "unidade": "",
+      "ativo": true,
+      "categoria": "pasteis_doces",
+      "sizes": {
+        "15": 21.99,
+        "25": 26.99
+      },
+      "title": "NUTELLA COM BANANA",
+      "units": null
+    },
+    {
+      "id": "nutella-coco",
+      "categoria": "pasteis_doces",
+      "price": null,
+      "unidade": "",
+      "ativo": true,
+      "desc": "Nutella com coco ralado.",
+      "img": "img/creme-avela-coco.png",
+      "sizes": {
+        "15": 23.99,
+        "25": 27.99
+      },
+      "title": "NUTELLA COM COCO RALADO",
+      "units": null,
+      "extras": []
+    },
+    {
+      "id": "pastel-hot-dog-doce",
+      "ativo": true,
+      "units": null,
+      "img": "img/pastel-hot-dog-doce.png",
+      "sizes": {
+        "15": 19.99,
+        "25": 23.99
+      },
+      "title": "PASTEL HOT-DOG DOCE",
+      "extras": [],
+      "unidade": "",
+      "desc": "Banana, chocolate ao leite, batata palha.",
+      "price": null,
+      "categoria": "pasteis_doces"
+    },
+    {
+      "id": "pizza1",
+      "price": null,
+      "desc": "Mussarela, tomate e orégano.",
+      "categoria": "pasteis",
+      "unidade": "",
+      "sizes": {
+        "15": 13.99,
+        "25": 16.99
+      },
+      "title": "PIZZA 1 — Queijo, tomate e orégano",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989312130.png?alt=media&token=8446a4bf-de31-4fa8-9347-86d941a9d93a",
+      "units": null,
+      "ativo": true
+    },
+    {
+      "id": "pizza2",
+      "price": null,
+      "desc": "Mussarela, tomate, orégano e requeijão.",
+      "categoria": "pasteis",
+      "title": "PIZZA 2 — Queijo, tomate, orég., req.",
+      "sizes": {
+        "15": 16.99,
+        "25": 21.99
+      },
+      "unidade": "",
+      "units": null,
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989355880.png?alt=media&token=ec8b784b-dbf0-41da-87cf-be719309b588"
+    },
+    {
+      "id": "pizza3",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989413188.png?alt=media&token=20a6213c-6703-4ee3-98dd-afb84ed71dbe",
+      "desc": "Mussarela, tomate, orégano e cheddar.",
+      "unidade": "",
+      "units": null,
+      "categoria": "pasteis",
+      "sizes": {
+        "15": 16.99,
+        "25": 21.99
+      },
+      "title": "PIZZA 3 — Queijo, tomate, orég., cheddar",
+      "ativo": true
+    },
+    {
+      "id": "pizza4",
+      "unidade": "",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989428393.png?alt=media&token=f6256739-9b6a-4d0d-94c3-82f7a4bdffad",
+      "desc": "Mussarela, tomate, orégano e Catupiry original.",
+      "units": null,
+      "categoria": "pasteis",
+      "sizes": {
+        "15": 22.99,
+        "25": 27.99
+      },
+      "title": "PIZZA 4 — Queijo, tomate, orég., Catupiry org.",
+      "ativo": true
+    },
+    {
+      "id": "pizza5",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989649637.png?alt=media&token=87bb4639-0a29-40f8-8f35-5d35f2200abf",
+      "ativo": true,
+      "units": null,
+      "title": "PIZZA 5 — Queijo, tomate, orégano, cheddar, polenghi",
+      "sizes": {
+        "15": 22.99,
+        "25": 27.99
+      },
+      "unidade": "",
+      "desc": "Mussarela, tomate, orégano e cheddar Polenghi.",
+      "categoria": "pasteis",
+      "price": null
+    },
+    {
+      "id": "portug1",
+      "categoria": "pasteis_especiais",
+      "price": null,
+      "unidade": "",
+      "desc": "Queijo, presunto, ovo, cebola, milho e orégano.",
+      "extras": [],
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "title": "PORTUG 1 — Queijo, presunto, ovo, cebola, milho e orégano",
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070987286.png?alt=media&token=38280f8e-9c33-4de4-abe5-627245deb653",
+      "ativo": true
+    },
+    {
+      "id": "portug2",
+      "price": null,
+      "desc": "Queijo, presunto, ovo, cebola, milho, requeijão e orégano.",
+      "categoria": "pasteis_especiais",
+      "unidade": "",
+      "title": "PORTUG 2 — Queijo, presunto, ovo, cebola, milho, requeijão e orégano.",
+      "sizes": {
+        "15": 22.99,
+        "25": 26.99
+      },
+      "units": null,
+      "extras": [],
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/portug2.png?alt=media&token=05e25f98-b14c-489b-9e2e-d347acf4b9ca"
+    },
+    {
+      "id": "portug3",
+      "desc": "Queijo, presunto, ovo, cebola, milho, cheddar e orégano.",
+      "extras": [],
+      "unidade": "",
+      "sizes": {
+        "15": 22.99,
+        "25": 26.99
+      },
+      "title": "PORTUG 3 — Queijo, presunto, ovo, cebola, milho, cheddar e orégano.",
+      "categoria": "pasteis_especiais",
+      "units": null,
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787071100051.png?alt=media&token=246e2c00-7f80-467d-9cfc-43f14ae2c55f",
+      "price": null
+    },
+    {
+      "id": "prestigio",
+      "categoria": "pasteis_doces",
+      "ativo": true,
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "title": "PRESTÍGIO CHOCO AO LEITE COM BEIJINHO",
+      "units": null,
+      "desc": "Chocolate ao leite com beijinho.",
+      "img": "img/prestigio.png",
+      "extras": [],
+      "price": null,
+      "unidade": ""
+    },
+    {
+      "id": "pupunha-esp",
+      "price": null,
+      "desc": "Palmito, requeijão, bacon e milho.",
+      "categoria": "pasteis_especiais",
+      "unidade": "",
+      "title": "PUPUNHA — Palmito, req, bacon, milho",
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "units": null,
+      "extras": [],
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787071144130.png?alt=media&token=9ad88ffa-863a-4d0e-ba0a-8bed71657be0",
+      "ativo": true
+    },
+    {
+      "id": "pupunha1",
+      "ativo": true,
+      "categoria": "pasteis",
+      "units": null,
+      "sizes": {
+        "15": 15.99,
+        "25": 20.99
+      },
+      "title": "PUPUNHA 1 — Palmito e mussarela",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/pupunha1.png?alt=media&token=15952577-31c6-4d7e-a218-2a645456601e",
+      "unidade": "",
+      "desc": "Palmito com mussarela.",
+      "price": null
+    },
+    {
+      "id": "pupunha2",
+      "units": null,
+      "sizes": {
+        "15": 15.99,
+        "25": 20.99
+      },
+      "title": "PUPUNHA 2 — Palmito e requeijão",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989710338.png?alt=media&token=5845f6c5-4a65-4ed1-b111-5b3653dd58b3",
+      "desc": "Palmito com requeijão.",
+      "unidade": "",
+      "price": null,
+      "categoria": "pasteis"
+    },
+    {
+      "id": "pupunha3",
+      "price": null,
+      "unidade": "",
+      "desc": "Palmito com cheddar.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/pupunha3.png?alt=media&token=01a95522-4b74-4fbf-a6bc-88bc8a67d7ee",
+      "ativo": true,
+      "sizes": {
+        "15": 15.99,
+        "25": 20.99
+      },
+      "title": "PUPUNHA 3 — Palmito e cheddar",
+      "categoria": "pasteis",
+      "units": null
+    },
+    {
+      "id": "pupunha4",
+      "categoria": "pasteis",
+      "price": null,
+      "desc": "Palmito, milho e mussarela.",
+      "ativo": true,
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989765800.png?alt=media&token=af9c6cd2-1e39-443d-8a4b-33afe3fa05fe",
+      "title": "PUPUNHA 4 — Palmito, milho e mussarela",
+      "sizes": {
+        "15": 16.99,
+        "25": 21.99
+      },
+      "units": null
+    },
+    {
+      "id": "pupunha5",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989837201.png?alt=media&token=e2df49b0-3716-4831-9c02-d90cc1bcb4ea",
+      "desc": "Palmito com Catupiry original.",
+      "units": null,
+      "title": "PUPUNHA 5 — Palmito, Catupiry original",
+      "sizes": {
+        "15": 21.99,
+        "25": 26.99
+      },
+      "categoria": "pasteis",
+      "ativo": true,
+      "unidade": ""
+    },
+    {
+      "id": "pupunha6",
+      "price": null,
+      "desc": "Palmito com cheddar Polenghi.",
+      "sizes": {
+        "15": 21.99,
+        "25": 26.99
+      },
+      "title": "PUPUNHA 6 — Palmito, cheddar polenghi",
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/pupunha6.png?alt=media&token=9999b3fc-2b75-449f-a77f-72911d57c002",
+      "unidade": "",
+      "ativo": true,
+      "categoria": "pasteis"
+    },
+    {
+      "id": "pure1",
+      "units": null,
+      "sizes": {
+        "15": 20.99,
+        "25": 25.99
+      },
+      "title": "PURÊ 1 — Purê com bacon e mussarela",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/pure1.png?alt=media&token=dca6742b-3106-495b-ad45-ce83a3976f35",
+      "desc": "Purê, bacon e mussarela.",
+      "extras": [],
+      "price": null,
+      "unidade": "",
+      "categoria": "pasteis"
+    },
+    {
+      "id": "pure2",
+      "unidade": "",
+      "price": null,
+      "extras": [],
+      "categoria": "pasteis",
+      "desc": "Purê, bacon e requeijão.",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/pure2.png?alt=media&token=bc49386b-6be3-454e-a290-1a964a184c72",
+      "ativo": true,
+      "sizes": {
+        "15": 20.99,
+        "25": 25.99
+      },
+      "title": "PURÊ 2 — Purê com bacon e requeijão",
+      "units": null
+    },
+    {
+      "id": "pure3",
+      "price": null,
+      "categoria": "pasteis",
+      "unidade": "",
+      "ativo": true,
+      "desc": "Purê, bacon e cheddar.",
+      "sizes": {
+        "15": 21.99,
+        "25": 25.99
+      },
+      "title": "PURÊ 3 — Purê com bacon e cheddar",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787069811831.png?alt=media&token=9449019b-3db9-4856-adf6-805522cc0a2a",
+      "extras": [],
+      "units": null
+    },
+    {
+      "id": "pure4",
+      "desc": "Purê, bacon e Catupiry original.",
+      "extras": [],
+      "title": "PURÊ 4 — Purê, bacon, Catupiry original",
+      "sizes": {
+        "15": 26.99,
+        "25": 31.99
+      },
+      "units": null,
+      "ativo": true,
+      "price": null,
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787069873934.png?alt=media&token=286c99a9-2144-4e6f-a124-2c6a35ed38f7",
+      "categoria": "pasteis"
+    },
+    {
+      "id": "pure5",
+      "price": null,
+      "categoria": "pasteis",
+      "desc": "Purê, bacon e cheddar Polenghi.",
+      "sizes": {
+        "15": 26.99,
+        "25": 31.99
+      },
+      "title": "PURÊ 5 — Purê, bacon, cheddar polenghi",
+      "units": null,
+      "extras": [],
+      "ativo": true,
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787069909547.png?alt=media&token=fd2613fe-f579-4903-98fb-a90d83fb33a1"
+    },
+    {
+      "id": "romeu-e-julieta",
+      "ativo": true,
+      "sizes": {
+        "15": 14.99,
+        "25": 19.99
+      },
+      "title": "ROMEU E JULIETA",
+      "unidade": "",
+      "units": null,
+      "categoria": "pasteis_doces",
+      "extras": [],
+      "desc": "Goiabada, queijo.",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/romeu-julieta.png?alt=media&token=d4ccc7c5-5099-4ac9-8c7e-9bc018a089da"
+    },
+    {
+      "id": "salgado-bolinha",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787076826574.jfif?alt=media&token=83c21d17-9098-4862-8ee7-211f62cdd396",
+      "categoria": "salgados",
+      "units": null,
+      "sizes": {
+        "25": 24.99,
+        "50": 49.98,
+        "75": 74.97,
+        "100": 99.96
+      },
+      "title": "Bolinha de Queijo",
+      "extras": [],
+      "desc": "Porção de bolinhas de queijo.",
+      "unidade": "unidade",
+      "price": null
+    },
+    {
+      "id": "salgado-coxinha",
+      "price": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/coxinha.png?alt=media&token=61cc2922-5a66-46fb-98b4-27d4d5cd6128",
+      "desc": "Porção de coxinhas de frango cremosas.",
+      "units": null,
+      "title": "Coxinha de Frango",
+      "sizes": {
+        "25": 24.99,
+        "50": 49.98,
+        "75": 74.97,
+        "100": 99.96
+      },
+      "categoria": "salgados",
+      "extras": [],
+      "ativo": true,
+      "unidade": "unidade"
+    },
+    {
+      "id": "salgado-risole",
+      "price": null,
+      "desc": "Porção de risoles de queijo e presunto.",
+      "categoria": "salgados",
+      "title": "Risole de Queijo e Presunto",
+      "sizes": {
+        "25": 24.99,
+        "50": 49.98,
+        "75": 74.97,
+        "100": 99.96
+      },
+      "units": null,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077045175.png?alt=media&token=a25a1765-8939-4ce3-a639-15fa0c8bbde6",
+      "extras": [],
+      "unidade": "unidade",
+      "ativo": true
+    },
+    {
+      "id": "so-creme-avela-buello",
+      "ativo": true,
+      "units": null,
+      "img": "img/creme-avela1.png",
+      "sizes": {
+        "15": 21.99,
+        "25": 26.99
+      },
+      "title": "SÓ CREME DE AVELÃ (BUELLO)",
+      "extras": [],
+      "categoria": "pasteis_doces",
+      "unidade": "",
+      "price": null,
+      "desc": "Só creme de avelã Buello."
+    },
+    {
+      "id": "so-creme-avela-nutella",
+      "img": "img/creme-avela1.png",
+      "extras": [],
+      "price": null,
+      "ativo": true,
+      "unidade": "",
+      "units": null,
+      "categoria": "pasteis_doces",
+      "sizes": {
+        "15": 21.99,
+        "25": 26.99
+      },
+      "title": "SÓ CREME DE AVELÃ (NUTELLA)",
+      "desc": "Só creme de avelã Nutella."
+    },
+    {
+      "id": "so-doce-de-leite",
+      "price": null,
+      "desc": "Só doce de leite.",
+      "extras": [],
+      "categoria": "pasteis_doces",
+      "sizes": {
+        "15": 13.99,
+        "25": 18.99
+      },
+      "title": "SÓ DOCE DE LEITE",
+      "units": null,
+      "unidade": "",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/doce-leite.png?alt=media&token=adad8c14-1133-4cdb-bd37-ba7f704c9725"
+    },
+    {
+      "id": "toscana1",
+      "ativo": true,
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/toscana1.png?alt=media&token=3e5e40fe-28cc-46d6-a187-d6c5548a0917",
+      "categoria": "pasteis_especiais",
+      "units": null,
+      "sizes": {
+        "15": 19.99,
+        "25": 24.99
+      },
+      "title": "TOSCANA 1 — Calabresa, azeitona, queijo, orégano.",
+      "extras": [],
+      "desc": "Calabresa, azeitona, queijo e orégano.",
+      "unidade": "",
+      "price": null
+    },
+    {
+      "id": "toscana2",
+      "unidade": "",
+      "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787071208094.png?alt=media&token=aa9a3e17-d0c5-4c0a-8096-9635ad97d212",
+      "ativo": true,
+      "categoria": "pasteis_especiais",
+      "extras": [],
+      "units": null,
+      "sizes": {
+        "15": 21.99,
+        "25": 23.99
+      },
+      "title": "TOSCANA 2 — Calabresa, ovo, cebola, queijo, orégano.",
+      "desc": "Calabresa, ovo, cebola, queijo e orégano.",
+      "price": null
     }
-
-    function atualizarStatusCompleto() {
-      let fechadoPorProgramacao = false, extra = '';
-      if (fechamentoProgramado) {
-        const agora = new Date();
-        let fim = fechamentoProgramado.toDate ? fechamentoProgramado.toDate() : new Date(fechamentoProgramado);
-        if (fim > agora) {
-          fechadoPorProgramacao = true;
-          const diff = Math.floor((fim - agora) / 60000);
-          extra = `⏳ Fechado por mais ${diff} minuto${diff > 1 ? 's' : ''}`;
-          fechamentoExtra = extra;
-        } else {
-          fechamentoExtra = '';
-        }
-      } else {
-        fechamentoExtra = '';
-      }
-
-      const dentroHorario = estaDentroHorario();
-      lojaAberta = (!fechadoPorProgramacao) && lojaAbertaManual && dentroHorario;
-
-      let overlayExtra = '';
-      if (!lojaAberta) {
-        if (fechadoPorProgramacao) overlayExtra = fechamentoExtra;
-        else if (!dentroHorario) overlayExtra = '⏰ Fora do horário de funcionamento';
-        else if (!lojaAbertaManual) overlayExtra = '🔒 Loja fechada pela administração';
-      }
-
-      atualizarStatusHorarioUI(overlayExtra);
-      atualizarMensagemLojaFechada(overlayExtra);
-      atualizarBotoes();
-      atualizarBotoesTamanho();
+  ],
+  "categorias": [
+    {
+      "id": "39LfLcamvrUcc58X0Bz2",
+      "ordem": 1,
+      "name": "Monte o seu Pastel",
+      "ativo": true
+    },
+    {
+      "id": "acai",
+      "ordem": 9,
+      "ativo": true,
+      "name": "Açaí"
+    },
+    {
+      "id": "bebidas",
+      "ativo": true,
+      "name": "Bebidas",
+      "ordem": 10
+    },
+    {
+      "id": "churros",
+      "ativo": true,
+      "name": "Churros",
+      "ordem": 7
+    },
+    {
+      "id": "pasteis",
+      "ordem": 2,
+      "name": "Pastéis",
+      "ativo": true
+    },
+    {
+      "id": "pasteis_doces",
+      "ordem": 4,
+      "name": "Pastéis Doces",
+      "ativo": true
+    },
+    {
+      "id": "pasteis_especiais",
+      "ordem": 3,
+      "name": "Pastéis Especiais",
+      "ativo": true
+    },
+    {
+      "id": "porcoes",
+      "ativo": true,
+      "name": "Mini Pastéis",
+      "ordem": 5
+    },
+    {
+      "id": "salgados",
+      "ordem": 6,
+      "name": "Salgados",
+      "ativo": true
     }
-
-    function estaDentroHorario() {
-      const agora = new Date();
-      const diaNome = DIAS_SEMANA[agora.getDay()];
-      const periodos = horariosCache[diaNome] || [];
-      if (periodos.length === 0) return true;
-      const horaAtual = agora.getHours() + agora.getMinutes() / 60;
-      for (let p of periodos) {
-        if (!p.inicio || !p.fim) continue;
-        const [hInicio, mInicio] = p.inicio.split(':').map(Number);
-        const [hFim, mFim] = p.fim.split(':').map(Number);
-        const inicio = hInicio + mInicio / 60, fim = hFim + mFim / 60;
-        if (horaAtual >= inicio && horaAtual <= fim) return true;
-      }
-      return false;
-    }
-
-    function atualizarStatusHorarioUI(extra = '') {
-      const statusEl = document.getElementById('statusAberto');
-      const horarioEl = document.getElementById('horarioTexto');
-      if (lojaAberta) {
-        statusEl.textContent = '🟢 Aberto';
-        statusEl.className = 'status aberto';
-        const diaNome = DIAS_SEMANA[new Date().getDay()];
-        const periodos = horariosCache[diaNome] || [];
-        horarioEl.textContent = periodos.length ? periodos.map(p => `${p.inicio} - ${p.fim}`).join(' | ') : 'Atendimento 24h';
-      } else {
-        statusEl.textContent = '🔴 Fechado';
-        statusEl.className = 'status fechado';
-        horarioEl.textContent = extra || 'Loja fechada';
-      }
-    }
-
-    function atualizarMensagemLojaFechada(extra = '') {
-      const msgDiv = document.getElementById('lojaFechadaMsg');
-      if (!lojaAberta) {
-        msgDiv.style.display = 'block';
-        msgDiv.innerHTML = extra ? `🔴 <strong>Loja fechada</strong> – ${extra}` : `🔴 <strong>Loja fechada</strong> – Não é possível fazer pedidos no momento.`;
-      } else {
-        msgDiv.style.display = 'none';
-      }
-    }
-
-    // ============================================================
-    // MENU
-    // ============================================================
-    function carregarMenu() {
-      try {
-        db.collection('config').doc('menu').get().then(doc => {
-          if (doc.exists && doc.data().itens) {
-            menuItems = doc.data().itens;
-          } else {
-            menuItems = [
-              { id: 'pedidos', titulo: 'Meus Pedidos', link: 'status.html', icone: '📋', tipo: 'link', ativo: true },
-              { id: 'instagram', titulo: 'Siga-nos', link: 'https://www.instagram.com/pasterry_pasteis/', icone: '📸', tipo: 'link', ativo: true },
-              { id: 'tempo_entrega', titulo: 'Tempo de entrega: 45 a 60 min', link: '', icone: '⏱️', tipo: 'texto', ativo: true }
-            ];
-          }
-          renderizarMenu();
-        }).catch((error) => logDebug('Erro ao carregar menu', error));
-      } catch (error) {
-        logDebug('Erro crítico ao carregar menu', error);
-      }
-    }
-
-    function renderizarMenu() {
-      const container = document.getElementById('menuDropdown');
-      if (!container) return;
-      container.innerHTML = '';
-      menuItems.filter(item => item.ativo).forEach(item => {
-        const div = document.createElement('div');
-        if (item.tipo === 'link') {
-          const a = document.createElement('a');
-          a.className = 'item';
-          a.href = item.link || '#';
-          a.target = (item.link && item.link.startsWith('http')) ? '_blank' : '_self';
-          a.innerHTML = `<span class="icon">${item.icone || '🔗'}</span> ${item.titulo}`;
-          div.appendChild(a);
-        } else {
-          div.className = 'item tempo-entrega';
-          div.innerHTML = `<span class="icon">${item.icone || '📌'}</span> ${item.titulo}`;
-        }
-        container.appendChild(div);
-      });
-    }
-
-    // ============================================================
-    // MENU TOGGLE
-    // ============================================================
-    const menuToggle = document.getElementById('menuToggle');
-    const menuDropdown = document.getElementById('menuDropdown');
-
-    if (menuToggle && menuDropdown) {
-      menuToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menuDropdown.classList.toggle('open');
-      });
-      document.addEventListener('click', (e) => {
-        if (!menuToggle.contains(e.target) && !menuDropdown.contains(e.target)) {
-          menuDropdown.classList.remove('open');
-        }
-      });
-    }
-
-    // ============================================================
-    // PESQUISA
-    // ============================================================
-    const searchInput = document.getElementById('searchInput');
-    const searchBtn = document.getElementById('searchBtn');
-
-    function aplicarFiltro() {
-      termoBusca = searchInput.value.trim().toLowerCase();
-      renderProducts();
-    }
-
-    if (searchInput) searchInput.addEventListener('input', aplicarFiltro);
-    if (searchBtn) searchBtn.addEventListener('click', aplicarFiltro);
-
-    // ============================================================
-    // COMPARTILHAR
-    // ============================================================
-    const shareOverlay = document.getElementById('shareOverlay');
-    const shareWhatsapp = document.getElementById('shareWhatsapp');
-    const shareCopy = document.getElementById('shareCopy');
-    const closeShare = document.getElementById('closeShare');
-    let shareLink = '', shareTitle = '';
-
-    function abrirShare(link, title) {
-      shareLink = link;
-      shareTitle = title;
-      if (shareOverlay) shareOverlay.classList.add('active');
-    }
-
-    function fecharShare() {
-      if (shareOverlay) shareOverlay.classList.remove('active');
-    }
-
-    if (shareWhatsapp) {
-      shareWhatsapp.addEventListener('click', () => {
-        const text = `🍽️ *${shareTitle}* - Pasterry!\n\nConheça este delicioso produto: ${shareLink}`;
-        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
-        fecharShare();
-      });
-    }
-
-    if (shareCopy) {
-      shareCopy.addEventListener('click', () => {
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText(shareLink).then(() => {
-            showCenterNotification('Link copiado!', 'Compartilhe com seus amigos');
-          }).catch(() => {});
-        } else {
-          const input = document.createElement('input');
-          input.value = shareLink;
-          document.body.appendChild(input);
-          input.select();
-          document.execCommand('copy');
-          document.body.removeChild(input);
-          showCenterNotification('Link copiado!', 'Compartilhe com seus amigos');
-        }
-        fecharShare();
-      });
-    }
-
-    if (closeShare) closeShare.addEventListener('click', fecharShare);
-    if (shareOverlay) {
-      shareOverlay.addEventListener('click', (e) => {
-        if (e.target === shareOverlay) fecharShare();
-      });
-    }
-
-    // ============================================================
-    // SCROLL PRODUTO (deep-link)
-    // ============================================================
-    function scrollParaProduto() {
-      const params = new URLSearchParams(window.location.search);
-      const prodId = params.get('produto');
-      const catId = params.get('categoria');
-      if (!prodId || !catId) return;
-
-      setTimeout(() => {
-        const card = document.querySelector(`.product[data-produto-id="${prodId}"][data-categoria-id="${catId}"]`);
-        if (card) {
-          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          card.style.transition = 'box-shadow 0.5s, transform 0.5s';
-          card.style.boxShadow = '0 0 0 4px var(--cor-categoria-ativa), 0 0 30px rgba(7,252,219,0.5)';
-          card.style.transform = 'scale(1.02)';
-          setTimeout(() => {
-            card.style.boxShadow = '';
-            card.style.transform = '';
-          }, 3000);
-          setActiveCategory(catId);
-          window.history.replaceState({}, document.title, window.location.pathname);
-        }
-      }, 500);
-    }
-
-    // ============================================================
-    // NOTIFICAÇÕES
-    // ============================================================
-    function showCenterNotification(title, sub = 'Adicionado ao carrinho') {
-      const centerToast = document.getElementById('centerToast');
-      const centerToastMsg = document.getElementById('centerToastMsg');
-      const centerToastSub = document.getElementById('centerToastSub');
-      const checkoutBtn = document.getElementById('checkoutBtn');
-
-      if (!centerToast || !centerToastMsg || !centerToastSub) return;
-
-      centerToast.classList.remove('voando');
-      centerToastMsg.textContent = title;
-      centerToastSub.textContent = sub;
-      centerToast.style.display = 'flex';
-      void centerToast.offsetWidth;
-      centerToast.classList.add('show');
-
-      if (checkoutBtn) checkoutBtn.classList.remove('vibrar');
-
-      clearTimeout(centerToast._timer);
-      centerToast._timer = setTimeout(() => {
-        centerToast.classList.add('voando');
-        setTimeout(() => {
-          if (checkoutBtn) {
-            checkoutBtn.classList.add('vibrar');
-            setTimeout(() => checkoutBtn.classList.remove('vibrar'), 400);
-          }
-        }, 2000);
-        setTimeout(() => {
-          centerToast.classList.remove('show', 'voando');
-          centerToast.style.display = 'none';
-        }, 800);
-      }, 1200);
-    }
-
-    function showToast(title, sub = '') {
-      const toastWrap = document.getElementById('toastWrap');
-      if (!toastWrap) return;
-      const toast = document.createElement('div');
-      toast.className = 'toast';
-      toast.innerHTML = `
-        <div class="check">✓</div>
-        <div>
-          <div class="title">${title}</div>
-          ${sub ? `<div class="sub">${sub}</div>` : ''}
-        </div>
-      `;
-      toastWrap.appendChild(toast);
-      setTimeout(() => toast.remove(), 2000);
-    }
-
-    // ============================================================
-    // CARRINHO
-    // ============================================================
-    const CART_KEY = 'pasterry_cart_v1';
-
-    function loadCart() {
-      try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
-      catch { return []; }
-    }
-
-    function saveCart() {
-      try {
-        localStorage.setItem(CART_KEY, JSON.stringify(cart));
-        updateCheckoutText();
-      } catch (error) {
-        logDebug('Erro ao salvar carrinho', error);
-      }
-    }
-
-    let cart = loadCart();
-
-    function getCartTotal() {
-      return cart.reduce((s, i) => s + ((i.precoTotal || i.price || 0) * i.qty), 0);
-    }
-
-    function getCartCount() {
-      return cart.reduce((s, i) => s + i.qty, 0);
-    }
-
-    function updateCheckoutText() {
-      const n = getCartCount();
-      const total = getCartTotal();
-      const cartBadge = document.getElementById('cartBadge');
-      const cartTotalEl = document.getElementById('cartTotal');
-      const checkoutBtn = document.getElementById('checkoutBtn');
-
-      if (cartBadge) cartBadge.textContent = n;
-      if (cartTotalEl) cartTotalEl.textContent = formatBRL(total);
-      if (checkoutBtn) checkoutBtn.setAttribute('aria-label', `Ver carrinho (${n} itens, ${formatBRL(total)})`);
-    }
-
-    function pulseCart() {
-      const btn = document.getElementById('checkoutBtn');
-      const badge = document.getElementById('cartBadge');
-      [btn, badge].forEach(el => {
-        if (!el) return;
-        el.classList.remove('pulse');
-        void el.offsetWidth;
-        el.classList.add('pulse');
-      });
-    }
-
-    const checkoutBtn = document.getElementById('checkoutBtn');
-    const cartBadge = document.getElementById('cartBadge');
-
-    // ============================================================
-    // CATEGORIAS E PRODUTOS
-    // ============================================================
-    const categoriesEl = document.getElementById('categories');
-    const productsEl = document.getElementById('products');
-    const productsWrap = document.getElementById('productsWrap');
-    let activeCategory = null;
-    let scrollObserver = null;
-
-    const RECHEIO_MAP = {
-      'Baiano':'CALABRESA COM PIMENTA BAIANO',
-      'Italia':'Calabresa',
-      'Mineiro':'Queijo',
-      'CHICKEN':'Frango',
-      'BEEF':'Carne Moída',
-      'GAÚCHO':'Costela Bovina',
-      'LAMPIÃO':'Carne Seca',
-      'Carne Louca':'Carne de Panela',
-      'Misto':'Queijo e Presunto',
-      'PUPUNHA':'Palmito'
-    };
-
-    function getDisplayName(originalName) {
-      if (!originalName) return 'Sem título';
-      const upper = originalName.toUpperCase();
-
-      if (upper.includes('BAIANO') || upper.includes('BAIAÑO')) {
-        return originalName.replace(/baiano|baiaño/i, 'CALABRESA COM PIMENTA BAIANO');
-      }
-
-      for (const [sabor, recheio] of Object.entries(RECHEIO_MAP)) {
-        if (sabor.toUpperCase() === 'BAIANO') continue;
-        if (upper.includes(sabor.toUpperCase())) {
-          return `${recheio} - ${originalName}`;
-        }
-      }
-      return originalName;
-    }
-
-    function getUnidade(produto) {
-      if (produto && produto.unidade) return produto.unidade;
-      const isAcai = (activeCategory === 'acai' || (produto && produto.id || '').startsWith('acai'));
-      return isAcai ? 'ml' : 'cm';
-    }
-
-    const formatBRL = (v) => (Number(v) || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
-    function setActiveCategory(catId, { scrollIntoView = false } = {}) {
-      if (!catId) return;
-      activeCategory = catId;
-      document.querySelectorAll('.cat').forEach(b => b.classList.toggle('active', b.dataset.cat === catId));
-
-      if (scrollIntoView) {
-        const section = document.querySelector(`.cat-section[data-cat="${catId}"]`);
-        if (section && productsWrap) {
-          const top = section.offsetTop - productsWrap.offsetTop - 20;
-          productsWrap.scrollTo({ top, behavior: 'smooth' });
-        }
-      }
-
-      document.querySelectorAll('.cat').forEach(el => {
-        if (!el.classList.contains('active')) {
-          el.style.background = cores.corCategoria || '#FFD700';
-        }
-      });
-    }
-
-    function setupScrollSpy() {
-      if (scrollObserver) {
-        scrollObserver.disconnect();
-        scrollObserver = null;
-      }
-
-      const sections = document.querySelectorAll('.cat-section');
-      if (!sections.length || !productsWrap) return;
-
-      const options = {
-        root: productsWrap,
-        rootMargin: '-20% 0px -30% 0px',
-        threshold: [0, 0.25, 0.5, 0.75, 1]
-      };
-
-      scrollObserver = new IntersectionObserver((entries) => {
-        let bestEntry = null, bestRatio = 0;
-        for (const entry of entries) {
-          if (entry.isIntersecting && entry.intersectionRatio > bestRatio) {
-            bestRatio = entry.intersectionRatio;
-            bestEntry = entry;
-          }
-        }
-        if (bestEntry) {
-          const catId = bestEntry.target.dataset.cat;
-          if (catId && catId !== activeCategory) setActiveCategory(catId);
-        }
-      }, options);
-
-      sections.forEach(section => scrollObserver.observe(section));
-    }
-
-    function ordenarProdutos(lista) {
-      return lista.slice().sort((a, b) =>
-        getDisplayName(a.title).toLowerCase().localeCompare(getDisplayName(b.title).toLowerCase())
-      );
-    }
-
-    // ============================================================
-    // RENDER CATEGORIAS
-    // ============================================================
-    function renderCategories() {
-      if (!categoriesEl) return;
-      categoriesEl.innerHTML = '';
-
-      CATEGORIES.forEach(cat => {
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.className = 'cat' + (cat.id === activeCategory ? ' active' : '');
-        b.dataset.cat = cat.id;
-        b.textContent = cat.name;
-        b.setAttribute('role', 'tab');
-        b.addEventListener('click', () => setActiveCategory(cat.id, { scrollIntoView: true }));
-        categoriesEl.appendChild(b);
-      });
-
-      document.querySelectorAll('.cat').forEach(bindPressAnimation);
-
-      if (CATEGORIES.length > 0 && !activeCategory) {
-        activeCategory = CATEGORIES[0]?.id;
-        setActiveCategory(activeCategory);
-      }
-
-      aplicarCores(cores);
-    }
-
-    // ============================================================
-    // RENDER PRODUTOS
-    // ============================================================
-    function renderProducts() {
-      if (!productsEl) return;
-      productsEl.innerHTML = '';
-
-      CATEGORIES.forEach(cat => {
-        const section = document.createElement('section');
-        section.className = 'cat-section';
-        section.dataset.cat = cat.id;
-        section.style.scrollMarginTop = '90px';
-
-        const catHeader = document.createElement('div');
-        catHeader.className = 'muted';
-        catHeader.style.cssText = 'font-weight:800; letter-spacing:.3px; margin:4px 2px 8px; opacity:.8';
-        catHeader.textContent = cat.name;
-        section.appendChild(catHeader);
-
-        let list = (PRODUCTS[cat.id] || []).filter(p => p.ativo === true || p.ativo === undefined);
-
-        if (termoBusca) {
-          list = list.filter(p => {
-            const titulo = getDisplayName(p.title).toLowerCase();
-            const desc = (p.desc || '').toLowerCase();
-            return titulo.includes(termoBusca) || desc.includes(termoBusca);
-          });
-        }
-
-        if (list.length === 0) {
-          const empty = document.createElement('div');
-          empty.className = 'muted';
-          empty.textContent = termoBusca ? 'Nenhum produto encontrado' : 'Nenhum produto disponível';
-          section.appendChild(empty);
-          productsEl.appendChild(section);
-          return;
-        }
-
-        const isPasteis = (cat.id === 'pasteis');
-
-        if (isPasteis) {
-          const groups = {};
-          list.forEach(p => {
-            let prefix = p.title;
-            const match = p.title.match(/^([A-Za-zÀ-ÖØ-öø-ÿ]+)\s+\d/);
-            if (match) prefix = match[1];
-            else prefix = p.title.split(' ')[0];
-            if (!groups[prefix]) groups[prefix] = [];
-            groups[prefix].push(p);
-          });
-
-          const gruposArray = Object.keys(groups).map(prefix => ({
-            prefix,
-            displayName: getDisplayName(prefix),
-            produtos: groups[prefix]
-          }));
-
-          gruposArray.sort((a, b) => a.displayName.localeCompare(b.displayName));
-
-          gruposArray.forEach(grupo => {
-            const groupContainer = document.createElement('div');
-            groupContainer.style.marginBottom = '16px';
-
-            const groupHeader = document.createElement('div');
-            groupHeader.className = 'group-header';
-            groupHeader.textContent = grupo.displayName;
-            groupContainer.appendChild(groupHeader);
-
-            const grid = document.createElement('div');
-            grid.className = 'products';
-
-            const produtosOrdenados = ordenarProdutos(grupo.produtos);
-            produtosOrdenados.forEach(p => grid.appendChild(createProductCard(p, cat.id)));
-
-            groupContainer.appendChild(grid);
-            section.appendChild(groupContainer);
-          });
-        } else {
-          const grid = document.createElement('div');
-          grid.className = 'products';
-
-          const produtosOrdenados = ordenarProdutos(list);
-          produtosOrdenados.forEach(p => grid.appendChild(createProductCard(p, cat.id)));
-
-          section.appendChild(grid);
-        }
-
-        productsEl.appendChild(section);
-      });
-
-      document.querySelectorAll('.add-btn').forEach(bindPressAnimation);
-      setupScrollSpy();
-      scrollParaProduto();
-      aplicarCores(cores);
-      atualizarBotoes();
-    }
-
-    function compartilharProduto(id, categoria, title) {
-      const url = new URL(window.location.href);
-      url.searchParams.set('produto', id);
-      url.searchParams.set('categoria', categoria);
-      abrirShare(url.href, title);
-    }
-
-    function createProductCard(p, catId) {
-      const card = document.createElement('div');
-      card.className = 'product';
-      card.tabIndex = 0;
-      card.setAttribute('role', 'listitem');
-      card.dataset.produtoId = p.id;
-      card.dataset.categoriaId = catId;
-
-      const shareBtn = document.createElement('button');
-      shareBtn.className = 'share-btn';
-      shareBtn.setAttribute('aria-label', 'Compartilhar este produto');
-      shareBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="18" cy="5" r="3"/>
-          <circle cx="6" cy="12" r="3"/>
-          <circle cx="18" cy="19" r="3"/>
-          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-        </svg>
-      `;
-      shareBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        compartilharProduto(p.id, catId, getDisplayName(p.title));
-      });
-      card.appendChild(shareBtn);
-
-      const media = document.createElement('div');
-      media.className = 'media';
-      const img = document.createElement('img');
-      img.alt = p.title || 'Produto';
-      img.loading = 'lazy';
-      img.src = p.img || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><rect width='100%' height='100%' fill='%230a1420'/><text x='50%' y='50%' fill='%23a7b6c1' font-size='20' text-anchor='middle' dominant-baseline='middle'>Sem imagem</text></svg>";
-      media.appendChild(img);
-
-      if (logoMarcaAtual) {
-        const logoMarca = document.createElement('img');
-        logoMarca.src = logoMarcaAtual;
-        logoMarca.alt = 'Logo Pasterry';
-        logoMarca.className = 'logo-marca';
-        logoMarca.loading = 'lazy';
-        logoMarca.style.display = 'block';
-        media.appendChild(logoMarca);
-      }
-
-      const info = document.createElement('div');
-      info.className = 'info';
-
-      const title = document.createElement('div');
-      title.className = 'title';
-      title.textContent = getDisplayName(p.title);
-
-      const desc = document.createElement('div');
-      desc.className = 'muted';
-      desc.textContent = p.desc || '';
-
-      const price = document.createElement('div');
-      price.className = 'price';
-
-      if (p.sizes && Object.keys(p.sizes).length > 0) {
-        const minPrice = Math.min(...Object.values(p.sizes).map(Number));
-        price.textContent = `A partir de ${formatBRL(minPrice)}`;
-        if (p.unidade) price.textContent += ` / ${p.unidade}`;
-      } else if (p.price) {
-        price.textContent = formatBRL(p.price);
-        if (p.unidade) price.textContent += ` / ${p.unidade}`;
-      } else {
-        price.textContent = '';
-      }
-
-      const addBtn = document.createElement('button');
-      addBtn.type = 'button';
-      addBtn.className = 'add-btn';
-      addBtn.dataset.produtoId = p.id;
-      addBtn.dataset.categoriaId = catId;
-      addBtn.setAttribute('aria-label', `Adicionar ${getDisplayName(p.title)}`);
-      addBtn.textContent = lojaAberta ? 'Adicionar' : '🔴 Fechado';
-      addBtn.disabled = !lojaAberta;
-
-      if (!lojaAberta) {
-        addBtn.classList.add('loja-fechada');
-        addBtn.style.background = '#666';
-      } else {
-        addBtn.style.background = cores.corBotaoAdicionar || '#2B7245';
-      }
-
-      addBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (!lojaAberta) {
-          showCenterNotification('Loja fechada', 'Não é possível adicionar itens no momento');
-          return;
-        }
-        if (p.sizes && Object.keys(p.sizes).length > 0) {
-          openSizeDialog(p, catId);
-        } else {
-          addToCart(p.id, catId);
-        }
-      });
-
-      info.appendChild(title);
-      info.appendChild(desc);
-      info.appendChild(price);
-      info.appendChild(addBtn);
-
-      card.appendChild(media);
-      card.appendChild(info);
-
-      card.addEventListener('click', (e) => {
-        if (e.target.closest('.add-btn') || e.target.closest('.share-btn')) return;
-        if (p.sizes && Object.keys(p.sizes).length > 0) {
-          openSizeDialog(p, catId);
-        } else {
-          if (!lojaAberta) {
-            showCenterNotification('Loja fechada', 'Não é possível adicionar itens no momento');
-          } else {
-            addToCart(p.id, catId);
-          }
-        }
-      });
-
-      return card;
-    }
-
-    // ============================================================
-    // CATEGORIA DO PRODUTO
-    // ============================================================
-    function getCategoriaDoProduto(produtoId) {
-      for (const catId in PRODUCTS) {
-        const produto = PRODUCTS[catId]?.find(p => p.id === produtoId);
-        if (produto) return catId;
-      }
-      return activeCategory || 'geral';
-    }
-
-    // ============================================================
-    // CARRINHO – ADICIONAR
-    // ============================================================
-    function addToCart(productId, category) {
-      if (!lojaAberta) {
-        showCenterNotification('Loja fechada', 'Não é possível adicionar itens no momento');
-        return;
-      }
-
-      const p = (PRODUCTS[category] || []).find(x => x.id === productId);
-      if (!p) return;
-
-      let displayTitle = getDisplayName(p.title);
-      const existing = cart.find(i => i.id === productId);
-
-      if (existing) {
-        existing.qty += 1;
-      } else {
-        cart.push({
-          id: p.id,
-          title: displayTitle,
-          price: p.price,
-          qty: 1,
-          img: p.img
-        });
-      }
-
-      saveCart();
-      pulseCart();
-      showCenterNotification(`${displayTitle} adicionado!`, `Quantidade: ${existing ? existing.qty : 1}`);
-    }
-
-    function addToCartWithSize(p, sizeKey, extras = []) {
-      if (!lojaAberta) {
-        showCenterNotification('Loja fechada', 'Não é possível adicionar itens no momento');
-        return;
-      }
-
-      const price = Number(p.sizes[sizeKey]);
-      const unit = getUnidade(p);
-      const variantId = `${p.id}-${sizeKey}`;
-      let displayTitle = getDisplayName(p.title);
-
-      const totalExtras = extras.reduce((sum, e) => sum + (e.preco || 2.50), 0);
-      const precoTotal = price + totalExtras;
-
-      let titleWithSize = `${displayTitle} ${sizeKey}${unit}`;
-      let extrasText = '';
-
-      if (extras.length > 0) {
-        const nomesExtras = extras.map(e => e.nome).join(', ');
-        titleWithSize = `${displayTitle} ${sizeKey}${unit} (+ ${nomesExtras})`;
-        extrasText = nomesExtras;
-      }
-
-      const existingIndex = cart.findIndex(i => {
-        return i.baseId === p.id && i.sizeKey === sizeKey && !i.isExtra;
-      });
-
-      if (existingIndex > -1) {
-        const existing = cart[existingIndex];
-        existing.qty += 1;
-
-        if (existing.extras && extras.length > 0) {
-          extras.forEach(e => {
-            if (!existing.extras.find(ex => ex.id === e.id)) {
-              existing.extras.push(e);
-            }
-          });
-        } else if (extras.length > 0) {
-          existing.extras = extras;
-        }
-
-        const newTotalExtras = existing.extras ? existing.extras.reduce((sum, e) => sum + (e.preco || 2.50), 0) : 0;
-        existing.precoTotal = price + newTotalExtras;
-        existing.price = price;
-
-        if (existing.extras && existing.extras.length > 0) {
-          const allExtras = existing.extras.map(e => e.nome).join(', ');
-          existing.title = `${displayTitle} ${sizeKey}${unit} (+ ${allExtras})`;
-        }
-      } else {
-        cart.push({
-          id: variantId,
-          baseId: p.id,
-          sizeKey: sizeKey,
-          title: titleWithSize,
-          price: price,
-          precoTotal: precoTotal,
-          qty: 1,
-          img: p.img,
-          extras: extras.map(e => ({ id: e.id, nome: e.nome, preco: e.preco || 2.50 })),
-          extrasText: extrasText,
-          isExtra: false,
-          totalExtras: totalExtras
-        });
-      }
-
-      saveCart();
-      pulseCart();
-
-      const qtd = (existingIndex > -1 && cart[existingIndex]) ? cart[existingIndex].qty : 1;
-      const msg = extras.length > 0
-        ? `${titleWithSize} + ${extras.length} extra(s)!`
-        : `${titleWithSize} adicionado!`;
-
-      showCenterNotification(msg, `Quantidade: ${qtd}`);
-    }
-
-    // ============================================================
-    // DIÁLOGOS
-    // ============================================================
-    let editingIndex = null;
-    const overlay = document.getElementById('overlay');
-    const numDisplay = document.getElementById('numDisplay');
-
-    function openQtyDialog(idx) {
-      if (!overlay || !numDisplay) return;
-      editingIndex = idx;
-      numDisplay.textContent = String(cart[idx].qty);
-      overlay.style.display = 'flex';
-      overlay.setAttribute('aria-hidden', 'false');
-
-      document.getElementById('kbd').querySelectorAll('button').forEach(b => {
-        b.onclick = () => handleKey(b.dataset.key);
-      });
-
-      document.querySelectorAll('#kbd button, #saveQty, #cancelQty').forEach(bindPressAnimation);
-    }
-
-    function closeQtyDialog() {
-      if (overlay) {
-        overlay.style.display = 'none';
-        overlay.setAttribute('aria-hidden', 'true');
-      }
-      editingIndex = null;
-    }
-
-    function handleKey(key) {
-      if (!numDisplay) return;
-      let v = numDisplay.textContent;
-
-      if (key === 'back') v = v.slice(0, -1) || '0';
-      else if (key === 'clear') v = '0';
-      else v = (v === '0') ? key : v + key;
-
-      if (v.length > 4) v = v.slice(0, 4);
-      v = v.replace(/^0+(?=\d)/, '');
-      if (v === '') v = '0';
-      numDisplay.textContent = v;
-    }
-
-    const saveQtyBtn = document.getElementById('saveQty');
-    if (saveQtyBtn) {
-      saveQtyBtn.addEventListener('click', () => {
-        const n = parseInt(numDisplay.textContent || '0', 10);
-        if (!isNaN(n) && n >= 1 && editingIndex !== null) {
-          cart[editingIndex].qty = n;
-          saveCart();
-        }
-        closeQtyDialog();
-      });
-    }
-
-    const cancelQtyBtn = document.getElementById('cancelQty');
-    if (cancelQtyBtn) cancelQtyBtn.addEventListener('click', closeQtyDialog);
-
-    if (overlay) {
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) closeQtyDialog();
-      });
-    }
-
-    // ===== MODAL DE TAMANHOS =====
-    const sizeOverlay = document.getElementById('sizeOverlay');
-    const sizeTitle = document.getElementById('sizeTitle');
-    const sizeDesc = document.getElementById('sizeDesc');
-    const sizeOptions = document.getElementById('sizeOptions');
-    const sizeFechadaMsg = document.getElementById('sizeFechadaMsg');
-    const adicionaisSection = document.getElementById('adicionaisSection');
-    const adicionaisGrid = document.getElementById('adicionaisGrid');
-    const addWithExtrasBtn = document.getElementById('addWithExtras');
-    const cancelSizeBtn = document.getElementById('cancelSize');
-    const sizeImg = document.getElementById('sizeImg');
-    const logoMarcaDetalhe = document.getElementById('logoMarcaDetalhe');
-    const fecharDetalhesBtn = document.getElementById('fecharDetalhesBtn');
-
-    let pendingProduct = null;
-    let selectedSize = null;
-    let selectedExtras = [];
-
-    // ============================================================
-    // CARREGAR ADICIONAIS (do Firestore)
-    // ============================================================
-    async function carregarAdicionais() {
-      try {
-        const snapshot = await db.collection('delivery-adicionais').get();
-        adicionaisCache = [];
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          adicionaisCache.push({
-            id: doc.id,
-            nome: data.nome || data.name || 'Item',
-            preco: data.preco || data.price || 2.50,
-            img: data.img || '',
-            categorias: data.categorias || [],
-            ativo: data.ativo !== false
-          });
-        });
-        logDebug('Adicionais carregados:', adicionaisCache.length);
-        return adicionaisCache;
-      } catch (error) {
-        logDebug('Erro ao carregar adicionais:', error);
-        adicionaisCache = [];
-        return [];
-      }
-    }
-
-    function getAdicionaisPorProduto(produtoId, categoriaId) {
-      const produto = PRODUCTS[categoriaId]?.find(p => p.id === produtoId);
-      if (produto && produto.extras && produto.extras.length > 0) {
-        return adicionaisCache.filter(ad => {
-          if (ad.ativo === false) return false;
-          return produto.extras.includes(ad.id);
-        });
-      }
-      return getAdicionaisPorCategoria(categoriaId);
-    }
-
-    function getAdicionaisPorCategoria(categoriaId) {
-      if (!categoriaId) return [];
-      return adicionaisCache.filter(ad => {
-        if (ad.ativo === false) return false;
-        if (!ad.categorias || ad.categorias.length === 0) return true;
-        return ad.categorias.includes(categoriaId);
-      });
-    }
-
-    function getAdicionalPorId(id) {
-      return adicionaisCache.find(a => a.id === id);
-    }
-
-    function renderAdicionais(produtoId, categoriaId) {
-      if (!adicionaisSection || !adicionaisGrid) return;
-
-      const adicionaisFiltrados = getAdicionaisPorProduto(produtoId, categoriaId);
-
-      if (adicionaisFiltrados.length === 0) {
-        adicionaisSection.style.display = 'none';
-        return;
-      }
-
-      adicionaisSection.style.display = 'block';
-      adicionaisGrid.innerHTML = '';
-
-      adicionaisFiltrados.forEach(ad => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'btn-extra';
-        btn.dataset.id = ad.id;
-        btn.innerHTML = `<span>${ad.nome}</span><span class="preco-extra">${formatBRL(ad.preco || 2.50)}</span>`;
-
-        btn.addEventListener('click', function () {
-          const id = this.dataset.id;
-          const extra = getAdicionalPorId(id);
-          if (!extra) return;
-
-          const index = selectedExtras.findIndex(e => e.id === id);
-          if (index > -1) {
-            selectedExtras.splice(index, 1);
-            this.classList.remove('selecionado');
-          } else {
-            selectedExtras.push({ id: extra.id, nome: extra.nome, preco: extra.preco || 2.50 });
-            this.classList.add('selecionado');
-          }
-
-          updateAddButton();
-        });
-
-        adicionaisGrid.appendChild(btn);
-      });
-    }
-
-    function openSizeDialog(p, categoriaId = null) {
-      if (!sizeOverlay) return;
-
-      pendingProduct = p;
-      selectedSize = null;
-      selectedExtras = [];
-
-      if (!categoriaId) {
-        categoriaId = getCategoriaDoProduto(p.id) || activeCategory || 'geral';
-      }
-
-      pendingProduct._categoriaId = categoriaId;
-
-      if (sizeTitle) sizeTitle.textContent = getDisplayName(p.title);
-      if (sizeDesc) sizeDesc.textContent = p.desc || '';
-      if (sizeOptions) sizeOptions.innerHTML = '';
-
-      if (sizeFechadaMsg) {
-        sizeFechadaMsg.style.display = lojaAberta ? 'none' : 'block';
-      }
-
-      if (sizeImg) {
-        sizeImg.src = p.img || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><rect width='100%' height='100%' fill='%230a1420'/><text x='50%' y='50%' fill='%23a7b6c1' font-size='20' text-anchor='middle' dominant-baseline='middle'>Sem imagem</text></svg>";
-        sizeImg.alt = p.title || 'Produto';
-      }
-
-      if (logoMarcaDetalhe) {
-        if (logoMarcaAtual) {
-          logoMarcaDetalhe.src = logoMarcaAtual;
-          logoMarcaDetalhe.style.display = 'block';
-        } else {
-          logoMarcaDetalhe.style.display = 'none';
-        }
-      }
-
-      const unit = getUnidade(p);
-      const entries = Object.entries(p.sizes || {}).sort((a, b) => Number(a[0]) - Number(b[0]));
-
-      entries.forEach(([size, price]) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'btn btn-tamanho';
-        btn.style.display = 'flex';
-        btn.style.justifyContent = 'space-between';
-        btn.style.alignItems = 'center';
-        btn.innerHTML = `<span>${size} ${unit}</span><strong>${formatBRL(price)}</strong>`;
-
-        btn.addEventListener('click', () => {
-          sizeOptions.querySelectorAll('.btn-tamanho').forEach(b => {
-            b.style.background = '#2d5016';
-            b.style.border = '1px solid #2d5016';
-            b.classList.remove('selecionado');
-          });
-
-          btn.style.background = '#FF6B00';
-          btn.style.border = '1px solid #FF6B00';
-          btn.classList.add('selecionado');
-          selectedSize = size;
-          updateAddButton();
-        });
-
-        bindPressAnimation(btn);
-        if (sizeOptions) sizeOptions.appendChild(btn);
-      });
-
-      renderAdicionais(p.id, categoriaId);
-
-      if (addWithExtrasBtn) {
-        addWithExtrasBtn.textContent = 'Selecione um tamanho';
-        addWithExtrasBtn.style.opacity = '0.5';
-        addWithExtrasBtn.disabled = true;
-      }
-
-      if (fecharDetalhesBtn) {
-        fecharDetalhesBtn.onclick = closeSizeDialog;
-      }
-
-      sizeOverlay.style.display = 'flex';
-      sizeOverlay.setAttribute('aria-hidden', 'false');
-    }
-
-    function updateAddButton() {
-      if (!addWithExtrasBtn || !pendingProduct) return;
-
-      if (selectedSize) {
-        const extraText = selectedExtras.length > 0 ? ` + ${selectedExtras.length} extra(s)` : '';
-        const price = Number(pendingProduct.sizes[selectedSize]);
-        let totalPrice = price;
-        selectedExtras.forEach(e => totalPrice += (e.preco || 2.50));
-
-        addWithExtrasBtn.textContent = `Adicionar ${formatBRL(totalPrice)}${extraText}`;
-        addWithExtrasBtn.style.opacity = '1';
-        addWithExtrasBtn.disabled = false;
-      } else {
-        addWithExtrasBtn.textContent = 'Selecione um tamanho';
-        addWithExtrasBtn.style.opacity = '0.5';
-        addWithExtrasBtn.disabled = true;
-      }
-    }
-
-    function closeSizeDialog() {
-      if (sizeOverlay) {
-        sizeOverlay.style.display = 'none';
-        sizeOverlay.setAttribute('aria-hidden', 'true');
-      }
-      pendingProduct = null;
-      selectedSize = null;
-      selectedExtras = [];
-    }
-
-    if (addWithExtrasBtn) {
-      addWithExtrasBtn.addEventListener('click', function () {
-        if (!selectedSize || !pendingProduct) return;
-        addToCartWithSize(pendingProduct, selectedSize, selectedExtras);
-        closeSizeDialog();
-      });
-    }
-
-    if (cancelSizeBtn) cancelSizeBtn.addEventListener('click', closeSizeDialog);
-
-    if (sizeOverlay) {
-      sizeOverlay.addEventListener('click', (e) => {
-        if (e.target === sizeOverlay) closeSizeDialog();
-      });
-    }
-
-    function atualizarBotoesTamanho() {
-      if (!sizeOptions) return;
-      const btns = sizeOptions.querySelectorAll('button');
-
-      if (!lojaAberta) {
-        btns.forEach(btn => {
-          btn.disabled = true;
-          btn.classList.add('loja-fechada-size');
-        });
-        if (sizeFechadaMsg) sizeFechadaMsg.style.display = 'block';
-      } else {
-        btns.forEach(btn => {
-          btn.disabled = false;
-          btn.classList.remove('loja-fechada-size');
-        });
-        if (sizeFechadaMsg) sizeFechadaMsg.style.display = 'none';
-      }
-    }
-
-    // ============================================================
-    // CHECKOUT
-    // ============================================================
-    if (checkoutBtn) {
-      checkoutBtn.addEventListener('click', () => {
-        if (!lojaAberta) {
-          showCenterNotification('Loja fechada', 'Não é possível acessar o carrinho no momento');
-          return;
-        }
-        saveCart();
-        window.location.href = 'carrinho.html';
-      });
-    }
-
-    // ============================================================
-    // ANIMAÇÃO DE PRESS
-    // ============================================================
-    function bindPressAnimation(el) {
-      if (!el) return;
-      const add = () => {
-        el.classList.remove('press');
-        void el.offsetWidth;
-        el.classList.add('press');
-      };
-      el.addEventListener('mousedown', add);
-      el.addEventListener('touchstart', add, { passive: true });
-    }
-
-    // ============================================================
-    // SUCESSO OVERLAY
-    // ============================================================
-    const successOverlay = document.getElementById('successOverlay');
-    const okSuccessBtn = document.getElementById('okSuccess');
-    let successTimer = null;
-
-    function showSuccess({
-      title = 'Pedido confirmado!',
-      msg = 'Seu pedido foi enviado para a cozinha e está sendo impresso.',
-      img = 'img/sucesso.png',
-      autoCloseMs = 2500
-    } = {}) {
-      const successTitle = document.getElementById('successTitle');
-      const successMsg = document.getElementById('successMsg');
-      const successImg = document.getElementById('successImg');
-
-      if (successTitle) successTitle.textContent = title;
-      if (successMsg) successMsg.textContent = msg;
-      if (successImg) successImg.src = img;
-      if (successOverlay) {
-        successOverlay.style.display = 'flex';
-        successOverlay.setAttribute('aria-hidden', 'false');
-      }
-
-      clearTimeout(successTimer);
-      successTimer = setTimeout(hideSuccess, autoCloseMs);
-    }
-
-    function hideSuccess() {
-      if (successOverlay) {
-        successOverlay.style.display = 'none';
-        successOverlay.setAttribute('aria-hidden', 'true');
-      }
-      clearTimeout(successTimer);
-    }
-
-    if (successOverlay) {
-      successOverlay.addEventListener('click', (e) => {
-        if (e.target === successOverlay) hideSuccess();
-      });
-    }
-
-    if (okSuccessBtn) okSuccessBtn.addEventListener('click', hideSuccess);
-
-    // ============================================================
-    // ATUALIZAR BOTÕES
-    // ============================================================
-    function atualizarBotoes() {
-      document.querySelectorAll('.add-btn').forEach(btn => {
-        btn.disabled = !lojaAberta;
-        if (lojaAberta) {
-          btn.classList.remove('loja-fechada');
-          btn.textContent = 'Adicionar';
-          btn.style.background = cores.corBotaoAdicionar || '#2B7245';
-        } else {
-          btn.classList.add('loja-fechada');
-          btn.textContent = '🔴 Fechado';
-          btn.style.background = '#666';
-        }
-      });
-
-      if (checkoutBtn) {
-        if (lojaAberta) {
-          checkoutBtn.disabled = false;
-          checkoutBtn.style.opacity = '1';
-          checkoutBtn.style.cursor = 'pointer';
-          checkoutBtn.style.background = cores.corCart || '#AC940D';
-        } else {
-          checkoutBtn.disabled = true;
-          checkoutBtn.style.opacity = '0.5';
-          checkoutBtn.style.cursor = 'not-allowed';
-          checkoutBtn.style.background = '#555';
-        }
-      }
-    }
-
-    // ============================================================
-    // CARREGAR CARDÁPIO DO JSON (substitui Firestore)
-    // ============================================================
-    async function carregarCardapioDoJSON() {
-      try {
-        const res = await fetch('cardapio_delivery.json', { cache: 'no-store' });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const root = await res.json();
-
-        // O JSON tem tudo dentro de "delivery"
-        const data = root.delivery || root;
-
-        // ---- Categorias ----
-        const catsRaw = Array.isArray(data.CATEGORIES) ? data.CATEGORIES : [];
-        CATEGORIES = catsRaw.map((c, idx) => ({
-          id: c.id,
-          name: c.name || c.id,
-          ordem: typeof c.ordem === 'number' ? c.ordem : idx
-        }));
-        CATEGORIES.sort((a, b) => (a.ordem || 0) - (b.ordem || 0));
-
-        // ---- Produtos ----
-        PRODUCTS = {};
-        CATEGORIES.forEach(cat => { PRODUCTS[cat.id] = []; });
-
-        const prodMap = data.PRODUCTS || {};
-        CATEGORIES.forEach(cat => {
-          const lista = Array.isArray(prodMap[cat.id]) ? prodMap[cat.id] : [];
-          PRODUCTS[cat.id] = lista.map(p => ({
-            id: p.id,
-            title: p.title || 'Sem título',
-            desc: p.desc || '',
-            img: p.img || '',
-            price: p.price != null ? Number(p.price) : null,
-            sizes: p.sizes || null,
-            units: p.units || null,
-            unidade: p.unidade || '',
-            ativo: p.ativo !== false,   // se não vier, considera ativo
-            extras: p.extras || []
-          }));
-        });
-
-        // (Opcional) remove categorias sem produtos para não poluir a UI
-        CATEGORIES = CATEGORIES.filter(c => (PRODUCTS[c.id] || []).length > 0);
-        const novoProducts = {};
-        CATEGORIES.forEach(c => { novoProducts[c.id] = PRODUCTS[c.id]; });
-        PRODUCTS = novoProducts;
-
-        if (CATEGORIES.length === 0) {
-          logDebug('Nenhum produto encontrado no JSON.');
-        }
-
-        // ---- Adicionais (do Firestore) ----
-        await carregarAdicionais();
-
-        // ---- Render ----
-        activeCategory = null;
-        renderCategories();
-        renderProducts();
-        updateCheckoutText();
-        iniciarCarrossel();
-
-      } catch (err) {
-        console.error('Erro ao carregar cardápio do JSON:', err);
-        productsEl.innerHTML = `
-          <div class="loading-state" style="padding:40px;text-align:center;">
-            <div class="error-state" style="color:#ff8a8a;font-weight:700;">Não foi possível carregar o cardápio.</div>
-            <div class="muted" style="margin-top:8px;">Verifique se o arquivo <code>cardapio_delivery.json</code> está na mesma pasta.</div>
-            <button class="btn" style="max-width:220px;margin-top:12px;" onclick="location.reload()">Tentar novamente</button>
-          </div>`;
-      }
-    }
-
-    // ============================================================
-    // CARROSSEL DAS CATEGORIAS
-    // ============================================================
-    let carrosselInterval = null;
-    let pausarCarrossel = false;
-
-    function iniciarCarrossel() {
-      const container = categoriesEl;
-      if (!container || container.children.length === 0) return;
-
-      function pausar() {
-        pausarCarrossel = true;
-        clearInterval(carrosselInterval);
-      }
-      function retomar() {
-        pausarCarrossel = false;
-        clearInterval(carrosselInterval);
-        carrosselInterval = setInterval(proximaCategoria, 4000);
-      }
-
-      container.addEventListener('mouseenter', pausar);
-      container.addEventListener('mouseleave', retomar);
-      container.addEventListener('touchstart', pausar, { passive: true });
-      container.addEventListener('touchend', retomar, { passive: true });
-      container.addEventListener('click', () => {
-        pausarCarrossel = true;
-        clearInterval(carrosselInterval);
-        setTimeout(retomar, 3000);
-      });
-
-      function proximaCategoria() {
-        if (pausarCarrossel) return;
-        const children = Array.from(container.children);
-        if (children.length === 0) return;
-
-        const containerRect = container.getBoundingClientRect();
-        let targetIndex = -1;
-
-        for (let i = 0; i < children.length; i++) {
-          const rect = children[i].getBoundingClientRect();
-          if (rect.left > containerRect.right - 2) {
-            targetIndex = i;
-            break;
-          }
-        }
-
-        if (targetIndex === -1) {
-          container.scrollTo({ left: 0, behavior: 'smooth' });
-          return;
-        }
-
-        const target = children[targetIndex];
-        const targetLeft = target.offsetLeft - container.offsetLeft - 2;
-        container.scrollTo({ left: targetLeft, behavior: 'smooth' });
-      }
-
-      setTimeout(retomar, 1000);
-    }
-
-    // ============================================================
-    // INICIALIZAÇÃO
-    // ============================================================
-    function iniciarApp() {
-      logDebug('Iniciando cardápio a partir do JSON local');
-
-      // Firebase: apenas config (cores, horários, loja, menu, adicionais)
-      carregarCores();
-      carregarMenu();
-      carregarStatusHorarios();
-
-      // Cardápio: do arquivo JSON
-      carregarCardapioDoJSON();
-
-      updateCheckoutText();
-    }
-
-    iniciarApp();
-
-    // ============================================================
-    // EVENTOS GLOBAIS
-    // ============================================================
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        if (overlay && overlay.style.display === 'flex') closeQtyDialog();
-        if (sizeOverlay && sizeOverlay.style.display === 'flex') closeSizeDialog();
-        if (shareOverlay && shareOverlay.classList.contains('active')) fecharShare();
-        if (menuDropdown) menuDropdown.classList.remove('open');
-      }
-    });
-
-    window.addToCart = addToCart;
-    window.openQtyDialog = openQtyDialog;
-    window.openSizeDialog = openSizeDialog;
-    window.showSuccess = showSuccess;
-    window.showCenterNotification = showCenterNotification;
-
-    console.log('✅ Pasterry Totem carregado (cardápio via JSON)!');
-  </script>
-</body>
-</html>
+  ]
+}
