@@ -1889,10 +1889,10 @@
           "desc": "Porção de bolinhas de queijo.",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787076826574.jfif?alt=media&token=83c21d17-9098-4862-8ee7-211f62cdd396",
           "sizes": {
-            "25": 24.99,
-            "50": 49.98,
-            "75": 74.97,
-            "100": 99.96
+            "25": 37.49,
+            "50": 74.97,
+            "75": 112.46,
+            "100": 149.94
           }
         },
         {
@@ -1901,10 +1901,10 @@
           "desc": "Porção de coxinhas de frango cremosas.",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/coxinha.png?alt=media&token=61cc2922-5a66-46fb-98b4-27d4d5cd6128",
           "sizes": {
-            "25": 24.99,
-            "50": 49.98,
-            "75": 74.97,
-            "100": 99.96
+            "25": 37.49,
+            "50": 74.97,
+            "75": 112.46,
+            "100": 149.94
           }
         },
         {
@@ -1913,10 +1913,10 @@
           "desc": "Porção de risoles de queijo e presunto.",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077045175.png?alt=media&token=a25a1765-8939-4ce3-a639-15fa0c8bbde6",
           "sizes": {
-            "25": 24.99,
-            "50": 49.98,
-            "75": 74.97,
-            "100": 99.96
+            "25": 37.49,
+            "50": 74.97,
+            "75": 112.46,
+            "100": 149.94
           }
         },
         {
@@ -1925,10 +1925,10 @@
           "desc": "salgados sortidos \ncoxinha, risole e bolinha de queijo",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787076290093.png?alt=media&token=0c97fea2-2e67-4dd7-82f8-049591d479b6",
           "sizes": {
-            "25": 24.99,
-            "50": 49.98,
-            "75": 74.97,
-            "100": 99.96
+            "25": 37.49,
+            "50": 74.97,
+            "75": 112.46,
+            "100": 149.94
           }
         }
       ]
