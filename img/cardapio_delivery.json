@@ -1,0 +1,1937 @@
+{
+  "delivery": {
+    "CATEGORIES": [
+      {
+        "id": "39LfLcamvrUcc58X0Bz2",
+        "name": "Monte o seu Pastel"
+      },
+      {
+        "id": "acai",
+        "name": "Açaí"
+      },
+      {
+        "id": "bebidas",
+        "name": "Bebidas"
+      },
+      {
+        "id": "churros",
+        "name": "Churros"
+      },
+      {
+        "id": "pasteis",
+        "name": "Pastéis"
+      },
+      {
+        "id": "pasteis_doces",
+        "name": "Pastéis Doces"
+      },
+      {
+        "id": "pasteis_especiais",
+        "name": "Pastéis Especiais"
+      },
+      {
+        "id": "porcoes",
+        "name": "Mini Pastéis"
+      },
+      {
+        "id": "salgados",
+        "name": "Salgados"
+      }
+    ],
+    "PRODUCTS": {
+      "39LfLcamvrUcc58X0Bz2": [
+        {
+          "id": "0QtKT1P1dKMpAxjyRJ0z",
+          "title": "Monte o seu Pastel",
+          "desc": "Monte o seu pastel a sua maneira, escolha os adicionas",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786990652774.jfif?alt=media&token=43b81a36-8108-49b4-a242-34a63ec45ce3",
+          "sizes": {
+            "15": 10,
+            "25": 15,
+            "30": 17,
+            "35": 22
+          }
+        }
+      ],
+      "acai": [
+        {
+          "id": "acai4",
+          "title": "Açaí Choco White",
+          "desc": "Chocolate branco, Leite em pó, Chocoboll e Leite Condensado.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077333813.png?alt=media&token=801a0080-6ce3-46ca-9730-5f592aa8b86a",
+          "sizes": {
+            "480": 49.47,
+            "1000": 82.47
+          }
+        },
+        {
+          "id": "acai1",
+          "title": "Açaí Tradicional 1",
+          "desc": "Banana, Leite em Pó e Leite Condensado.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077379103.png?alt=media&token=e06ddd93-0ff8-4209-ae37-8cd96e68fd50",
+          "sizes": {
+            "480": 34.49,
+            "1000": 68.97
+          }
+        },
+        {
+          "id": "acai2",
+          "title": "Açaí Tradicional 2",
+          "desc": "Banana, Granola, Paçoca e Leite Condensado.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077399572.png?alt=media&token=969ffea8-8a41-4cc0-b229-32930927632f",
+          "sizes": {
+            "480": 35.99,
+            "1000": 68.97
+          }
+        },
+        {
+          "id": "acai3",
+          "title": "Açaí Trufadão",
+          "desc": "Chocolate ao leite, Leite em pó, Chocoboll, Granulado e Leite Condensado.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077423048.png?alt=media&token=3ba5eb17-9363-4204-bf5c-5e75afbba81e",
+          "sizes": {
+            "480": 44.97,
+            "1000": 74.97
+          }
+        },
+        {
+          "id": "3718ORl79zS15zODQsMR",
+          "title": "Casadinho",
+          "desc": "Cupuaçu e Açai \nleite condensado, banana e leite em pó",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1788486896410.jfif?alt=media&token=9e26f4c5-9637-4713-9fe8-c97730d91e36",
+          "sizes": {
+            "480": 45,
+            "1000": 82.5
+          }
+        }
+      ],
+      "bebidas": [
+        {
+          "id": "b15",
+          "title": "Budweiser Long Neck 350ml",
+          "desc": "Cerveja Budweiser garrafa long neck 350ml.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077804268.png?alt=media&token=4754a0f4-4b6f-4fdc-beb4-18d5602e98cc",
+          "price": 12.99
+        },
+        {
+          "id": "b13",
+          "title": "Coca-Cola 2L",
+          "desc": "Garrafa 2 litros.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077467643.png?alt=media&token=83adf066-c54d-428f-8e9f-512a6531af8c",
+          "price": 19.99
+        },
+        {
+          "id": "b1",
+          "title": "Coca-Cola 350ml",
+          "desc": "Lata 350ml.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077484608.png?alt=media&token=ead5e390-a3ce-48bc-8f55-4dde7960cf89",
+          "price": 7.99
+        },
+        {
+          "id": "b12",
+          "title": "Convenção Frutbaína 2L",
+          "desc": "Garrafa 2 litros.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/convencao-frutbaina-2l.png?alt=media&token=06c45d4c-9fee-4a09-bb92-4774898d13fc",
+          "price": 9.99
+        },
+        {
+          "id": "b11",
+          "title": "Convenção Guaraná 2L",
+          "desc": "Garrafa 2 litros.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077502652.png?alt=media&token=f207730f-85d6-4cf3-9ddf-c38c736d3fe0",
+          "price": 9.99
+        },
+        {
+          "id": "b9",
+          "title": "Dell Vale laranja 450ml",
+          "desc": "pet 450ml.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077550539.png?alt=media&token=c27e30a9-b784-4862-904e-f481f7a42bea",
+          "price": 9.99
+        },
+        {
+          "id": "b10",
+          "title": "Dell Vale Uva 450ml",
+          "desc": "pet 450ml.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077528403.png?alt=media&token=630e8e0a-610a-4b85-8175-b3fa2408db52",
+          "price": 9.99
+        },
+        {
+          "id": "b4",
+          "title": "Fanta Laranja 350ml",
+          "desc": "Lata 350ml.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077643776.png?alt=media&token=6abd2065-88d7-4ae7-9adf-016dfec4e278",
+          "price": 7.99
+        },
+        {
+          "id": "b3",
+          "title": "Fanta Uva 350ml",
+          "desc": "Lata 350ml.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077661344.png?alt=media&token=5a933b2f-5f2c-4385-acc1-4db158511a85",
+          "price": 7.99
+        },
+        {
+          "id": "b2",
+          "title": "Guaraná 350ml",
+          "desc": "Lata 350ml.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077682856.png?alt=media&token=916f494c-cb9d-43b6-a34e-7e2b12646db6",
+          "price": 7.99
+        },
+        {
+          "id": "b14",
+          "title": "Heineken Long Neck 350ml",
+          "desc": "Cerveja Heineken garrafa long neck 350ml.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077834977.png?alt=media&token=fd3dba39-79b8-4512-831e-56cd7a51bfd9",
+          "price": 12.99
+        },
+        {
+          "id": "b5",
+          "title": "Itubaína 350ml",
+          "desc": "Lata 350ml.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077704437.png?alt=media&token=bbda6054-ca24-468c-bee3-3f69322d3485",
+          "price": 7.99
+        },
+        {
+          "id": "b6",
+          "title": "Pepsi 350ml",
+          "desc": "Lata 350ml.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/pepsi-lata-350.png?alt=media&token=82e24e95-3f4e-444e-8a95-20735aaffe60",
+          "price": 7.99
+        },
+        {
+          "id": "b7",
+          "title": "Sukita Laranja 350ml",
+          "desc": "Lata 350ml.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077611622.png?alt=media&token=b7606456-9bce-4005-b2fd-1f987a84b434",
+          "price": 7.99
+        },
+        {
+          "id": "b8",
+          "title": "Sukita Uva 350ml",
+          "desc": "Lata 350ml.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077725672.png?alt=media&token=61d60bdf-00be-4b00-8219-97521cd7c495",
+          "price": 7.99
+        }
+      ],
+      "churros": [
+        {
+          "id": "CHT0KrOy8sAeXZrdPqmB",
+          "title": "Mini Churros Doce de leite (25 unid.)",
+          "desc": "Porção de mini churros de doce de leite",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787076438966.png?alt=media&token=c9f2fbb4-8122-49d3-8943-8ba07d07a8c6",
+          "sizes": {
+            "25": 24.99,
+            "50": 45.99
+          }
+        }
+      ],
+      "pasteis": [
+        {
+          "id": "baiano1",
+          "title": "BAIANO 1 — Calabresa e piment",
+          "desc": "Calabresa com pimenta.",
+          "img": "img/baiano1.png",
+          "sizes": {
+            "15": 22.49,
+            "25": 25.49
+          }
+        },
+        {
+          "id": "baiano2",
+          "title": "BAIANO 2 — Calabresa, mussarela, pimenta",
+          "desc": "Calabresa, mussarela e pimenta.",
+          "img": "img/baiano2.png",
+          "sizes": {
+            "15": 23.99,
+            "25": 29.99
+          }
+        },
+        {
+          "id": "baiano3",
+          "title": "BAIANO 3 — Calabresa, requeijão, pimenta",
+          "desc": "Calabresa, requeijão e pimenta.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/baiano3.png?alt=media&token=82440db8-e9ee-41db-a3e8-90150868d763",
+          "sizes": {
+            "15": 23.99,
+            "25": 29.99
+          }
+        },
+        {
+          "id": "baiano4",
+          "title": "BAIANO 4 — Calabresa, cheddar, pimenta",
+          "desc": "Calabresa, cheddar e pimenta.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/baiano4.png?alt=media&token=9e76dd63-655d-49c0-9cc9-46cbc978cfdd",
+          "sizes": {
+            "15": 23.99,
+            "25": 29.99
+          }
+        },
+        {
+          "id": "baiano5",
+          "title": "BAIANO 5 — Calabresa, purê e pimenta",
+          "desc": "Calabresa, purê e pimenta.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/baiano5.png?alt=media&token=1e97d051-e434-48d0-ba5d-21a2a87f53f9",
+          "sizes": {
+            "15": 23.99,
+            "25": 29.99
+          }
+        },
+        {
+          "id": "baiano6",
+          "title": "BAIANO 6 — Calabresa e palmito",
+          "desc": "Calabresa, palmito e pimenta.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/baiano6.png?alt=media&token=3301e9ba-1180-4b94-aed1-c8c87519172a",
+          "sizes": {
+            "15": 26.99,
+            "25": 32.99
+          }
+        },
+        {
+          "id": "baiano7",
+          "title": "BAIANO 7 — Calabresa, Catupiry original",
+          "desc": "Calabresa com Catupiry original.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/baiano7.png?alt=media&token=9827e50d-c737-41d2-b5b5-f99fa225399c",
+          "sizes": {
+            "15": 31.49,
+            "25": 35.99
+          }
+        },
+        {
+          "id": "baiano8",
+          "title": "BAIANO 8 — Calabresa, cheddar polenghi",
+          "desc": "Calabresa com cheddar Polenghi.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/baiano8.png?alt=media&token=d1a10efd-f290-4e89-9452-6e2f75a82b46",
+          "sizes": {
+            "15": 31.49,
+            "25": 35.99
+          }
+        },
+        {
+          "id": "bauru1",
+          "title": "BAURU 1 — Queijo, presunto, tomate, orég.",
+          "desc": "Mussarela, presunto, tomate e orégano.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/bauru1.png?alt=media&token=5400fb98-34f0-44a3-a10a-7f392a4b624e",
+          "sizes": {
+            "15": 23.99,
+            "25": 26.99
+          }
+        },
+        {
+          "id": "bauru2",
+          "title": "BAURU 2 — Queijo, pres., tomate, orég., req.",
+          "desc": "Mussarela, presunto, tomate, orégano e requeijão.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/bauru2.png?alt=media&token=b513fb41-ab43-41fc-bfff-95b62f0f584b",
+          "sizes": {
+            "15": 26.99,
+            "25": 29.99
+          }
+        },
+        {
+          "id": "bauru3",
+          "title": "BAURU 3 — Queijo, pres., tomate, orég., cheddar",
+          "desc": "Mussarela, presunto, tomate, orégano e cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786220845156.png?alt=media&token=a51849c4-af08-4658-a0f4-29081f3e964b",
+          "sizes": {
+            "15": 26.99,
+            "25": 29.99
+          }
+        },
+        {
+          "id": "bauru4",
+          "title": "BAURU 4 — Queijo, pres., tomate, orég., Catupiry org.",
+          "desc": "Mussarela, presunto, tomate, orégano e Catupiry original.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/bauru4.png?alt=media&token=c3446804-09d7-4de6-92a8-ef087fa31780",
+          "sizes": {
+            "15": 31.49,
+            "25": 35.99
+          }
+        },
+        {
+          "id": "bauru5",
+          "title": "BAURU 5 — Queijo, pres., tomate, orég., ched. polenghi",
+          "desc": "Mussarela, presunto, tomate, orégano e cheddar Polenghi.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/bauru5.png?alt=media&token=eede9313-176b-4cd4-a9b5-bbbc4530ba71",
+          "sizes": {
+            "15": 31.49,
+            "25": 35.99
+          }
+        },
+        {
+          "id": "beef1",
+          "title": "BEEF 1 — Só carne moída",
+          "desc": "Pastel de carne moída bem temperada.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786977298040.png?alt=media&token=353f0955-e0bb-4221-9704-edc393092ac8",
+          "sizes": {
+            "15": 23.97,
+            "25": 25.49
+          }
+        },
+        {
+          "id": "beef2",
+          "title": "BEEF 2 — Carne com mussarela",
+          "desc": "Carne moída com mussarela derretida.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786977419059.png?alt=media&token=e473ffc6-bef5-42c8-8b52-8800a2017dd0",
+          "sizes": {
+            "15": 25.49,
+            "25": 32.99
+          }
+        },
+        {
+          "id": "beef3",
+          "title": "BEEF 3 — Carne com requeijão",
+          "desc": "Carne moída com requeijão cremoso.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/beef3.png?alt=media&token=c472d80f-3ac1-4a51-88e0-e96b6a58cc41",
+          "sizes": {
+            "15": 25.49,
+            "25": 32.99
+          }
+        },
+        {
+          "id": "beef4",
+          "title": "BEEF 4 — Carne com cheddar",
+          "desc": "Carne moída com cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786978735046.png?alt=media&token=250402f5-3fbe-444c-a54e-6a51b25d257a",
+          "sizes": {
+            "15": 25.49,
+            "25": 32.99
+          }
+        },
+        {
+          "id": "beef5",
+          "title": "BEEF 5 — Carne com purê",
+          "desc": "Carne moída com purê de batata.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786978774263.png?alt=media&token=3d2e270f-cabc-4499-a67c-93e5a2966eed",
+          "sizes": {
+            "15": 25.49,
+            "25": 32.99
+          }
+        },
+        {
+          "id": "beef6",
+          "title": "BEEF 6 — Carne, requeijão e palmito",
+          "desc": "Carne, requeijão e palmito em cubos.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786978909636.png?alt=media&token=d79eafc2-392a-413b-99b1-bd191d8d80f9",
+          "sizes": {
+            "15": 28.49,
+            "25": 35.99
+          }
+        },
+        {
+          "id": "beef7",
+          "title": "BEEF 7 — Carne Catupiry original",
+          "desc": "Carne com Catupiry original.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786979181648.png?alt=media&token=a57072cb-24e1-43ef-bee4-1cb8784c9bee",
+          "sizes": {
+            "15": 41.99,
+            "25": 52.49
+          }
+        },
+        {
+          "id": "beef8",
+          "title": "BEEF 8 — Carne com cheddar polenghi",
+          "desc": "Carne moida com cheddar Polenghi.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786979254040.png?alt=media&token=f37d08fc-5064-4ea6-bfa4-c8cffd6d841d",
+          "sizes": {
+            "15": 41.99,
+            "25": 52.49
+          }
+        },
+        {
+          "id": "brocolis1",
+          "title": "BRÓCOLIS 1 — Brócolis com mussarela",
+          "desc": "Brócolis com mussarela.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/brocolis1.png?alt=media&token=7f71bd2c-74ec-41d9-b8e3-f3dc21da5b35",
+          "sizes": {
+            "15": 37.49,
+            "25": 41.99
+          }
+        },
+        {
+          "id": "brocolis2",
+          "title": "BRÓCOLIS 2 — Brócolis com requeijão",
+          "desc": "Brócolis com requeijão.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786979668515.png?alt=media&token=6bdfdcbc-83f2-4ebc-b13c-b67c9dcb51f6",
+          "sizes": {
+            "15": 37.49,
+            "25": 41.99
+          }
+        },
+        {
+          "id": "brocolis3",
+          "title": "BRÓCOLIS 3 — Brócolis com cheddar",
+          "desc": "Brócolis com cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/brocolis3.png?alt=media&token=04d184f6-59b4-4063-8573-509530e223c7",
+          "sizes": {
+            "15": 37.49,
+            "25": 41.99
+          }
+        },
+        {
+          "id": "brocolis4",
+          "title": "BRÓCOLIS 4 — Brócolis, mussarela e bacon",
+          "desc": "Brócolis, mussarela e bacon.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786979731669.png?alt=media&token=dabf31d3-e71d-4e72-ad5d-6e8b01dc6e51",
+          "sizes": {
+            "15": 44.99,
+            "25": 52.49
+          }
+        },
+        {
+          "id": "brocolis5",
+          "title": "BRÓCOLIS 5 — Brócolis, tomate, ovo, milho, azeitona e requeijão",
+          "desc": "Brócolis, tomate, ovo, milho, azeitona e requeijão",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/brocolis5.png?alt=media&token=cdfb83f0-7c9b-429f-bdf7-06805fa0a880",
+          "sizes": {
+            "15": 47.99,
+            "25": 56.99
+          }
+        },
+        {
+          "id": "brocolis6",
+          "title": "BRÓCOLIS 6 — Brócolis com Catupiry Original",
+          "desc": "Brócolis com Catupiry Original",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/brocolis6.png?alt=media&token=91704345-76ba-4619-b115-4c3f7c51c911",
+          "sizes": {
+            "15": 49.49,
+            "25": 53.99
+          }
+        },
+        {
+          "id": "brocolis7",
+          "title": "BRÓCOLIS 7 — Brócolis com cheddar polenghi",
+          "desc": "Brócolis com cheddar Polenghi.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786979953076.png?alt=media&token=1f889d15-d681-4b5f-b16e-71e49960fb70",
+          "sizes": {
+            "15": 49.49,
+            "25": 53.99
+          }
+        },
+        {
+          "id": "brocolis8",
+          "title": "BRÓCOLIS 8 — Brócolis, tomate, ovo, milho, azeitona e catupiry original",
+          "desc": "Brócolis, tomate, ovo, milho, azeitona e catupiry original",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077911315.png?alt=media&token=3a7cd736-4dde-4529-8464-1ef0f73ee18a",
+          "sizes": {
+            "15": 56.99,
+            "25": 65.99
+          }
+        },
+        {
+          "id": "chicken1",
+          "title": "CHICKEN 1 — Só frango desfiado",
+          "desc": "Frango desfiado temperado.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786027297950.png?alt=media&token=6f153ed4-288c-43e7-84da-4e0841a897e4",
+          "sizes": {
+            "15": 22.49,
+            "25": 26.99
+          }
+        },
+        {
+          "id": "chicken2",
+          "title": "CHICKEN 2 — Frango com mussarela",
+          "desc": "Frango desfiado com mussarela.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/chicken2.png?alt=media&token=217db7c0-d7b4-4efc-ab53-ccf57094b00e",
+          "sizes": {
+            "15": 25.49,
+            "25": 32.99
+          }
+        },
+        {
+          "id": "chicken3",
+          "title": "CHICKEN 3 — Frango com requeijão",
+          "desc": "Frango desfiado com requeijão cremoso.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786980190531.png?alt=media&token=750a0bb9-5257-42dc-a2d1-4e622244cccc",
+          "sizes": {
+            "15": 25.49,
+            "25": 32.99
+          }
+        },
+        {
+          "id": "chicken4",
+          "title": "CHICKEN 4 — Frango com cheddar",
+          "desc": "Frango desfiado com cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/chicken4.png?alt=media&token=45225bfd-c6c7-4fcf-8e0e-f39172dc1aa7",
+          "sizes": {
+            "15": 25.49,
+            "25": 32.99
+          }
+        },
+        {
+          "id": "chicken5",
+          "title": "CHICKEN 5 — Frango com purê",
+          "desc": "Frango desfiado com purê de batata.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786980266189.png?alt=media&token=f4a46035-77af-4f0c-802d-f01f710f93c9",
+          "sizes": {
+            "15": 25.49,
+            "25": 32.99
+          }
+        },
+        {
+          "id": "chicken6",
+          "title": "CHICKEN 6 — Frango, requeijão e palmito",
+          "desc": "Frango, requeijão e palmito em cubos.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786980349058.png?alt=media&token=e0b72818-f6ef-438f-9239-c9c2e3efcbba",
+          "sizes": {
+            "15": 28.49,
+            "25": 35.99
+          }
+        },
+        {
+          "id": "chicken7",
+          "title": "CHICKEN 7 — Frango com Catupiry original",
+          "desc": "Frango desfiado com Catupiry original.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786980520494.png?alt=media&token=4f7be11e-f486-4512-8517-dc2a86e181bb",
+          "sizes": {
+            "15": 41.99,
+            "25": 52.49
+          }
+        },
+        {
+          "id": "chicken8",
+          "title": "CHICKEN 8 — Frango com cheddar polenghi",
+          "desc": "Frango desfiado com cheddar Polenghi.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786980572457.png?alt=media&token=cdeb66ab-d669-410b-8c97-a9c52a2aed9b",
+          "sizes": {
+            "15": 41.99,
+            "25": 52.49
+          }
+        },
+        {
+          "id": "gaucho1",
+          "title": "GAÚCHO 1 — Só costela desfiada",
+          "desc": "Costela bovina desfiada.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/gaucho1.png?alt=media&token=9461b33b-c30e-4dcc-afbc-cea6bcc5cc39",
+          "sizes": {
+            "15": 31.49,
+            "25": 38.99
+          }
+        },
+        {
+          "id": "gaucho2",
+          "title": "GAÚCHO 2 — Costela, mussarela",
+          "desc": "Costela com mussarela.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/gaucho2.png?alt=media&token=27cf1ce0-2a8d-4824-9271-7d2c7c5bde98",
+          "sizes": {
+            "15": 44.99,
+            "25": 50.99
+          }
+        },
+        {
+          "id": "gaucho3",
+          "title": "GAÚCHO 3 — Costela com requeijão",
+          "desc": "Costela com requeijão.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786982157987.png?alt=media&token=cf8fe281-5157-48fe-ad44-ad86880a41d3",
+          "sizes": {
+            "15": 44.99,
+            "25": 50.99
+          }
+        },
+        {
+          "id": "gaucho4",
+          "title": "GAÚCHO 4 — Costela com cheddar",
+          "desc": "Costela com cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786982192937.png?alt=media&token=b0acbb31-5588-4b30-8e1c-10d85cc5754d",
+          "sizes": {
+            "15": 44.99,
+            "25": 50.99
+          }
+        },
+        {
+          "id": "gaucho5",
+          "title": "GAÚCHO 5 — Costela com purê",
+          "desc": "Costela com purê.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786982314620.png?alt=media&token=1648b595-ccce-4030-9092-2dc9f69f3be9",
+          "sizes": {
+            "15": 44.99,
+            "25": 50.99
+          }
+        },
+        {
+          "id": "gaucho6",
+          "title": "GAÚCHO 6 — Costela com requeijão e palmito",
+          "desc": "Costela com requeijão e palmito.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/gaucho6.png?alt=media&token=af458d49-1b8a-4a42-83cb-4dbf93e50a75",
+          "sizes": {
+            "15": 47.99,
+            "25": 53.99
+          }
+        },
+        {
+          "id": "gaucho7",
+          "title": "GAÚCHO 6 — Costela, Catupiry original",
+          "desc": "Costela com Catupiry original.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/gaucho7.png?alt=media&token=ecd29fcd-304a-4f4a-9ba0-0e211f8dc304",
+          "sizes": {
+            "15": 49.49,
+            "25": 56.99
+          }
+        },
+        {
+          "id": "gaucho8",
+          "title": "GAÚCHO 8 — Costela, cheddar polenghi",
+          "desc": "Costela com cheddar Polenghi.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786226548883.png?alt=media&token=c04badf6-9d55-499d-a508-ca66f039a6cc",
+          "sizes": {
+            "15": 49.49,
+            "25": 56.99
+          }
+        },
+        {
+          "id": "italian1",
+          "title": "ITALIAN 1 — Só calabresa fatiada",
+          "desc": "Calabresa fatiada.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786982616506.png?alt=media&token=46cf5885-77f1-45f8-9467-8f91f92c3368",
+          "sizes": {
+            "15": 19.49,
+            "25": 22.49
+          }
+        },
+        {
+          "id": "italian2",
+          "title": "ITALIAN 2 — Calabresa com mussarela",
+          "desc": "Calabresa com mussarela.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/italian2.png?alt=media&token=1e981c59-d6d2-4359-bf69-a7fca97690ee",
+          "sizes": {
+            "15": 23.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "italian3",
+          "title": "ITALIAN 3 — Calabresa com requeijão",
+          "desc": "Calabresa com requeijão cremoso.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/italian3.png?alt=media&token=df1a645e-bafc-4119-8007-70f912d9fa1a",
+          "sizes": {
+            "15": 23.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "italian4",
+          "title": "ITALIAN 4 — Calabresa com cheddar",
+          "desc": "Calabresa com cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/italian4.png?alt=media&token=384205c2-aa4f-47af-b407-9499c4285a8c",
+          "sizes": {
+            "15": 23.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "italian5",
+          "title": "ITALIAN 5 — Calabresa com purê",
+          "desc": "Calabresa com purê de batata.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786982846320.png?alt=media&token=f12778e7-78e8-429e-930c-3331ccd5ecff",
+          "sizes": {
+            "15": 23.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "italian6",
+          "title": "ITALIAN 6 — Calabresa, requeijão e palmito",
+          "desc": "Calabresa, requeijão e palmito em cubos.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/italian6.png?alt=media&token=d55f714f-ebcf-4ea8-83f8-2e5aca5f07a9",
+          "sizes": {
+            "15": 28.49,
+            "25": 35.99
+          }
+        },
+        {
+          "id": "italian7",
+          "title": "ITALIAN 7 — Calabresa Catupiry original",
+          "desc": "Calabresa fatiada com Catupiry original.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786983095673.png?alt=media&token=4f937282-a4d3-4c96-9f95-b5d9eee83122",
+          "sizes": {
+            "15": 41.99,
+            "25": 52.49
+          }
+        },
+        {
+          "id": "italian8",
+          "title": "ITALIAN 8 — Calabresa cheddar polenghi",
+          "desc": "Calabresa fatiada com cheddar Polenghi.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/italian8.png?alt=media&token=714d2e05-3d1b-44ef-9f4d-594859ee2c50",
+          "sizes": {
+            "15": 41.99,
+            "25": 52.49
+          }
+        },
+        {
+          "id": "lampiao1",
+          "title": "LAMPIÃO 1 — Só carne seca (jabá)",
+          "desc": "Carne seca (jabá).",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/lampiao1.png?alt=media&token=8d0eb9f4-4edf-4da7-95f3-9455e33df518",
+          "sizes": {
+            "15": 31.49,
+            "25": 38.99
+          }
+        },
+        {
+          "id": "lampiao2",
+          "title": "LAMPIÃO 2 — Carne seca, mussarela",
+          "desc": "Carne seca com mussarela.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786983273617.png?alt=media&token=e4fa24e0-3275-414c-b87e-41ca2e2496f7",
+          "sizes": {
+            "15": 44.99,
+            "25": 50.99
+          }
+        },
+        {
+          "id": "lampiao3",
+          "title": "LAMPIÃO 3 — Carne seca com requeijão",
+          "desc": "Carne seca com requeijão.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786983297142.png?alt=media&token=974c09a5-e4a8-4602-ade7-66765ade9dad",
+          "sizes": {
+            "15": 44.99,
+            "25": 50.99
+          }
+        },
+        {
+          "id": "lampiao4",
+          "title": "LAMPIÃO 4 — Carne seca com cheddar",
+          "desc": "Carne seca com cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786983316866.png?alt=media&token=1bca7a81-7a19-47a8-a3fa-1f93e9363526",
+          "sizes": {
+            "15": 44.99,
+            "25": 50.99
+          }
+        },
+        {
+          "id": "lampiao5",
+          "title": "LAMPIÃO 5 — Carne seca com purê",
+          "desc": "Carne seca com purê.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/lampiao5.png?alt=media&token=2e4fbf0c-b82d-49fd-b5b8-9f897cad088c",
+          "sizes": {
+            "15": 44.99,
+            "25": 50.99
+          }
+        },
+        {
+          "id": "lampiao6",
+          "title": "LAMPIÃO 6 — Carne seca com requeijão e palmito",
+          "desc": "Carne seca com requeijão e palmito.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786983391675.png?alt=media&token=7df5ac96-6b55-49ec-8608-1330c0edb366",
+          "sizes": {
+            "15": 47.99,
+            "25": 53.99
+          }
+        },
+        {
+          "id": "lampiao7",
+          "title": "LAMPIÃO 7 — Carne seca, Catupiry original",
+          "desc": "Carne seca com Catupiry original.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786983423554.png?alt=media&token=22e2e81b-805c-4198-b8d6-ee7e6e3b0d96",
+          "sizes": {
+            "15": 49.49,
+            "25": 56.99
+          }
+        },
+        {
+          "id": "lampiao8",
+          "title": "LAMPIÃO 8 — Carne seca, cheddar polenghi",
+          "desc": "Carne seca com cheddar Polenghi.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786983459909.png?alt=media&token=d477175f-850c-4722-97ce-ccc8ee314e5f",
+          "sizes": {
+            "15": 49.49,
+            "25": 56.99
+          }
+        },
+        {
+          "id": "lombo1",
+          "title": "LOMBO 1 — Lombo, mussarela e champignon",
+          "desc": "Lombo suíno, mussarela e champignon.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/lombo1.png?alt=media&token=02a33d33-ba30-4879-bfa9-edc4db2906ff",
+          "sizes": {
+            "15": 40.49,
+            "25": 44.99
+          }
+        },
+        {
+          "id": "lombo2",
+          "title": "LOMBO 2 — Lombo, requeijão e champignon",
+          "desc": "Lombo suíno, requeijão e champignon",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786987640101.png?alt=media&token=53ee7a7a-71fb-400f-918a-187cc2828cb8",
+          "sizes": {
+            "15": 40.49,
+            "25": 44.99
+          }
+        },
+        {
+          "id": "lombo3",
+          "title": "LOMBO 3 — lombo, cheddar e champignon",
+          "desc": "Lombo suíno, cheddar e champignon",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/lombo3.png?alt=media&token=713b0e69-4eac-4c3d-805f-0cd5626a8705",
+          "sizes": {
+            "15": 40.49,
+            "25": 44.99
+          }
+        },
+        {
+          "id": "lombo4",
+          "title": "LOMBO 4 — Lombo, Catupiry Original e champignon",
+          "desc": "Lombo suíno, Catupiry Original, champignon.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786987817242.png?alt=media&token=66bedf21-dfc4-4f72-841a-2a8ad25870cc",
+          "sizes": {
+            "15": 49.49,
+            "25": 53.99
+          }
+        },
+        {
+          "id": "lombo5",
+          "title": "LOMBO 5 — Lombo, cheddar polenghi e champignon",
+          "desc": "Lombo suíno com cheddar Polenghi e champginon",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786987796329.png?alt=media&token=fb2fe767-fab2-40c2-9c6c-106e393f8709",
+          "sizes": {
+            "15": 49.49,
+            "25": 53.99
+          }
+        },
+        {
+          "id": "louca1",
+          "title": "LOUCA 1 — Só carne louca",
+          "desc": "Carne louca desfiada.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786987962104.png?alt=media&token=b8f44930-4557-4523-b7f9-035a3f6a474c",
+          "sizes": {
+            "15": 31.49,
+            "25": 38.99
+          }
+        },
+        {
+          "id": "louca2",
+          "title": "LOUCA 2 — Carne louca, mussarela",
+          "desc": "Carne louca com mussarela.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/louca2.png?alt=media&token=59dd5922-94ec-4933-8860-e6c42829aa47",
+          "sizes": {
+            "15": 44.99,
+            "25": 50.99
+          }
+        },
+        {
+          "id": "louca3",
+          "title": "LOUCA 3 — Carne louca com requeijão",
+          "desc": "Carne louca com requeijão.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786988059230.png?alt=media&token=616eab2d-bd3b-4550-89cd-7351e482e4f4",
+          "sizes": {
+            "15": 44.99,
+            "25": 50.99
+          }
+        },
+        {
+          "id": "louca4",
+          "title": "LOUCA 4 — Carne louca com cheddar",
+          "desc": "Carne louca com cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786988090316.png?alt=media&token=ab56e969-7003-4779-a09a-31a79739f145",
+          "sizes": {
+            "15": 44.99,
+            "25": 50.99
+          }
+        },
+        {
+          "id": "louca5",
+          "title": "LOUCA 5 — Carne louca com purê",
+          "desc": "Carne louca com purê.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786988112589.png?alt=media&token=cae40856-572c-4bc2-bde4-64f0b1cc711c",
+          "sizes": {
+            "15": 50.97,
+            "25": 56.97
+          }
+        },
+        {
+          "id": "louca6",
+          "title": "LOUCA 6 — Carne louca com requeijão e palmito",
+          "desc": "Carne louca com requeijão e palmito.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/louca6.png?alt=media&token=43202f0c-cceb-459b-8cc8-e4c5979978ff",
+          "sizes": {
+            "15": 47.99,
+            "25": 53.99
+          }
+        },
+        {
+          "id": "louca7",
+          "title": "LOUCA 7 — Carne louca, Catupiry original",
+          "desc": "Carne louca com Catupiry original.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786988307224.png?alt=media&token=84c6c1cf-1669-4d8b-a5d7-da1729cc8c2c",
+          "sizes": {
+            "15": 49.49,
+            "25": 56.99
+          }
+        },
+        {
+          "id": "louca8",
+          "title": "LOUCA 8 — Carne louca, cheddar polenghi",
+          "desc": "Carne louca com cheddar Polenghi.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786988345193.png?alt=media&token=6af217fa-0242-4d6d-93bb-56f2a96ae654",
+          "sizes": {
+            "15": 49.49,
+            "25": 56.99
+          }
+        },
+        {
+          "id": "mineiro1",
+          "title": "MINEIRO 1 — Só queijo mussarela",
+          "desc": "Pastel de queijo mussarela.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786984024241.png?alt=media&token=46e9a43a-2972-4ea3-98f0-d0af57e3c12d",
+          "sizes": {
+            "15": 19.49,
+            "25": 23.99
+          }
+        },
+        {
+          "id": "mineiro2",
+          "title": "MINEIRO 2 — Queijo Mussarela com requeijão",
+          "desc": "Queijo mussarela com requeijão.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/mineiro2.png?alt=media&token=4b7a966e-e127-4738-95ef-0a4b7b1b490a",
+          "sizes": {
+            "15": 28.49,
+            "25": 32.99
+          }
+        },
+        {
+          "id": "mineiro3",
+          "title": "MINEIRO 3 — Mussarela com cheddar",
+          "desc": "Mussarela com cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/mineiro3.png?alt=media&token=271f8350-3038-46e8-b731-ab40bbd07bb5",
+          "sizes": {
+            "15": 28.49,
+            "25": 32.99
+          }
+        },
+        {
+          "id": "mineiro4",
+          "title": "MINEIRO 4 — Mussarela, requeijão, cheddar",
+          "desc": "Mussarela, requeijão e cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786987235292.png?alt=media&token=118859ad-2aaa-4b7f-af35-26f0c68f4514",
+          "sizes": {
+            "15": 32.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "mineiro5",
+          "title": "MINEIRO 5 — Mussarela, Catupiry original",
+          "desc": "Mussarela com Catupiry original.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786987347791.png?alt=media&token=eab401fb-65e9-4d2c-ac35-33a144480ea8",
+          "sizes": {
+            "15": 37.49,
+            "25": 41.99
+          }
+        },
+        {
+          "id": "mineiro6",
+          "title": "MINEIRO 6 — Mussarela, cheddar polenghi",
+          "desc": "Mussarela com cheddar Polenghi.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/mineiro6.png?alt=media&token=55c5a09b-dced-41bd-81db-33af53c2ad7d",
+          "sizes": {
+            "15": 37.49,
+            "25": 41.99
+          }
+        },
+        {
+          "id": "misto1",
+          "title": "MISTO 1 — Queijo, presunto",
+          "desc": "Mussarela e presunto.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786988387448.png?alt=media&token=919d3e9b-b3d9-4167-8f8f-93390a070f49",
+          "sizes": {
+            "15": 23.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "misto2",
+          "title": "MISTO 2 — Queijo, presunto, requeijão",
+          "desc": "Mussarela, presunto e requeijão.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786988412007.png?alt=media&token=873ca9d8-beae-49a9-9e7f-d3bdea206a55",
+          "sizes": {
+            "15": 28.49,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "misto3",
+          "title": "MISTO 3 — Queijo, presunto, cheddar",
+          "desc": "Mussarela, presunto e cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989100348.png?alt=media&token=ed840a0a-069e-4cb5-8927-38946aff97aa",
+          "sizes": {
+            "15": 28.49,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "misto4",
+          "title": "MISTO 4 — Queijo, presunto, Catupiry original",
+          "desc": "Mussarela, presunto e Catupiry original.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/misto4.png?alt=media&token=f473b90a-708f-4818-a601-ba4a9ecb9cc3",
+          "sizes": {
+            "15": 37.49,
+            "25": 44.99
+          }
+        },
+        {
+          "id": "misto5",
+          "title": "MISTO 5 — Queijo, presunto, cheddar polenghi",
+          "desc": "Mussarela, presunto e cheddar Polenghi.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989192322.png?alt=media&token=6af2d05b-a2ba-419d-a555-7846150e9684",
+          "sizes": {
+            "15": 37.49,
+            "25": 44.99
+          }
+        },
+        {
+          "id": "pizza1",
+          "title": "PIZZA 1 — Queijo, tomate e orégano",
+          "desc": "Mussarela, tomate e orégano.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989312130.png?alt=media&token=8446a4bf-de31-4fa8-9347-86d941a9d93a",
+          "sizes": {
+            "15": 20.99,
+            "25": 25.49
+          }
+        },
+        {
+          "id": "pizza2",
+          "title": "PIZZA 2 — Queijo, tomate, orég., req.",
+          "desc": "Mussarela, tomate, orégano e requeijão.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989355880.png?alt=media&token=ec8b784b-dbf0-41da-87cf-be719309b588",
+          "sizes": {
+            "15": 25.49,
+            "25": 32.99
+          }
+        },
+        {
+          "id": "pizza3",
+          "title": "PIZZA 3 — Queijo, tomate, orég., cheddar",
+          "desc": "Mussarela, tomate, orégano e cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989413188.png?alt=media&token=20a6213c-6703-4ee3-98dd-afb84ed71dbe",
+          "sizes": {
+            "15": 25.49,
+            "25": 32.99
+          }
+        },
+        {
+          "id": "pizza4",
+          "title": "PIZZA 4 — Queijo, tomate, orég., Catupiry org.",
+          "desc": "Mussarela, tomate, orégano e Catupiry original.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989428393.png?alt=media&token=f6256739-9b6a-4d0d-94c3-82f7a4bdffad",
+          "sizes": {
+            "15": 34.49,
+            "25": 41.99
+          }
+        },
+        {
+          "id": "pizza5",
+          "title": "PIZZA 5 — Queijo, tomate, orégano, cheddar, polenghi",
+          "desc": "Mussarela, tomate, orégano e cheddar Polenghi.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989649637.png?alt=media&token=87bb4639-0a29-40f8-8f35-5d35f2200abf",
+          "sizes": {
+            "15": 34.49,
+            "25": 41.99
+          }
+        },
+        {
+          "id": "pupunha1",
+          "title": "PUPUNHA 1 — Palmito e mussarela",
+          "desc": "Palmito com mussarela.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/pupunha1.png?alt=media&token=15952577-31c6-4d7e-a218-2a645456601e",
+          "sizes": {
+            "15": 23.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "pupunha2",
+          "title": "PUPUNHA 2 — Palmito e requeijão",
+          "desc": "Palmito com requeijão.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989710338.png?alt=media&token=5845f6c5-4a65-4ed1-b111-5b3653dd58b3",
+          "sizes": {
+            "15": 23.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "pupunha3",
+          "title": "PUPUNHA 3 — Palmito e cheddar",
+          "desc": "Palmito com cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/pupunha3.png?alt=media&token=01a95522-4b74-4fbf-a6bc-88bc8a67d7ee",
+          "sizes": {
+            "15": 23.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "pupunha4",
+          "title": "PUPUNHA 4 — Palmito, milho e mussarela",
+          "desc": "Palmito, milho e mussarela.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989765800.png?alt=media&token=af9c6cd2-1e39-443d-8a4b-33afe3fa05fe",
+          "sizes": {
+            "15": 25.49,
+            "25": 32.99
+          }
+        },
+        {
+          "id": "pupunha5",
+          "title": "PUPUNHA 5 — Palmito, Catupiry original",
+          "desc": "Palmito com Catupiry original.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786989837201.png?alt=media&token=e2df49b0-3716-4831-9c02-d90cc1bcb4ea",
+          "sizes": {
+            "15": 32.99,
+            "25": 40.49
+          }
+        },
+        {
+          "id": "pupunha6",
+          "title": "PUPUNHA 6 — Palmito, cheddar polenghi",
+          "desc": "Palmito com cheddar Polenghi.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/pupunha6.png?alt=media&token=9999b3fc-2b75-449f-a77f-72911d57c002",
+          "sizes": {
+            "15": 32.99,
+            "25": 40.49
+          }
+        },
+        {
+          "id": "pure1",
+          "title": "PURÊ 1 — Purê com bacon e mussarela",
+          "desc": "Purê, bacon e mussarela.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/pure1.png?alt=media&token=dca6742b-3106-495b-ad45-ce83a3976f35",
+          "sizes": {
+            "15": 31.49,
+            "25": 38.99
+          }
+        },
+        {
+          "id": "pure2",
+          "title": "PURÊ 2 — Purê com bacon e requeijão",
+          "desc": "Purê, bacon e requeijão.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/pure2.png?alt=media&token=bc49386b-6be3-454e-a290-1a964a184c72",
+          "sizes": {
+            "15": 31.49,
+            "25": 38.99
+          }
+        },
+        {
+          "id": "pure3",
+          "title": "PURÊ 3 — Purê com bacon e cheddar",
+          "desc": "Purê, bacon e cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787069811831.png?alt=media&token=9449019b-3db9-4856-adf6-805522cc0a2a",
+          "sizes": {
+            "15": 32.99,
+            "25": 38.99
+          }
+        },
+        {
+          "id": "pure4",
+          "title": "PURÊ 4 — Purê, bacon, Catupiry original",
+          "desc": "Purê, bacon e Catupiry original.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787069873934.png?alt=media&token=286c99a9-2144-4e6f-a124-2c6a35ed38f7",
+          "sizes": {
+            "15": 40.49,
+            "25": 47.99
+          }
+        },
+        {
+          "id": "pure5",
+          "title": "PURÊ 5 — Purê, bacon, cheddar polenghi",
+          "desc": "Purê, bacon e cheddar Polenghi.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787069909547.png?alt=media&token=fd2613fe-f579-4903-98fb-a90d83fb33a1",
+          "sizes": {
+            "15": 40.49,
+            "25": 47.99
+          }
+        }
+      ],
+      "pasteis_doces": [
+        {
+          "id": "banana-com-mussarela",
+          "title": "BANANA COM MUSSARELA",
+          "desc": "Banana com mussarela.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/banana-mussarela.png?alt=media&token=62858acd-2870-4809-9eb2-bd9157e228f8",
+          "sizes": {
+            "15": 22.49,
+            "25": 28.49
+          }
+        },
+        {
+          "id": "barra-chocolate",
+          "title": "BARRA CHOCOLATE (ao leite / branco)",
+          "desc": "Barra de chocolate (ao leite ou branco).\n15 cm vai uma barra de 90g\n25 cm vai duas barra de 90g",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787071702368.jfif?alt=media&token=95ac8550-e45e-43c3-9ee1-0a41e78b6c1e",
+          "sizes": {
+            "15": 35.99,
+            "25": 53.99
+          }
+        },
+        {
+          "id": "beijinho-coco",
+          "title": "BEIJINHO COM COCO RALADO",
+          "desc": "Beijinho com coco ralado.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787071832766.jfif?alt=media&token=43422715-5895-4b46-b868-077333304b68",
+          "sizes": {
+            "15": 23.99,
+            "25": 29.99
+          }
+        },
+        {
+          "id": "bis1-choco-leite-bis-branco",
+          "title": "BIS 1 CHOCO AO LEITE COM BIS BRANCO",
+          "desc": "Chocolate ao leite com Bis branco.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787072044804.jfif?alt=media&token=b09e0c08-35c4-4393-be78-b81f066f3f7b",
+          "sizes": {
+            "15": 26.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "bis2-chocolate-branco-bis-preto",
+          "title": "BIS 2 CHOCOLATE BRANCO, BIS PRETO",
+          "desc": "Chocolate branco, Bis preto.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787072215042.jfif?alt=media&token=2df02285-7602-41d2-b0f4-c0110bd71344",
+          "sizes": {
+            "15": 26.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "bis3-beijinho-bis-preto",
+          "title": "BIS 3 BEIJINHO COM BIS PRETO",
+          "desc": "Beijinho com Bis preto.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787072293993.jfif?alt=media&token=4023c4f5-d141-4065-ae19-d9fb4d2501b7",
+          "sizes": {
+            "15": 26.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "choco1-so-chocolate-ao-leite",
+          "title": "CHOCO 1 SÓ CHOCOLATE AO LEITE",
+          "desc": "Só chocolate ao leite.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787072556199.jfif?alt=media&token=632767b2-4ad9-4a29-b25e-82ef56b73acf",
+          "sizes": {
+            "15": 26.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "choco2-chocolate-ao-leite-banana",
+          "title": "CHOCO 2 CHOCOLATE AO LEITE COM BANANA",
+          "desc": "Chocolate ao leite com banana.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787072735052.jfif?alt=media&token=1818d494-70e4-4ac5-873e-0f393bc4980f",
+          "sizes": {
+            "15": 26.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "choco3-sonho-de-valsa",
+          "title": "CHOCO 3 CHOCO AO LEITE, SONHO DE VALSA",
+          "desc": "Chocolate ao leite, Sonho de Valsa.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787072868923.jfif?alt=media&token=c01571c4-7ba7-4097-a9df-19e4189a8f0d",
+          "sizes": {
+            "15": 29.99,
+            "25": 35.99
+          }
+        },
+        {
+          "id": "choco4-ouro-branco",
+          "title": "CHOCO 4 CHOCO AO LEITE, OURO BRANCO",
+          "desc": "Chocolate ao leite, Ouro Branco.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787073101704.jfif?alt=media&token=8596c8c1-a25c-4bbd-a881-2a094c3cb0a6",
+          "sizes": {
+            "15": 29.99,
+            "25": 35.99
+          }
+        },
+        {
+          "id": "choco5-so-chocolate-branco",
+          "title": "CHOCO 5 SÓ CHOCOLATE BRANCO",
+          "desc": "Só chocolate branco.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787073198527.jfif?alt=media&token=2c812658-c49d-4c55-b0d9-beec57b88acc",
+          "sizes": {
+            "15": 26.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "choco6-branco-sonho-de-valsa",
+          "title": "CHOCO 6 CHOCOLATE BRANCO, SONHO DE VALSA",
+          "desc": "Chocolate branco, Sonho de Valsa.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787073304638.jfif?alt=media&token=ca43a966-90fe-4549-96b5-e161a917eb41",
+          "sizes": {
+            "15": 29.99,
+            "25": 35.99
+          }
+        },
+        {
+          "id": "choco7-branco-ouro-branco",
+          "title": "CHOCO 7 CHOCOLATE BRANCO, OURO BRANCO",
+          "desc": "Chocolate branco, Ouro Branco.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787073500916.jfif?alt=media&token=a75bc3ae-3971-433d-92f0-33853b64d85d",
+          "sizes": {
+            "15": 29.99,
+            "25": 35.99
+          }
+        },
+        {
+          "id": "creme-avela-banana-buello",
+          "title": "CREME DE AVELÃ COM BANANA (BUELLO)",
+          "desc": "Creme de avelã Buello com banana.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787073955421.jfif?alt=media&token=c4ac6648-6d36-461b-baeb-3438c05b4990",
+          "sizes": {
+            "15": 35.99,
+            "25": 43.49
+          }
+        },
+        {
+          "id": "creme-avela-coco-buello",
+          "title": "CREME DE AVELÃ COM COCO RALADO (BUELLO)",
+          "desc": "Creme de avelã Buello com coco ralado.",
+          "img": "img/creme-avela-coco.png",
+          "sizes": {
+            "15": 34.49,
+            "25": 43.49
+          }
+        },
+        {
+          "id": "doce-de-leite-mussarela-banana",
+          "title": "DOCE DE LEITE, MUSSARELA, BANANA",
+          "desc": "Doce de leite, mussarela, banana.",
+          "img": "img/doce-leite-mussarela-banana.png",
+          "sizes": {
+            "15": 29.99,
+            "25": 38.99
+          }
+        },
+        {
+          "id": "dois-amores",
+          "title": "DOIS AMORES (CHOCO AO LEITE / BRANCO)",
+          "desc": "Chocolate ao leite e chocolate branco.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/dois-amores.png?alt=media&token=1a5a40d0-f475-4019-824b-4543c6bc8820",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "madre1-doce-de-leite-banana",
+          "title": "MADRE 1 DOCE DE LEITE COM BANANA",
+          "desc": "Doce de leite com banana.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/madre1.png?alt=media&token=8ffa34e0-22c9-406f-b1bc-ce588cc0feb9",
+          "sizes": {
+            "15": 23.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "madre2-doce-de-leite-pacoca",
+          "title": "MADRE 2 DOCE DE LEITE COM PAÇOCA",
+          "desc": "Doce de leite com paçoca.",
+          "img": "img/madre2.png",
+          "sizes": {
+            "15": 23.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "madre3-doce-de-leite-coco",
+          "title": "MADRE 3 DOCE DE LEITE COM COCO",
+          "desc": "Doce de leite com coco.",
+          "img": "img/madre3.png",
+          "sizes": {
+            "15": 23.99,
+            "25": 31.49
+          }
+        },
+        {
+          "id": "madre4-doce-de-leite-banana-pacoca",
+          "title": "MADRE 4 DOCE DE LEITE, BANANA, PAÇOCA",
+          "desc": "Doce de leite, banana, paçoca.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/madre4.png?alt=media&token=07375bee-9662-4db0-9371-ef8ebf1bef27",
+          "sizes": {
+            "15": 25.49,
+            "25": 34.49
+          }
+        },
+        {
+          "id": "ninho1-so-leite-ninho",
+          "title": "NINHO 1 SÓ LEITE NINHO",
+          "desc": "Só leite Ninho.",
+          "img": "img/ninho1.png",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "ninho2-ninho-banana",
+          "title": "NINHO 2 LEITE NINHO COM BANANA",
+          "desc": "Leite Ninho com banana.",
+          "img": "img/ninho2.png",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "nutella-banana",
+          "title": "NUTELLA COM BANANA",
+          "desc": "Nutella com banana.",
+          "img": "img/creme-avela-banana.png",
+          "sizes": {
+            "15": 32.99,
+            "25": 40.49
+          }
+        },
+        {
+          "id": "nutella-coco",
+          "title": "NUTELLA COM COCO RALADO",
+          "desc": "Nutella com coco ralado.",
+          "img": "img/creme-avela-coco.png",
+          "sizes": {
+            "15": 35.99,
+            "25": 41.99
+          }
+        },
+        {
+          "id": "pastel-hot-dog-doce",
+          "title": "PASTEL HOT-DOG DOCE",
+          "desc": "Banana, chocolate ao leite, batata palha.",
+          "img": "img/pastel-hot-dog-doce.png",
+          "sizes": {
+            "15": 29.99,
+            "25": 35.99
+          }
+        },
+        {
+          "id": "prestigio",
+          "title": "PRESTÍGIO CHOCO AO LEITE COM BEIJINHO",
+          "desc": "Chocolate ao leite com beijinho.",
+          "img": "img/prestigio.png",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "romeu-e-julieta",
+          "title": "ROMEU E JULIETA",
+          "desc": "Goiabada, queijo.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/romeu-julieta.png?alt=media&token=d4ccc7c5-5099-4ac9-8c7e-9bc018a089da",
+          "sizes": {
+            "15": 22.49,
+            "25": 29.99
+          }
+        },
+        {
+          "id": "so-creme-avela-buello",
+          "title": "SÓ CREME DE AVELÃ (BUELLO)",
+          "desc": "Só creme de avelã Buello.",
+          "img": "img/creme-avela1.png",
+          "sizes": {
+            "15": 32.99,
+            "25": 40.49
+          }
+        },
+        {
+          "id": "so-creme-avela-nutella",
+          "title": "SÓ CREME DE AVELÃ (NUTELLA)",
+          "desc": "Só creme de avelã Nutella.",
+          "img": "img/creme-avela1.png",
+          "sizes": {
+            "15": 32.99,
+            "25": 40.49
+          }
+        },
+        {
+          "id": "so-doce-de-leite",
+          "title": "SÓ DOCE DE LEITE",
+          "desc": "Só doce de leite.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/doce-leite.png?alt=media&token=adad8c14-1133-4cdb-bd37-ba7f704c9725",
+          "sizes": {
+            "15": 20.99,
+            "25": 28.49
+          }
+        }
+      ],
+      "pasteis_especiais": [
+        {
+          "id": "alho-poro",
+          "title": "ALHO PORÓ — Mussarela, requeijão, bacon, milho",
+          "desc": "Alho-poró, mussarela, requeijão, bacon e milho.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070139597.png?alt=media&token=22f47b3e-4c4a-493b-bb88-fe262df2d33b",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "caipira1",
+          "title": "CAIPIRA 1 — Frango, milho, bacon, queijo",
+          "desc": "Frango, milho, bacon e queijo.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070246095.png?alt=media&token=8854ff65-ecc0-498d-8cfe-a47d4127b169",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "caipira2",
+          "title": "CAIPIRA 2 — Frango, milho, bacon, requeijão",
+          "desc": "Frango, milho, bacon e requeijão.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070273577.png?alt=media&token=6c7760f5-7c71-4799-9a9a-5d97512782e8",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "caipira3",
+          "title": "CAIPIRA 3 — Frango, milho, bacon, cheddar.",
+          "desc": "Frango, milho, bacon e cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/caipira3.png?alt=media&token=5412744f-525c-4cc5-9578-666a22534518",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "cruzeiro1",
+          "title": "CRUZEIRO 1 — Carne, ovo, azeitona, cebola",
+          "desc": "Carne, ovo, azeitona e cebola.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070320812.png?alt=media&token=ad304465-d2fc-4681-8a33-5195f6bc6058",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "cruzeiro2",
+          "title": "CRUZEIRO 2 — Carne, ovo, azeitona, queijo mussarela",
+          "desc": "Carne, ovo, azeitona e queijo.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/cruzeiro2.png?alt=media&token=75e00763-d3ff-4ac0-9839-695ef9ee1f9e",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "cruzeiro3",
+          "title": "CRUZEIRO 3 — Carne, ovo, azeitona, requeijão",
+          "desc": "Carne, ovo, azeitona e requeijão.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/cruzeiro3.png?alt=media&token=36c6d0d9-e8b7-4b08-8d99-c18271899e0b",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "cruzeiro4",
+          "title": "CRUZEIRO 4 — Carne, ovo, azeitona, cheddar",
+          "desc": "Carne, ovo, azeitona e cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070460152.png?alt=media&token=9530d1b5-0a91-4a94-a346-ac197703c145",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "embarque1",
+          "title": "EMBARQUE 1 — Frango, milho, mussarela",
+          "desc": "Frango, milho e mussarela.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/embarque1.png?alt=media&token=857fd7a3-aace-49d0-aebe-657442b4effd",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "embarque2",
+          "title": "EMBARQUE 2 — Frango, milho, requeijão",
+          "desc": "Frango, milho e requeijão.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070514639.png?alt=media&token=9fe13150-e6ce-427d-bda3-ab243f0ee313",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "embarque3",
+          "title": "EMBARQUE 3 — Frango, milho, cheddar",
+          "desc": "Frango, milho e cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/embarque3.png?alt=media&token=4e3a2e19-d665-4d30-a10c-de0d04478b48",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "hotdog",
+          "title": "HOT DOG — Salsicha, purê, batata palha",
+          "desc": "Salsicha, purê e batata palha.\n15 cm vai uma salsicha.\n25 cm vai duas salsichas.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/hotdog.png?alt=media&token=cd14f5ef-82f1-4aa2-b87d-3dde6b65ad1d",
+          "sizes": {
+            "15": 26.99,
+            "25": 34.49
+          }
+        },
+        {
+          "id": "lasanha",
+          "title": "LASANHA — Carne, presunto, queijo, orégano",
+          "desc": "Carne, presunto, queijo e orégano.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070775732.png?alt=media&token=e23ce39f-001a-4db2-a916-93979cde4f0c",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "metro1",
+          "title": "METRÔ 1 — Carne, azeitona, queijo, tomate, orégano",
+          "desc": "Carne, azeitona, queijo, tomate e orégano.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/metro1.png?alt=media&token=81282309-77d9-4695-b8f6-ebaeeb98b063",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "metro2",
+          "title": "METRÔ 2 — Mussarela, requeião, bacon, milho",
+          "desc": "Mussarela, requeijão, bacon e milho.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/metro2.png?alt=media&token=0df75223-0ea8-41c2-a7a3-dca57fd877e0",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "mexicana",
+          "title": "MEXICANA — Calabresa, carne, milho, pimentão, cebola, tomate, pimenta",
+          "desc": "Calabresa, carne, milho, pimentão, cebola, tomate e pimenta.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070918026.png?alt=media&token=ffe013c8-8ccb-4bab-8d29-ef3a0b4c059e",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "portug1",
+          "title": "PORTUG 1 — Queijo, presunto, ovo, cebola, milho e orégano",
+          "desc": "Queijo, presunto, ovo, cebola, milho e orégano.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070987286.png?alt=media&token=38280f8e-9c33-4de4-abe5-627245deb653",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "portug2",
+          "title": "PORTUG 2 — Queijo, presunto, ovo, cebola, milho, requeijão e orégano.",
+          "desc": "Queijo, presunto, ovo, cebola, milho, requeijão e orégano.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/portug2.png?alt=media&token=05e25f98-b14c-489b-9e2e-d347acf4b9ca",
+          "sizes": {
+            "15": 34.49,
+            "25": 40.49
+          }
+        },
+        {
+          "id": "portug3",
+          "title": "PORTUG 3 — Queijo, presunto, ovo, cebola, milho, cheddar e orégano.",
+          "desc": "Queijo, presunto, ovo, cebola, milho, cheddar e orégano.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787071100051.png?alt=media&token=246e2c00-7f80-467d-9cfc-43f14ae2c55f",
+          "sizes": {
+            "15": 34.49,
+            "25": 40.49
+          }
+        },
+        {
+          "id": "pupunha-esp",
+          "title": "PUPUNHA — Palmito, req, bacon, milho",
+          "desc": "Palmito, requeijão, bacon e milho.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787071144130.png?alt=media&token=9ad88ffa-863a-4d0e-ba0a-8bed71657be0",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "toscana1",
+          "title": "TOSCANA 1 — Calabresa, azeitona, queijo, orégano.",
+          "desc": "Calabresa, azeitona, queijo e orégano.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/toscana1.png?alt=media&token=3e5e40fe-28cc-46d6-a187-d6c5548a0917",
+          "sizes": {
+            "15": 29.99,
+            "25": 37.49
+          }
+        },
+        {
+          "id": "toscana2",
+          "title": "TOSCANA 2 — Calabresa, ovo, cebola, queijo, orégano.",
+          "desc": "Calabresa, ovo, cebola, queijo e orégano.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787071208094.png?alt=media&token=aa9a3e17-d0c5-4c0a-8096-9635ad97d212",
+          "sizes": {
+            "15": 32.99,
+            "25": 35.99
+          }
+        }
+      ],
+      "porcoes": [
+        {
+          "id": "m3_brigadeiro",
+          "title": "Mini Pastéis Brigadeiro (30un)",
+          "desc": "Porção de 30 unidades de Brigadeiro.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+          "sizes": {
+            "30": 44.99,
+            "60": 89.97
+          }
+        },
+        {
+          "id": "m1_calabresa_cheddar",
+          "title": "Mini Pastéis Calabresa c/ Cheddar",
+          "desc": "Porção de 30 unidades de Calabresa com Cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+          "sizes": {
+            "30": 40.49,
+            "60": 80.97
+          }
+        },
+        {
+          "id": "m1_calabresa_req",
+          "title": "Mini Pastéis Calabresa c/ Requeijão (30un)",
+          "desc": "Porção de 30 unidades de Calabresa com Requeijão.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+          "sizes": {
+            "60 unidades": 80.97,
+            "30 unidades": 40.49
+          }
+        },
+        {
+          "id": "m1_carne",
+          "title": "Mini Pastéis Carne ao Creme (30un)",
+          "desc": "Porção de 30 unidades de Carne ao Creme.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+          "sizes": {
+            "30": 40.49,
+            "60": 80.97
+          }
+        },
+        {
+          "id": "m2_catupiry",
+          "title": "Mini Pastéis Catupiry Original (30un)",
+          "desc": "Porção de 30 unidades de Catupiry Original.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+          "sizes": {
+            "30": 52.49,
+            "60": 104.97
+          }
+        },
+        {
+          "id": "m2_polenghi",
+          "title": "Mini Pastéis Cheddar Polenghi (30un)",
+          "desc": "Porção de 30 unidades de Cheddar Polenghi.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+          "sizes": {
+            "30": 52.49,
+            "60": 104.97
+          }
+        },
+        {
+          "id": "m3_leite",
+          "title": "Mini Pastéis Doce de Leite (30un)",
+          "desc": "Porção de 30 unidades de Doce de Leite.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+          "sizes": {
+            "30": 44.99,
+            "60": 89.97
+          }
+        },
+        {
+          "id": "m1_frango",
+          "title": "Mini Pastéis Frango ao Creme (30un)",
+          "desc": "Porção de 30 unidades de Frango ao Creme.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+          "sizes": {
+            "30": 40.49,
+            "60": 80.97
+          }
+        },
+        {
+          "id": "m1_presunto_req",
+          "title": "Mini Pastéis Presunto e Requeijão (30un)",
+          "desc": "Porção de 30 unidades de Presunto e Requeijão.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+          "sizes": {
+            "30": 40.49,
+            "60": 80.97
+          }
+        },
+        {
+          "id": "m1_so_cheddar",
+          "title": "Mini Pastéis Só Cheddar (30un)",
+          "desc": "Porção de 30 unidades de Só Cheddar.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+          "sizes": {
+            "30": 40.49,
+            "60": 80.97
+          }
+        },
+        {
+          "id": "m1_so_req",
+          "title": "Mini Pastéis Só Requeijão (30un)",
+          "desc": "Porção de 30 unidades de Só Requeijão.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
+          "sizes": {
+            "30": 40.49,
+            "60": 80.97
+          }
+        }
+      ],
+      "salgados": [
+        {
+          "id": "salgado-bolinha",
+          "title": "Bolinha de Queijo",
+          "desc": "Porção de bolinhas de queijo.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787076826574.jfif?alt=media&token=83c21d17-9098-4862-8ee7-211f62cdd396",
+          "sizes": {
+            "25": 24.99,
+            "50": 49.98,
+            "75": 74.97,
+            "100": 99.96
+          }
+        },
+        {
+          "id": "salgado-coxinha",
+          "title": "Coxinha de Frango",
+          "desc": "Porção de coxinhas de frango cremosas.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/coxinha.png?alt=media&token=61cc2922-5a66-46fb-98b4-27d4d5cd6128",
+          "sizes": {
+            "25": 24.99,
+            "50": 49.98,
+            "75": 74.97,
+            "100": 99.96
+          }
+        },
+        {
+          "id": "salgado-risole",
+          "title": "Risole de Queijo e Presunto",
+          "desc": "Porção de risoles de queijo e presunto.",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077045175.png?alt=media&token=a25a1765-8939-4ce3-a639-15fa0c8bbde6",
+          "sizes": {
+            "25": 24.99,
+            "50": 49.98,
+            "75": 74.97,
+            "100": 99.96
+          }
+        },
+        {
+          "id": "WnhWj1hkEKVgyVHJJZMJ",
+          "title": "Solgados sortidos",
+          "desc": "salgados sortidos \ncoxinha, risole e bolinha de queijo",
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787076290093.png?alt=media&token=0c97fea2-2e67-4dd7-82f8-049591d479b6",
+          "sizes": {
+            "25": 24.99,
+            "50": 49.98,
+            "75": 74.97,
+            "100": 99.96
+          }
+        }
+      ]
+    }
+  }
+}
