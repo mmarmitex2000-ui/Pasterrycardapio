@@ -95,35 +95,35 @@
           "title": "Budweiser Long Neck 350ml",
           "desc": "Cerveja Budweiser garrafa long neck 350ml.",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077804268.png?alt=media&token=4754a0f4-4b6f-4fdc-beb4-18d5602e98cc",
-          "price": 12.99
+          "price": 15.99
         },
         {
           "id": "b13",
           "title": "Coca-Cola 2L",
           "desc": "Garrafa 2 litros.",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077467643.png?alt=media&token=83adf066-c54d-428f-8e9f-512a6531af8c",
-          "price": 19.99
+          "price": 21,99
         },
         {
           "id": "b1",
           "title": "Coca-Cola 350ml",
           "desc": "Lata 350ml.",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077484608.png?alt=media&token=ead5e390-a3ce-48bc-8f55-4dde7960cf89",
-          "price": 7.99
+          "price": 9,99
         },
         {
           "id": "b12",
           "title": "Convenção Frutbaína 2L",
           "desc": "Garrafa 2 litros.",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/convencao-frutbaina-2l.png?alt=media&token=06c45d4c-9fee-4a09-bb92-4774898d13fc",
-          "price": 9.99
+          "price": 11,99
         },
         {
           "id": "b11",
           "title": "Convenção Guaraná 2L",
           "desc": "Garrafa 2 litros.",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077502652.png?alt=media&token=f207730f-85d6-4cf3-9ddf-c38c736d3fe0",
-          "price": 9.99
+          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/convencao-frutbaina-2l.png?alt=media&token=06c45d4c-9fee-4a09-bb92-4774898d13fc",
+          "price": 11,99
         },
         {
           "id": "b9",
@@ -139,20 +139,9 @@
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077528403.png?alt=media&token=630e8e0a-610a-4b85-8175-b3fa2408db52",
           "price": 9.99
         },
+     
         {
-          "id": "b4",
-          "title": "Fanta Laranja 350ml",
-          "desc": "Lata 350ml.",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077643776.png?alt=media&token=6abd2065-88d7-4ae7-9adf-016dfec4e278",
-          "price": 7.99
-        },
-        {
-          "id": "b3",
-          "title": "Fanta Uva 350ml",
-          "desc": "Lata 350ml.",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077661344.png?alt=media&token=5a933b2f-5f2c-4385-acc1-4db158511a85",
-          "price": 7.99
-        },
+    
         {
           "id": "b2",
           "title": "Guaraná 350ml",
@@ -165,36 +154,18 @@
           "title": "Heineken Long Neck 350ml",
           "desc": "Cerveja Heineken garrafa long neck 350ml.",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077834977.png?alt=media&token=fd3dba39-79b8-4512-831e-56cd7a51bfd9",
-          "price": 12.99
+          "price": 15.99
         },
         {
           "id": "b5",
           "title": "Itubaína 350ml",
           "desc": "Lata 350ml.",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077704437.png?alt=media&token=bbda6054-ca24-468c-bee3-3f69322d3485",
-          "price": 7.99
+          "price": 9,99
         },
-        {
-          "id": "b6",
-          "title": "Pepsi 350ml",
-          "desc": "Lata 350ml.",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/pepsi-lata-350.png?alt=media&token=82e24e95-3f4e-444e-8a95-20735aaffe60",
-          "price": 7.99
-        },
-        {
-          "id": "b7",
-          "title": "Sukita Laranja 350ml",
-          "desc": "Lata 350ml.",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077611622.png?alt=media&token=b7606456-9bce-4005-b2fd-1f987a84b434",
-          "price": 7.99
-        },
-        {
-          "id": "b8",
-          "title": "Sukita Uva 350ml",
-          "desc": "Lata 350ml.",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077725672.png?alt=media&token=61d60bdf-00be-4b00-8219-97521cd7c495",
-          "price": 7.99
-        }
+   
+    
+ 
       ],
       "churros": [
         {
@@ -203,8 +174,8 @@
           "desc": "Porção de mini churros de doce de leite",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787076438966.png?alt=media&token=c9f2fbb4-8122-49d3-8943-8ba07d07a8c6",
           "sizes": {
-            "25": 24.99,
-            "50": 45.99
+            "25": 37.99,
+            "50": 74.97
           }
         }
       ],
@@ -818,56 +789,7 @@
             "15": 49.49,
             "25": 56.99
           }
-        },
-        {
-          "id": "lombo1",
-          "title": "LOMBO 1 — Lombo, mussarela e champignon",
-          "desc": "Lombo suíno, mussarela e champignon.",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/lombo1.png?alt=media&token=02a33d33-ba30-4879-bfa9-edc4db2906ff",
-          "sizes": {
-            "15": 40.49,
-            "25": 44.99
-          }
-        },
-        {
-          "id": "lombo2",
-          "title": "LOMBO 2 — Lombo, requeijão e champignon",
-          "desc": "Lombo suíno, requeijão e champignon",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786987640101.png?alt=media&token=53ee7a7a-71fb-400f-918a-187cc2828cb8",
-          "sizes": {
-            "15": 40.49,
-            "25": 44.99
-          }
-        },
-        {
-          "id": "lombo3",
-          "title": "LOMBO 3 — lombo, cheddar e champignon",
-          "desc": "Lombo suíno, cheddar e champignon",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/lombo3.png?alt=media&token=713b0e69-4eac-4c3d-805f-0cd5626a8705",
-          "sizes": {
-            "15": 40.49,
-            "25": 44.99
-          }
-        },
-        {
-          "id": "lombo4",
-          "title": "LOMBO 4 — Lombo, Catupiry Original e champignon",
-          "desc": "Lombo suíno, Catupiry Original, champignon.",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786987817242.png?alt=media&token=66bedf21-dfc4-4f72-841a-2a8ad25870cc",
-          "sizes": {
-            "15": 49.49,
-            "25": 53.99
-          }
-        },
-        {
-          "id": "lombo5",
-          "title": "LOMBO 5 — Lombo, cheddar polenghi e champignon",
-          "desc": "Lombo suíno com cheddar Polenghi e champginon",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786987796329.png?alt=media&token=fb2fe767-fab2-40c2-9c6c-106e393f8709",
-          "sizes": {
-            "15": 49.49,
-            "25": 53.99
-          }
+        
         },
         {
           "id": "louca1",
@@ -1231,26 +1153,8 @@
             "25": 28.49
           }
         },
-        {
-          "id": "barra-chocolate",
-          "title": "BARRA CHOCOLATE (ao leite / branco)",
-          "desc": "Barra de chocolate (ao leite ou branco).\n15 cm vai uma barra de 90g\n25 cm vai duas barra de 90g",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787071702368.jfif?alt=media&token=95ac8550-e45e-43c3-9ee1-0a41e78b6c1e",
-          "sizes": {
-            "15": 35.99,
-            "25": 53.99
-          }
-        },
-        {
-          "id": "beijinho-coco",
-          "title": "BEIJINHO COM COCO RALADO",
-          "desc": "Beijinho com coco ralado.",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787071832766.jfif?alt=media&token=43422715-5895-4b46-b868-077333304b68",
-          "sizes": {
-            "15": 23.99,
-            "25": 29.99
-          }
-        },
+   
+
         {
           "id": "bis1-choco-leite-bis-branco",
           "title": "BIS 1 CHOCO AO LEITE COM BIS BRANCO",
@@ -1430,57 +1334,11 @@
             "15": 25.49,
             "25": 34.49
           }
+  
         },
-        {
-          "id": "ninho1-so-leite-ninho",
-          "title": "NINHO 1 SÓ LEITE NINHO",
-          "desc": "Só leite Ninho.",
-          "img": "img/ninho1.png",
-          "sizes": {
-            "15": 29.99,
-            "25": 37.49
-          }
-        },
-        {
-          "id": "ninho2-ninho-banana",
-          "title": "NINHO 2 LEITE NINHO COM BANANA",
-          "desc": "Leite Ninho com banana.",
-          "img": "img/ninho2.png",
-          "sizes": {
-            "15": 29.99,
-            "25": 37.49
-          }
-        },
-        {
-          "id": "nutella-banana",
-          "title": "NUTELLA COM BANANA",
-          "desc": "Nutella com banana.",
-          "img": "img/creme-avela-banana.png",
-          "sizes": {
-            "15": 32.99,
-            "25": 40.49
-          }
-        },
-        {
-          "id": "nutella-coco",
-          "title": "NUTELLA COM COCO RALADO",
-          "desc": "Nutella com coco ralado.",
-          "img": "img/creme-avela-coco.png",
-          "sizes": {
-            "15": 35.99,
-            "25": 41.99
-          }
-        },
-        {
-          "id": "pastel-hot-dog-doce",
-          "title": "PASTEL HOT-DOG DOCE",
-          "desc": "Banana, chocolate ao leite, batata palha.",
-          "img": "img/pastel-hot-dog-doce.png",
-          "sizes": {
-            "15": 29.99,
-            "25": 35.99
-          }
-        },
+  
+
+
         {
           "id": "prestigio",
           "title": "PRESTÍGIO CHOCO AO LEITE COM BEIJINHO",
@@ -1511,16 +1369,7 @@
             "25": 40.49
           }
         },
-        {
-          "id": "so-creme-avela-nutella",
-          "title": "SÓ CREME DE AVELÃ (NUTELLA)",
-          "desc": "Só creme de avelã Nutella.",
-          "img": "img/creme-avela1.png",
-          "sizes": {
-            "15": 32.99,
-            "25": 40.49
-          }
-        },
+  
         {
           "id": "so-doce-de-leite",
           "title": "SÓ DOCE DE LEITE",
@@ -1534,9 +1383,9 @@
       ],
       "pasteis_especiais": [
         {
-          "id": "alho-poro",
-          "title": "ALHO PORÓ — Mussarela, requeijão, bacon, milho",
-          "desc": "Alho-poró, mussarela, requeijão, bacon e milho.",
+          "id": "alho-frito",
+          "title": "ALHO FRITO — Mussarela, requeijão, bacon, milho",
+          "desc": "Alho-Frito, mussarela, requeijão, bacon e milho.",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070139597.png?alt=media&token=22f47b3e-4c4a-493b-bb88-fe262df2d33b",
           "sizes": {
             "15": 29.99,
@@ -1683,16 +1532,7 @@
             "25": 37.49
           }
         },
-        {
-          "id": "mexicana",
-          "title": "MEXICANA — Calabresa, carne, milho, pimentão, cebola, tomate, pimenta",
-          "desc": "Calabresa, carne, milho, pimentão, cebola, tomate e pimenta.",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787070918026.png?alt=media&token=ffe013c8-8ccb-4bab-8d29-ef3a0b4c059e",
-          "sizes": {
-            "15": 29.99,
-            "25": 37.49
-          }
-        },
+
         {
           "id": "portug1",
           "title": "PORTUG 1 — Queijo, presunto, ovo, cebola, milho e orégano",
@@ -1755,16 +1595,7 @@
         }
       ],
       "porcoes": [
-        {
-          "id": "m3_brigadeiro",
-          "title": "Mini Pastéis Brigadeiro (30un)",
-          "desc": "Porção de 30 unidades de Brigadeiro.",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
-          "sizes": {
-            "30": 44.99,
-            "60": 89.97
-          }
-        },
+    
         {
           "id": "m1_calabresa_cheddar",
           "title": "Mini Pastéis Calabresa c/ Cheddar",
@@ -1815,16 +1646,7 @@
             "60": 104.97
           }
         },
-        {
-          "id": "m3_leite",
-          "title": "Mini Pastéis Doce de Leite (30un)",
-          "desc": "Porção de 30 unidades de Doce de Leite.",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/minipasteis.png?alt=media&token=b356cca8-6cfc-4d6e-8176-1888ea41cc10",
-          "sizes": {
-            "30": 44.99,
-            "60": 89.97
-          }
-        },
+   
         {
           "id": "m1_frango",
           "title": "Mini Pastéis Frango ao Creme (30un)",
