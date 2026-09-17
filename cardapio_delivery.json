@@ -36,20 +36,7 @@
       }
     ],
     "PRODUCTS": {
-      "39LfLcamvrUcc58X0Bz2": [
-        {
-          "id": "0QtKT1P1dKMpAxjyRJ0z",
-          "title": "Monte o seu Pastel",
-          "desc": "Monte o seu pastel a sua maneira, escolha os adicionas",
-          "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1786990652774.jfif?alt=media&token=43b81a36-8108-49b4-a242-34a63ec45ce3",
-          "sizes": {
-            "15": 10,
-            "25": 15,
-            "30": 17,
-            "35": 22
-          }
-        }
-      ],
+      
       "acai": [
         {
           "id": "acai4",
