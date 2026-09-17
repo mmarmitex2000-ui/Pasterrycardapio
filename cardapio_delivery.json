@@ -102,28 +102,28 @@
           "title": "Coca-Cola 2L",
           "desc": "Garrafa 2 litros.",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077467643.png?alt=media&token=83adf066-c54d-428f-8e9f-512a6531af8c",
-          "price": 21,99
+          "price": 21.99
         },
         {
           "id": "b1",
           "title": "Coca-Cola 350ml",
           "desc": "Lata 350ml.",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077484608.png?alt=media&token=ead5e390-a3ce-48bc-8f55-4dde7960cf89",
-          "price": 9,99
+          "price": 9.99
         },
         {
           "id": "b12",
           "title": "Convenção Frutbaína 2L",
           "desc": "Garrafa 2 litros.",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/convencao-frutbaina-2l.png?alt=media&token=06c45d4c-9fee-4a09-bb92-4774898d13fc",
-          "price": 11,99
+          "price": 11.99
         },
         {
           "id": "b11",
           "title": "Convenção Guaraná 2L",
           "desc": "Garrafa 2 litros.",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/convencao-frutbaina-2l.png?alt=media&token=06c45d4c-9fee-4a09-bb92-4774898d13fc",
-          "price": 11,99
+          "price": 11.99
         },
         {
           "id": "b9",
@@ -140,7 +140,7 @@
           "price": 9.99
         },
      
-        {
+        
     
         {
           "id": "b2",
@@ -161,8 +161,8 @@
           "title": "Itubaína 350ml",
           "desc": "Lata 350ml.",
           "img": "https://firebasestorage.googleapis.com/v0/b/paineldepedidos-8cfff.firebasestorage.app/o/produtos%2F1787077704437.png?alt=media&token=bbda6054-ca24-468c-bee3-3f69322d3485",
-          "price": 9,99
-        },
+          "price": 9.99
+        }
    
     
  
