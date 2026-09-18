@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Status do Pedido — Pasterry</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#1A1210;color:#e6eef6;padding:16px;padding-bottom:40px;transition:background 0.5s}
+  h1{margin:0 0 4px;font-size:24px;color:#07fcdb}
+  .muted{opacity:.7;font-size:14px}
+  .card{background:#2a201d;border-radius:12px;padding:14px;margin:14px 0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+  .badge{display:inline-block;padding:6px 12px;border-radius:20px;background:#28a745;color:#fff;font-weight:bold;text-transform:capitalize}
+  .badge.cancelado{background:#dc3545}
+  .badge.preparando{background:#ffa500}
+  .badge.pronto{background:#8b5cf6}
+  .badge.saiu{background:#3b82f6}
+  .badge.chegou{background:#f59e0b}
+  .badge.entregue{background:#22c55e}
+  .timeline{display:flex;justify-content:space-between;margin:18px 0;gap:4px}
+  .step{flex:1;text-align:center;font-size:11px;opacity:.4;position:relative}
+  .step.active{opacity:1;color:#07fcdb;font-weight:bold}
+  .step::before{content:'';display:block;width:12px;height:12px;border-radius:50%;background:#444;margin:0 auto 6px;border:2px solid #1A1210}
+  .step.active::before{background:#28a745}
+  .item-loja{font-size:14px;padding:4px 0;border-bottom:1px dashed #444}
+  .btn{width:100%;padding:12px;border:none;border-radius:10px;background:#28a745;color:#fff;font-weight:bold;font-size:16px;cursor:pointer;margin-top:10px;text-align:center;text-decoration:none;display:block;box-sizing:border-box}
+  .btn.ghost{background:#444}
+  .btn.whats{background:#25D366;color:#1A1210}
+  .btn.motoboy{background:#8b5cf6;color:white}
+  .btn.motoboy.chegou{background:#f59e0b;animation:pulse 1s infinite}
+  input.tel{width:100%;padding:12px;border-radius:10px;border:1px solid #444;background:#1A1210;color:#e6eef6;font-size:16px;box-sizing:border-box}
+  .aviso{border-left:4px solid #ffcc00;background:#332800}
+  .pulse{animation:pulse 1.5s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+  #mapa-rastreio{height:180px;width:100%;border-radius:0 0 12px 12px;background:#1A1210}
+  .leaflet-control-attribution{font-size:9px!important;color:#888!important}
+  .notificacao-chegou{background:#28a745;color:#1A1210;padding:12px;border-radius:12px;text-align:center;font-weight:bold;border:2px solid #07fcdb;animation:pulse 1s infinite;margin-top:10px}
+  .detalhes-texto{font-family:monospace,Consolas,monospace;font-size:14px;line-height:1.6;white-space:pre-wrap}
+  .badge-motoboy{display:inline-block;background:#8b5cf6;color:white;font-size:11px;padding:2px 12px;border-radius:12px;font-weight:700;margin-top:4px}
+  .tempo-rota{font-size:12px;color:#94a3b8;margin-top:4px;display:flex;align-items:center;gap:4px}
+  .tempo-rota span{font-weight:bold;color:#e6eef6}
+</style>
+</head>
+<body>
+  <div id="view"></div>
+  <button class="btn ghost" onclick="location.href='index.html'">Voltar ao cardápio</button>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, doc, onSnapshot, collection, query, where, getDocs, orderBy, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDV9tPC5XNNmB_REgW1au2NtpP1ETtV1i0",
+    authDomain: "paineldepedidos-8cfff.firebaseapp.com",
+    projectId: "paineldepedidos-8cfff",
+    storageBucket: "paineldepedidos-8cfff.appspot.com",
+    messagingSenderId: "390619980929",
+    appId: "1:390619980929:web:5bb015938e9dcb89389980"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const WHATS_LOJA = '5511994046432';
+  const params = new URLSearchParams(location.search);
+  let id = params.get('id');
+  let unsubscribe = null;
+  let ultimoStatus = null;
+  let mapa = null;
+  let notificacaoChegouEnviada = false;
+  let timerPreparando = null;
+
+  if ('Notification' in window && Notification.permission !== 'granted') {
+    Notification.requestPermission();
+  }
+
+  const CLIENTE_KEY = 'pasterry_cliente_v1';
+  const esc = s => String(s??'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const onlyDigits = s => String(s||'').replace(/\D/g,'');
+  const money = v => 'R$ '+Number(v||0).toFixed(2).replace('.',',');
+  const formatTelBR = v => {
+    v = onlyDigits(v).slice(0,11);
+    if(v.length>10) return v.replace(/(\d{2})(\d{5})(\d{0,4})/,'($1) $2-$3');
+    if(v.length>6) return v.replace(/(\d{2})(\d{4})(\d{0,4})/,'($1) $2-$3');
+    if(v.length>2) return v.replace(/(\d{2})(\d{0,5})/,'($1) $2');
+    return v;
+  };
+  window.formatTelBR = formatTelBR;
+
+  const getCliente = ()=>{try{return JSON.parse(localStorage.getItem(CLIENTE_KEY)||'{}')}catch(e){return{}}};
+  const setCliente = c=>localStorage.setItem(CLIENTE_KEY, JSON.stringify(c));
+
+  // ============================================================
+  // Funções auxiliares de status
+  // ============================================================
+  function getStatusLabel(status) {
+    const map = {
+      'novo': 'Recebido pela loja',
+      'preparando': 'Sendo preparado',
+      'pronto': 'Pronto para coleta',
+      'coleta': 'Pronto para coleta',
+      'saiu': 'Saiu para entrega',
+      'entrega': 'Saiu para entrega',
+      'chegou': 'Motoboy chegou',
+      'entregue': 'Entregue',
+      'cancelado': 'Cancelado',
+      'despachado': 'Despachado'
+    };
+    return map[status] || status;
+  }
+
+  function getStatusBadgeClass(status) {
+    const map = {
+      'novo': '',
+      'preparando': 'preparando',
+      'pronto': 'pronto',
+      'coleta': 'pronto',
+      'saiu': 'saiu',
+      'entrega': 'saiu',
+      'chegou': 'chegou',
+      'entregue': 'entregue',
+      'cancelado': 'cancelado',
+      'despachado': ''
+    };
+    return map[status] || '';
+  }
+
+  // ============================================================
+  // Atualizar para preparando após 20 min (apenas se ainda estiver 'novo')
+  // ============================================================
+  async function atualizarParaPreparando(pedidoId, criadoEmMs) {
+    const agora = Date.now();
+    const tempoDecorrido = agora - criadoEmMs;
+    const TEMPO_20_MIN = 20 * 60 * 1000;
+    
+    if (tempoDecorrido >= TEMPO_20_MIN) {
+      try {
+        await updateDoc(doc(db, "pedidos", pedidoId), {
+          status: "preparando",
+          preparandoEm: serverTimestamp(),
+          preparandoEmMs: Date.now(),
+          atualizadoEm: serverTimestamp(),
+          atualizadoEmMs: Date.now()
+        });
+        console.log('⏳ Pedido atualizado para preparando (automático)');
+      } catch (e) {
+        console.error('Erro ao atualizar para preparando:', e);
+      }
+    } else {
+      const tempoRestante = TEMPO_20_MIN - tempoDecorrido;
+      if (timerPreparando) clearTimeout(timerPreparando);
+      timerPreparando = setTimeout(async () => {
+        try {
+          const snap = await getDoc(doc(db, "pedidos", pedidoId));
+          if (snap.exists() && snap.data().status === 'novo') {
+            await updateDoc(doc(db, "pedidos", pedidoId), {
+              status: "preparando",
+              preparandoEm: serverTimestamp(),
+              preparandoEmMs: Date.now(),
+              atualizadoEm: serverTimestamp(),
+              atualizadoEmMs: Date.now()
+            });
+            console.log('⏳ Pedido atualizado para preparando (automático após timer)');
+          }
+        } catch (e) {
+          console.error('Erro ao atualizar para preparando (timer):', e);
+        }
+      }, tempoRestante);
+    }
+  }
+
+  // ============================================================
+  // Notificar cliente que motoboy chegou
+  // ============================================================
+  function notificarClienteChegou(pedidoId) {
+    if (notificacaoChegouEnviada) return;
+    notificacaoChegouEnviada = true;
+
+    try {
+      const audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
+      audio.play().catch(()=>{});
+    } catch(e) {}
+
+    navigator.vibrate?.([300, 100, 300, 100, 300]);
+
+    if (Notification.permission === 'granted') {
+      new Notification('🛵 Motoboy chegou!', {
+        body: 'O motoboy está na porta com seu pedido! 🍕',
+        icon: 'https://i.imgur.com/8Km9tLL.png'
+      });
+    }
+
+    const view = document.getElementById('view');
+    const notifDiv = document.createElement('div');
+    notifDiv.className = 'notificacao-chegou';
+    notifDiv.innerHTML = '🛵 <strong>MOTOBOY CHEGOU!</strong> Ele está na porta com seu pedido! 🍕';
+    view.prepend(notifDiv);
+
+    setTimeout(() => {
+      if (notifDiv.parentNode) notifDiv.remove();
+    }, 10000);
+  }
+
+  // ============================================================
+  // Abrir rota
+  // ============================================================
+  function abrirRotaMotoboy(lat, lng, endereco) {
+    if (!lat || !lng) {
+      if (endereco) {
+        const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(endereco)}`;
+        window.open(url, '_blank');
+      }
+      return;
+    }
+    const url = `https://www.google.com/maps/dir/?api=1&origin=${lat},${lng}&destination=${encodeURIComponent(endereco)}`;
+    window.open(url, '_blank');
+  }
+
+  // ============================================================
+  // Formatar tempo de rota
+  // ============================================================
+  function formatarTempoRota(emRotaEmMs) {
+    if (!emRotaEmMs) return '';
+    const diff = Date.now() - emRotaEmMs;
+    const minutos = Math.floor(diff / 60000);
+    const segundos = Math.floor((diff % 60000) / 1000);
+    if (minutos > 0) return `${minutos}m ${segundos}s`;
+    return `${segundos}s`;
+  }
+
+  // ============================================================
+  // RENDERIZAR PEDIDO
+  // ============================================================
+  function renderPedido(p){
+    const view = document.getElementById('view');
+    
+    const isCancelado = p.status === 'cancelado';
+    const statusLabel = getStatusLabel(p.status);
+    const badgeClass = getStatusBadgeClass(p.status);
+    const isAtivo = p.status === 'entrega' || p.status === 'despachado' || p.status === 'chegou' || p.status === 'saiu';
+    
+    // Mapeamento de etapas da timeline com os status reais
+    const steps = [
+      {key:'novo', label:'Recebido', match: ['novo','preparando','pronto','coleta','saiu','entrega','chegou','entregue','despachado']},
+      {key:'preparando', label:'Preparando', match: ['preparando','pronto','coleta','saiu','entrega','chegou','entregue']},
+      {key:'pronto', label:'Pronto', match: ['pronto','coleta','saiu','entrega','chegou','entregue']},
+      {key:'saiu', label:'Em entrega', match: ['saiu','entrega','chegou','entregue']},
+      {key:'chegou', label:'Chegou', match: ['chegou','entregue']},
+      {key:'entregue', label:'Entregue', match: ['entregue']}
+    ];
+    
+    const isActive = (step) => {
+      if (isCancelado) return false;
+      return step.match.includes(p.status);
+    };
+
+    const temRastreio = (p.status === 'saiu' || p.status === 'entrega' || p.status === 'chegou') && p.lat && p.lng;
+    const motoboyChegou = p.motoboyChegou || p.status === 'chegou' || false;
+    
+    const whatsMsg = encodeURIComponent(`Olá, meu nome é ${p.cliente?.nome||''}. Pedido #${p.id.substring(0,6).toUpperCase()}, gostaria de falar com atendente.`);
+    
+    const c = p.cliente || {};
+    const taxaEntrega = p.taxa || p.taxaEntrega || 0;
+    const descontoCupom = p.desconto || p.cupomDesconto || 0;
+
+    const itensFormatados = (p.itens||[]).map(i => {
+      const unitario = money(i.price || 0);
+      const subTotalItem = money((i.price || 0) * (i.qty || 1));
+      return `${esc(i.qty||1)}x ${esc(i.title||i.nome)} ${unitario} | ${subTotalItem}`;
+    }).join('\n');
+
+    let enderecoCompleto = '';
+    if (c.rua) {
+      enderecoCompleto = `Rua: ${esc(c.rua)}, ${esc(c.numero || 's/n')}`;
+      if (c.bairro) enderecoCompleto += `\nBairro: ${esc(c.bairro)}`;
+      if (c.complemento) enderecoCompleto += `\nComp: ${esc(c.complemento)}`;
+      enderecoCompleto += `\nRef: ${esc(c.referencia || '-')}`;
+    } else {
+      enderecoCompleto = esc(p.endereco || 'Retirada na Loja');
+    }
+
+    // Mapa de rastreio
+    const mapaHtml = temRastreio ? `
+      <div class="card" style="padding:0;overflow:hidden;border:2px solid #28a745">
+        <div style="padding:12px 14px 8px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <strong>🛵 Rastreio ao vivo</strong>
+            <span style="font-size:11px;background:#28a745;padding:3px 8px;border-radius:10px">AO VIVO</span>
+          </div>
+          <div class="muted" style="font-size:12px">Motoboy: ${esc(p.motoboy||'a caminho')} • Atualizado agora</div>
+          ${motoboyChegou ? '<div style="color:#07fcdb;font-weight:bold;margin-top:4px;">✅ Motoboy está na porta!</div>' : ''}
+          ${p.saiuEmMs ? `<div class="tempo-rota">⏱️ Tempo de rota: <span id="tempoRota">${formatarTempoRota(p.saiuEmMs)}</span></div>` : ''}
+        </div>
+        <div id="mapa-rastreio"></div>
+      </div>
+    ` : '';
+
+    // Botão de rota
+    const botaoRotaHtml = (isAtivo && temRastreio) ? `
+      <button class="btn motoboy ${motoboyChegou ? 'chegou' : ''}" id="btnRotaMotoboy">
+        ${motoboyChegou ? '📍 MOTOBOY NA PORTA!' : '🛵 Ver rota do motoboy'}
+      </button>
+    ` : '';
+
+    // Notificação de chegada
+    const notificacaoChegouHtml = motoboyChegou ? `
+      <div class="notificacao-chegou">
+        🛵 <strong>MOTOBOY CHEGOU!</strong> Ele está na porta com seu pedido! 🍕
+      </div>
+    ` : '';
+
+    // Badge do motoboy
+    const badgeMotoboyHtml = p.motoboy ? `<span class="badge-motoboy">🛵 Entregador: ${esc(p.motoboy)}</span>` : '';
+
+    // Identificador do tipo de entregador
+    let tipoEntregadorHtml = '';
+    if (p.tipoEntregador === 'ifood') {
+      tipoEntregadorHtml = '<span style="display:inline-block;background:#ea1d2c;color:white;padding:2px 12px;border-radius:12px;font-size:11px;font-weight:700;margin-left:6px;">iFood</span>';
+    } else if (p.tipoEntregador === 'proprio') {
+      tipoEntregadorHtml = '<span style="display:inline-block;background:#8b5cf6;color:white;padding:2px 12px;border-radius:12px;font-size:11px;font-weight:700;margin-left:6px;">Entregador Próprio</span>';
+    }
+
+    view.innerHTML = `
+      <h1>Seu pedido</h1>
+      <div class="muted">Pedido #${esc(p.id.substring(0,6).toUpperCase())} <span class="pulse">• ao vivo</span> ${tipoEntregadorHtml}</div>
+      
+      ${notificacaoChegouHtml}
+      
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong>Status</strong>
+          <span class="badge ${badgeClass} ${isCancelado?'cancelado':''}">${esc(statusLabel)}</span>
+        </div>
+        <div class="timeline">
+          ${steps.map(s=>`<div class="step ${isActive(s)?'active':''}">${esc(s.label)}</div>`).join('')}
+        </div>
+        ${badgeMotoboyHtml}
+      </div>
+      
+      ${mapaHtml}
+      ${botaoRotaHtml}
+      
+      <div class="card">
+        <strong>Detalhes do Pedido</strong>
+        <div class="detalhes-texto" style="margin-top:10px">Nome: ${esc(c.nome || 'Não informado')}
+Tel: ${c.telefone ? formatTelBR(c.telefone) : 'Não informado'}
+${enderecoCompleto}
+
+${itensFormatados}
+
+💳 Pagamento: ${esc(c.pagamento || p.pagamento || 'Não informado')}${(c.pagamento||p.pagamento)==='Dinheiro'&&(c.troco||p.troco)?` (Troco para ${esc(c.troco||p.troco)})`:''}
+🧾 Subtotal: ${money(p.subtotal)}
+${descontoCupom > 0 ? `🎫 Cupom: -${money(descontoCupom)}\n` : ''}🛵 Entrega: ${money(taxaEntrega)}
+💰 Total: ${money(p.total)}
+${p.obs ? `\n📝 Obs: ${esc(p.obs)}` : ''}</div>
+      </div>
+      
+      <div class="card aviso">
+        <strong>⚠️ Atenção</strong>
+        <div style="margin-top:6px;font-size:13px">Não recebemos pagamentos adiantados.<br>Pix apenas na máquina, o motoboy leva.</div>
+      </div>
+      
+      <a href="https://wa.me/${WHATS_LOJA}?text=${whatsMsg}" target="_blank" class="btn whats">💬 Falar no WhatsApp</a>
+      <button class="btn ghost" onclick="location.href='status.html'">← Ver todos os pedidos</button>
+    `;
+
+    // Mapa
+    if(temRastreio){ 
+      setTimeout(()=>{ 
+        if(mapa) mapa.remove(); 
+        mapa = L.map('mapa-rastreio', {zoomControl:false, dragging:true}).setView([p.lat, p.lng], 16); 
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{png}',{
+          attribution:'© OpenStreetMap',
+          maxZoom:19
+        }).addTo(mapa); 
+        const moto = L.divIcon({
+          html:'<div style="font-size:32px;filter:drop-shadow(0 0 6px rgba(0,0,0,0.5));">🛵</div>',
+          iconSize:[32,32],
+          className:''
+        }); 
+        L.marker([p.lat, p.lng], {icon:moto}).addTo(mapa); 
+        // Atualiza tempo de rota a cada 10 segundos
+        if (window._tempoRotaInterval) clearInterval(window._tempoRotaInterval);
+        window._tempoRotaInterval = setInterval(() => {
+          const el = document.getElementById('tempoRota');
+          if (el && p.saiuEmMs) {
+            el.textContent = formatarTempoRota(p.saiuEmMs);
+          }
+        }, 10000);
+      }, 100); 
+    }
+
+    // Botão rota
+    const btnRota = document.getElementById('btnRotaMotoboy');
+    if (btnRota) {
+      btnRota.addEventListener('click', function() {
+        const endereco = c.rua ? 
+          `${c.rua}, ${c.numero || 's/n'}${c.bairro ? ' - ' + c.bairro : ''}` 
+          : (p.endereco || '');
+        abrirRotaMotoboy(p.lat, p.lng, endereco);
+      });
+    }
+
+    // Notificação de chegada
+    if ((p.motoboyChegou || p.status === 'chegou') && !notificacaoChegouEnviada) {
+      notificarClienteChegou(p.id);
+    }
+  }
+
+  // ============================================================
+  // INICIAR - ou carregar pedido específico ou listar do cliente
+  // ============================================================
+  async function iniciar(){
+    const view = document.getElementById('view');
+    view.innerHTML = '<div style="text-align:center;padding:20px;opacity:.6">Carregando...</div>';
+
+    if(id){
+      if(unsubscribe) unsubscribe();
+      unsubscribe = onSnapshot(doc(db, "pedidos", String(id)), (snap)=>{
+        if(snap.exists()) {
+          const p = {id:snap.id,...snap.data()};
+          // Garante criadoEmMs
+          if (p.criadoEm && !p.criadoEmMs) {
+            p.criadoEmMs = p.criadoEm.toMillis ? p.criadoEm.toMillis() : Date.now();
+          }
+          renderPedido(p);
+          
+          // Se for 'novo', agenda transição para 'preparando' após 20 min
+          if (p.status === 'novo' && p.criadoEmMs) {
+            atualizarParaPreparando(p.id, p.criadoEmMs);
+          }
+          
+          // Se for 'preparando' e não tiver preparandoEmMs, adiciona
+          if (p.status === 'preparando' && !p.preparandoEmMs) {
+            updateDoc(doc(db, "pedidos", p.id), {
+              preparandoEm: serverTimestamp(),
+              preparandoEmMs: Date.now()
+            }).catch(() => {});
+          }
+          
+          // Notifica quando status muda para 'saiu' ou 'chegou'
+          const statusReal = p.status === 'entrega'? 'saiu' : p.status;
+          if((statusReal === 'saiu' || p.status === 'saiu') && ultimoStatus !== 'saiu' && ultimoStatus !== 'entrega') {
+            try {
+              const audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
+              audio.play().catch(()=>{});
+            } catch(e) {}
+            navigator.vibrate?.([200,100,200]);
+            if(Notification.permission === 'granted') { 
+              new Notification('🛵 Saiu para entrega!', { 
+                body: `Pedido #${p.id.substring(0,6).toUpperCase()} está a caminho`, 
+                icon: 'https://i.imgur.com/8Km9tLL.png' 
+              }); 
+            }
+            document.body.style.background = '#0f3d2e';
+          }
+          
+          // Se chegou, notifica
+          if ((p.motoboyChegou || p.status === 'chegou') && !notificacaoChegouEnviada) {
+            notificarClienteChegou(p.id);
+          }
+          
+          ultimoStatus = p.status;
+        } else {
+          view.innerHTML = '<h1>Pedido não encontrado</h1>';
+        }
+      });
+      return;
+    }
+
+    // SEM ID: lista pedidos do cliente por telefone
+    const cli = getCliente();
+    let tel = cli.telefone? onlyDigits(cli.telefone) : null;
+
+    if(!tel){
+      view.innerHTML = `<h1>Meus Pedidos</h1><div class="card"><input class="tel" id="tel" placeholder="(11) 99999-9999" oninput="this.value=window.formatTelBR(this.value)"><button class="btn" id="btn">Ver meus pedidos</button></div>`;
+      document.getElementById('btn').onclick = ()=>{ 
+        const t = onlyDigits(document.getElementById('tel').value); 
+        if(t.length<10) return alert('Telefone inválido'); 
+        setCliente({...getCliente(), telefone:t}); 
+        location.reload(); 
+      };
+      return;
+    }
+
+    try {
+      // Query sem orderBy para evitar problema de índice
+      const q = query(collection(db,"pedidos"), where("cliente.telefone","==",tel));
+      const snap = await getDocs(q);
+      // Ordena manualmente por criadoEmMs
+      const docs = [];
+      snap.forEach(d => {
+        const data = d.data();
+        const criadoMs = data.criadoEmMs || (data.criadoEm?.toMillis ? data.criadoEm.toMillis() : 0);
+        docs.push({ id: d.id, ...data, _criadoMs: criadoMs });
+      });
+      docs.sort((a,b) => b._criadoMs - a._criadoMs);
+
+      if(docs.length === 0){
+        view.innerHTML = `<h1>Meus Pedidos</h1><div class="card">Nenhum pedido encontrado para ${formatTelBR(tel)}<br><small>Faça um pedido com o carrinho novo</small><br><button class="btn ghost" style="margin-top:10px" onclick="localStorage.removeItem('${CLIENTE_KEY}');location.reload()">Trocar número</button></div>`;
+        return;
+      }
+
+      view.innerHTML = `<h1>Meus Pedidos</h1><div class="muted">${docs.length} pedidos • ${formatTelBR(tel)}</div>` + docs.map(d => { 
+        const data = d.criadoEm?.toDate? d.criadoEm.toDate().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : ''; 
+        const statusBadge = getStatusBadgeClass(d.status);
+        return `<div class="card" onclick="location.href='status.html?id=${d.id}'" style="cursor:pointer"><div style="display:flex;justify-content:space-between;align-items:center"><strong>#${d.id.substring(0,6).toUpperCase()}</strong><span class="badge ${statusBadge} ${d.status==='cancelado'?'cancelado':''}">${getStatusLabel(d.status)}</span></div><div class="muted" style="margin:6px 0">${data} • ${d.itens?.length||0} itens</div><div style="display:flex;justify-content:space-between;align-items:center"><span>${(d.itens||[]).slice(0,2).map(i=>`${i.qty}x ${i.title||i.nome}`).join(', ')}${d.itens?.length>2?'...':''}</span><strong>${money(d.total)}</strong></div></div>`; 
+      }).join('') + `<button class="btn ghost" onclick="localStorage.removeItem('${CLIENTE_KEY}');location.reload()">Trocar número</button>`;
+
+    } catch(err) {
+      view.innerHTML = `<h1>Aguarde</h1><div class="card" style="border-left:4px solid #ffcc00">Erro ao carregar pedidos.<br><small>${err.message}</small></div><button class="btn" onclick="location.reload()">Tentar novamente</button>`;
+    }
+  }
+
+  iniciar();
+</script>
+</body>
+</html>
