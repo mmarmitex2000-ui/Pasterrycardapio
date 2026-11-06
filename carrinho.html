@@ -12,11 +12,21 @@
   padding: 0;
 }
 
+:root {
+  --bg-site: #1A1210;
+  --bg-card: #2a201d;
+  --bg-input: #0a1420;
+  --cor-fonte: #e6eef6;
+  --cor-fonte-muted: #9aa6b2;
+  --cor-primaria: #28a745;
+  --cor-secundaria: #FFD700;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-  background: #1A1210;
-  color: #e6eef6;
+  background: var(--bg-site);
+  color: var(--cor-fonte);
   padding: 16px;
   padding-bottom: 200px;
   overflow-x: hidden;
@@ -34,7 +44,7 @@ body {
 }
 .header h1 {
   font-size: 24px;
-  color: #FFD700;
+  color: var(--cor-secundaria);
   margin: 0;
 }
 .header .badge {
@@ -65,14 +75,14 @@ body {
 h3 {
   margin: 16px 0 10px;
   font-size: 18px;
-  color: #FFD700;
+  color: var(--cor-secundaria);
   display: flex;
   align-items: center;
   gap: 8px;
 }
 h3 .count {
   font-size: 12px;
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
   font-weight: 400;
 }
 
@@ -94,7 +104,7 @@ h3 .count {
   transform: scale(0.95);
 }
 .btn.primary {
-  background: #28a745;
+  background: var(--cor-primaria);
   color: #fff;
   box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
 }
@@ -108,8 +118,8 @@ h3 .count {
   box-shadow: none;
 }
 .btn.secondary {
-  background: #2a201d;
-  color: #e6eef6;
+  background: var(--bg-card);
+  color: var(--cor-fonte);
   border: 1px solid rgba(255,255,255,0.08);
 }
 .btn.secondary:hover {
@@ -132,7 +142,7 @@ h3 .count {
   font-size: 16px;
 }
 .btn.cupom {
-  background: #FFD700;
+  background: var(--cor-secundaria);
   color: #1A1210;
 }
 .btn.cupom:hover {
@@ -142,10 +152,83 @@ h3 .count {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.btn.extra-add {
+  background: #2d5016 !important;
+  color: #fff !important;
+}
+.btn.extra-add:hover {
+  background: #4CAF50 !important;
+}
+.btn.extra-add:disabled {
+  background: #555 !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== ITENS EXTRAS ===== */
+.extras {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  margin: 8px 0 14px;
+  padding: 4px 2px 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x mandatory;
+}
+.extras::-webkit-scrollbar {
+  display: none;
+}
+.extra-card {
+  flex: 0 0 130px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 10px 8px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: transform 0.2s, border-color 0.2s;
+  scroll-snap-align: start;
+}
+.extra-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,215,0,0.2);
+}
+.extra-card img {
+  width: 100%;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: var(--bg-input);
+}
+.extra-card .nome {
+  font-size: 12px;
+  font-weight: 600;
+  margin: 6px 0 2px;
+  color: var(--cor-fonte);
+}
+.extra-card .preco {
+  font-size: 13px;
+  color: var(--cor-secundaria);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.extra-card .btn {
+  width: 100%;
+  padding: 4px;
+  font-size: 13px;
+  border-radius: 6px;
+}
+.extra-card.loja-fechada {
+  opacity: 0.5;
+}
+.extra-card.loja-fechada .btn {
+  background: #555 !important;
+  cursor: not-allowed;
+}
 
 /* ===== CUPOM DE DESCONTO ===== */
 .cupom-area {
-  background: #2a201d;
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 14px 16px;
   margin: 10px 0 12px;
@@ -161,14 +244,14 @@ h3 .count {
   padding: 10px 14px;
   border-radius: 8px;
   border: 1px solid rgba(255,255,255,0.06);
-  background: #0a1420;
-  color: #e6eef6;
+  background: var(--bg-input);
+  color: var(--cor-fonte);
   font-size: 14px;
   text-transform: uppercase;
 }
 .cupom-area input:focus {
   outline: none;
-  border-color: #FFD700;
+  border-color: var(--cor-secundaria);
 }
 .cupom-area input:disabled {
   opacity: 0.5;
@@ -178,7 +261,7 @@ h3 .count {
 }
 .cupom-aplicado {
   background: rgba(40, 167, 69, 0.15);
-  border: 1px solid #28a745;
+  border: 1px solid var(--cor-primaria);
   border-radius: 10px;
   padding: 10px 14px;
   margin: 8px 0;
@@ -210,14 +293,14 @@ h3 .count {
   border-radius: 12px;
   padding: 14px 16px;
   margin: 10px 0 12px;
-  border: 2px solid #FFD700;
+  border: 2px solid var(--cor-secundaria);
   display: none;
 }
 .cupom-especial-area.visible {
   display: block;
 }
 .cupom-especial-area .titulo {
-  color: #FFD700;
+  color: var(--cor-secundaria);
   font-weight: 700;
   font-size: 14px;
   display: flex;
@@ -225,12 +308,12 @@ h3 .count {
   gap: 8px;
 }
 .cupom-especial-area .descricao {
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
   font-size: 12px;
   margin: 4px 0 8px;
 }
 .cupom-especial-area .barra-container {
-  background: #0a1420;
+  background: var(--bg-input);
   border-radius: 20px;
   height: 20px;
   overflow: hidden;
@@ -239,7 +322,7 @@ h3 .count {
 }
 .cupom-especial-area .barra-container .barra {
   height: 100%;
-  background: linear-gradient(90deg, #FFD700, #FF6B00);
+  background: linear-gradient(90deg, var(--cor-secundaria), #FF6B00);
   border-radius: 20px;
   transition: width 0.5s ease;
   width: 0%;
@@ -259,11 +342,11 @@ h3 .count {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
   margin-top: 4px;
 }
 .cupom-especial-area .info-barra .destaque {
-  color: #FFD700;
+  color: var(--cor-secundaria);
   font-weight: 700;
 }
 .cupom-especial-area .info-barra .proximo {
@@ -276,7 +359,7 @@ h3 .count {
   text-align: center;
   font-size: 20px;
   font-weight: 800;
-  color: #FFD700;
+  color: var(--cor-secundaria);
   margin: 8px 0 4px;
 }
 .cupom-especial-area .desconto-atual .percent {
@@ -284,7 +367,7 @@ h3 .count {
 }
 .cupom-especial-area .desconto-atual .label {
   font-size: 14px;
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
   font-weight: 400;
 }
 
@@ -292,7 +375,7 @@ h3 .count {
 .cart-empty {
   text-align: center;
   padding: 40px 20px;
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
 }
 .cart-empty .icon {
   font-size: 48px;
@@ -303,7 +386,7 @@ h3 .count {
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
-  background: #2a201d;
+  background: var(--bg-card);
   border-radius: 10px;
   margin-bottom: 8px;
   border: 1px solid rgba(255,255,255,0.04);
@@ -317,7 +400,7 @@ h3 .count {
   height: 50px;
   object-fit: cover;
   border-radius: 8px;
-  background: #0a1420;
+  background: var(--bg-input);
 }
 .cart-item .info {
   flex: 1;
@@ -334,7 +417,7 @@ h3 .count {
 }
 .cart-item .info .price {
   font-size: 12px;
-  color: #FFD700;
+  color: var(--cor-secundaria);
 }
 .cart-item .qty-control {
   display: flex;
@@ -358,15 +441,22 @@ h3 .count {
 }
 .cart-item .item-total {
   font-weight: 700;
-  color: #FFD700;
+  color: var(--cor-secundaria);
   font-size: 14px;
   min-width: 50px;
   text-align: right;
 }
+.cart-item.extra-item {
+  border-left: 3px solid #FF6B00;
+  opacity: 0.85;
+}
+.cart-item.extra-item .info .title {
+  color: #FF6B00;
+}
 
 /* ===== TOTAIS ===== */
 .totais {
-  background: #2a201d;
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 12px;
@@ -377,7 +467,7 @@ h3 .count {
   justify-content: space-between;
   padding: 3px 0;
   font-size: 14px;
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
 }
 .totais .linha.total {
   border-top: 1px solid rgba(255,255,255,0.06);
@@ -388,7 +478,7 @@ h3 .count {
   color: #fff;
 }
 .totais .linha.total .valor {
-  color: #FFD700;
+  color: var(--cor-secundaria);
 }
 .totais .linha .destaque {
   color: #4caf50;
@@ -412,7 +502,7 @@ h3 .count {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(180deg, transparent, #1A1210 20%, #1A1210);
+  background: linear-gradient(180deg, transparent, var(--bg-site) 20%, var(--bg-site));
   padding: 12px 16px;
   padding-bottom: calc(12px + env(safe-area-inset-bottom));
   box-sizing: border-box;
@@ -481,7 +571,7 @@ h3 .count {
 .modal-content .close-btn {
   background: rgba(255,255,255,0.05);
   border: none;
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -499,8 +589,8 @@ h3 .count {
   margin: 5px 0;
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 10px;
-  background: #0a1420;
-  color: #e6eef6;
+  background: var(--bg-input);
+  color: var(--cor-fonte);
   font-size: 14px;
   box-sizing: border-box;
   transition: border-color 0.2s;
@@ -508,7 +598,7 @@ h3 .count {
 .modal-content input:focus,
 .modal-content select:focus {
   outline: none;
-  border-color: #FFD700;
+  border-color: var(--cor-secundaria);
   box-shadow: 0 0 0 3px rgba(255,215,0,0.08);
 }
 .modal-content input::placeholder {
@@ -516,7 +606,7 @@ h3 .count {
 }
 .modal-content .field-label {
   font-size: 12px;
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
   margin-top: 8px;
   display: block;
 }
@@ -556,7 +646,7 @@ h3 .count {
   color: #ff6b6b;
 }
 .cupom-modal {
-  background: #0a1420;
+  background: var(--bg-input);
   border: 1px dashed rgba(255,255,255,0.06);
   padding: 12px 14px;
   margin: 12px 0;
@@ -565,11 +655,11 @@ h3 .count {
 }
 .cupom-modal h4 {
   margin: 0 0 6px;
-  color: #FFD700;
+  color: var(--cor-secundaria);
   font-size: 14px;
 }
 .cupom-modal .itens {
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
   font-size: 13px;
   line-height: 1.6;
 }
@@ -580,7 +670,7 @@ h3 .count {
   font-weight: 700;
 }
 .cupom-modal .total .destaque {
-  color: #FFD700;
+  color: var(--cor-secundaria);
 }
 .cupom-modal .total .desconto {
   color: #4caf50;
@@ -629,7 +719,7 @@ h3 .count {
   height: 50px;
   border-radius: 50%;
   border: 4px solid rgba(255,255,255,0.1);
-  border-top-color: #FFD700;
+  border-top-color: var(--cor-secundaria);
   animation: spin 0.8s linear infinite;
   margin: 0 auto 16px;
 }
@@ -639,7 +729,7 @@ h3 .count {
 }
 .loading-content .sub {
   font-size: 13px;
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
   margin-top: 4px;
 }
 @keyframes spin {
@@ -679,6 +769,9 @@ h3 .count {
   .modal-content {
     padding: 16px;
   }
+  .extra-card {
+    flex: 0 0 110px;
+  }
   .cart-item {
     padding: 8px 10px;
     flex-wrap: wrap;
@@ -709,6 +802,13 @@ h3 .count {
 }
 
 @media (max-width: 360px) {
+  .extra-card {
+    flex: 0 0 95px;
+    padding: 6px;
+  }
+  .extra-card img {
+    height: 40px;
+  }
   .cart-item img {
     width: 40px;
     height: 40px;
@@ -765,6 +865,12 @@ h3 .count {
   <span>🔴 <strong>Loja fechada</strong> – Não é possível adicionar itens no momento.</span>
 </div>
 
+<!-- ===== ITENS EXTRAS (MOLHOS / ADICIONAIS) ===== -->
+<h3>🧂 Itens Extras <span class="count">(adicione ao seu pedido)</span></h3>
+<div class="extras" id="extrasContainer">
+  <div style="color:#6a7a8a; padding:10px; text-align:center; width:100%;">Carregando itens extras...</div>
+</div>
+
 <!-- ===== CUPOM DE DESCONTO ===== -->
 <div class="cupom-area">
   <input type="text" id="cupomInput" placeholder="Digite seu cupom de desconto" maxlength="20" />
@@ -775,7 +881,7 @@ h3 .count {
   <button class="remove" id="btnRemoverCupom">✕ Remover</button>
 </div>
 
-<!-- ===== CUPOM ESPECIAL PROGRESSIVO ===== -->
+<!-- ===== CUPOM ESPECIAL PROGRESSIVO (NOVO) ===== -->
 <div class="cupom-especial-area" id="cupomEspecialArea">
   <div class="titulo">⭐ Cupom Especial Progressivo</div>
   <div class="descricao">O desconto aumenta conforme o valor da sacola</div>
@@ -860,8 +966,10 @@ h3 .count {
       <option value="Credito">💳 Crédito</option>
     </select>
 
+    <!-- ===== CAMPO TROCO MELHORADO ===== -->
     <input id="troco" placeholder="Qual o valor que você vai pagar? (ex: 100 ou 100,50)" style="display:none">
     <div id="trocoPreview" style="font-size:14px; margin-top:4px; min-height:20px; color:#4caf50; font-weight:600;"></div>
+    <!-- ===== FIM CAMPO TROCO ===== -->
 
     <div class="cupom-modal">
       <h4>📋 Resumo do Pedido</h4>
@@ -917,15 +1025,16 @@ var GOOGLE_KEY = localStorage.getItem('gmaps_key') || "AIzaSyDV9tPC5XNNmB_REgW1a
 var taxaAtual = null;
 var distanciaAtual = null;
 var configEntrega = null;
+var extras = [];
 var cuponsValidos = [];
 var cupomAplicado = null;
 var lojaAberta = true;
 
-// Áreas e coordenadas do cliente
-var areasEntrega = [];
-var clienteLatLng = null;
+// ===== NOVAS VARIÁVEIS PARA ÁREAS E COORDENADAS DO CLIENTE =====
+var areasEntrega = [];      // áreas carregadas do Firebase
+var clienteLatLng = null;   // coordenadas do cliente (lat, lng)
 
-// Cupom especial progressivo
+// ===== CUPOM ESPECIAL PROGRESSIVO =====
 var faixasEspeciais = [];
 var cupomEspecialAtivo = false;
 var cupomEspecialAplicado = false;
@@ -970,14 +1079,14 @@ function pontoDentroPoligono(lat, lng, vertices) {
 }
 
 function pontoDentroCirculo(lat, lng, center, raio) {
-  var R = 6371;
+  var R = 6371; // km
   var dLat = (lat - center.lat) * Math.PI / 180;
   var dLng = (lng - center.lng) * Math.PI / 180;
   var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
           Math.cos(center.lat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) *
           Math.sin(dLng/2) * Math.sin(dLng/2);
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  var dist = R * c * 1000;
+  var dist = R * c * 1000; // em metros
   return dist <= raio;
 }
 
@@ -985,6 +1094,7 @@ function pontoDentroCirculo(lat, lng, center, raio) {
 // CÁLCULO DE TAXA USANDO ÁREAS
 // ============================================================
 function calcularTaxa(km, lat, lng) {
+  // Se houver áreas carregadas e coordenadas do cliente, verifica cobertura
   if (areasEntrega.length > 0 && lat !== undefined && lng !== undefined) {
     for (var i = 0; i < areasEntrega.length; i++) {
       var area = areasEntrega[i];
@@ -998,9 +1108,11 @@ function calcularTaxa(km, lat, lng) {
         return Number(area.taxa) || 0;
       }
     }
+    // Se não estiver em nenhuma área, retorna 0 (não atende)
     return 0;
   }
 
+  // Fallback: usa as faixas por distância (comportamento antigo)
   if (!configEntrega || !configEntrega.faixas) return 5;
   var faixas = configEntrega.faixas.sort(function(a, b) { return a.ate - b.ate; });
   var f = null;
@@ -1031,7 +1143,7 @@ function showToast(msg, type) {
 }
 
 // ============================================================
-// CARREGAR CUPOM ESPECIAL PROGRESSIVO
+// ⭐ CARREGAR CUPOM ESPECIAL PROGRESSIVO
 // ============================================================
 function carregarCupomEspecial() {
   console.log('⭐ Carregando cupom especial progressivo...');
@@ -1042,9 +1154,11 @@ function carregarCupomEspecial() {
         var data = doc.data();
         faixasEspeciais = data.faixas || [];
         cupomEspecialAtivo = data.ativo || false;
+        console.log('✅ Cupom especial carregado:', faixasEspeciais.length, 'faixas, ativo:', cupomEspecialAtivo);
       } else {
         faixasEspeciais = [];
         cupomEspecialAtivo = false;
+        console.log('⚠️ Nenhum cupom especial encontrado');
       }
       atualizarCupomEspecial();
     })
@@ -1056,6 +1170,9 @@ function carregarCupomEspecial() {
     });
 }
 
+// ============================================================
+// ⭐ CALCULAR DESCONTO PROGRESSIVO
+// ============================================================
 function calcularDescontoProgressivo(total) {
   if (!faixasEspeciais || faixasEspeciais.length === 0 || !cupomEspecialAtivo) return 0;
   
@@ -1071,11 +1188,15 @@ function calcularDescontoProgressivo(total) {
   return desconto;
 }
 
+// ============================================================
+// ⭐ ATUALIZAR CUPOM ESPECIAL NA TELA
+// ============================================================
 function atualizarCupomEspecial() {
   var area = document.getElementById('cupomEspecialArea');
   var total = getCartTotal();
   var desconto = calcularDescontoProgressivo(total);
   
+  // Mostrar/esconder área
   if (faixasEspeciais.length > 0 && cupomEspecialAtivo) {
     area.classList.add('visible');
   } else {
@@ -1083,8 +1204,10 @@ function atualizarCupomEspecial() {
     return;
   }
   
+  // Atualizar percentual
   document.getElementById('descontoAtualPercent').textContent = desconto;
   
+  // Calcular progresso
   var sorted = [...faixasEspeciais].sort(function(a, b) { return a.minimo - b.minimo; });
   var proximo = null;
   var atual = 0;
@@ -1115,10 +1238,12 @@ function atualizarCupomEspecial() {
     proximoValor = maximo;
   }
   
+  // Atualizar barra
   var barra = document.getElementById('barraProgresso');
   barra.style.width = Math.min(100, progresso) + '%';
   document.getElementById('barraLabel').textContent = Math.round(Math.min(100, progresso)) + '%';
   
+  // Atualizar infos
   document.getElementById('progressoAtual').textContent = money(total);
   
   if (proximo && total < maximo) {
@@ -1132,9 +1257,12 @@ function atualizarCupomEspecial() {
     document.getElementById('faltaDesconto').innerHTML = 'Falta: <span class="falta">' + money(sorted[0].minimo - total) + '</span>';
   }
   
+  // Aplicar cupom especial automaticamente se houver desconto
   if (desconto > 0 && !cupomEspecialAplicado) {
+    // Verifica se já tem um cupom normal aplicado
     if (!cupomAplicado) {
       cupomEspecialAplicado = true;
+      // Aplica o cupom especial como um cupom normal
       var cupomEspecial = {
         codigo: 'DESCONTO_PROGRESSIVO',
         desconto: desconto,
@@ -1151,6 +1279,7 @@ function atualizarCupomEspecial() {
     }
   }
   
+  // Se o desconto for 0 e o cupom especial estava aplicado, remove
   if (desconto === 0 && cupomEspecialAplicado) {
     if (cupomAplicado && cupomAplicado.especial) {
       cupomAplicado = null;
@@ -1163,10 +1292,14 @@ function atualizarCupomEspecial() {
     }
   }
   
+  // Atualizar totais
   renderTotais();
   renderCupom();
 }
 
+// ============================================================
+// CALCULAR TOTAL DO CARRINHO
+// ============================================================
 function getCartTotal() {
   var c = getCart();
   var total = 0;
@@ -1188,6 +1321,7 @@ function carregarStatusLoja() {
     } else {
       lojaAberta = true;
     }
+    console.log('🏪 Status da loja:', lojaAberta ? 'ABERTA' : 'FECHADA');
     atualizarInterfaceLoja();
   }, function(error) {
     console.error('Erro ao carregar status da loja:', error);
@@ -1196,6 +1330,9 @@ function carregarStatusLoja() {
   });
 }
 
+// ============================================================
+// ATUALIZAR INTERFACE QUANDO LOJA FECHADA
+// ============================================================
 function atualizarInterfaceLoja() {
   var msgDiv = document.getElementById('lojaFechadaMsg');
   var btnConfirmar = document.getElementById('btnConfirmar');
@@ -1211,6 +1348,14 @@ function atualizarInterfaceLoja() {
     if (btnLimpar) {
       btnLimpar.disabled = true;
     }
+    document.querySelectorAll('.extra-card .btn').forEach(function(btn) {
+      btn.disabled = true;
+      btn.textContent = '🔴 Fechado';
+      btn.style.background = '#555';
+    });
+    document.querySelectorAll('.extra-card').forEach(function(card) {
+      card.classList.add('loja-fechada');
+    });
   } else {
     msgDiv.style.display = 'none';
     if (btnConfirmar) {
@@ -1222,8 +1367,27 @@ function atualizarInterfaceLoja() {
     if (btnLimpar) {
       btnLimpar.disabled = false;
     }
+    document.querySelectorAll('.extra-card .btn').forEach(function(btn) {
+      btn.disabled = false;
+      btn.textContent = '+ Adicionar';
+      btn.style.background = '';
+    });
+    document.querySelectorAll('.extra-card').forEach(function(card) {
+      card.classList.remove('loja-fechada');
+    });
   }
 }
+
+// ============================================================
+// ITENS EXTRAS PADRÃO (FALLBACK)
+// ============================================================
+var EXTRAS_PADRAO = [
+  { nome: 'Molho Barbecue', preco: 5.00, img: '' },
+  { nome: 'Molho Mostarda', preco: 5.00, img: '' },
+  { nome: 'Molho Cheddar', preco: 5.00, img: '' },
+  { nome: 'Molho Tartaro', preco: 5.00, img: '' },
+  { nome: 'Ketchup', preco: 5.00, img: '' }
+];
 
 // ============================================================
 // CUPONS FALLBACK PARA TESTE
@@ -1235,29 +1399,42 @@ var CUPONS_FALLBACK = [
 ];
 
 // ============================================================
-// CARREGAR CUPONS
+// CARREGAR CUPONS COM FALLBACK
 // ============================================================
 function carregarCupons() {
+  console.log('🏷️ Carregando cupons...');
+  
   db.collection('config').doc('cupons').get()
     .then(function(doc) {
+      console.log('📄 Documento cupons existe?', doc.exists);
+      
       if (doc.exists) {
         var data = doc.data();
+        console.log('📦 Dados do documento:', data);
+        console.log('🔑 Campos:', Object.keys(data));
         
         if (data.cupons && Array.isArray(data.cupons) && data.cupons.length > 0) {
           cuponsValidos = data.cupons;
+          console.log('✅ Cupons carregados do Firebase:', cuponsValidos.length, 'itens');
         } else if (data.cupom && Array.isArray(data.cupom) && data.cupom.length > 0) {
           cuponsValidos = data.cupom;
+          console.log('✅ Cupons carregados do Firebase (campo "cupom"):', cuponsValidos.length, 'itens');
         } else {
+          console.warn('⚠️ Nenhum cupom encontrado no documento. Usando fallback.');
           cuponsValidos = CUPONS_FALLBACK;
         }
       } else {
+        console.warn('⚠️ Documento "cupons" não existe. Usando fallback.');
         cuponsValidos = CUPONS_FALLBACK;
       }
+      
+      console.log('🏷️ Cupons disponíveis:', cuponsValidos);
       
       var saved = localStorage.getItem(CUPOM_KEY);
       if (saved) {
         try {
           var parsed = JSON.parse(saved);
+          // Verifica se é cupom especial
           if (parsed.especial) {
             cupomEspecialAplicado = true;
             cupomAplicado = parsed;
@@ -1265,6 +1442,7 @@ function carregarCupons() {
             document.getElementById('cupomInput').value = parsed.codigo;
             document.getElementById('cupomInput').disabled = true;
             document.getElementById('btnAplicarCupom').disabled = true;
+            console.log('✅ Cupom especial restaurado:', parsed.codigo);
           } else {
             var aindaValido = cuponsValidos.some(function(c) { return c.codigo === parsed.codigo; });
             if (aindaValido) {
@@ -1273,6 +1451,7 @@ function carregarCupons() {
               document.getElementById('cupomInput').value = parsed.codigo;
               document.getElementById('cupomInput').disabled = true;
               document.getElementById('btnAplicarCupom').disabled = true;
+              console.log('✅ Cupom restaurado:', parsed.codigo);
             } else {
               localStorage.removeItem(CUPOM_KEY);
               cupomAplicado = null;
@@ -1296,7 +1475,7 @@ function carregarCupons() {
 }
 
 // ============================================================
-// APLICAR CUPOM
+// APLICAR CUPOM (MODIFICADO PARA SUPORTAR ESPECIAL)
 // ============================================================
 function aplicarCupom() {
   if (!lojaAberta) {
@@ -1310,6 +1489,7 @@ function aplicarCupom() {
     return;
   }
 
+  // Verifica se é o cupom especial
   if (codigo === 'DESCONTO_PROGRESSIVO') {
     var total = getCartTotal();
     var desconto = calcularDescontoProgressivo(total);
@@ -1336,6 +1516,9 @@ function aplicarCupom() {
     }
   }
 
+  console.log('🔍 Buscando cupom:', codigo);
+  console.log('📋 Cupons disponíveis:', cuponsValidos);
+
   var cupom = null;
   for (var i = 0; i < cuponsValidos.length; i++) {
     if (cuponsValidos[i].codigo === codigo) {
@@ -1346,6 +1529,7 @@ function aplicarCupom() {
   
   if (!cupom) {
     showToast('Cupom inválido.', 'error');
+    console.warn('❌ Cupom não encontrado:', codigo);
     return;
   }
 
@@ -1356,6 +1540,7 @@ function aplicarCupom() {
     return;
   }
 
+  // Remove cupom especial se estiver aplicado
   if (cupomEspecialAplicado) {
     cupomEspecialAplicado = false;
   }
@@ -1370,6 +1555,9 @@ function aplicarCupom() {
   renderCupom();
 }
 
+// ============================================================
+// REMOVER CUPOM (MODIFICADO)
+// ============================================================
 function removerCupom() {
   if (cupomAplicado && cupomAplicado.especial) {
     cupomEspecialAplicado = false;
@@ -1386,7 +1574,122 @@ function removerCupom() {
 }
 
 // ============================================================
-// RENDERIZAR CARRINHO
+// CARREGAR ITENS EXTRAS (AGORA LÊ DO sacola-itens)
+// ============================================================
+function carregarExtras() {
+  console.log('🔍 Iniciando carregamento de extras da sacola...');
+  
+  // ✅ CORREÇÃO: Agora lê da coleção exclusiva 'sacola-itens'
+  db.collection('sacola-itens').get()
+    .then(function(snapshot) {
+      extras = [];
+      snapshot.forEach(function(doc) {
+        var data = doc.data();
+        if (data.ativo !== false) {
+          extras.push({
+            id: doc.id,
+            nome: data.nome || data.name || 'Item',
+            preco: data.preco || data.price || 0,
+            img: data.img || ''
+          });
+        }
+      });
+      console.log('✅ Extras processados (apenas ativos):', extras);
+      renderExtras();
+      atualizarInterfaceLoja();
+    })
+    .catch(function(err) {
+      console.error('❌ Erro ao carregar extras:', err);
+      extras = EXTRAS_PADRAO.slice();
+      renderExtras();
+      atualizarInterfaceLoja();
+    });
+}
+
+// ============================================================
+// RENDERIZAR ITENS EXTRAS
+// ============================================================
+function renderExtras() {
+  var container = document.getElementById('extrasContainer');
+  console.log('🎨 Renderizando extras...');
+  
+  if (!container) {
+    console.error('❌ Container não encontrado!');
+    return;
+  }
+  
+  if (!extras || extras.length === 0) {
+    console.warn('⚠️ Nenhum extra para renderizar.');
+    container.innerHTML = '<div style="color:#6a7a8a; padding:20px; text-align:center; width:100%;"><div style="font-size:32px; margin-bottom:8px;">🧂</div>Nenhum item extra disponível.<br><small style="font-size:11px;">Adicione no Painel Admin</small></div>';
+    return;
+  }
+  
+  console.log('🎨 Renderizando', extras.length, 'itens');
+  
+  var html = '';
+  for (var i = 0; i < extras.length; i++) {
+    var extra = extras[i];
+    var nome = extra.nome || extra.name || 'Item';
+    var preco = extra.preco || extra.price || 0;
+    var img = extra.img || '';
+    var nomeEscapado = nome.replace(/'/g, "\\'");
+    
+    var imgSrc = img || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%2248%22%3E%3Crect width=%22120%22 height=%2248%22 fill=%22%230a1420%22/%3E%3Ctext x=%2260%22 y=%2230%22 text-anchor=%22middle%22 fill=%22%239aa6b2%22 font-size=%2214%22%3E🧂%3C/text%3E%3C/svg%3E';
+    
+    var btnDisabled = !lojaAberta ? 'disabled' : '';
+    var btnText = lojaAberta ? '+ Adicionar' : '🔴 Fechado';
+    var cardClass = lojaAberta ? '' : 'loja-fechada';
+    
+    html += '<div class="extra-card ' + cardClass + '">';
+    html += '<img src="' + imgSrc + '" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%2248%22%3E%3Crect width=%22120%22 height=%2248%22 fill=%22%230a1420%22/%3E%3Ctext x=%2260%22 y=%2230%22 text-anchor=%22middle%22 fill=%22%239aa6b2%22 font-size=%2214%22%3E🧂%3C/text%3E%3C/svg%3E\'" />';
+    html += '<div class="nome">' + nome + '</div>';
+    html += '<div class="preco">' + money(preco) + '</div>';
+    html += '<button class="btn primary small extra-add" ' + btnDisabled + ' onclick="addExtra(\'' + nomeEscapado + '\', ' + preco + ', \'' + (img || '') + '\')">' + btnText + '</button>';
+    html += '</div>';
+  }
+  
+  container.innerHTML = html;
+}
+
+// ============================================================
+// FUNÇÕES DO CARRINHO - ITENS EXTRAS
+// ============================================================
+window.addExtra = function(nome, preco, img) {
+  if (!lojaAberta) {
+    showToast('🔴 Loja fechada. Não é possível adicionar itens.', 'error');
+    return;
+  }
+  
+  var c = getCart();
+  var id = 'extra_' + nome.replace(/\s/g, '_');
+  var existente = null;
+  for (var i = 0; i < c.length; i++) {
+    if (c[i].id === id) {
+      existente = c[i];
+      break;
+    }
+  }
+  if (existente) {
+    existente.qty++;
+  } else {
+    c.push({
+      id: id,
+      title: nome,
+      price: preco,
+      precoTotal: preco,
+      qty: 1,
+      img: img || '',
+      tipo: 'extra',
+      isExtra: true
+    });
+  }
+  setCart(c);
+  renderCart();
+  showToast(nome + ' adicionado!');
+};
+
+// ============================================================
+// RENDERIZAR CARRINHO (COM PRECO TOTAL)
 // ============================================================
 function renderCart() {
   var c = getCart();
@@ -1402,7 +1705,7 @@ function renderCart() {
   if (countEl) countEl.textContent = '(' + totalItens + ' itens)';
 
   if (c.length === 0) {
-    container.innerHTML = '<div class="cart-empty"><div class="icon">🛒</div><div style="font-weight:600;margin-bottom:4px;">Sacola vazia</div><div style="font-size:13px;color:#6a7a8a;">Adicione um pastel</div></div>';
+    container.innerHTML = '<div class="cart-empty"><div class="icon">🛒</div><div style="font-weight:600;margin-bottom:4px;">Sacola vazia</div><div style="font-size:13px;color:#6a7a8a;">Adicione um pastel ou item extra</div></div>';
   } else {
     var html = '';
     for (var j = 0; j < c.length; j++) {
@@ -1410,8 +1713,9 @@ function renderCart() {
       
       var precoItem = it.precoTotal || it.price || 0;
       var sub = precoItem * (it.qty || 1);
+      var isExtra = it.tipo === 'extra' || it.isExtra === true;
       
-      var imgSrc = it.img || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect width=%2250%22 height=%2250%22 fill=%22%230a1420%22/%3E%3Ctext x=%2225%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%239aa6b2%22 font-size=%2214%22%3E🍕%3C/text%3E%3C/svg%3E';
+      var imgSrc = it.img || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect width=%2250%22 height=%2250%22 fill=%22%230a1420%22/%3E%3Ctext x=%2225%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%239aa6b2%22 font-size=%2214%22%3E' + (isExtra ? '🧂' : '🍕') + '%3C/text%3E%3C/svg%3E';
       
       var extrasHtml = '';
       if (it.extras && it.extras.length > 0) {
@@ -1419,10 +1723,10 @@ function renderCart() {
         extrasHtml = '<div class="extras-list">➕ ' + nomesExtras + '</div>';
       }
       
-      html += '<div class="cart-item">';
-      html += '<img src="' + imgSrc + '" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect width=%2250%22 height=%2250%22 fill=%22%230a1420%22/%3E%3Ctext x=%2225%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%239aa6b2%22 font-size=%2214%22%3E🍕%3C/text%3E%3C/svg%3E\'" />';
+      html += '<div class="cart-item' + (isExtra ? ' extra-item' : '') + '">';
+      html += '<img src="' + imgSrc + '" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect width=%2250%22 height=%2250%22 fill=%22%230a1420%22/%3E%3Ctext x=%2225%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%239aa6b2%22 font-size=%2214%22%3E' + (isExtra ? '🧂' : '🍕') + '%3C/text%3E%3C/svg%3E\'" />';
       html += '<div class="info">';
-      html += '<div class="title">' + it.title + '</div>';
+      html += '<div class="title">' + it.title + (isExtra ? ' 🧂' : '') + '</div>';
       html += extrasHtml;
       html += '<div class="price">' + money(precoItem) + ' cada</div>';
       html += '</div>';
@@ -1450,6 +1754,7 @@ function renderCart() {
     }
   }
   
+  // Atualizar cupom especial após renderizar
   atualizarCupomEspecial();
 }
 
@@ -1485,7 +1790,7 @@ function limparSacola() {
 }
 
 // ============================================================
-// TOTAIS
+// TOTAIS COM DESCONTO
 // ============================================================
 function renderTotais() {
   var sub = getCartTotal();
@@ -1500,6 +1805,7 @@ function renderTotais() {
   
   var container = document.getElementById('totais');
   
+  // Verifica se a área não é atendida (taxa == 0 e há áreas definidas)
   var naoAtendido = (areasEntrega.length > 0 && taxaAtual === 0);
   var entregaTexto = naoAtendido ? '🚫 Não atendemos' : (taxaAtual !== null ? money(taxaAtual) : '—');
   
@@ -1511,7 +1817,7 @@ function renderTotais() {
 }
 
 // ============================================================
-// RESUMO DO MODAL
+// RENDER CUPOM / RESUMO DO MODAL (MODIFICADO PARA MOSTRAR TROCO)
 // ============================================================
 function renderCupom() {
   var c = getCart();
@@ -1535,12 +1841,14 @@ function renderCupom() {
   var itensHtml = '';
   for (var j = 0; j < c.length; j++) {
     var precoItem = c[j].precoTotal || c[j].price || 0;
-    itensHtml += c[j].qty + 'x ' + c[j].title + ' - ' + money(precoItem) + '<br>';
+    itensHtml += c[j].qty + 'x ' + c[j].title + (c[j].tipo === 'extra' ? ' 🧂' : '') + ' - ' + money(precoItem) + '<br>';
   }
   containerItens.innerHTML = itensHtml;
 
+  // ===== EXIBIR VALOR RECEBIDO E TROCO =====
   var pagamentoSelecionado = document.getElementById('pagamento') ? document.getElementById('pagamento').value : '';
   var valorPagoRaw = document.getElementById('troco') ? document.getElementById('troco').value : '';
+  // Converte vírgula para ponto e extrai números
   var valorNumerico = parseFloat(valorPagoRaw.replace(/[^\d,]/g, '').replace(',', '.'));
   var valorRecebidoExibicao = isNaN(valorNumerico) ? 0 : valorNumerico;
   var trocoExibicao = (valorRecebidoExibicao > 0) ? (valorRecebidoExibicao - total) : null;
@@ -1564,15 +1872,17 @@ function renderCupom() {
 }
 
 // ============================================================
-// CONFIGURAÇÕES DE ENTREGA
+// CONFIGURAÇÕES (MODIFICADO PARA CARREGAR ÁREAS)
 // ============================================================
 function carregarConfig() {
   db.collection('config').doc('entrega').get()
     .then(function(snap) {
       if (snap.exists) {
         configEntrega = snap.data();
+        // Carrega as áreas (polígonos e círculos)
         if (configEntrega.areas && Array.isArray(configEntrega.areas)) {
           areasEntrega = configEntrega.areas;
+          console.log('📦 Áreas carregadas:', areasEntrega.length);
         } else {
           areasEntrega = [];
         }
@@ -1615,6 +1925,9 @@ function carregarConfig() {
     });
 }
 
+// ============================================================
+// DEBOUNCE PARA CALCULAR TAXA
+// ============================================================
 function debounce(fn, d) {
   var t;
   return function() {
@@ -1624,6 +1937,9 @@ function debounce(fn, d) {
   };
 }
 
+// ============================================================
+// CALCULAR TAXA A PARTIR DO ENDEREÇO (MODIFICADO)
+// ============================================================
 function calcularTaxaEndereco() {
   var rua = document.getElementById('rua');
   var numero = document.getElementById('numero');
@@ -1649,6 +1965,9 @@ function calcularTaxaEndereco() {
 }
 var calcDebounced = debounce(calcularTaxaEndereco, 800);
 
+// ============================================================
+// MODAL ENDEREÇO
+// ============================================================
 function abrirModal() {
   if (!lojaAberta) {
     showToast('🔴 Loja fechada. Não é possível finalizar o pedido.', 'error');
@@ -1669,6 +1988,9 @@ function fecharModal() {
   document.getElementById('modalEndereco').style.display = 'none';
 }
 
+// ============================================================
+// GEOLOCALIZAÇÃO (MODIFICADO)
+// ============================================================
 function usarLocalizacao() {
   var btn = document.getElementById('btnGeo');
   var status = document.getElementById('geoStatus');
@@ -1745,7 +2067,7 @@ function usarLocalizacao() {
 }
 
 // ============================================================
-// ENVIAR PEDIDO
+// ENVIAR PEDIDO (MODIFICADO – COM VALOR RECEBIDO E TROCO)
 // ============================================================
 function enviarPedido() {
   if (!lojaAberta) {
@@ -1803,11 +2125,13 @@ function enviarPedido() {
   }
   var totalFinal = subTotal - descTotal + (taxaAtual || 0);
   
+  // ===== CONVERTER VALOR DIGITADO (ACEITA VÍRGULA E PONTO) =====
   var valorDigitado = trocoInput.value || '';
   var valorNumerico = parseFloat(valorDigitado.replace(/[^\d,]/g, '').replace(',', '.'));
   var valorRecebido = isNaN(valorNumerico) ? 0 : valorNumerico;
   var trocoCalculado = (valorRecebido > 0) ? (valorRecebido - totalFinal) : null;
 
+  // ===== VALIDAÇÃO: SE FOR DINHEIRO, O VALOR PAGO PRECISA SER SUFICIENTE =====
   if (pagamento.value === 'Dinheiro' && valorRecebido > 0 && trocoCalculado < 0) {
     alert('⚠️ O valor pago (R$ ' + valorRecebido.toFixed(2).replace('.', ',') + ') é insuficiente para pagar o total do pedido (R$ ' + totalFinal.toFixed(2).replace('.', ',') + ').');
     document.getElementById('loadingOverlay').classList.remove('active');
@@ -1816,6 +2140,7 @@ function enviarPedido() {
     return;
   }
 
+  // ===== SE FOR DINHEIRO E O CAMPO ESTIVER VAZIO, AVISA =====
   if (pagamento.value === 'Dinheiro' && !valorDigitado.trim()) {
     alert('⚠️ Para pagamento em Dinheiro, informe o valor que você vai pagar (ex: 100 ou 100,50).');
     document.getElementById('loadingOverlay').classList.remove('active');
@@ -1844,6 +2169,7 @@ function enviarPedido() {
     });
   }
 
+  // ===== PEDIDO COM OS NOVOS CAMPOS =====
   var pedido = {
     id: codigoPedido,
     numeroPedido: codigoPedido,
@@ -1856,7 +2182,7 @@ function enviarPedido() {
       numero: numero.value.trim(),
       bairro: bairro.value.trim(),
       pagamento: pagamento.value,
-      troco: valorDigitado ? Math.round(valorRecebido * 100) : null,
+      troco: valorDigitado ? Math.round(valorRecebido * 100) : null, // Mantido para compatibilidade
       lat: clienteLatLng ? clienteLatLng.lat : null,
       lng: clienteLatLng ? clienteLatLng.lng : null
     },
@@ -1867,8 +2193,10 @@ function enviarPedido() {
     distanciaKm: distanciaAtual ? Number(distanciaAtual.toFixed(2)) : null,
     total: totalFinal,
     pagamento: pagamento.value,
-    valorRecebido: valorRecebido,
-    trocoDevolver: trocoCalculado,
+    // ===== NOVOS CAMPOS PARA O PAINEL =====
+    valorRecebido: valorRecebido,         // Ex: 100.00 ou 100.50
+    trocoDevolver: trocoCalculado,        // Ex: 94.00 ou 94.50
+    // ===== FIM NOVOS CAMPOS =====
     cupom: cupomAplicado || null,
     desconto: descTotal,
     status: 'novo',
@@ -1897,6 +2225,9 @@ function enviarPedido() {
     });
 }
 
+// ============================================================
+// MÁSCARA DE TELEFONE
+// ============================================================
 function mascaraTelefone(input) {
   var v = input.value.replace(/\D/g, '');
   if (v.length > 11) v = v.slice(0, 11);
@@ -1909,6 +2240,9 @@ function mascaraTelefone(input) {
   }
 }
 
+// ============================================================
+// FUNÇÃO PARA FORMATAR VALOR EM MOEDA (USADA NO PREVIEW DO TROCO)
+// ============================================================
 function formatarMoeda(valor) {
   return 'R$ ' + valor.toFixed(2).replace('.', ',');
 }
@@ -1917,10 +2251,13 @@ function formatarMoeda(valor) {
 // INICIALIZAÇÃO
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('🚀 Inicializando carrinho...');
+  
   carregarStatusLoja();
   carregarConfig();
   carregarCupons();
   carregarCupomEspecial();
+  carregarExtras();
   renderCart();
 
   var rua = document.getElementById('rua');
@@ -1934,6 +2271,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var trocoInput = document.getElementById('troco');
   var trocoPreview = document.getElementById('trocoPreview');
 
+  // ===== MOSTRA/ESCONDE CAMPO DE TROCO =====
   pagamento.addEventListener('change', function() {
     if (pagamento.value === 'Dinheiro') {
       trocoInput.style.display = 'block';
@@ -1949,13 +2287,16 @@ document.addEventListener('DOMContentLoaded', function() {
     renderCupom();
   });
 
+  // ===== CALCULAR TROCO AO VIVO (ACEITA VÍRGULA E PONTO) =====
   trocoInput.addEventListener('input', function() {
     var sub = getCartTotal();
     var desconto = cupomAplicado ? sub * (cupomAplicado.desconto / 100) : 0;
     var totalFinal = sub - desconto + (taxaAtual || 0);
 
     var valorDigitado = this.value;
+    // Remove tudo exceto números e vírgula
     var apenasNumeros = valorDigitado.replace(/[^\d,]/g, '');
+    // Substitui vírgula por ponto para converter
     var valorNumerico = parseFloat(apenasNumeros.replace(',', '.'));
     
     if (isNaN(valorNumerico) || valorNumerico <= 0) {
@@ -1991,6 +2332,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // ============================================================
 // FUNÇÕES GLOBAIS
 // ============================================================
+window.addExtra = addExtra;
 window.alterarQtd = alterarQtd;
 window.limparSacola = limparSacola;
 window.abrirModal = abrirModal;
