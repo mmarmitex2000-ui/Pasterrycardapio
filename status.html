@@ -5,22 +5,20 @@
 <title>Status do Pedido — Pasterry</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<!-- ✅ NOVO: configuração externa (precisa vir ANTES do module) -->
-<script src="config.js"></script>
 <style>
   body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#1A1210;color:#e6eef6;padding:16px;padding-bottom:40px;transition:background 0.5s}
   h1{margin:0 0 4px;font-size:24px;color:#07fcdb}
   .muted{opacity:.7;font-size:14px}
   .card{background:#2a201d;border-radius:12px;padding:14px;margin:14px 0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
   .badge{display:inline-block;padding:6px 12px;border-radius:20px;background:#28a745;color:#fff;font-weight:bold;text-transform:capitalize}
+  .badge.aguardando{background:#6c757d}
   .badge.cancelado{background:#dc3545}
   .badge.preparando{background:#ffa500}
   .badge.pronto{background:#8b5cf6}
   .badge.saiu{background:#3b82f6}
-  .badge.chegou{background:#f59e0b}
   .badge.entregue{background:#22c55e}
   .timeline{display:flex;justify-content:space-between;margin:18px 0;gap:4px}
-  .step{flex:1;text-align:center;font-size:11px;opacity:.4;position:relative}
+  .step{flex:1;text-align:center;font-size:10px;opacity:.4;position:relative}
   .step.active{opacity:1;color:#07fcdb;font-weight:bold}
   .step::before{content:'';display:block;width:12px;height:12px;border-radius:50%;background:#444;margin:0 auto 6px;border:2px solid #1A1210}
   .step.active::before{background:#28a745}
@@ -29,18 +27,17 @@
   .btn.ghost{background:#444}
   .btn.whats{background:#25D366;color:#1A1210}
   .btn.motoboy{background:#8b5cf6;color:white}
-  .btn.motoboy.chegou{background:#f59e0b;animation:pulse 1s infinite}
   input.tel{width:100%;padding:12px;border-radius:10px;border:1px solid #444;background:#1A1210;color:#e6eef6;font-size:16px;box-sizing:border-box}
   .aviso{border-left:4px solid #ffcc00;background:#332800}
   .pulse{animation:pulse 1.5s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
   #mapa-rastreio{height:180px;width:100%;border-radius:0 0 12px 12px;background:#1A1210}
   .leaflet-control-attribution{font-size:9px!important;color:#888!important}
-  .notificacao-chegou{background:#28a745;color:#1A1210;padding:12px;border-radius:12px;text-align:center;font-weight:bold;border:2px solid #07fcdb;animation:pulse 1s infinite;margin-top:10px}
   .detalhes-texto{font-family:monospace,Consolas,monospace;font-size:14px;line-height:1.6;white-space:pre-wrap}
   .badge-motoboy{display:inline-block;background:#8b5cf6;color:white;font-size:11px;padding:2px 12px;border-radius:12px;font-weight:700;margin-top:4px}
   .tempo-rota{font-size:12px;color:#94a3b8;margin-top:4px;display:flex;align-items:center;gap:4px}
   .tempo-rota span{font-weight:bold;color:#e6eef6}
+  .aviso-aguardando{background:rgba(255, 193, 7, 0.15);border-left:4px solid #ffc107;color:#ffc107;padding:12px 14px;border-radius:10px;margin-top:8px;font-size:13px;display:flex;align-items:center;gap:8px}
 </style>
 </head>
 <body>
@@ -49,12 +46,18 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, doc, onSnapshot, collection, query, where, getDocs, orderBy, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getFirestore, doc, onSnapshot, collection, query, where, getDocs, orderBy, updateDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  // ============================================================
-  // FIREBASE (configuração externa em config.js)
-  // ============================================================
-  const app = initializeApp(window.FIREBASE_CONFIG);
+  const firebaseConfig = {
+    apiKey: "AIzaSyDV9tPC5XNNmB_REgW1au2NtpP1ETtV1i0",
+    authDomain: "paineldepedidos-8cfff.firebaseapp.com",
+    projectId: "paineldepedidos-8cfff",
+    storageBucket: "paineldepedidos-8cfff.appspot.com",
+    messagingSenderId: "390619980929",
+    appId: "1:390619980929:web:5bb015938e9dcb89389980"
+  };
+
+  const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const WHATS_LOJA = '5511994046432';
   const params = new URLSearchParams(location.search);
@@ -62,7 +65,6 @@
   let unsubscribe = null;
   let ultimoStatus = null;
   let mapa = null;
-  let notificacaoChegouEnviada = false;
   let timerPreparando = null;
 
   if ('Notification' in window && Notification.permission !== 'granted') {
@@ -86,17 +88,16 @@
   const setCliente = c=>localStorage.setItem(CLIENTE_KEY, JSON.stringify(c));
 
   // ============================================================
-  // Funções auxiliares de status
+  // STATUS LABELS
   // ============================================================
   function getStatusLabel(status) {
     const map = {
-      'novo': 'Recebido pela loja',
-      'preparando': 'Sendo preparado',
+      'novo': '⏳ Aguardando confirmação',
+      'preparando': '✅ Pedido aceito — sendo preparado',
       'pronto': 'Pronto para coleta',
       'coleta': 'Pronto para coleta',
       'saiu': 'Saiu para entrega',
       'entrega': 'Saiu para entrega',
-      'chegou': 'Motoboy chegou',
       'entregue': 'Entregue',
       'cancelado': 'Cancelado',
       'despachado': 'Despachado'
@@ -106,13 +107,12 @@
 
   function getStatusBadgeClass(status) {
     const map = {
-      'novo': '',
+      'novo': 'aguardando',
       'preparando': 'preparando',
       'pronto': 'pronto',
       'coleta': 'pronto',
       'saiu': 'saiu',
       'entrega': 'saiu',
-      'chegou': 'chegou',
       'entregue': 'entregue',
       'cancelado': 'cancelado',
       'despachado': ''
@@ -165,38 +165,6 @@
   }
 
   // ============================================================
-  // Notificar cliente que motoboy chegou
-  // ============================================================
-  function notificarClienteChegou(pedidoId) {
-    if (notificacaoChegouEnviada) return;
-    notificacaoChegouEnviada = true;
-
-    try {
-      const audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
-      audio.play().catch(()=>{});
-    } catch(e) {}
-
-    navigator.vibrate?.([300, 100, 300, 100, 300]);
-
-    if (Notification.permission === 'granted') {
-      new Notification('🛵 Motoboy chegou!', {
-        body: 'O motoboy está na porta com seu pedido! 🍕',
-        icon: 'https://i.imgur.com/8Km9tLL.png'
-      });
-    }
-
-    const view = document.getElementById('view');
-    const notifDiv = document.createElement('div');
-    notifDiv.className = 'notificacao-chegou';
-    notifDiv.innerHTML = '🛵 <strong>MOTOBOY CHEGOU!</strong> Ele está na porta com seu pedido! 🍕';
-    view.prepend(notifDiv);
-
-    setTimeout(() => {
-      if (notifDiv.parentNode) notifDiv.remove();
-    }, 10000);
-  }
-
-  // ============================================================
   // Abrir rota
   // ============================================================
   function abrirRotaMotoboy(lat, lng, endereco) {
@@ -230,18 +198,19 @@
     const view = document.getElementById('view');
     
     const isCancelado = p.status === 'cancelado';
+    const isAguardando = p.status === 'novo';
     const statusLabel = getStatusLabel(p.status);
     const badgeClass = getStatusBadgeClass(p.status);
-    const isAtivo = p.status === 'entrega' || p.status === 'despachado' || p.status === 'chegou' || p.status === 'saiu';
+    const isAtivo = p.status === 'entrega' || p.status === 'despachado' || p.status === 'saiu';
     
-    // Mapeamento de etapas da timeline com os status reais
+    // ✅ Timeline com 6 steps (incluindo "Preparando" separado)
     const steps = [
-      {key:'novo', label:'Recebido', match: ['novo','preparando','pronto','coleta','saiu','entrega','chegou','entregue','despachado']},
-      {key:'preparando', label:'Preparando', match: ['preparando','pronto','coleta','saiu','entrega','chegou','entregue']},
-      {key:'pronto', label:'Pronto', match: ['pronto','coleta','saiu','entrega','chegou','entregue']},
-      {key:'saiu', label:'Em entrega', match: ['saiu','entrega','chegou','entregue']},
-      {key:'chegou', label:'Chegou', match: ['chegou','entregue']},
-      {key:'entregue', label:'Entregue', match: ['entregue']}
+      {key:'aguardando', label:'Aguardando',  match: ['novo']},
+      {key:'aceito',     label:'Aceito',      match: ['preparando','pronto','coleta','saiu','entrega','entregue']},
+      {key:'preparando', label:'Preparando',  match: ['preparando','pronto','coleta','saiu','entrega','entregue']},
+      {key:'pronto',     label:'Pronto',      match: ['pronto','coleta','saiu','entrega','entregue']},
+      {key:'saiu',       label:'Em entrega',  match: ['saiu','entrega','entregue']},
+      {key:'entregue',   label:'Entregue',    match: ['entregue']}
     ];
     
     const isActive = (step) => {
@@ -249,8 +218,7 @@
       return step.match.includes(p.status);
     };
 
-    const temRastreio = (p.status === 'saiu' || p.status === 'entrega' || p.status === 'chegou') && p.lat && p.lng;
-    const motoboyChegou = p.motoboyChegou || p.status === 'chegou' || false;
+    const temRastreio = (p.status === 'saiu' || p.status === 'entrega') && p.lat && p.lng;
     
     const whatsMsg = encodeURIComponent(`Olá, meu nome é ${p.cliente?.nome||''}. Pedido #${p.id.substring(0,6).toUpperCase()}, gostaria de falar com atendente.`);
     
@@ -274,6 +242,14 @@
       enderecoCompleto = esc(p.endereco || 'Retirada na Loja');
     }
 
+    // Aviso amarelo quando o pedido está aguardando aceite
+    const avisoAguardandoHtml = isAguardando ? `
+      <div class="aviso-aguardando">
+        <span style="font-size:20px;">⏳</span>
+        <span><strong>Aguardando confirmação da loja</strong><br>Assim que a loja aceitar seu pedido, o preparo vai começar. Você será notificado.</span>
+      </div>
+    ` : '';
+
     // Mapa de rastreio
     const mapaHtml = temRastreio ? `
       <div class="card" style="padding:0;overflow:hidden;border:2px solid #28a745">
@@ -283,7 +259,6 @@
             <span style="font-size:11px;background:#28a745;padding:3px 8px;border-radius:10px">AO VIVO</span>
           </div>
           <div class="muted" style="font-size:12px">Motoboy: ${esc(p.motoboy||'a caminho')} • Atualizado agora</div>
-          ${motoboyChegou ? '<div style="color:#07fcdb;font-weight:bold;margin-top:4px;">✅ Motoboy está na porta!</div>' : ''}
           ${p.saiuEmMs ? `<div class="tempo-rota">⏱️ Tempo de rota: <span id="tempoRota">${formatarTempoRota(p.saiuEmMs)}</span></div>` : ''}
         </div>
         <div id="mapa-rastreio"></div>
@@ -292,16 +267,9 @@
 
     // Botão de rota
     const botaoRotaHtml = (isAtivo && temRastreio) ? `
-      <button class="btn motoboy ${motoboyChegou ? 'chegou' : ''}" id="btnRotaMotoboy">
-        ${motoboyChegou ? '📍 MOTOBOY NA PORTA!' : '🛵 Ver rota do motoboy'}
+      <button class="btn motoboy" id="btnRotaMotoboy">
+        🛵 Ver rota do motoboy
       </button>
-    ` : '';
-
-    // Notificação de chegada
-    const notificacaoChegouHtml = motoboyChegou ? `
-      <div class="notificacao-chegou">
-        🛵 <strong>MOTOBOY CHEGOU!</strong> Ele está na porta com seu pedido! 🍕
-      </div>
     ` : '';
 
     // Badge do motoboy
@@ -319,8 +287,6 @@
       <h1>Seu pedido</h1>
       <div class="muted">Pedido #${esc(p.id.substring(0,6).toUpperCase())} <span class="pulse">• ao vivo</span> ${tipoEntregadorHtml}</div>
       
-      ${notificacaoChegouHtml}
-      
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <strong>Status</strong>
@@ -330,6 +296,7 @@
           ${steps.map(s=>`<div class="step ${isActive(s)?'active':''}">${esc(s.label)}</div>`).join('')}
         </div>
         ${badgeMotoboyHtml}
+        ${avisoAguardandoHtml}
       </div>
       
       ${mapaHtml}
@@ -364,7 +331,7 @@ ${p.obs ? `\n📝 Obs: ${esc(p.obs)}` : ''}</div>
       setTimeout(()=>{ 
         if(mapa) mapa.remove(); 
         mapa = L.map('mapa-rastreio', {zoomControl:false, dragging:true}).setView([p.lat, p.lng], 16); 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{png}',{
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
           attribution:'© OpenStreetMap',
           maxZoom:19
         }).addTo(mapa); 
@@ -374,7 +341,6 @@ ${p.obs ? `\n📝 Obs: ${esc(p.obs)}` : ''}</div>
           className:''
         }); 
         L.marker([p.lat, p.lng], {icon:moto}).addTo(mapa); 
-        // Atualiza tempo de rota a cada 10 segundos
         if (window._tempoRotaInterval) clearInterval(window._tempoRotaInterval);
         window._tempoRotaInterval = setInterval(() => {
           const el = document.getElementById('tempoRota');
@@ -395,15 +361,10 @@ ${p.obs ? `\n📝 Obs: ${esc(p.obs)}` : ''}</div>
         abrirRotaMotoboy(p.lat, p.lng, endereco);
       });
     }
-
-    // Notificação de chegada
-    if ((p.motoboyChegou || p.status === 'chegou') && !notificacaoChegouEnviada) {
-      notificarClienteChegou(p.id);
-    }
   }
 
   // ============================================================
-  // INICIAR - ou carregar pedido específico ou listar do cliente
+  // INICIAR
   // ============================================================
   async function iniciar(){
     const view = document.getElementById('view');
@@ -414,18 +375,15 @@ ${p.obs ? `\n📝 Obs: ${esc(p.obs)}` : ''}</div>
       unsubscribe = onSnapshot(doc(db, "pedidos", String(id)), (snap)=>{
         if(snap.exists()) {
           const p = {id:snap.id,...snap.data()};
-          // Garante criadoEmMs
           if (p.criadoEm && !p.criadoEmMs) {
             p.criadoEmMs = p.criadoEm.toMillis ? p.criadoEm.toMillis() : Date.now();
           }
           renderPedido(p);
           
-          // Se for 'novo', agenda transição para 'preparando' após 20 min
           if (p.status === 'novo' && p.criadoEmMs) {
             atualizarParaPreparando(p.id, p.criadoEmMs);
           }
           
-          // Se for 'preparando' e não tiver preparandoEmMs, adiciona
           if (p.status === 'preparando' && !p.preparandoEmMs) {
             updateDoc(doc(db, "pedidos", p.id), {
               preparandoEm: serverTimestamp(),
@@ -433,7 +391,7 @@ ${p.obs ? `\n📝 Obs: ${esc(p.obs)}` : ''}</div>
             }).catch(() => {});
           }
           
-          // Notifica quando status muda para 'saiu' ou 'chegou'
+          // Notifica quando status muda para 'saiu'
           const statusReal = p.status === 'entrega'? 'saiu' : p.status;
           if((statusReal === 'saiu' || p.status === 'saiu') && ultimoStatus !== 'saiu' && ultimoStatus !== 'entrega') {
             try {
@@ -450,9 +408,19 @@ ${p.obs ? `\n📝 Obs: ${esc(p.obs)}` : ''}</div>
             document.body.style.background = '#0f3d2e';
           }
           
-          // Se chegou, notifica
-          if ((p.motoboyChegou || p.status === 'chegou') && !notificacaoChegouEnviada) {
-            notificarClienteChegou(p.id);
+          // Notifica quando o pedido é ACEITO (status muda de novo para preparando)
+          if (p.status === 'preparando' && ultimoStatus === 'novo') {
+            try {
+              const audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
+              audio.play().catch(()=>{});
+            } catch(e) {}
+            navigator.vibrate?.([200,100,200]);
+            if(Notification.permission === 'granted') { 
+              new Notification('✅ Pedido aceito!', { 
+                body: `Pedido #${p.id.substring(0,6).toUpperCase()} foi confirmado pela loja e já está sendo preparado`, 
+                icon: 'https://i.imgur.com/8Km9tLL.png' 
+              }); 
+            }
           }
           
           ultimoStatus = p.status;
@@ -463,7 +431,6 @@ ${p.obs ? `\n📝 Obs: ${esc(p.obs)}` : ''}</div>
       return;
     }
 
-    // SEM ID: lista pedidos do cliente por telefone
     const cli = getCliente();
     let tel = cli.telefone? onlyDigits(cli.telefone) : null;
 
@@ -479,10 +446,8 @@ ${p.obs ? `\n📝 Obs: ${esc(p.obs)}` : ''}</div>
     }
 
     try {
-      // Query sem orderBy para evitar problema de índice
       const q = query(collection(db,"pedidos"), where("cliente.telefone","==",tel));
       const snap = await getDocs(q);
-      // Ordena manualmente por criadoEmMs
       const docs = [];
       snap.forEach(d => {
         const data = d.data();
