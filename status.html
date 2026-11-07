@@ -5,6 +5,8 @@
 <title>Status do Pedido — Pasterry</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- ✅ NOVO: configuração externa (precisa vir ANTES do module) -->
+<script src="config.js"></script>
 <style>
   body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#1A1210;color:#e6eef6;padding:16px;padding-bottom:40px;transition:background 0.5s}
   h1{margin:0 0 4px;font-size:24px;color:#07fcdb}
@@ -49,16 +51,10 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getFirestore, doc, onSnapshot, collection, query, where, getDocs, orderBy, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDV9tPC5XNNmB_REgW1au2NtpP1ETtV1i0",
-    authDomain: "paineldepedidos-8cfff.firebaseapp.com",
-    projectId: "paineldepedidos-8cfff",
-    storageBucket: "paineldepedidos-8cfff.appspot.com",
-    messagingSenderId: "390619980929",
-    appId: "1:390619980929:web:5bb015938e9dcb89389980"
-  };
-
-  const app = initializeApp(firebaseConfig);
+  // ============================================================
+  // FIREBASE (configuração externa em config.js)
+  // ============================================================
+  const app = initializeApp(window.FIREBASE_CONFIG);
   const db = getFirestore(app);
   const WHATS_LOJA = '5511994046432';
   const params = new URLSearchParams(location.search);

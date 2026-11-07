@@ -999,21 +999,14 @@ h3 .count {
    ============================================================ -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<!-- ✅ NOVO: configuração externa -->
+<script src="config.js"></script>
 
 <script>
 // ============================================================
-// CONFIGURAÇÃO FIREBASE
+// CONFIGURAÇÃO FIREBASE (configuração externa em config.js)
 // ============================================================
-var firebaseConfig = {
-  apiKey: "AIzaSyDV9tPC5XNNmB_REgW1au2NtpP1ETtV1i0",
-  authDomain: "paineldepedidos-8cfff.firebaseapp.com",
-  projectId: "paineldepedidos-8cfff",
-  storageBucket: "paineldepedidos-8cfff.firebasestorage.app",
-  messagingSenderId: "390619980929",
-  appId: "1:390619980929:web:5bb015938e9dcb89389980",
-  measurementId: "G-CMH7LSQ7C0"
-};
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(window.FIREBASE_CONFIG);
 var db = firebase.firestore();
 
 // ============================================================
