@@ -674,8 +674,39 @@
     const searchBtn = document.getElementById('searchBtn');
     const searchBox = document.getElementById('searchBox');
 
+    // Normaliza texto: remove acentos, deixa minúsculo e remove espaços extras
+    function normalizarTexto(txt) {
+      return String(txt || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    // Verifica se o produto bate com o termo de busca (em qualquer campo relevante)
+    function produtoCorrespondeBusca(p, catId, termoNormalizado) {
+      if (!termoNormalizado) return true;
+      const campos = [
+        p.title || '',
+        getDisplayName(p.title),
+        p.desc || '',
+        p.unidade || '',
+        catId || '',
+        (CATEGORIES.find(c => c.id === catId)?.name) || ''
+      ];
+      // Inclui nomes dos extras vinculados ao produto (se houver)
+      if (Array.isArray(p.extras)) {
+        p.extras.forEach(extraId => {
+          const extra = adicionaisCache.find(a => a.id === extraId);
+          if (extra) campos.push(extra.nome || '');
+        });
+      }
+      return campos.some(c => normalizarTexto(c).includes(termoNormalizado));
+    }
+
     function aplicarFiltro() {
-      termoBusca = searchInput.value.trim().toLowerCase();
+      termoBusca = normalizarTexto(searchInput.value);
       renderProducts();
     }
     
@@ -695,8 +726,12 @@
         }
       });
     }
+    let buscaTimer = null;
     if (searchInput) {
-      searchInput.addEventListener('input', aplicarFiltro);
+      searchInput.addEventListener('input', () => {
+        clearTimeout(buscaTimer);
+        buscaTimer = setTimeout(aplicarFiltro, 120);
+      });
     }
 
     // ============================================================
@@ -1209,6 +1244,14 @@
       if (!productsEl) return;
       productsEl.innerHTML = '';
       
+      // ✅ NOVO: quando há termo de busca, ignora a categoria ativa e busca em todo o cardápio
+      if (termoBusca) {
+        activeCategory = 'todos';
+        document.querySelectorAll('.nav-cat-item').forEach(b => {
+          b.classList.toggle('active', b.dataset.cat === 'todos');
+        });
+      }
+      
       let categoriasParaRenderizar = CATEGORIES;
       
       if (activeCategory === 'todos') {
@@ -1223,11 +1266,7 @@
         let list = (PRODUCTS[cat.id] || []).filter(p => p.ativo === true || p.ativo === undefined);
         
         if (termoBusca) {
-          list = list.filter(p => {
-            const titulo = getDisplayName(p.title).toLowerCase();
-            const desc = (p.desc || '').toLowerCase();
-            return titulo.includes(termoBusca) || desc.includes(termoBusca);
-          });
+          list = list.filter(p => produtoCorrespondeBusca(p, cat.id, termoBusca));
         }
 
         if (list.length === 0) return;
@@ -2046,6 +2085,7 @@
 
     console.log('✅ Pasterry Cardápio carregado com sucesso!');
     console.log('✨ Recursos: Header Parallax Fixo, Preferidos, Tags de Desconto');
+    console.log('🔍 Busca: por nome original, recheio, descrição, categoria e extras');
   </script>
 </body>
 </html>
