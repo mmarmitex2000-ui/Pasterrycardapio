@@ -339,6 +339,14 @@
         <div class="carrossel-destaques" id="carrosselDestaques"></div>
       </section>
 
+      <!-- NOVA SEÇÃO: MAIS PEDIDOS DA SEMANA -->
+      <section class="secao-destaques" id="secaoMaisPedidos" style="display:none">
+        <div class="secao-titulo">
+          <h2><span class="emoji">🔥</span> Mais Pedidos da Semana</h2>
+        </div>
+        <div class="carrossel-destaques" id="carrosselMaisPedidos"></div>
+      </section>
+
       <div class="nav-categorias-wrap">
         <div class="nav-categorias" id="navCategorias" role="tablist"></div>
       </div>
@@ -436,6 +444,7 @@
 
     let headerConfig = { imagem: '', titulo: 'Pasterry', subtitulo: 'Os melhores pastéis da cidade' };
     let preferidosIds = [];
+    let maisPedidosIds = []; // <-- NOVA VARIÁVEL AQUI
     let tagsDesconto = {};
 
     function logDebug(mensagem, dados = null) {
@@ -1051,7 +1060,7 @@
     }
 
     // ============================================================
-    // PREFERIDOS E TAGS DE DESCONTO
+    // PREFERIDOS, MAIS PEDIDOS E TAGS DE DESCONTO
     // ============================================================
     function carregarPreferidos() {
       db.collection('config').doc('preferidos').onSnapshot((doc) => {
@@ -1060,6 +1069,16 @@
       }, (err) => {
         console.warn('Erro ao carregar preferidos:', err);
         preferidosIds = [];
+      });
+    }
+
+    function carregarMaisPedidos() {
+      db.collection('config').doc('mais_pedidos').onSnapshot((doc) => {
+        maisPedidosIds = doc.exists ? (doc.data().ids || []) : [];
+        if (typeof renderDestaques === 'function') renderDestaques();
+      }, (err) => {
+        console.warn('Erro ao carregar mais pedidos:', err);
+        maisPedidosIds = [];
       });
     }
 
@@ -1140,15 +1159,39 @@
     }
 
     // ============================================================
-    // RENDERIZAR DESTAQUES
+    // RENDERIZAR DESTAQUES E MAIS PEDIDOS
     // ============================================================
     function renderDestaques() {
-      if (!carrosselDestaquesEl || !secaoDestaquesEl) return;
+      // === 1. RENDERIZAR PREFERIDOS ===
+      renderizarCarrosselGenerico({
+        containerId: 'carrosselDestaques',
+        secaoId: 'secaoDestaques',
+        ids: preferidosIds,
+        badges: ['🥇 1° mais curtido', '🥈 2° mais curtido', '🥉 3° mais curtido', '⭐ Favorito', '⭐ Favorito', '⭐ Favorito'],
+        isPreferidos: true
+      });
+
+      // === 2. RENDERIZAR MAIS PEDIDOS ===
+      renderizarCarrosselGenerico({
+        containerId: 'carrosselMaisPedidos',
+        secaoId: 'secaoMaisPedidos',
+        ids: maisPedidosIds,
+        badges: ['🔥 TOP 1', '🔥 TOP 2', '🔥 TOP 3', '🔥 TOP 4', '🔥 TOP 5', '🔥 TOP 6', '🔥 TOP 7', '🔥 TOP 8', '🔥 TOP 9', '🔥 TOP 10'],
+        isPreferidos: false
+      });
+    }
+
+    // Função auxiliar que desenha qualquer carrossel (para não repetir código)
+    function renderizarCarrosselGenerico({ containerId, secaoId, ids, badges, isPreferidos }) {
+      const carrosselEl = document.getElementById(containerId);
+      const secaoEl = document.getElementById(secaoId);
+      
+      if (!carrosselEl || !secaoEl) return;
       
       let destaques = [];
       
-      if (preferidosIds && preferidosIds.length > 0) {
-        preferidosIds.forEach(prodId => {
+      if (ids && ids.length > 0) {
+        ids.forEach(prodId => {
           for (const catId in PRODUCTS) {
             const prod = PRODUCTS[catId]?.find(p => p.id === prodId);
             if (prod && (prod.ativo === true || prod.ativo === undefined)) {
@@ -1157,7 +1200,8 @@
             }
           }
         });
-      } else {
+      } else if (isPreferidos) {
+        // Fallback apenas para os Preferidos, se não houver nenhum selecionado
         CATEGORIES.forEach(cat => {
           const list = (PRODUCTS[cat.id] || []).filter(p => p.ativo === true || p.ativo === undefined);
           list.forEach(p => destaques.push({ ...p, _catId: cat.id }));
@@ -1166,16 +1210,14 @@
       }
       
       if (destaques.length === 0) {
-        secaoDestaquesEl.style.display = 'none';
-        secaoDestaquesEl.classList.add('oculto');
+        secaoEl.style.display = 'none';
+        secaoEl.classList.add('oculto');
         return;
       }
       
-      secaoDestaquesEl.style.display = 'block';
-      secaoDestaquesEl.classList.remove('oculto');
-      carrosselDestaquesEl.innerHTML = '';
-      
-      const badges = ['🥇 1° mais curtido', '🥈 2° mais curtido', '🥉 3° mais curtido', '⭐ Favorito', '⭐ Favorito', '⭐ Favorito'];
+      secaoEl.style.display = 'block';
+      secaoEl.classList.remove('oculto');
+      carrosselEl.innerHTML = '';
       
       destaques.forEach((prod, idx) => {
         const card = document.createElement('div');
@@ -1233,7 +1275,7 @@
           }
         });
         
-        carrosselDestaquesEl.appendChild(card);
+        carrosselEl.appendChild(card);
       });
     }
 
@@ -2056,6 +2098,7 @@
       
       carregarHeaderParallax();
       carregarPreferidos();
+      carregarMaisPedidos(); // <-- NOVA FUNÇÃO AQUI
       carregarTagsDesconto();
       
       window.addEventListener('scroll', handleParallaxScroll, { passive: true });
@@ -2084,7 +2127,7 @@
     window.showCenterNotification = showCenterNotification;
 
     console.log('✅ Pasterry Cardápio carregado com sucesso!');
-    console.log('✨ Recursos: Header Parallax Fixo, Preferidos, Tags de Desconto');
+    console.log('✨ Recursos: Header Parallax Fixo, Preferidos, Mais Pedidos, Tags de Desconto');
     console.log('🔍 Busca: por nome original, recheio, descrição, categoria e extras');
   </script>
 </body>
