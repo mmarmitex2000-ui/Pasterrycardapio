@@ -270,8 +270,9 @@
     .lead-modal .lead-erro { color: #ff6b6b; font-size: 12px; margin-top: 8px; display: none; }
 
     /* ===== BAÚ DE CUPONS ===== */
-    .btn-bau { position: fixed; bottom: 90px; right: 16px; z-index: 80; background: linear-gradient(135deg, #FFD700, #FF6B00); color: #1A1210; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 28px; cursor: pointer; box-shadow: 0 8px 24px rgba(255,107,0,0.5); display: flex; align-items: center; justify-content: center; animation: flutuar 3s infinite ease-in-out; transition: transform 0.2s; }
+    .btn-bau { position: fixed; bottom: 90px; right: 16px; z-index: 80; background: linear-gradient(135deg, #FFD700, #FF6B00); color: #1A1210; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 28px; cursor: pointer; box-shadow: 0 8px 24px rgba(255,107,0,0.5); display: flex; align-items: center; justify-content: center; animation: flutuar 3s infinite ease-in-out; transition: transform 0.2s, opacity 0.3s; }
     .btn-bau:hover { transform: scale(1.1); }
+    .btn-bau.escondido { display: none; }
     @keyframes flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
     
     .bau-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(6px); z-index: 250; display: none; align-items: center; justify-content: center; padding: 20px; }
@@ -293,17 +294,14 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   
-  <!-- ✅ 1. Configuração externa -->
   <script src="config.js"></script>
   
-  <!-- ✅ 2. Inicializa o Firebase ANTES do tracker -->
   <script>
     if (!firebase.apps.length) {
       firebase.initializeApp(window.FIREBASE_CONFIG);
     }
   </script>
 
-  <!-- ✅ 3. Agora sim, carrega o rastreador -->
   <script src="tracker.js"></script>
 </head>
 <body>
@@ -323,15 +321,15 @@
     </div>
   </div>
 
-  <!-- ===== BOTÃO FLUTUANTE DO BAÚ DE CUPONS ===== -->
-  <button class="btn-bau" id="btnBau" onclick="abrirBau()" aria-label="Baú de Cupons">🎁</button>
+  <!-- ===== BOTÃO FLUTUANTE DO BAÚ DE CUPONS (ESCONDIDO ATÉ CADASTRAR) ===== -->
+  <button class="btn-bau escondido" id="btnBau" onclick="abrirBau()" aria-label="Baú de Cupons">🎁</button>
 
   <!-- ===== MODAL DO BAÚ DE CUPONS ===== -->
   <div class="bau-overlay" id="bauOverlay">
     <div class="bau-modal">
       <button class="close-bau" onclick="fecharBau()">×</button>
-      <h2>🎁 Baú de Cupons</h2>
-      <p class="desc">Copie o código e cole no carrinho para ganhar o desconto.<br><small>(Válido apenas 1 cupom por pedido)</small></p>
+      <h2>🎁 Clube de Descontos</h2>
+      <p class="desc">Escolha um cupom e clique em <strong>"Aplicar Desconto"</strong>.<br><small>(Válido apenas 1 cupom por pedido)</small></p>
       <div id="listaCuponsSite">
         <div style="text-align:center; padding:20px; color:#6a7a8a;">Carregando cupons...</div>
       </div>
@@ -531,8 +529,14 @@
       const jaIgnorou = localStorage.getItem('pasterry_lead_ignorado');
       const agora = Date.now();
       
-      if (jaTemLead) return;
-      if (jaIgnorou && (agora - Number(jaIgnorou)) < 24 * 60 * 60 * 1000) return;
+      if (jaTemLead) {
+        document.getElementById('btnBau').classList.remove('escondido');
+        return;
+      }
+
+      if (jaIgnorou && (agora - Number(jaIgnorou)) < 24 * 60 * 60 * 1000) {
+        return;
+      }
 
       setTimeout(() => {
         document.getElementById('leadOverlay').classList.add('active');
@@ -566,6 +570,7 @@
       }
 
       document.getElementById('leadOverlay').classList.remove('active');
+      document.getElementById('btnBau').classList.remove('escondido');
       showCenterNotification('Cupom de 10% liberado!', 'Ele foi aplicado na sua sacola.');
     }
 
@@ -592,6 +597,11 @@
     // BAÚ DE CUPONS (NOVO)
     // ============================================================
     function abrirBau() {
+      if (!localStorage.getItem('pasterry_lead_telefone')) {
+        document.getElementById('leadOverlay').classList.add('active');
+        return;
+      }
+      
       document.getElementById('bauOverlay').classList.add('active');
       carregarCuponsSite();
     }
@@ -619,7 +629,7 @@
                 <div class="codigo">${c.codigo}</div>
                 <div class="regra">${c.desconto}% de desconto ${c.minimo > 0 ? '• Pedido mínimo: R$ ' + Number(c.minimo).toFixed(2).replace('.', ',') : '• Sem valor mínimo'}</div>
               </div>
-              <button class="btn-copiar" onclick="copiarCupom('${c.codigo}', this)">Copiar</button>
+              <button class="btn-copiar" onclick="aplicarCupomDireto('${c.codigo}')">Aplicar Desconto</button>
             </div>
           `).join('');
         } else {
@@ -631,33 +641,9 @@
       });
     }
 
-    function copiarCupom(codigo, btn) {
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(codigo).then(() => {
-          btn.textContent = '✅ Copiado!';
-          btn.classList.add('copiado');
-          setTimeout(() => {
-            btn.textContent = 'Copiar';
-            btn.classList.remove('copiado');
-          }, 2000);
-          showCenterNotification('Cupom copiado!', 'Cole no carrinho para aplicar.');
-        }).catch(() => {
-          alert('Código: ' + codigo);
-        });
-      } else {
-        const input = document.createElement('input');
-        input.value = codigo;
-        document.body.appendChild(input);
-        input.select();
-        document.execCommand('copy');
-        document.body.removeChild(input);
-        btn.textContent = '✅ Copiado!';
-        btn.classList.add('copiado');
-        setTimeout(() => {
-          btn.textContent = 'Copiar';
-          btn.classList.remove('copiado');
-        }, 2000);
-      }
+    function aplicarCupomDireto(codigo) {
+      localStorage.setItem('pasterry_cupom_v1', JSON.stringify({ codigo: codigo, desconto: 0, minimo: 0 })); 
+      window.location.href = 'carrinho.html?cupom=' + codigo;
     }
 
     // ============================================================
@@ -2367,13 +2353,13 @@
     window.salvarLead = salvarLead;
     window.abrirBau = abrirBau;
     window.fecharBau = fecharBau;
-    window.copiarCupom = copiarCupom;
+    window.aplicarCupomDireto = aplicarCupomDireto;
 
     console.log('✅ Pasterry Cardápio carregado com sucesso!');
     console.log('✨ Recursos: Header Parallax Fixo, Preferidos, Mais Pedidos, Tags de Desconto');
     console.log('🔍 Busca: por nome original, recheio, descrição, categoria e extras');
     console.log('📊 Tracker: eventos sendo enviados para a coleção "eventos"');
-    console.log('🎁 Baú de Cupons: disponível no canto inferior direito');
+    console.log('🎁 Baú de Cupons: liberado para clientes cadastrados');
   </script>
 </body>
 </html>
