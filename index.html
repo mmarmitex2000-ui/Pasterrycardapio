@@ -177,38 +177,44 @@
     .dialog .btn-fechar:hover { background: rgba(255,255,255,0.12); }
     .dialog-titulo { font-weight: 800; font-size: 18px; color: var(--cor-fonte-titulo); text-align: center; padding: 0 32px; }
     .dialog-desc { color: var(--cor-fonte-muted); text-align: center; font-size: 12px; line-height: 1.4; }
-    .modal-image-wrap { width: 100%; border-radius: var(--raio-md); overflow: hidden; background: #0c1220; position: relative; max-height: 180px; }
-    .modal-image-wrap img { width: 100%; height: 180px; object-fit: cover; display: block; }
-    .modal-image-wrap .logo-marca-detalhe { position: absolute; bottom: 8px; left: 8px; width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.4); padding: 2px; object-fit: contain; z-index: 2; }
-    .opcoes-tamanho { display: grid; gap: 8px; margin-top: 4px; }
-    .btn-tamanho { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 12px 16px; background: var(--bg-card); border: 2px solid var(--borda-sutil); border-radius: var(--raio-md); color: var(--cor-fonte); font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.2s ease; position: relative; }
+    
+    /* MODAL DE DETALHES (REDUZIDO EM 20%) */
+    .modal-image-wrap { width: 100%; border-radius: var(--raio-md); overflow: hidden; background: #0c1220; position: relative; max-height: 144px; } /* 180px * 0.8 */
+    .modal-image-wrap img { width: 100%; height: 144px; object-fit: cover; display: block; } /* 180px * 0.8 */
+    .modal-image-wrap .logo-marca-detalhe { position: absolute; bottom: 6px; left: 6px; width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.4); padding: 1.6px; object-fit: contain; z-index: 2; } /* 32px * 0.8 */
+    
+    .opcoes-tamanho { display: grid; gap: 6px; margin-top: 3px; } /* 8px * 0.8 */
+    .btn-tamanho { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 10px 13px; background: var(--bg-card); border: 2px solid var(--borda-sutil); border-radius: var(--raio-md); color: var(--cor-fonte); font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s ease; position: relative; } /* 12px 16px * 0.8 */
     .btn-tamanho:active { transform: scale(0.98); }
     .btn-tamanho:hover { background: var(--bg-card-hover); border-color: rgba(255,215,0,0.3); }
     .btn-tamanho.selecionado { background: rgba(255,107,0,0.15); border-color: var(--cor-promo); color: #fff; box-shadow: 0 0 20px rgba(255,107,0,0.2); }
     .btn-tamanho .tamanho-info { display: flex; width: 100%; justify-content: space-between; align-items: center; }
-    .btn-tamanho strong { color: var(--cor-fonte-preco); font-size: 15px; }
+    .btn-tamanho strong { color: var(--cor-fonte-preco); font-size: 13px; } /* 15px * 0.8 */
     .btn-tamanho.selecionado strong { color: #fff; }
-    .btn-tamanho .preco-wrapper { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
-    .btn-tamanho .preco-promo-modal { color: #4caf50; font-size: 16px; font-weight: 900; }
-    .btn-tamanho .preco-riscado-modal { color: var(--cor-fonte-muted); font-size: 11px; text-decoration: line-through; font-weight: 500; }
+    .btn-tamanho .preco-wrapper { display: flex; flex-direction: column; align-items: flex-end; gap: 1.6px; } /* 2px * 0.8 */
+    .btn-tamanho .preco-promo-modal { color: #4caf50; font-size: 13px; font-weight: 900; } /* 16px * 0.8 */
+    .btn-tamanho .preco-riscado-modal { color: var(--cor-fonte-muted); font-size: 9px; text-decoration: line-through; font-weight: 500; } /* 11px * 0.8 */
     .btn-tamanho.selecionado .preco-promo-modal { color: #fff; }
     .btn-tamanho.selecionado .preco-riscado-modal { color: rgba(255,255,255,0.7); }
     .btn-tamanho:disabled { opacity: 0.4; cursor: not-allowed; }
-    .adicionais-section { margin-top: 8px; padding-top: 12px; border-top: 1px solid var(--borda-sutil); }
-    .adicionais-section .label { font-weight: 800; font-size: 13px; color: var(--cor-promo); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-    .adicionais-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; max-height: 160px; overflow-y: auto; padding: 2px 0; }
-    .btn-extra { background: var(--bg-card); border: 1.5px solid var(--borda-sutil); border-radius: var(--raio-sm); padding: 8px 10px; color: var(--cor-fonte); font-size: 11px; cursor: pointer; transition: all 0.2s; font-weight: 600; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 4px; min-height: 40px; }
+    
+    .adicionais-section { margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--borda-sutil); } /* 8px 12px * 0.8 */
+    .adicionais-section .label { font-weight: 800; font-size: 10px; color: var(--cor-promo); margin-bottom: 6px; display: flex; align-items: center; gap: 5px; } /* 13px 8px * 0.8 */
+    .adicionais-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; max-height: 128px; overflow-y: auto; padding: 1.6px 0; } /* 160px * 0.8 */
+    .btn-extra { background: var(--bg-card); border: 1.5px solid var(--borda-sutil); border-radius: var(--raio-sm); padding: 6px 8px; color: var(--cor-fonte); font-size: 9px; cursor: pointer; transition: all 0.2s; font-weight: 600; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 3px; min-height: 32px; } /* 11px 8px 10px 40px * 0.8 */
     .btn-extra:hover { background: var(--bg-card-hover); }
     .btn-extra:active { transform: scale(0.96); }
     .btn-extra.selecionado { background: var(--cor-promo); border-color: var(--cor-promo); color: #fff; box-shadow: 0 0 20px rgba(255,107,0,0.3); }
-    .btn-extra .preco-extra { color: var(--cor-promo); font-weight: 800; font-size: 11px; white-space: nowrap; }
+    .btn-extra .preco-extra { color: var(--cor-promo); font-weight: 800; font-size: 9px; white-space: nowrap; } /* 11px * 0.8 */
     .btn-extra.selecionado .preco-extra { color: #fff; }
-    .dialog-actions { display: flex; gap: 8px; margin-top: 8px; }
-    .btn-principal { flex: 1; padding: 14px; border-radius: var(--raio-md); background: var(--cor-botao-adicionar); color: #fff; border: none; font-weight: 800; font-size: 15px; cursor: pointer; transition: all 0.15s; box-shadow: 0 4px 16px rgba(43,114,69,0.4); }
+    
+    .dialog-actions { display: flex; gap: 6px; margin-top: 6px; } /* 8px * 0.8 */
+    .btn-principal { flex: 1; padding: 11px; border-radius: var(--raio-md); background: var(--cor-botao-adicionar); color: #fff; border: none; font-weight: 800; font-size: 12px; cursor: pointer; transition: all 0.15s; box-shadow: 0 4px 16px rgba(43,114,69,0.4); } /* 14px 15px * 0.8 */
     .btn-principal:active { transform: scale(0.98); }
     .btn-principal:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
-    .btn-secundario { flex: 0 0 auto; padding: 14px 20px; border-radius: var(--raio-md); background: rgba(255,255,255,0.06); color: var(--cor-fonte); border: 1px solid var(--borda-sutil); font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+    .btn-secundario { flex: 0 0 auto; padding: 11px 16px; border-radius: var(--raio-md); background: rgba(255,255,255,0.06); color: var(--cor-fonte); border: 1px solid var(--borda-sutil); font-weight: 700; font-size: 11px; cursor: pointer; transition: all 0.15s; } /* 14px 20px * 0.8 */
     .btn-secundario:active { transform: scale(0.98); }
+
     .num-display { font-size: 40px; background: var(--bg-input); padding: 16px; border-radius: var(--raio-md); text-align: center; color: var(--cor-categoria-ativa); font-weight: 900; border: 1px solid var(--borda-sutil); }
     .kbd { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
     .kbd button { padding: 14px 8px; font-size: 18px; border-radius: var(--raio-sm); background: var(--bg-card); border: 1px solid var(--borda-sutil); color: var(--cor-fonte); font-weight: 800; cursor: pointer; transition: all 0.1s; }
@@ -320,14 +326,14 @@
 </head>
 <body>
 
-  <!-- ===== POPUP DE CAPTURA DE LEAD ===== -->
+  <!-- ===== POPUP DE CAPTURA DE LEAD (SEM PORCENTAGEM) ===== -->
   <div class="lead-overlay" id="leadOverlay">
     <div class="lead-modal">
       <button class="close-lead" onclick="fecharLead()">×</button>
       <span class="icon-gift">🎁</span>
       <h2>Ofertas Exclusivas</h2>
       <p>Quer receber ofertas exclusivas para clientes cadastrados?<br>
-      Deixe seu WhatsApp e ganhe <strong>10% OFF</strong> na sua primeira compra, além de promoções que não estão no site.<br>
+      Deixe seu WhatsApp e ganhe acesso a promoções que não estão no site.<br>
       <strong>É rápido, grátis e você não perde nenhuma!</strong></p>
       <input type="tel" id="leadTelefone" placeholder="(11) 99999-9999" maxlength="15" />
       <button class="btn-lead" onclick="salvarLead()">Quero receber as ofertas</button>
@@ -544,7 +550,10 @@
       const agora = Date.now();
       
       if (jaTemLead) {
-        document.getElementById('btnBau').classList.remove('escondido');
+        // Se já tem cupom aplicado, esconde o baú. Se não, mostra.
+        if (!localStorage.getItem('pasterry_cupom_v1')) {
+          document.getElementById('btnBau').classList.remove('escondido');
+        }
         return;
       }
 
@@ -579,13 +588,10 @@
         window.trackEvent('identificacao', { telefone: tel, origem: 'popup_boas_vindas' });
       }
 
-      if (!localStorage.getItem('pasterry_cupom_v1')) {
-         localStorage.setItem('pasterry_cupom_v1', JSON.stringify({ codigo: 'BEMVINDO10', desconto: 10, minimo: 0 }));
-      }
-
+      // NÃO aplica cupom automático ao cadastrar. O cliente vai no baú.
       document.getElementById('leadOverlay').classList.remove('active');
       document.getElementById('btnBau').classList.remove('escondido');
-      showCenterNotification('Cupom de 10% liberado!', 'Ele foi aplicado na sua sacola.');
+      showCenterNotification('Presente liberado!', 'Abra a caixinha no canto da tela.');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -655,8 +661,6 @@
       });
     }
 
-    let codigoCupomSelecionado = '';
-
     function explodirCaixinha() {
       const cores = ['#FFD700', '#FF6B00', '#4CAF50', '#1E88E5', '#E91E63', '#FFFFFF'];
       const btnBau = document.getElementById('btnBau');
@@ -690,13 +694,17 @@
         setTimeout(() => confete.remove(), 1000);
       }
 
+      // Esconde o baú
       btnBau.style.display = 'none';
       document.getElementById('bauOverlay').classList.remove('active');
       
-      setTimeout(() => {
-        window.location.href = 'carrinho.html?cupom=' + codigoCupomSelecionado;
-      }, 1200);
+      // Salva o cupom no localStorage
+      localStorage.setItem('pasterry_cupom_v1', JSON.stringify({ codigo: codigoCupomSelecionado, desconto: 0, minimo: 0 }));
+
+      showCenterNotification('🎁 Cupom resgatado!', 'Ele já está no carrinho.');
     }
+
+    let codigoCupomSelecionado = '';
 
     function aplicarCupomDireto(codigo) {
       codigoCupomSelecionado = codigo;
