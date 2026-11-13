@@ -253,6 +253,20 @@
     .products-wrap { overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; padding-bottom: 20px; }
     .products-wrap::-webkit-scrollbar { display: none; }
     button:focus-visible { outline: 2px solid var(--cor-categoria-ativa); outline-offset: 2px; }
+
+    /* ===== POPUP DE CAPTURA DE LEAD ===== */
+    .lead-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .lead-overlay.active { display: flex; }
+    .lead-modal { background: linear-gradient(135deg, #2a201d 0%, #1A1210 100%); border: 2px solid var(--cor-secundaria); border-radius: var(--raio-xl); padding: 30px 20px; max-width: 380px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.9); position: relative; animation: modalIn 0.4s ease; }
+    .lead-modal .close-lead { position: absolute; top: 10px; right: 10px; background: transparent; border: none; color: var(--cor-fonte-muted); font-size: 24px; cursor: pointer; }
+    .lead-modal .icon-gift { font-size: 50px; margin-bottom: 10px; display: block; }
+    .lead-modal h2 { color: var(--cor-secundaria); font-size: 22px; margin-bottom: 8px; }
+    .lead-modal p { color: var(--cor-fonte); font-size: 14px; margin-bottom: 20px; line-height: 1.4; }
+    .lead-modal input { width: 100%; padding: 14px; border-radius: 10px; border: 2px solid var(--cor-secundaria); background: var(--bg-input); color: #fff; font-size: 16px; text-align: center; margin-bottom: 10px; font-weight: bold; }
+    .lead-modal input:focus { outline: none; box-shadow: 0 0 15px rgba(255,215,0,0.3); }
+    .lead-modal button.btn-lead { width: 100%; padding: 14px; background: var(--cor-botao-adicionar); color: #fff; border: none; border-radius: 10px; font-weight: 800; font-size: 16px; cursor: pointer; transition: 0.2s; }
+    .lead-modal button.btn-lead:hover { filter: brightness(1.1); transform: scale(1.02); }
+    .lead-modal .lead-erro { color: #ff6b6b; font-size: 12px; margin-top: 8px; display: none; }
   </style>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -271,6 +285,19 @@
   <script src="tracker.js"></script>
 </head>
 <body>
+
+  <!-- ===== POPUP DE CAPTURA DE LEAD ===== -->
+  <div class="lead-overlay" id="leadOverlay">
+    <div class="lead-modal">
+      <button class="close-lead" onclick="fecharLead()">×</button>
+      <span class="icon-gift">🎁</span>
+      <h2>Ganhe 10% OFF!</h2>
+      <p>Deixe seu WhatsApp para receber um cupom exclusivo de 10% na sua primeira compra.</p>
+      <input type="tel" id="leadTelefone" placeholder="(11) 99999-9999" maxlength="15" />
+      <button class="btn-lead" onclick="salvarLead()">Quero meu cupom!</button>
+      <div class="lead-erro" id="leadErro"></div>
+    </div>
+  </div>
 
   <div id="toastWrap" aria-live="polite" aria-atomic="true"></div>
   <div id="centerToast">
@@ -331,7 +358,6 @@
 
     <main>
       <div class="header-parallax" id="headerParallax">
-        <!-- AQUI ESTÁ A MUDANÇA: IMAGEM DIRETO NO HTML -->
         <img id="parallaxImg" class="parallax-bg-img" src="" alt="Capa" style="display:none" />
         <div class="parallax-overlay">
           <h1 class="parallax-titulo" id="parallaxTitulo">Pasterry</h1>
@@ -350,7 +376,6 @@
         <div class="carrossel-destaques" id="carrosselDestaques"></div>
       </section>
 
-      <!-- NOVA SEÇÃO: MAIS PEDIDOS DA SEMANA -->
       <section class="secao-destaques" id="secaoMaisPedidos" style="display:none">
         <div class="secao-titulo">
           <h2><span class="emoji">🔥</span> Mais Pedidos da Semana</h2>
@@ -422,7 +447,6 @@
     // ============================================================
     // FIREBASE (configuração externa em config.js)
     // ============================================================
-    // O Firebase já foi inicializado no <head>, então não precisamos reinicializar aqui.
     const db = firebase.firestore();
 
     // ============================================================
@@ -459,6 +483,72 @@
     function logDebug(mensagem, dados = null) {
       console.log(`[DEBUG] ${mensagem}`, dados || '');
     }
+
+    // ============================================================
+    // POPUP DE LEAD
+    // ============================================================
+    function verificarLead() {
+      const jaTemLead = localStorage.getItem('pasterry_lead_telefone');
+      if (!jaTemLead) {
+        setTimeout(() => {
+          document.getElementById('leadOverlay').classList.add('active');
+        }, 3000); // Aparece após 3 segundos de navegação
+      }
+    }
+
+    function fecharLead() {
+      document.getElementById('leadOverlay').classList.remove('active');
+      localStorage.setItem('pasterry_lead_ignorado', Date.now());
+    }
+
+    function salvarLead() {
+      const input = document.getElementById('leadTelefone');
+      const erro = document.getElementById('leadErro');
+      let tel = input.value.replace(/\D/g, '');
+      
+      if (tel.length < 10) {
+        erro.textContent = 'Digite um WhatsApp válido com DDD.';
+        erro.style.display = 'block';
+        return;
+      }
+
+      // Salva localmente para não pedir de novo
+      localStorage.setItem('pasterry_lead_telefone', tel);
+      
+      // ✅ RASTREAMENTO: envia para o banco de dados
+      if (typeof window.trackEvent === 'function') {
+        window.trackEvent('identificacao', { telefone: tel, origem: 'popup_boas_vindas' });
+      }
+
+      // Aplica o cupom automaticamente se ele não tiver
+      if (!localStorage.getItem('pasterry_cupom_v1')) {
+         localStorage.setItem('pasterry_cupom_v1', JSON.stringify({ codigo: 'BEMVINDO10', desconto: 10, minimo: 0 }));
+      }
+
+      document.getElementById('leadOverlay').classList.remove('active');
+      showCenterNotification('Cupom de 10% liberado!', 'Ele foi aplicado na sua sacola.');
+    }
+
+    // Mascara o telefone do Lead
+    document.addEventListener('DOMContentLoaded', () => {
+      const leadTel = document.getElementById('leadTelefone');
+      if(leadTel){
+        leadTel.addEventListener('input', function(e) {
+          let v = e.target.value.replace(/\D/g, '');
+          if (v.length > 11) v = v.slice(0, 11);
+          if (v.length > 6) {
+            e.target.value = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+          } else if (v.length > 2) {
+            e.target.value = `(${v.slice(0,2)}) ${v.slice(2)}`;
+          } else {
+            e.target.value = v;
+          }
+        });
+      }
+    });
+
+    // Inicia a verificação do popup
+    verificarLead();
 
     // ============================================================
     // CORES
@@ -505,6 +595,9 @@
       root.style.setProperty('--cor-fonte-muted', coresObj.corFonteMuted || '#9AA6B2');
     }
 
+    // ... (Restante do código igual ao original)
+    // [O código abaixo foi omitido para não ficar gigante, mas você deve manter todo o restante do seu script original]
+    
     // ============================================================
     // HORÁRIOS E STATUS
     // ============================================================
@@ -2179,6 +2272,8 @@
     window.openSizeDialog = openSizeDialog;
     window.showSuccess = showSuccess;
     window.showCenterNotification = showCenterNotification;
+    window.fecharLead = fecharLead;
+    window.salvarLead = salvarLead;
 
     console.log('✅ Pasterry Cardápio carregado com sucesso!');
     console.log('✨ Recursos: Header Parallax Fixo, Preferidos, Mais Pedidos, Tags de Desconto');
