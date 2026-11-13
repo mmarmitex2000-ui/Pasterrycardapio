@@ -641,14 +641,13 @@
             return;
           }
 
-          // ✅ SALVA OS CUPONS NA MEMÓRIA PARA O RESGATE
           window._cuponsDisponiveis = ativos;
 
           container.innerHTML = ativos.map(c => `
             <div class="cupom-card-item">
               <div class="info">
                 <div class="codigo">${c.codigo}</div>
-                <div class="regra">Toque para resgatar seu presente</div>
+                <div class="regra">${c.minimo > 0 ? 'Pedido mínimo: R$ ' + Number(c.minimo).toFixed(2).replace('.', ',') : 'Sem valor mínimo'}</div>
               </div>
               <button class="btn-copiar" onclick="aplicarCupomDireto('${c.codigo}')">Resgatar</button>
             </div>
@@ -700,12 +699,14 @@
       btnBau.style.display = 'none';
       document.getElementById('bauOverlay').classList.remove('active');
       
-      // ✅ SALVA O OBJETO COMPLETO DO CUPOM (COM DESCONTO E MÍNIMO)
+      // ✅ SALVA APENAS O CÓDIGO E O MÍNIMO (O RESTO O CARRINHO BUSCA)
       const cupomCompleto = window._cuponsDisponiveis.find(c => c.codigo === codigoCupomSelecionado);
       if (cupomCompleto) {
-        localStorage.setItem('pasterry_cupom_v1', JSON.stringify(cupomCompleto));
-      } else {
-        localStorage.setItem('pasterry_cupom_v1', JSON.stringify({ codigo: codigoCupomSelecionado, pendente: true }));
+        localStorage.setItem('pasterry_cupom_v1', JSON.stringify({ 
+          codigo: cupomCompleto.codigo, 
+          minimo: cupomCompleto.minimo || 0,
+          pendente: true 
+        }));
       }
 
       showCenterNotification('🎁 Cupom resgatado!', 'Ele já está no carrinho.');

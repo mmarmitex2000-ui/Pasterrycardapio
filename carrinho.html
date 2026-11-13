@@ -1442,14 +1442,30 @@ function carregarCupons() {
             document.getElementById('btnAplicarCupom').disabled = true;
             console.log('✅ Cupom especial restaurado:', parsed.codigo);
           } else {
-            var aindaValido = cuponsValidos.some(function(c) { return c.codigo === parsed.codigo; });
-            if (aindaValido) {
-              cupomAplicado = parsed;
-              document.getElementById('cupomAplicado').classList.add('visible');
-              document.getElementById('cupomInput').value = parsed.codigo;
-              document.getElementById('cupomInput').disabled = true;
-              document.getElementById('btnAplicarCupom').disabled = true;
-              console.log('✅ Cupom restaurado:', parsed.codigo);
+            // ✅ AQUI VERIFICA SE É UM CUPOM PENDENTE (DO BAÚ) OU JÁ COMPLETO
+            var cupomReal = null;
+            if (parsed.pendente) {
+              cupomReal = cuponsValidos.find(function(c) { return c.codigo === parsed.codigo; });
+            } else {
+              cupomReal = cuponsValidos.find(function(c) { return c.codigo === parsed.codigo; });
+            }
+            
+            if (cupomReal) {
+              var subtotal = getCartTotal();
+              // ✅ VERIFICA O VALOR MÍNIMO
+              if (cupomReal.minimo && subtotal < cupomReal.minimo) {
+                showToast('⚠️ Valor mínimo para este cupom: R$ ' + cupomReal.minimo.toFixed(2).replace('.', ',') + '. Adicione mais itens.', 'error');
+                cupomAplicado = null;
+                localStorage.removeItem(CUPOM_KEY);
+              } else {
+                cupomAplicado = cupomReal;
+                localStorage.setItem(CUPOM_KEY, JSON.stringify(cupomReal));
+                document.getElementById('cupomAplicado').classList.add('visible');
+                document.getElementById('cupomInput').value = cupomReal.codigo;
+                document.getElementById('cupomInput').disabled = true;
+                document.getElementById('btnAplicarCupom').disabled = true;
+                console.log('✅ Cupom restaurado:', cupomReal.codigo);
+              }
             } else {
               localStorage.removeItem(CUPOM_KEY);
               cupomAplicado = null;
@@ -1539,8 +1555,9 @@ function aplicarCupom() {
 
   var subtotal = getCartTotal();
   
+  // ✅ AQUI VERIFICA O VALOR MÍNIMO
   if (cupom.minimo && subtotal < cupom.minimo) {
-    showToast('Valor mínimo para este cupom: R$ ' + cupom.minimo.toFixed(2), 'error');
+    showToast('⚠️ Valor mínimo para este cupom: R$ ' + cupom.minimo.toFixed(2).replace('.', ',') + '. Adicione mais itens.', 'error');
     return;
   }
 
