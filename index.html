@@ -256,9 +256,18 @@
   </style>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <!-- ✅ NOVO: configuração externa -->
+  
+  <!-- ✅ 1. Configuração externa -->
   <script src="config.js"></script>
-  <!-- ✅ NOVO: rastreamento de eventos -->
+  
+  <!-- ✅ 2. Inicializa o Firebase ANTES do tracker -->
+  <script>
+    if (!firebase.apps.length) {
+      firebase.initializeApp(window.FIREBASE_CONFIG);
+    }
+  </script>
+
+  <!-- ✅ 3. Agora sim, carrega o rastreador -->
   <script src="tracker.js"></script>
 </head>
 <body>
@@ -413,9 +422,7 @@
     // ============================================================
     // FIREBASE (configuração externa em config.js)
     // ============================================================
-    if (!firebase.apps.length) {
-      firebase.initializeApp(window.FIREBASE_CONFIG);
-    }
+    // O Firebase já foi inicializado no <head>, então não precisamos reinicializar aqui.
     const db = firebase.firestore();
 
     // ============================================================

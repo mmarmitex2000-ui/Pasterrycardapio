@@ -7,8 +7,19 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <!-- ✅ Configuração externa -->
 <script src="config.js"></script>
+
+<!-- ✅ Inicializa o Firebase (compat) ANTES do tracker -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+  if (!firebase.apps.length) {
+    firebase.initializeApp(window.FIREBASE_CONFIG);
+  }
+</script>
+
 <!-- ✅ Rastreador de eventos -->
 <script src="tracker.js"></script>
+
 <style>
   body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#1A1210;color:#e6eef6;padding:16px;padding-bottom:40px;transition:background 0.5s}
   h1{margin:0 0 4px;font-size:24px;color:#07fcdb}

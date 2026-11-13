@@ -1001,19 +1001,22 @@ h3 .count {
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <!-- ✅ Configuração externa -->
 <script src="config.js"></script>
+
+<!-- ✅ Inicializa o Firebase ANTES do tracker -->
+<script>
+  if (!firebase.apps.length) {
+    firebase.initializeApp(window.FIREBASE_CONFIG);
+  }
+</script>
+
 <!-- ✅ Rastreador de eventos -->
 <script src="tracker.js"></script>
 
 <script>
 // ============================================================
-// CONFIGURAÇÃO FIREBASE
-// ============================================================
-firebase.initializeApp(window.FIREBASE_CONFIG);
-var db = firebase.firestore();
-
-// ============================================================
 // VARIÁVEIS GLOBAIS
 // ============================================================
+var db = firebase.firestore();
 var CART_KEY = 'pasterry_cart_v1';
 var CUPOM_KEY = 'pasterry_cupom_v1';
 var GOOGLE_KEY = localStorage.getItem('gmaps_key') || "AIzaSyDV9tPC5XNNmB_REgW1au2NtpP1ETtV1i0";
