@@ -12,11 +12,21 @@
   padding: 0;
 }
 
+:root {
+  --bg-site: #1A1210;
+  --bg-card: #2a201d;
+  --bg-input: #0a1420;
+  --cor-fonte: #e6eef6;
+  --cor-fonte-muted: #9aa6b2;
+  --cor-primaria: #28a745;
+  --cor-secundaria: #FFD700;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-  background: #1A1210;
-  color: #e6eef6;
+  background: var(--bg-site);
+  color: var(--cor-fonte);
   padding: 16px;
   padding-bottom: 200px;
   overflow-x: hidden;
@@ -34,7 +44,7 @@ body {
 }
 .header h1 {
   font-size: 24px;
-  color: #FFD700;
+  color: var(--cor-secundaria);
   margin: 0;
 }
 .header .badge {
@@ -65,14 +75,14 @@ body {
 h3 {
   margin: 16px 0 10px;
   font-size: 18px;
-  color: #FFD700;
+  color: var(--cor-secundaria);
   display: flex;
   align-items: center;
   gap: 8px;
 }
 h3 .count {
   font-size: 12px;
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
   font-weight: 400;
 }
 
@@ -94,7 +104,7 @@ h3 .count {
   transform: scale(0.95);
 }
 .btn.primary {
-  background: #28a745;
+  background: var(--cor-primaria);
   color: #fff;
   box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
 }
@@ -108,8 +118,8 @@ h3 .count {
   box-shadow: none;
 }
 .btn.secondary {
-  background: #2a201d;
-  color: #e6eef6;
+  background: var(--bg-card);
+  color: var(--cor-fonte);
   border: 1px solid rgba(255,255,255,0.08);
 }
 .btn.secondary:hover {
@@ -132,7 +142,7 @@ h3 .count {
   font-size: 16px;
 }
 .btn.cupom {
-  background: #FFD700;
+  background: var(--cor-secundaria);
   color: #1A1210;
 }
 .btn.cupom:hover {
@@ -171,7 +181,7 @@ h3 .count {
 }
 .extra-card {
   flex: 0 0 130px;
-  background: #2a201d;
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 10px 8px;
   text-align: center;
@@ -188,17 +198,17 @@ h3 .count {
   height: 55px;
   object-fit: cover;
   border-radius: 8px;
-  background: #0a1420;
+  background: var(--bg-input);
 }
 .extra-card .nome {
   font-size: 12px;
   font-weight: 600;
   margin: 6px 0 2px;
-  color: #e6eef6;
+  color: var(--cor-fonte);
 }
 .extra-card .preco {
   font-size: 13px;
-  color: #FFD700;
+  color: var(--cor-secundaria);
   font-weight: 700;
   margin-bottom: 6px;
 }
@@ -218,7 +228,7 @@ h3 .count {
 
 /* ===== CUPOM DE DESCONTO ===== */
 .cupom-area {
-  background: #2a201d;
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 14px 16px;
   margin: 10px 0 12px;
@@ -234,14 +244,14 @@ h3 .count {
   padding: 10px 14px;
   border-radius: 8px;
   border: 1px solid rgba(255,255,255,0.06);
-  background: #0a1420;
-  color: #e6eef6;
+  background: var(--bg-input);
+  color: var(--cor-fonte);
   font-size: 14px;
   text-transform: uppercase;
 }
 .cupom-area input:focus {
   outline: none;
-  border-color: #FFD700;
+  border-color: var(--cor-secundaria);
 }
 .cupom-area input:disabled {
   opacity: 0.5;
@@ -251,7 +261,7 @@ h3 .count {
 }
 .cupom-aplicado {
   background: rgba(40, 167, 69, 0.15);
-  border: 1px solid #28a745;
+  border: 1px solid var(--cor-primaria);
   border-radius: 10px;
   padding: 10px 14px;
   margin: 8px 0;
@@ -283,14 +293,14 @@ h3 .count {
   border-radius: 12px;
   padding: 14px 16px;
   margin: 10px 0 12px;
-  border: 2px solid #FFD700;
+  border: 2px solid var(--cor-secundaria);
   display: none;
 }
 .cupom-especial-area.visible {
   display: block;
 }
 .cupom-especial-area .titulo {
-  color: #FFD700;
+  color: var(--cor-secundaria);
   font-weight: 700;
   font-size: 14px;
   display: flex;
@@ -298,12 +308,12 @@ h3 .count {
   gap: 8px;
 }
 .cupom-especial-area .descricao {
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
   font-size: 12px;
   margin: 4px 0 8px;
 }
 .cupom-especial-area .barra-container {
-  background: #0a1420;
+  background: var(--bg-input);
   border-radius: 20px;
   height: 20px;
   overflow: hidden;
@@ -312,7 +322,7 @@ h3 .count {
 }
 .cupom-especial-area .barra-container .barra {
   height: 100%;
-  background: linear-gradient(90deg, #FFD700, #FF6B00);
+  background: linear-gradient(90deg, var(--cor-secundaria), #FF6B00);
   border-radius: 20px;
   transition: width 0.5s ease;
   width: 0%;
@@ -332,11 +342,11 @@ h3 .count {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
   margin-top: 4px;
 }
 .cupom-especial-area .info-barra .destaque {
-  color: #FFD700;
+  color: var(--cor-secundaria);
   font-weight: 700;
 }
 .cupom-especial-area .info-barra .proximo {
@@ -349,7 +359,7 @@ h3 .count {
   text-align: center;
   font-size: 20px;
   font-weight: 800;
-  color: #FFD700;
+  color: var(--cor-secundaria);
   margin: 8px 0 4px;
 }
 .cupom-especial-area .desconto-atual .percent {
@@ -357,7 +367,7 @@ h3 .count {
 }
 .cupom-especial-area .desconto-atual .label {
   font-size: 14px;
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
   font-weight: 400;
 }
 
@@ -365,7 +375,7 @@ h3 .count {
 .cart-empty {
   text-align: center;
   padding: 40px 20px;
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
 }
 .cart-empty .icon {
   font-size: 48px;
@@ -376,7 +386,7 @@ h3 .count {
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
-  background: #2a201d;
+  background: var(--bg-card);
   border-radius: 10px;
   margin-bottom: 8px;
   border: 1px solid rgba(255,255,255,0.04);
@@ -390,7 +400,7 @@ h3 .count {
   height: 50px;
   object-fit: cover;
   border-radius: 8px;
-  background: #0a1420;
+  background: var(--bg-input);
 }
 .cart-item .info {
   flex: 1;
@@ -407,7 +417,7 @@ h3 .count {
 }
 .cart-item .info .price {
   font-size: 12px;
-  color: #FFD700;
+  color: var(--cor-secundaria);
 }
 .cart-item .qty-control {
   display: flex;
@@ -431,7 +441,7 @@ h3 .count {
 }
 .cart-item .item-total {
   font-weight: 700;
-  color: #FFD700;
+  color: var(--cor-secundaria);
   font-size: 14px;
   min-width: 50px;
   text-align: right;
@@ -446,7 +456,7 @@ h3 .count {
 
 /* ===== TOTAIS ===== */
 .totais {
-  background: #2a201d;
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 12px;
@@ -457,7 +467,7 @@ h3 .count {
   justify-content: space-between;
   padding: 3px 0;
   font-size: 14px;
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
 }
 .totais .linha.total {
   border-top: 1px solid rgba(255,255,255,0.06);
@@ -468,7 +478,7 @@ h3 .count {
   color: #fff;
 }
 .totais .linha.total .valor {
-  color: #FFD700;
+  color: var(--cor-secundaria);
 }
 .totais .linha .destaque {
   color: #4caf50;
@@ -492,7 +502,7 @@ h3 .count {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(180deg, transparent, #1A1210 20%, #1A1210);
+  background: linear-gradient(180deg, transparent, var(--bg-site) 20%, var(--bg-site));
   padding: 12px 16px;
   padding-bottom: calc(12px + env(safe-area-inset-bottom));
   box-sizing: border-box;
@@ -561,7 +571,7 @@ h3 .count {
 .modal-content .close-btn {
   background: rgba(255,255,255,0.05);
   border: none;
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -579,8 +589,8 @@ h3 .count {
   margin: 5px 0;
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 10px;
-  background: #0a1420;
-  color: #e6eef6;
+  background: var(--bg-input);
+  color: var(--cor-fonte);
   font-size: 14px;
   box-sizing: border-box;
   transition: border-color 0.2s;
@@ -588,7 +598,7 @@ h3 .count {
 .modal-content input:focus,
 .modal-content select:focus {
   outline: none;
-  border-color: #FFD700;
+  border-color: var(--cor-secundaria);
   box-shadow: 0 0 0 3px rgba(255,215,0,0.08);
 }
 .modal-content input::placeholder {
@@ -596,7 +606,7 @@ h3 .count {
 }
 .modal-content .field-label {
   font-size: 12px;
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
   margin-top: 8px;
   display: block;
 }
@@ -636,7 +646,7 @@ h3 .count {
   color: #ff6b6b;
 }
 .cupom-modal {
-  background: #0a1420;
+  background: var(--bg-input);
   border: 1px dashed rgba(255,255,255,0.06);
   padding: 12px 14px;
   margin: 12px 0;
@@ -645,11 +655,11 @@ h3 .count {
 }
 .cupom-modal h4 {
   margin: 0 0 6px;
-  color: #FFD700;
+  color: var(--cor-secundaria);
   font-size: 14px;
 }
 .cupom-modal .itens {
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
   font-size: 13px;
   line-height: 1.6;
 }
@@ -660,7 +670,7 @@ h3 .count {
   font-weight: 700;
 }
 .cupom-modal .total .destaque {
-  color: #FFD700;
+  color: var(--cor-secundaria);
 }
 .cupom-modal .total .desconto {
   color: #4caf50;
@@ -709,7 +719,7 @@ h3 .count {
   height: 50px;
   border-radius: 50%;
   border: 4px solid rgba(255,255,255,0.1);
-  border-top-color: #FFD700;
+  border-top-color: var(--cor-secundaria);
   animation: spin 0.8s linear infinite;
   margin: 0 auto 16px;
 }
@@ -719,7 +729,7 @@ h3 .count {
 }
 .loading-content .sub {
   font-size: 13px;
-  color: #9aa6b2;
+  color: var(--cor-fonte-muted);
   margin-top: 4px;
 }
 @keyframes spin {
@@ -985,25 +995,20 @@ h3 .count {
 <div class="toast-container" id="toastContainer"></div>
 
 <!-- ============================================================
-   FIREBASE
+   FIREBASE E TRACKER
    ============================================================ -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<!-- ✅ Configuração externa -->
+<script src="config.js"></script>
+<!-- ✅ Rastreador de eventos -->
+<script src="tracker.js"></script>
 
 <script>
 // ============================================================
 // CONFIGURAÇÃO FIREBASE
 // ============================================================
-var firebaseConfig = {
-  apiKey: "AIzaSyDV9tPC5XNNmB_REgW1au2NtpP1ETtV1i0",
-  authDomain: "paineldepedidos-8cfff.firebaseapp.com",
-  projectId: "paineldepedidos-8cfff",
-  storageBucket: "paineldepedidos-8cfff.firebasestorage.app",
-  messagingSenderId: "390619980929",
-  appId: "1:390619980929:web:5bb015938e9dcb89389980",
-  measurementId: "G-CMH7LSQ7C0"
-};
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(window.FIREBASE_CONFIG);
 var db = firebase.firestore();
 
 // ============================================================
@@ -1497,6 +1502,12 @@ function aplicarCupom() {
       document.getElementById('cupomInput').disabled = true;
       document.getElementById('btnAplicarCupom').disabled = true;
       showToast('⭐ Cupom especial aplicado! ' + desconto + '% de desconto.');
+      
+      // ✅ RASTREAMENTO: apply_coupon especial
+      if (typeof window.trackEvent === 'function') {
+        window.trackEvent('apply_coupon', { codigo: 'DESCONTO_PROGRESSIVO', desconto: desconto, especial: true });
+      }
+
       renderTotais();
       renderCupom();
       return;
@@ -1541,6 +1552,12 @@ function aplicarCupom() {
   document.getElementById('cupomInput').disabled = true;
   document.getElementById('btnAplicarCupom').disabled = true;
   showToast('✅ Cupom ' + cupom.codigo + ' aplicado! ' + cupom.desconto + '% de desconto.');
+  
+  // ✅ RASTREAMENTO: apply_coupon normal
+  if (typeof window.trackEvent === 'function') {
+    window.trackEvent('apply_coupon', { codigo: cupom.codigo, desconto: cupom.desconto, total: subtotal });
+  }
+
   renderTotais();
   renderCupom();
 }
@@ -1564,52 +1581,27 @@ function removerCupom() {
 }
 
 // ============================================================
-// CARREGAR ITENS EXTRAS (COM FILTRO DE ATIVOS)
+// CARREGAR ITENS EXTRAS (AGORA LÊ DO sacola-itens)
 // ============================================================
 function carregarExtras() {
-  console.log('🔍 Iniciando carregamento de extras...');
+  console.log('🔍 Iniciando carregamento de extras da sacola...');
   
-  db.collection('config').doc('extras').get()
-    .then(function(doc) {
-      console.log('📄 Documento existe?', doc.exists);
-      
-      if (doc.exists) {
+  // ✅ CORREÇÃO: Agora lê da coleção exclusiva 'sacola-itens'
+  db.collection('sacola-itens').get()
+    .then(function(snapshot) {
+      extras = [];
+      snapshot.forEach(function(doc) {
         var data = doc.data();
-        console.log('📦 Dados:', data);
-        console.log('🔑 Campos:', Object.keys(data));
-        
-        var dadosExtras = null;
-        
-        if (data.extra && Array.isArray(data.extra)) {
-          dadosExtras = data.extra;
-          console.log('✅ Campo "extra" com', dadosExtras.length, 'itens');
-        } else if (data.extras && Array.isArray(data.extras)) {
-          dadosExtras = data.extras;
-          console.log('✅ Campo "extras" com', dadosExtras.length, 'itens');
+        if (data.ativo !== false) {
+          extras.push({
+            id: doc.id,
+            nome: data.nome || data.name || 'Item',
+            preco: data.preco || data.price || 0,
+            img: data.img || ''
+          });
         }
-        
-        if (dadosExtras && dadosExtras.length > 0) {
-          extras = dadosExtras
-            .filter(function(item) {
-              return item.ativo !== false;
-            })
-            .map(function(item) {
-              return {
-                nome: item.name || item.nome || 'Item',
-                preco: item.preco || item.price || 0,
-                img: item.img || ''
-              };
-            });
-          console.log('✅ Extras processados (apenas ativos):', extras);
-        } else {
-          console.warn('⚠️ Nenhum item extra. Usando fallback.');
-          extras = EXTRAS_PADRAO.slice();
-        }
-      } else {
-        console.warn('❌ Documento não existe. Usando fallback.');
-        extras = EXTRAS_PADRAO.slice();
-      }
-      
+      });
+      console.log('✅ Extras processados (apenas ativos):', extras);
       renderExtras();
       atualizarInterfaceLoja();
     })
@@ -1997,6 +1989,11 @@ function abrirModal() {
   document.getElementById('modalEndereco').style.display = 'flex';
   renderCupom();
   document.getElementById('erroEnvio').classList.remove('visible');
+
+  // ✅ RASTREAMENTO: begin_checkout
+  if (typeof window.trackEvent === 'function') {
+    window.trackEvent('begin_checkout', { total: getCartTotal(), itens: c.length });
+  }
 }
 
 function fecharModal() {
@@ -2227,6 +2224,19 @@ function enviarPedido() {
       localStorage.setItem('pedidos_pasterry_v1', JSON.stringify(hist));
       localStorage.removeItem(CART_KEY);
       localStorage.removeItem(CUPOM_KEY);
+      
+      // ✅ RASTREAMENTO: purchase
+      if (typeof window.trackEvent === 'function') {
+        window.trackEvent('purchase', {
+          transaction_id: codigoPedido,
+          value: totalFinal,
+          taxa: taxaAtual,
+          itens_count: itensFormatados.length,
+          itens_nomes: itensFormatados.map(function(i) { return i.title; }).slice(0, 30),
+          pagamento: pagamento.value
+        });
+      }
+
       alert('✅ Pedido #' + codigoPedido + ' confirmado!\n\n' + (cupomAplicado ? 'Cupom ' + cupomAplicado.codigo + ' aplicado: ' + cupomAplicado.desconto + '% de desconto' : ''));
       location.href = 'status.html?id=' + codigoPedido;
     })
