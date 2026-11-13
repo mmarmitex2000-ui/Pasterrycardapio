@@ -290,6 +290,20 @@
     .cupom-card-item .btn-copiar { background: var(--cor-botao-adicionar); color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; white-space: nowrap; }
     .cupom-card-item .btn-copiar:active { transform: scale(0.95); }
     .cupom-card-item .btn-copiar.copiado { background: var(--cor-sucesso); }
+
+    /* ===== EXPLOSÃO DE CONFETES ===== */
+    .confete {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      z-index: 999;
+      pointer-events: none;
+      border-radius: 50%;
+    }
+    @keyframes explodir {
+      0% { transform: translate(0, 0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+    }
   </style>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -329,7 +343,7 @@
     <div class="bau-modal">
       <button class="close-bau" onclick="fecharBau()">×</button>
       <h2>🎁 Clube de Descontos</h2>
-      <p class="desc">Escolha um cupom e clique em <strong>"Aplicar Desconto"</strong>.<br><small>(Válido apenas 1 cupom por pedido)</small></p>
+      <p class="desc">Escolha um cupom e clique em <strong>"Resgatar"</strong>.<br><small>(Válido apenas 1 cupom por pedido)</small></p>
       <div id="listaCuponsSite">
         <div style="text-align:center; padding:20px; color:#6a7a8a;">Carregando cupons...</div>
       </div>
@@ -627,9 +641,9 @@
             <div class="cupom-card-item">
               <div class="info">
                 <div class="codigo">${c.codigo}</div>
-                <div class="regra">${c.desconto}% de desconto ${c.minimo > 0 ? '• Pedido mínimo: R$ ' + Number(c.minimo).toFixed(2).replace('.', ',') : '• Sem valor mínimo'}</div>
+                <div class="regra">Toque para resgatar seu presente</div>
               </div>
-              <button class="btn-copiar" onclick="aplicarCupomDireto('${c.codigo}')">Aplicar Desconto</button>
+              <button class="btn-copiar" onclick="aplicarCupomDireto('${c.codigo}')">Resgatar</button>
             </div>
           `).join('');
         } else {
@@ -641,9 +655,52 @@
       });
     }
 
+    let codigoCupomSelecionado = '';
+
+    function explodirCaixinha() {
+      const cores = ['#FFD700', '#FF6B00', '#4CAF50', '#1E88E5', '#E91E63', '#FFFFFF'];
+      const btnBau = document.getElementById('btnBau');
+      const rect = btnBau.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+
+      for (let i = 0; i < 40; i++) {
+        const confete = document.createElement('div');
+        confete.classList.add('confete');
+        confete.style.backgroundColor = cores[Math.floor(Math.random() * cores.length)];
+        
+        const angulo = Math.random() * Math.PI * 2;
+        const forca = 100 + Math.random() * 200;
+        const tx = Math.cos(angulo) * forca;
+        const ty = Math.sin(angulo) * forca;
+        
+        confete.style.left = cx + 'px';
+        confete.style.top = cy + 'px';
+        confete.style.setProperty('--tx', tx + 'px');
+        confete.style.setProperty('--ty', ty + 'px');
+        
+        const tamanho = 6 + Math.random() * 8;
+        confete.style.width = tamanho + 'px';
+        confete.style.height = tamanho + 'px';
+        
+        confete.style.animation = `explodir ${0.6 + Math.random() * 0.4}s ease-out forwards`;
+        
+        document.body.appendChild(confete);
+        
+        setTimeout(() => confete.remove(), 1000);
+      }
+
+      btnBau.style.display = 'none';
+      document.getElementById('bauOverlay').classList.remove('active');
+      
+      setTimeout(() => {
+        window.location.href = 'carrinho.html?cupom=' + codigoCupomSelecionado;
+      }, 1200);
+    }
+
     function aplicarCupomDireto(codigo) {
-      localStorage.setItem('pasterry_cupom_v1', JSON.stringify({ codigo: codigo, desconto: 0, minimo: 0 })); 
-      window.location.href = 'carrinho.html?cupom=' + codigo;
+      codigoCupomSelecionado = codigo;
+      explodirCaixinha();
     }
 
     // ============================================================
