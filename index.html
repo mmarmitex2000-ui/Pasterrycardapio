@@ -262,6 +262,7 @@
     .lead-modal .icon-gift { font-size: 50px; margin-bottom: 10px; display: block; }
     .lead-modal h2 { color: var(--cor-secundaria); font-size: 22px; margin-bottom: 8px; }
     .lead-modal p { color: var(--cor-fonte); font-size: 14px; margin-bottom: 20px; line-height: 1.4; }
+    .lead-modal p strong { color: var(--cor-secundaria); }
     .lead-modal input { width: 100%; padding: 14px; border-radius: 10px; border: 2px solid var(--cor-secundaria); background: var(--bg-input); color: #fff; font-size: 16px; text-align: center; margin-bottom: 10px; font-weight: bold; }
     .lead-modal input:focus { outline: none; box-shadow: 0 0 15px rgba(255,215,0,0.3); }
     .lead-modal button.btn-lead { width: 100%; padding: 14px; background: var(--cor-botao-adicionar); color: #fff; border: none; border-radius: 10px; font-weight: 800; font-size: 16px; cursor: pointer; transition: 0.2s; }
@@ -291,10 +292,12 @@
     <div class="lead-modal">
       <button class="close-lead" onclick="fecharLead()">×</button>
       <span class="icon-gift">🎁</span>
-      <h2>Ganhe 10% OFF!</h2>
-      <p>Deixe seu WhatsApp para receber um cupom exclusivo de 10% na sua primeira compra.</p>
+      <h2>Ofertas Exclusivas</h2>
+      <p>Quer receber ofertas exclusivas para clientes cadastrados?<br>
+      Deixe seu WhatsApp e ganhe <strong>10% OFF</strong> na sua primeira compra, além de promoções que não estão no site.<br>
+      <strong>É rápido, grátis e você não perde nenhuma!</strong></p>
       <input type="tel" id="leadTelefone" placeholder="(11) 99999-9999" maxlength="15" />
-      <button class="btn-lead" onclick="salvarLead()">Quero meu cupom!</button>
+      <button class="btn-lead" onclick="salvarLead()">Quero receber as ofertas</button>
       <div class="lead-erro" id="leadErro"></div>
     </div>
   </div>
@@ -489,11 +492,16 @@
     // ============================================================
     function verificarLead() {
       const jaTemLead = localStorage.getItem('pasterry_lead_telefone');
-      if (!jaTemLead) {
-        setTimeout(() => {
-          document.getElementById('leadOverlay').classList.add('active');
-        }, 3000); // Aparece após 3 segundos de navegação
-      }
+      const jaIgnorou = localStorage.getItem('pasterry_lead_ignorado');
+      const agora = Date.now();
+      
+      // Se já tem o lead, não mostra. Se ignorou há menos de 1 dia, não mostra.
+      if (jaTemLead) return;
+      if (jaIgnorou && (agora - Number(jaIgnorou)) < 24 * 60 * 60 * 1000) return;
+
+      setTimeout(() => {
+        document.getElementById('leadOverlay').classList.add('active');
+      }, 3000); // Aparece após 3 segundos de navegação
     }
 
     function fecharLead() {
@@ -595,9 +603,6 @@
       root.style.setProperty('--cor-fonte-muted', coresObj.corFonteMuted || '#9AA6B2');
     }
 
-    // ... (Restante do código igual ao original)
-    // [O código abaixo foi omitido para não ficar gigante, mas você deve manter todo o restante do seu script original]
-    
     // ============================================================
     // HORÁRIOS E STATUS
     // ============================================================
