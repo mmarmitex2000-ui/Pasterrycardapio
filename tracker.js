@@ -8,6 +8,14 @@
     return;
   }
 
+  try {
+    if (!firebase.apps.length) {
+      firebase.initializeApp(window.FIREBASE_CONFIG);
+    }
+  } catch(e) {
+    console.error('[tracker] Erro ao inicializar Firebase:', e);
+  }
+
   const db = firebase.firestore();
 
   // ===== SESSÃO ANÔNIMA =====
@@ -24,6 +32,9 @@
     localStorage.setItem('pasterry_visitante', visitanteId);
   }
 
+  // ===== TELEFONE DO CLIENTE (para carrinho abandonado) =====
+  let telefoneCliente = localStorage.getItem('pasterry_telefone') || '';
+
   // ===== FILA EM MEMÓRIA (evita perder eventos se a rede cair) =====
   const fila = [];
   let enviando = false;
@@ -37,7 +48,9 @@
         await db.collection('eventos').add(ev);
       } catch (e) {
         console.warn('[tracker] Falha ao enviar evento, retornando à fila:', e);
-        fila.unshift(ev);
+        if (e.code !== 'permission-denied') {
+          fila.unshift(ev);
+        }
         break;
       }
     }
@@ -49,8 +62,15 @@
     if (!tipo) return;
     dados = dados || {};
 
+    // Se o telefone foi passado, atualiza a memória e o localStorage
+    if (dados.telefone) {
+      telefoneCliente = dados.telefone;
+      localStorage.setItem('pasterry_telefone', telefoneCliente);
+    }
+
     // Sanitiza: remove chaves com dados sensíveis (privacidade / LGPD)
-    const bloqueados = ['nome', 'telefone', 'email', 'endereco', 'rua', 'numero', 'bairro', 'cpf', 'senha'];
+    // ⚠️ O telefone NÃO está bloqueado aqui para permitir recuperação de carrinho
+    const bloqueados = ['nome', 'email', 'endereco', 'rua', 'numero', 'bairro', 'cpf', 'senha'];
     const dadosLimpos = {};
     Object.keys(dados).forEach(k => {
       if (bloqueados.includes(k.toLowerCase())) return;
@@ -68,6 +88,7 @@
       dados: dadosLimpos,
       sessaoId: sessaoId,
       visitanteId: visitanteId,
+      telefone: telefoneCliente, // Salva na raiz para facilitar buscas
       pagina: (location.pathname.split('/').pop() || 'index.html'),
       url: location.href.substring(0, 200),
       userAgent: navigator.userAgent.substring(0, 140),

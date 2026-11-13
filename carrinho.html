@@ -2348,7 +2348,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var telEl = document.getElementById('telefone');
   if (!telEl.value) telEl.value = '(11) ';
-  telEl.addEventListener('input', function() { mascaraTelefone(telEl); });
+  telEl.addEventListener('input', function() { 
+    mascaraTelefone(telEl); 
+    // ✅ SALVA O TELEFONE PARA O TRACKER
+    if (typeof window.trackEvent === 'function' && telEl.value.replace(/\D/g,'').length >= 10) {
+        window.trackEvent('identificacao', { telefone: telEl.value.replace(/\D/g,'') });
+    }
+  });
   
   document.getElementById('btnAplicarCupom').addEventListener('click', aplicarCupom);
   document.getElementById('btnRemoverCupom').addEventListener('click', removerCupom);
