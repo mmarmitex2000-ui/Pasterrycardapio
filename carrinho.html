@@ -2225,6 +2225,12 @@ function enviarPedido() {
       var hist = JSON.parse(localStorage.getItem('pedidos_pasterry_v1') || '[]');
       hist.push({...pedido, criadoEm: new Date().toISOString()});
       localStorage.setItem('pedidos_pasterry_v1', JSON.stringify(hist));
+
+      // ✅ AVISA O TRACKER QUE O CARRINHO FOI FINALIZADO
+      if (typeof window.trackEvent === 'function') {
+        window.trackEvent('carrinho_finalizado', { telefone: telDigits });
+      }
+
       localStorage.removeItem(CART_KEY);
       localStorage.removeItem(CUPOM_KEY);
       
@@ -2361,6 +2367,22 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('cupomInput').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') aplicarCupom();
   });
+
+  // ============================================================
+  // ✅ NOVO: VERIFICA CUPOM NA URL (?cupom=XXXXX)
+  // ============================================================
+  const urlParams = new URLSearchParams(window.location.search);
+  const cupomUrl = urlParams.get('cupom');
+
+  if (cupomUrl) {
+    setTimeout(function() {
+      const input = document.getElementById('cupomInput');
+      if (input) {
+        input.value = cupomUrl.toUpperCase();
+        aplicarCupom();
+      }
+    }, 500); // Pequeno delay para garantir que os cupons foram carregados do Firebase
+  }
 });
 
 // ============================================================
