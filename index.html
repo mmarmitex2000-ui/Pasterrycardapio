@@ -489,6 +489,172 @@
     #logoZoomOverlay.animando img {
       transform: scale(5);
     }
+
+    /* ===== SISTEMA DE PROMOÇÕES E ANÚNCIOS FLUTUANTES ===== */
+    #pst-anuncios-top,
+    #pst-anuncios-bottom {
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 9998;
+      pointer-events: none;
+      padding: 8px 12px;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    #pst-anuncios-top { top: 0; }
+    #pst-anuncios-bottom { bottom: 90px; }
+    #pst-anuncios-top::-webkit-scrollbar,
+    #pst-anuncios-bottom::-webkit-scrollbar { display: none; }
+
+    .pst-card-anuncio {
+      pointer-events: auto;
+      flex: 0 0 auto;
+      max-width: 280px;
+      min-width: 200px;
+      background: linear-gradient(135deg, #2a201d 0%, #1A1210 100%);
+      border: 2px solid #FFD700;
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6), 0 0 20px rgba(255,215,0,0.3);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: pst-anuncio-in 0.4s ease;
+    }
+    .pst-card-anuncio:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 30px rgba(255,215,0,0.5);
+    }
+    .pst-card-anuncio .pst-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: #0a1420;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      overflow: hidden;
+    }
+    .pst-card-anuncio .pst-txt {
+      flex: 1;
+      min-width: 0;
+    }
+    .pst-card-anuncio .pst-titulo {
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .pst-card-anuncio .pst-sub {
+      font-size: 11px;
+      opacity: 0.85;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .pst-card-anuncio .pst-badge {
+      display: inline-block;
+      background: #FFD700;
+      color: #1A1210;
+      font-size: 9px;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-top: 3px;
+    }
+    @keyframes pst-anuncio-in {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .pst-lembrete {
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 9997;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .pst-lembrete:hover { transform: scale(1.01); }
+    .pst-lembrete.top { top: 64px; }
+    .pst-lembrete.bottom { bottom: 0; }
+
+    .pst-icone-flutuante {
+      position: fixed;
+      z-index: 9996;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 20px rgba(255,215,0,0.4);
+      border: 2px solid rgba(255,255,255,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+      overflow: hidden;
+    }
+    .pst-icone-flutuante img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .pst-icone-flutuante:hover {
+      transform: scale(1.12);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.6), 0 0 30px rgba(255,215,0,0.6);
+    }
+    .pst-icone-flutuante.top-right { top: 80px; right: 16px; }
+    .pst-icone-flutuante.top-left { top: 80px; left: 16px; }
+    .pst-icone-flutuante.bottom-right { bottom: 160px; right: 16px; }
+    .pst-icone-flutuante.bottom-left { bottom: 160px; left: 16px; }
+    .pst-icone-flutuante.flutuando {
+      animation: pst-flutuar 3s infinite ease-in-out;
+    }
+    @keyframes pst-flutuar {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .pst-icone-flutuante .pst-tooltip {
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.9);
+      color: #fff;
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      font-weight: 600;
+    }
+    .pst-icone-flutuante:hover .pst-tooltip { opacity: 1; }
   </style>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -510,7 +676,7 @@
     <img id="logoZoomImg" src="img/logo.jpg" alt="Logo Pasterry" />
   </div>
 
-  <!-- ===== POPUP DE CAPTURA DE LEAD (SEM PORCENTAGEM) ===== -->
+  <!-- ===== POPUP DE CAPTURA DE LEAD ===== -->
   <div class="lead-overlay" id="leadOverlay">
     <div class="lead-modal">
       <button class="close-lead" onclick="fecharLead()">×</button>
@@ -525,7 +691,7 @@
     </div>
   </div>
 
-  <!-- ===== BOTÃO FLUTUANTE DO BAÚ DE CUPONS (ESCONDIDO ATÉ CADASTRAR) ===== -->
+  <!-- ===== BOTÃO FLUTUANTE DO BAÚ DE CUPONS ===== -->
   <button class="btn-bau escondido" id="btnBau" onclick="abrirBau()" aria-label="Baú de Cupons">🎁</button>
 
   <!-- ===== MODAL DO BAÚ DE CUPONS ===== -->
@@ -540,7 +706,7 @@
     </div>
   </div>
 
-  <!-- ===== LIGHTBOX DE FOTO (TELA CHEIA) ===== -->
+  <!-- ===== LIGHTBOX DE FOTO ===== -->
   <div class="photo-lightbox" id="photoLightbox" onclick="fecharFoto()">
     <button class="lightbox-close" onclick="event.stopPropagation(); fecharFoto();" aria-label="Fechar foto">✕</button>
     <img class="lightbox-img" id="lightboxImg" src="" alt="Foto do produto" onclick="event.stopPropagation();" />
@@ -2741,6 +2907,140 @@
     console.log('🔍 Busca: por nome original, recheio, descrição, categoria e extras');
     console.log('📊 Tracker: eventos sendo enviados para a coleção "eventos"');
     console.log('🎁 Baú de Cupons: liberado para clientes cadastrados');
+    console.log('📣 Promoções: sistema de anúncios flutuantes ativo');
   </script>
+
+  <!-- ============================================================
+       SISTEMA DE PROMOÇÕES E ANÚNCIOS FLUTUANTES
+       ============================================================ -->
+  <script>
+  (function() {
+    function init() {
+      if (typeof firebase === 'undefined' || !firebase.apps.length) {
+        setTimeout(init, 300);
+        return;
+      }
+      const db = firebase.firestore();
+
+      db.collection('config').doc('promocoes').onSnapshot((snap) => {
+        if (!snap.exists) return;
+        const data = snap.data();
+        renderizarTudo(data);
+      }, (err) => {
+        console.warn('[promocoes] Erro:', err);
+      });
+    }
+
+    let intervalAnuncios = null;
+    let posicaoAtualAnuncio = 0;
+    let anunciosCache = [];
+    let configCache = { quantidade: 2, rotacao: 6, posicaoPadrao: 'top', ativo: true };
+
+    function renderizarTudo(data) {
+      const anuncios = data.anuncios || [];
+      const lembretes = data.lembretes || [];
+      const icones = data.icones || [];
+      configCache = data.config || { quantidade: 2, rotacao: 6, posicaoPadrao: 'top', ativo: true };
+
+      document.querySelectorAll('#pst-anuncios-top, #pst-anuncios-bottom, .pst-lembrete, .pst-icone-flutuante').forEach(el => el.remove());
+      if (intervalAnuncios) clearInterval(intervalAnuncios);
+
+      if (configCache.ativo !== false) {
+        anunciosCache = anuncios.filter(a => a.ativo !== false);
+        if (anunciosCache.length > 0) {
+          renderizarAnuncios();
+          const rotacaoMs = (configCache.rotacao || 6) * 1000;
+          intervalAnuncios = setInterval(() => {
+            posicaoAtualAnuncio++;
+            renderizarAnuncios();
+          }, rotacaoMs);
+        }
+      }
+
+      lembretes.filter(l => l.ativo !== false).forEach((l, i) => {
+        const el = document.createElement('div');
+        el.className = 'pst-lembrete ' + (l.posicao || 'top');
+        el.style.background = l.corFundo || '#FFD700';
+        el.style.color = l.corTexto || '#1A1210';
+        if (l.posicao === 'bottom') {
+          el.style.bottom = '90px';
+        } else {
+          el.style.top = (64 + (i * 36)) + 'px';
+        }
+        el.innerHTML = `${l.icone ? `<span>${l.icone}</span>` : ''}<span>${l.texto}</span>`;
+        if (l.link) {
+          el.addEventListener('click', () => window.location.href = l.link);
+        }
+        document.body.appendChild(el);
+      });
+
+      icones.filter(ic => ic.ativo !== false).forEach((ic) => {
+        const el = document.createElement('div');
+        el.className = 'pst-icone-flutuante ' + (ic.posicao || 'top-right') + (ic.flutuar !== false ? ' flutuando' : '');
+        el.style.background = ic.cor || '#FFD700';
+        if (ic.img) {
+          el.innerHTML = `<img src="${ic.img}" alt="" /><span class="pst-tooltip">${ic.tooltip || ''}</span>`;
+        } else {
+          el.innerHTML = `${ic.emoji || '🎯'}<span class="pst-tooltip">${ic.tooltip || ''}</span>`;
+        }
+        if (ic.link) {
+          el.addEventListener('click', () => window.location.href = ic.link);
+        }
+        document.body.appendChild(el);
+      });
+    }
+
+    function renderizarAnuncios() {
+      document.querySelectorAll('#pst-anuncios-top, #pst-anuncios-bottom').forEach(el => el.remove());
+      if (anunciosCache.length === 0) return;
+
+      const qtd = Math.min(configCache.quantidade || 2, anunciosCache.length);
+      const anunciosParaMostrar = [];
+      for (let i = 0; i < qtd; i++) {
+        anunciosParaMostrar.push(anunciosCache[(posicaoAtualAnuncio + i) % anunciosCache.length]);
+      }
+
+      const porPosicao = { top: [], bottom: [] };
+      anunciosParaMostrar.forEach(a => {
+        const pos = a.posicao || configCache.posicaoPadrao || 'top';
+        porPosicao[pos].push(a);
+      });
+
+      ['top', 'bottom'].forEach(pos => {
+        if (porPosicao[pos].length === 0) return;
+        const container = document.createElement('div');
+        container.id = 'pst-anuncios-' + pos;
+        container.innerHTML = porPosicao[pos].map(a => `
+          <div class="pst-card-anuncio" style="border-color:${a.cor || '#FFD700'};" data-link="${a.link || ''}">
+            <div class="pst-thumb">
+              ${a.img ? `<img src="${a.img}" alt="" style="width:100%;height:100%;object-fit:cover;" />` : '📣'}
+            </div>
+            <div class="pst-txt">
+              <div class="pst-titulo">${a.titulo || ''}</div>
+              ${a.subtitulo ? `<div class="pst-sub">${a.subtitulo}</div>` : ''}
+              ${a.badge ? `<div class="pst-badge" style="background:${a.cor || '#FFD700'};">${a.badge}</div>` : ''}
+            </div>
+          </div>
+        `).join('');
+
+        container.querySelectorAll('.pst-card-anuncio').forEach(card => {
+          const link = card.dataset.link;
+          if (link) {
+            card.addEventListener('click', () => window.location.href = link);
+          }
+        });
+
+        document.body.appendChild(container);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+  </script>
+
 </body>
 </html>
