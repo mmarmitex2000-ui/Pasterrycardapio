@@ -8,7 +8,7 @@
 /* ===== RESET E BASE ===== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ✅ MESMAS VARIÁVEIS DO index.html — puxam do Firestore */
+/* ✅ MESMAS VARIÁVEIS DO index.html — atualizadas dinamicamente pelo Firestore */
 :root {
   --bg-site: #1A1210;
   --bg-container: #1A1A1A;
@@ -151,9 +151,13 @@ h3 .count {
 
 /* ===== ITENS EXTRAS ===== */
 .extras {
-  display: flex; overflow-x: auto; gap: 10px;
-  margin: 8px 0 14px; padding: 4px 2px 8px;
-  scrollbar-width: none; -ms-overflow-style: none;
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  margin: 8px 0 14px;
+  padding: 4px 2px 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   scroll-snap-type: x mandatory;
 }
 .extras::-webkit-scrollbar { display: none; }
@@ -169,32 +173,55 @@ h3 .count {
 }
 .extra-card:hover { transform: translateY(-2px); border-color: var(--cor-categoria-ativa); }
 .extra-card img {
-  width: 100%; height: 55px; object-fit: cover;
-  border-radius: var(--raio-sm); background: var(--bg-input);
+  width: 100%;
+  height: 55px;
+  object-fit: cover;
+  border-radius: var(--raio-sm);
+  background: var(--bg-input);
 }
 .extra-card .nome {
-  font-size: 12px; font-weight: 600; margin: 6px 0 2px; color: var(--cor-fonte);
+  font-size: 12px;
+  font-weight: 600;
+  margin: 6px 0 2px;
+  color: var(--cor-fonte);
 }
 .extra-card .preco {
-  font-size: 13px; color: var(--cor-fonte-preco);
-  font-weight: 700; margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--cor-fonte-preco);
+  font-weight: 700;
+  margin-bottom: 6px;
 }
-.extra-card .btn { width: 100%; padding: 4px; font-size: 13px; border-radius: 6px; }
+.extra-card .btn {
+  width: 100%;
+  padding: 4px;
+  font-size: 13px;
+  border-radius: 6px;
+}
 .extra-card.loja-fechada { opacity: 0.5; }
 .extra-card.loja-fechada .btn { background: #555 !important; cursor: not-allowed; }
 
-/* ===== CUPOM ===== */
+/* ===== CUPOM DE DESCONTO ===== */
 .cupom-area {
-  background: var(--bg-card); border-radius: var(--raio-md);
-  padding: 14px 16px; margin: 10px 0 12px;
+  background: var(--bg-card);
+  border-radius: var(--raio-md);
+  padding: 14px 16px;
+  margin: 10px 0 12px;
   border: 1px solid var(--borda-sutil);
-  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 .cupom-area input {
-  flex: 1; min-width: 150px; padding: 10px 14px;
-  border-radius: var(--raio-sm); border: 1px solid var(--borda-sutil);
-  background: var(--bg-input); color: var(--cor-fonte);
-  font-size: 14px; text-transform: uppercase;
+  flex: 1;
+  min-width: 150px;
+  padding: 10px 14px;
+  border-radius: var(--raio-sm);
+  border: 1px solid var(--borda-sutil);
+  background: var(--bg-input);
+  color: var(--cor-fonte);
+  font-size: 14px;
+  text-transform: uppercase;
 }
 .cupom-area input:focus { outline: none; border-color: var(--cor-categoria-ativa); }
 .cupom-area input:disabled { opacity: 0.5; }
@@ -202,111 +229,167 @@ h3 .count {
 .cupom-aplicado {
   background: rgba(34, 197, 94, 0.15);
   border: 1px solid var(--cor-sucesso);
-  border-radius: 10px; padding: 10px 14px; margin: 8px 0;
-  display: none; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 8px;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 8px 0;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 .cupom-aplicado.visible { display: flex; }
 .cupom-aplicado .info { color: var(--cor-sucesso); font-weight: 600; }
 .cupom-aplicado .remove {
-  color: var(--cor-erro); cursor: pointer; font-weight: 700;
-  background: transparent; border: none; font-size: 14px;
+  color: var(--cor-erro);
+  cursor: pointer;
+  font-weight: 700;
+  background: transparent;
+  border: none;
+  font-size: 14px;
 }
 
-/* ===== CUPOM ESPECIAL ===== */
+/* ===== CUPOM ESPECIAL PROGRESSIVO ===== */
 .cupom-especial-area {
   background: rgba(255, 224, 102, 0.08);
   border-radius: var(--raio-md);
-  padding: 14px 16px; margin: 10px 0 12px;
+  padding: 14px 16px;
+  margin: 10px 0 12px;
   border: 2px solid var(--cor-categoria-ativa);
   display: none;
 }
 .cupom-especial-area.visible { display: block; }
 .cupom-especial-area .titulo {
-  color: var(--cor-categoria-ativa); font-weight: 700; font-size: 14px;
-  display: flex; align-items: center; gap: 8px;
+  color: var(--cor-categoria-ativa);
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .cupom-especial-area .descricao {
-  color: var(--cor-fonte-muted); font-size: 12px; margin: 4px 0 8px;
+  color: var(--cor-fonte-muted);
+  font-size: 12px;
+  margin: 4px 0 8px;
 }
 .cupom-especial-area .barra-container {
-  background: var(--bg-input); border-radius: 20px;
-  height: 20px; overflow: hidden; position: relative;
+  background: var(--bg-input);
+  border-radius: 20px;
+  height: 20px;
+  overflow: hidden;
+  position: relative;
   border: 1px solid var(--borda-sutil);
 }
 .cupom-especial-area .barra-container .barra {
   height: 100%;
   background: linear-gradient(90deg, var(--cor-categoria-ativa), var(--cor-promo));
-  border-radius: 20px; transition: width 0.5s ease;
-  width: 0%; position: relative;
+  border-radius: 20px;
+  transition: width 0.5s ease;
+  width: 0%;
+  position: relative;
 }
 .cupom-especial-area .barra-container .barra .label {
-  position: absolute; right: 8px; top: 50%;
-  transform: translateY(-50%); font-size: 10px;
-  font-weight: 700; color: #1A1210; white-space: nowrap;
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  color: #1A1210;
+  white-space: nowrap;
 }
 .cupom-especial-area .info-barra {
-  display: flex; justify-content: space-between;
-  font-size: 12px; color: var(--cor-fonte-muted); margin-top: 4px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--cor-fonte-muted);
+  margin-top: 4px;
 }
 .cupom-especial-area .info-barra .destaque { color: var(--cor-categoria-ativa); font-weight: 700; }
 .cupom-especial-area .info-barra .proximo { color: var(--cor-sucesso); }
 .cupom-especial-area .info-barra .falta { color: var(--cor-promo); }
 .cupom-especial-area .desconto-atual {
-  text-align: center; font-size: 20px; font-weight: 800;
-  color: var(--cor-categoria-ativa); margin: 8px 0 4px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--cor-categoria-ativa);
+  margin: 8px 0 4px;
 }
 .cupom-especial-area .desconto-atual .percent { font-size: 28px; }
 .cupom-especial-area .desconto-atual .label {
-  font-size: 14px; color: var(--cor-fonte-muted); font-weight: 400;
+  font-size: 14px;
+  color: var(--cor-fonte-muted);
+  font-weight: 400;
 }
 
 /* ===== CARRINHO ===== */
 .cart-empty { text-align: center; padding: 40px 20px; color: var(--cor-fonte-muted); }
 .cart-empty .icon { font-size: 48px; margin-bottom: 12px; }
 .cart-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 12px; background: var(--bg-card);
-  border-radius: var(--raio-md); margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--bg-card);
+  border-radius: var(--raio-md);
+  margin-bottom: 8px;
   border: 1px solid var(--borda-sutil);
   transition: transform 0.15s;
 }
 .cart-item:hover { transform: scale(1.01); }
 .cart-item img {
-  width: 50px; height: 50px; object-fit: cover;
-  border-radius: var(--raio-sm); background: var(--bg-input);
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: var(--raio-sm);
+  background: var(--bg-input);
 }
 .cart-item .info { flex: 1; min-width: 0; }
 .cart-item .info .title { font-weight: 600; font-size: 14px; color: var(--cor-fonte-titulo); }
 .cart-item .info .extras-list { font-size: 11px; color: var(--cor-promo); margin-top: 2px; }
 .cart-item .info .price { font-size: 12px; color: var(--cor-fonte-preco); }
 .cart-item .qty-control {
-  display: flex; align-items: center; gap: 6px;
-  background: rgba(255,255,255,0.05); border-radius: var(--raio-sm); padding: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.05);
+  border-radius: var(--raio-sm);
+  padding: 2px;
 }
 .cart-item .qty-control .btn { width: 28px; height: 28px; padding: 0; font-size: 16px; border-radius: 6px; }
 .cart-item .qty-control .qty { min-width: 24px; text-align: center; font-weight: 700; }
 .cart-item .item-total {
-  font-weight: 700; color: var(--cor-fonte-preco); font-size: 14px;
-  min-width: 50px; text-align: right;
+  font-weight: 700;
+  color: var(--cor-fonte-preco);
+  font-size: 14px;
+  min-width: 50px;
+  text-align: right;
 }
 .cart-item.extra-item { border-left: 3px solid var(--cor-promo); opacity: 0.85; }
 .cart-item.extra-item .info .title { color: var(--cor-promo); }
 
 /* ===== TOTAIS ===== */
 .totais {
-  background: var(--bg-card); border-radius: var(--raio-md);
-  padding: 14px 16px; margin-bottom: 12px;
+  background: var(--bg-card);
+  border-radius: var(--raio-md);
+  padding: 14px 16px;
+  margin-bottom: 12px;
   border: 1px solid var(--borda-sutil);
 }
 .totais .linha {
-  display: flex; justify-content: space-between;
-  padding: 3px 0; font-size: 14px; color: var(--cor-fonte-muted);
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+  font-size: 14px;
+  color: var(--cor-fonte-muted);
 }
 .totais .linha.total {
   border-top: 1px solid var(--borda-sutil);
-  margin-top: 6px; padding-top: 10px;
-  font-size: 18px; font-weight: 800; color: #fff;
+  margin-top: 6px;
+  padding-top: 10px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
 }
 .totais .linha.total .valor { color: var(--cor-fonte-preco); }
 .totais .linha .destaque { color: var(--cor-sucesso); font-weight: 600; }
@@ -316,11 +399,15 @@ h3 .count {
 
 /* ===== RODAPÉ ===== */
 .footer-actions {
-  position: fixed; bottom: 0; left: 0; width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   background: linear-gradient(180deg, transparent, var(--bg-site) 20%, var(--bg-site));
   padding: 12px 16px;
   padding-bottom: calc(12px + env(safe-area-inset-bottom));
-  box-sizing: border-box; z-index: 50;
+  box-sizing: border-box;
+  z-index: 50;
 }
 .footer-buttons { display: flex; gap: 12px; }
 .btn-large { padding: 14px 16px; font-size: 16px; flex: 1; border-radius: var(--raio-md); }
@@ -328,15 +415,28 @@ h3 .count {
 
 /* ===== MODAL ===== */
 #modalEndereco {
-  display: none; position: fixed; top: 0; left: 0;
-  width: 100%; height: 100%; background: rgba(0,0,0,0.75);
-  justify-content: center; align-items: center;
-  z-index: 110; backdrop-filter: blur(4px); padding: 16px;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  justify-content: center;
+  align-items: center;
+  z-index: 110;
+  backdrop-filter: blur(4px);
+  padding: 16px;
 }
 .modal-content {
-  background: var(--bg-modal); padding: 20px; border-radius: var(--raio-lg);
-  width: 380px; max-width: 100%; max-height: 90vh;
-  overflow: auto; scrollbar-width: none;
+  background: var(--bg-modal);
+  padding: 20px;
+  border-radius: var(--raio-lg);
+  width: 380px;
+  max-width: 100%;
+  max-height: 90vh;
+  overflow: auto;
+  scrollbar-width: none;
   border: 1px solid var(--borda-sutil);
   box-shadow: var(--sombra-modal);
   animation: modalIn 0.3s ease;
@@ -347,86 +447,128 @@ h3 .count {
 }
 .modal-content::-webkit-scrollbar { display: none; }
 .modal-content .modal-header {
-  display: flex; justify-content: space-between;
-  align-items: center; margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
 }
 .modal-content .modal-header h3 { margin: 0; font-size: 20px; }
 .modal-content .close-btn {
-  background: rgba(255,255,255,0.05); border: none;
-  color: var(--cor-fonte-muted); width: 32px; height: 32px;
-  border-radius: 50%; font-size: 18px; cursor: pointer;
+  background: rgba(255,255,255,0.05);
+  border: none;
+  color: var(--cor-fonte-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
   transition: background 0.2s;
 }
 .modal-content .close-btn:hover { background: rgba(255,255,255,0.1); }
 .modal-content input,
 .modal-content select {
-  width: 100%; padding: 10px 12px; margin: 5px 0;
+  width: 100%;
+  padding: 10px 12px;
+  margin: 5px 0;
   border: 1px solid var(--borda-sutil);
-  border-radius: var(--raio-sm); background: var(--bg-input);
-  color: var(--cor-fonte); font-size: 14px;
-  box-sizing: border-box; transition: border-color 0.2s;
+  border-radius: var(--raio-sm);
+  background: var(--bg-input);
+  color: var(--cor-fonte);
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
 }
 .modal-content input:focus,
 .modal-content select:focus {
-  outline: none; border-color: var(--cor-categoria-ativa);
+  outline: none;
+  border-color: var(--cor-categoria-ativa);
   box-shadow: 0 0 0 3px rgba(255,224,102,0.15);
 }
 .modal-content input::placeholder { color: var(--cor-fonte-muted); opacity: 0.6; }
 .modal-content .field-label {
-  font-size: 12px; color: var(--cor-fonte-muted);
-  margin-top: 8px; display: block;
+  font-size: 12px;
+  color: var(--cor-fonte-muted);
+  margin-top: 8px;
+  display: block;
 }
 .modal-content .field-label .required { color: var(--cor-erro); }
 .geo-btn {
-  width: 100%; padding: 12px;
+  width: 100%;
+  padding: 12px;
   background: linear-gradient(135deg, #1a5a3a, #2a8a5a);
-  color: #fff; border: none; border-radius: var(--raio-sm);
-  font-weight: 700; margin: 6px 0; cursor: pointer;
+  color: #fff;
+  border: none;
+  border-radius: var(--raio-sm);
+  font-weight: 700;
+  margin: 6px 0;
+  cursor: pointer;
   transition: transform 0.15s, filter 0.2s;
 }
 .geo-btn:hover { filter: brightness(1.1); }
 .geo-btn:active { transform: scale(0.97); }
 .geo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .geo-status {
-  text-align: center; font-size: 12px;
-  min-height: 18px; color: var(--cor-sucesso); margin-bottom: 4px;
+  text-align: center;
+  font-size: 12px;
+  min-height: 18px;
+  color: var(--cor-sucesso);
+  margin-bottom: 4px;
 }
 .geo-status.error { color: var(--cor-erro); }
 .cupom-modal {
   background: var(--bg-input);
   border: 1px dashed var(--borda-sutil);
-  padding: 12px 14px; margin: 12px 0;
-  border-radius: var(--raio-sm); font-size: 13px;
+  padding: 12px 14px;
+  margin: 12px 0;
+  border-radius: var(--raio-sm);
+  font-size: 13px;
 }
 .cupom-modal h4 { margin: 0 0 6px; color: var(--cor-fonte-preco); font-size: 14px; }
 .cupom-modal .itens { color: var(--cor-fonte-muted); font-size: 13px; line-height: 1.6; }
 .cupom-modal .total {
-  margin-top: 8px; padding-top: 8px;
-  border-top: 1px solid var(--borda-sutil); font-weight: 700;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--borda-sutil);
+  font-weight: 700;
 }
 .cupom-modal .total .destaque { color: var(--cor-fonte-preco); }
 .cupom-modal .total .desconto { color: var(--cor-sucesso); }
 .erro-geral {
-  background: rgba(255,92,92,0.12); color: #ffb4b4;
-  padding: 12px; border-radius: var(--raio-sm); margin-top: 10px;
-  display: none; border: 1px solid rgba(255,92,92,0.2); font-size: 13px;
+  background: rgba(255,92,92,0.12);
+  color: #ffb4b4;
+  padding: 12px;
+  border-radius: var(--raio-sm);
+  margin-top: 10px;
+  display: none;
+  border: 1px solid rgba(255,92,92,0.2);
+  font-size: 13px;
 }
 .erro-geral.visible { display: block; }
 #modalEndereco .btn.primary {
-  width: 100%; margin-top: 10px; padding: 14px;
-  font-size: 16px; border-radius: var(--raio-md);
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: var(--raio-md);
 }
 
 /* ===== LOADING ===== */
 .loading-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-  display: none; align-items: center; justify-content: center;
-  z-index: 120; backdrop-filter: blur(6px);
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 120;
+  backdrop-filter: blur(6px);
 }
 .loading-overlay.active { display: flex; }
 .loading-content { text-align: center; color: #fff; }
 .spinner {
-  width: 50px; height: 50px; border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
   border: 4px solid rgba(255,255,255,0.1);
   border-top-color: var(--cor-categoria-ativa);
   animation: spin 0.8s linear infinite;
@@ -436,12 +578,18 @@ h3 .count {
 .loading-content .sub { font-size: 13px; color: var(--cor-fonte-muted); margin-top: 4px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ===== LIMPAR ===== */
+/* ===== LIMPAR SACOLA ===== */
 .btn-limpar {
-  background: transparent; border: 1px solid rgba(220,53,69,0.3);
-  color: var(--cor-erro); padding: 6px 14px; border-radius: var(--raio-sm);
-  cursor: pointer; font-size: 13px; font-weight: 600;
-  transition: background 0.2s; margin-top: 4px;
+  background: transparent;
+  border: 1px solid rgba(220,53,69,0.3);
+  color: var(--cor-erro);
+  padding: 6px 14px;
+  border-radius: var(--raio-sm);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s;
+  margin-top: 4px;
 }
 .btn-limpar:hover { background: rgba(220,53,69,0.1); }
 .btn-limpar:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -470,17 +618,27 @@ h3 .count {
 
 /* ===== TOAST ===== */
 .toast-container {
-  position: fixed; top: 16px; left: 50%;
-  transform: translateX(-50%); z-index: 130; pointer-events: none;
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 130;
+  pointer-events: none;
 }
 .toast {
-  pointer-events: auto; background: rgba(0,0,0,0.9); color: #fff;
-  padding: 12px 20px; border-radius: var(--raio-md);
-  font-weight: 600; font-size: 14px;
+  pointer-events: auto;
+  background: rgba(0,0,0,0.9);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: var(--raio-md);
+  font-weight: 600;
+  font-size: 14px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.5);
   border: 1px solid var(--borda-sutil);
   animation: toastIn 0.3s ease, toastOut 0.3s ease 2s forwards;
-  display: flex; align-items: center; gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 @keyframes toastIn {
   from { opacity: 0; transform: translateY(-20px); }
@@ -500,18 +658,18 @@ h3 .count {
   <span class="badge" id="cartBadge">0 itens</span>
 </div>
 
-<!-- ===== LOJA FECHADA ===== -->
+<!-- ===== MENSAGEM LOJA FECHADA ===== -->
 <div id="lojaFechadaMsg" class="loja-fechada-msg">
   <span>🔴 <strong>Loja fechada</strong> – Não é possível adicionar itens no momento.</span>
 </div>
 
-<!-- ===== EXTRAS ===== -->
+<!-- ===== ITENS EXTRAS ===== -->
 <h3>🧂 Itens Extras <span class="count">(adicione ao seu pedido)</span></h3>
 <div class="extras" id="extrasContainer">
   <div style="color:#6a7a8a; padding:10px; text-align:center; width:100%;">Carregando itens extras...</div>
 </div>
 
-<!-- ===== CUPOM ===== -->
+<!-- ===== CUPOM DE DESCONTO ===== -->
 <div class="cupom-area">
   <input type="text" id="cupomInput" placeholder="Digite seu cupom de desconto" maxlength="20" />
   <button class="btn cupom" id="btnAplicarCupom">🎫 Aplicar</button>
@@ -521,7 +679,7 @@ h3 .count {
   <button class="remove" id="btnRemoverCupom">✕ Remover</button>
 </div>
 
-<!-- ===== CUPOM ESPECIAL ===== -->
+<!-- ===== CUPOM ESPECIAL PROGRESSIVO ===== -->
 <div class="cupom-especial-area" id="cupomEspecialArea">
   <div class="titulo">⭐ Cupom Especial Progressivo</div>
   <div class="descricao">O desconto aumenta conforme o valor da sacola</div>
@@ -657,26 +815,12 @@ var cupomEspecialAtivo = false;
 var cupomEspecialAplicado = false;
 var cores = {};
 
-var getCart = function() {
-  try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
-  catch(e) { return []; }
-};
-var setCart = function(c) { localStorage.setItem(CART_KEY, JSON.stringify(c)); };
-var money = function(v) { return 'R$ ' + Number(v || 0).toFixed(2).replace('.', ','); };
-
-var distanciaKm = function(a, b, c, d) {
-  var R = 6371;
-  var e = (c - a) * Math.PI / 180;
-  var f = (d - b) * Math.PI / 180;
-  return R * 2 * Math.asin(Math.sqrt(Math.sin(e/2)*Math.sin(e/2) + Math.cos(a * Math.PI / 180) * Math.cos(c * Math.PI / 180) * Math.sin(f/2)*Math.sin(f/2)));
-};
-
 // ============================================================
 // ✅ CARREGAR CORES DO FIRESTORE (mesmo do index.html)
 // ============================================================
 function carregarCores() {
   try {
-    db.collection('config').doc('cores').onSnapshot((doc) => {
+    db.collection('config').doc('cores').onSnapshot(function(doc) {
       if (doc.exists) {
         cores = doc.data();
       } else {
@@ -690,18 +834,23 @@ function carregarCores() {
         };
       }
       aplicarCores(cores);
-    }, (error) => console.error('Erro ao carregar cores:', error));
-  } catch (error) { console.error('Erro crítico cores:', error); }
+    }, function(error) {
+      console.error('Erro ao carregar cores:', error);
+    });
+  } catch (error) {
+    console.error('Erro crítico cores:', error);
+  }
 }
 
 function aplicarCores(coresObj) {
-  const root = document.documentElement;
+  var root = document.documentElement;
   root.style.setProperty('--bg-site', coresObj.corFundoSite || '#1A1210');
   root.style.setProperty('--bg-container', coresObj.corContainer || '#1A1A1A');
   root.style.setProperty('--bg-topo', coresObj.corTopo || '#1A1210');
   root.style.setProperty('--bg-card', coresObj.corContainer || '#22201E');
-  root.style.setProperty('--bg-card-hover', coresObj.corContainer ? coresObj.corContainer + 'dd' : '#2A2725');
+  root.style.setProperty('--bg-card-hover', (coresObj.corContainer || '#22201E') + 'dd');
   root.style.setProperty('--bg-modal', coresObj.corContainer || '#1F1A18');
+  root.style.setProperty('--bg-input', (coresObj.corFundoSite || '#1A1210') + 'dd');
   root.style.setProperty('--cor-categoria-ativa', coresObj.corCategoriaAtiva || '#FFE066');
   root.style.setProperty('--cor-botao-adicionar', coresObj.corBotaoAdicionar || '#2B7245');
   root.style.setProperty('--cor-categoria', coresObj.corCategoria || '#FFD700');
@@ -713,6 +862,32 @@ function aplicarCores(coresObj) {
   root.style.setProperty('--cor-fonte-preco', coresObj.corFontePreco || '#AC940D');
   root.style.setProperty('--cor-fonte-muted', coresObj.corFonteMuted || '#9AA6B2');
 }
+
+// ============================================================
+// HELPERS
+// ============================================================
+var getCart = function() {
+  try {
+    return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+  } catch(e) {
+    return [];
+  }
+};
+
+var setCart = function(c) {
+  localStorage.setItem(CART_KEY, JSON.stringify(c));
+};
+
+var money = function(v) {
+  return 'R$ ' + Number(v || 0).toFixed(2).replace('.', ',');
+};
+
+var distanciaKm = function(a, b, c, d) {
+  var R = 6371;
+  var e = (c - a) * Math.PI / 180;
+  var f = (d - b) * Math.PI / 180;
+  return R * 2 * Math.asin(Math.sqrt(Math.sin(e/2)*Math.sin(e/2) + Math.cos(a * Math.PI / 180) * Math.cos(c * Math.PI / 180) * Math.sin(f/2)*Math.sin(f/2)));
+};
 
 // ============================================================
 // GEOMETRIA
@@ -729,6 +904,7 @@ function pontoDentroPoligono(lat, lng, vertices) {
   }
   return inside;
 }
+
 function pontoDentroCirculo(lat, lng, center, raio) {
   var R = 6371;
   var dLat = (lat - center.lat) * Math.PI / 180;
@@ -740,13 +916,17 @@ function pontoDentroCirculo(lat, lng, center, raio) {
   var dist = R * c * 1000;
   return dist <= raio;
 }
+
 function calcularTaxa(km, lat, lng) {
   if (areasEntrega.length > 0 && lat !== undefined && lng !== undefined) {
     for (var i = 0; i < areasEntrega.length; i++) {
       var area = areasEntrega[i];
       var dentro = false;
-      if (area.tipo === 'polygon' && area.path) dentro = pontoDentroPoligono(lat, lng, area.path);
-      else if (area.tipo === 'circle' && area.center && area.raio) dentro = pontoDentroCirculo(lat, lng, area.center, area.raio);
+      if (area.tipo === 'polygon' && area.path) {
+        dentro = pontoDentroPoligono(lat, lng, area.path);
+      } else if (area.tipo === 'circle' && area.center && area.raio) {
+        dentro = pontoDentroCirculo(lat, lng, area.center, area.raio);
+      }
       if (dentro) return Number(area.taxa) || 0;
     }
     return 0;
@@ -772,7 +952,9 @@ function showToast(msg, type) {
   var icon = type === 'success' ? '✅' : '⚠️';
   toast.innerHTML = icon + ' ' + msg;
   container.appendChild(toast);
-  setTimeout(function() { if (toast.parentNode) toast.remove(); }, 2200);
+  setTimeout(function() {
+    if (toast.parentNode) toast.remove();
+  }, 2200);
 }
 
 // ============================================================
@@ -792,7 +974,7 @@ function carregarCupomEspecial() {
       atualizarCupomEspecial();
     })
     .catch(function(err) {
-      console.error('Erro ao carregar cupom especial:', err);
+      console.error('❌ Erro ao carregar cupom especial:', err);
       faixasEspeciais = [];
       cupomEspecialAtivo = false;
       atualizarCupomEspecial();
@@ -860,6 +1042,7 @@ function atualizarCupomEspecial() {
     document.getElementById('faltaDesconto').innerHTML = 'Falta: <span class="falta">' + money(sorted[0].minimo - total) + '</span>';
   }
 
+  // Se o cupom especial JÁ estava aplicado, atualiza o percentual
   if (cupomEspecialAplicado && cupomAplicado && cupomAplicado.especial) {
     if (desconto > 0) {
       cupomAplicado.desconto = desconto;
@@ -883,7 +1066,10 @@ function atualizarCupomEspecial() {
 function getCartTotal() {
   var c = getCart();
   var total = 0;
-  for (var i = 0; i < c.length; i++) total += (c[i].precoTotal || c[i].price || 0) * (c[i].qty || 1);
+  for (var i = 0; i < c.length; i++) {
+    var precoItem = c[i].precoTotal || c[i].price || 0;
+    total += precoItem * (c[i].qty || 1);
+  }
   return total;
 }
 
@@ -892,8 +1078,12 @@ function getCartTotal() {
 // ============================================================
 function carregarStatusLoja() {
   db.collection('config').doc('loja').onSnapshot(function(doc) {
-    if (doc.exists) lojaAberta = doc.data().lojaAberta !== undefined ? doc.data().lojaAberta : true;
-    else lojaAberta = true;
+    if (doc.exists) {
+      var data = doc.data();
+      lojaAberta = data.lojaAberta !== undefined ? data.lojaAberta : true;
+    } else {
+      lojaAberta = true;
+    }
     atualizarInterfaceLoja();
   }, function(error) {
     console.error('Erro ao carregar status da loja:', error);
@@ -909,10 +1099,20 @@ function atualizarInterfaceLoja() {
 
   if (!lojaAberta) {
     msgDiv.style.display = 'block';
-    if (btnConfirmar) { btnConfirmar.disabled = true; btnConfirmar.textContent = '🔴 Loja Fechada'; btnConfirmar.style.background = '#555'; }
+    if (btnConfirmar) {
+      btnConfirmar.disabled = true;
+      btnConfirmar.textContent = '🔴 Loja Fechada';
+      btnConfirmar.style.background = '#555';
+    }
     if (btnLimpar) btnLimpar.disabled = true;
-    document.querySelectorAll('.extra-card .btn').forEach(function(btn) { btn.disabled = true; btn.textContent = '🔴 Fechado'; btn.style.background = '#555'; });
-    document.querySelectorAll('.extra-card').forEach(function(card) { card.classList.add('loja-fechada'); });
+    document.querySelectorAll('.extra-card .btn').forEach(function(btn) {
+      btn.disabled = true;
+      btn.textContent = '🔴 Fechado';
+      btn.style.background = '#555';
+    });
+    document.querySelectorAll('.extra-card').forEach(function(card) {
+      card.classList.add('loja-fechada');
+    });
   } else {
     msgDiv.style.display = 'none';
     if (btnConfirmar) {
@@ -922,13 +1122,19 @@ function atualizarInterfaceLoja() {
       btnConfirmar.style.background = '';
     }
     if (btnLimpar) btnLimpar.disabled = false;
-    document.querySelectorAll('.extra-card .btn').forEach(function(btn) { btn.disabled = false; btn.textContent = '+ Adicionar'; btn.style.background = ''; });
-    document.querySelectorAll('.extra-card').forEach(function(card) { card.classList.remove('loja-fechada'); });
+    document.querySelectorAll('.extra-card .btn').forEach(function(btn) {
+      btn.disabled = false;
+      btn.textContent = '+ Adicionar';
+      btn.style.background = '';
+    });
+    document.querySelectorAll('.extra-card').forEach(function(card) {
+      card.classList.remove('loja-fechada');
+    });
   }
 }
 
 // ============================================================
-// EXTRAS / CUPONS
+// EXTRAS PADRÃO / CUPONS FALLBACK
 // ============================================================
 var EXTRAS_PADRAO = [
   { nome: 'Molho Barbecue', preco: 5.00, img: '' },
@@ -944,15 +1150,24 @@ var CUPONS_FALLBACK = [
   { codigo: 'TESTE50', desconto: 50, minimo: 0 }
 ];
 
+// ============================================================
+// CUPONS
+// ============================================================
 function carregarCupons() {
   db.collection('config').doc('cupons').get()
     .then(function(doc) {
       if (doc.exists) {
         var data = doc.data();
-        if (data.cupons && Array.isArray(data.cupons) && data.cupons.length > 0) cuponsValidos = data.cupons;
-        else if (data.cupom && Array.isArray(data.cupom) && data.cupom.length > 0) cuponsValidos = data.cupom;
-        else cuponsValidos = CUPONS_FALLBACK;
-      } else cuponsValidos = CUPONS_FALLBACK;
+        if (data.cupons && Array.isArray(data.cupons) && data.cupons.length > 0) {
+          cuponsValidos = data.cupons;
+        } else if (data.cupom && Array.isArray(data.cupom) && data.cupom.length > 0) {
+          cuponsValidos = data.cupom;
+        } else {
+          cuponsValidos = CUPONS_FALLBACK;
+        }
+      } else {
+        cuponsValidos = CUPONS_FALLBACK;
+      }
 
       var saved = localStorage.getItem(CUPOM_KEY);
       if (saved) {
@@ -990,11 +1205,12 @@ function carregarCupons() {
           cupomAplicado = null;
         }
       }
+
       renderTotais();
       renderCupom();
     })
     .catch(function(err) {
-      console.error('Erro ao carregar cupons:', err);
+      console.error('❌ Erro ao carregar cupons:', err);
       cuponsValidos = CUPONS_FALLBACK;
       renderTotais();
       renderCupom();
@@ -1002,40 +1218,67 @@ function carregarCupons() {
 }
 
 function aplicarCupom() {
-  if (!lojaAberta) { showToast('Loja fechada. Não é possível aplicar cupons.', 'error'); return; }
+  if (!lojaAberta) {
+    showToast('Loja fechada. Não é possível aplicar cupons.', 'error');
+    return;
+  }
+
   var codigo = document.getElementById('cupomInput').value.trim().toUpperCase();
-  if (!codigo) { showToast('Digite um código de cupom.', 'error'); return; }
+  if (!codigo) {
+    showToast('Digite um código de cupom.', 'error');
+    return;
+  }
 
   if (codigo === 'DESCONTO_PROGRESSIVO') {
     var total = getCartTotal();
     var desconto = calcularDescontoProgressivo(total);
     if (desconto > 0) {
       cupomEspecialAplicado = true;
-      var cupomEspecial = { codigo: 'DESCONTO_PROGRESSIVO', desconto: desconto, minimo: 0, especial: true };
+      var cupomEspecial = {
+        codigo: 'DESCONTO_PROGRESSIVO',
+        desconto: desconto,
+        minimo: 0,
+        especial: true
+      };
       cupomAplicado = cupomEspecial;
       localStorage.setItem(CUPOM_KEY, JSON.stringify(cupomEspecial));
       document.getElementById('cupomAplicado').classList.add('visible');
       document.getElementById('cupomInput').disabled = true;
       document.getElementById('btnAplicarCupom').disabled = true;
       showToast('⭐ Cupom especial aplicado! ' + desconto + '% de desconto.');
-      if (typeof window.trackEvent === 'function') window.trackEvent('apply_coupon', { codigo: 'DESCONTO_PROGRESSIVO', desconto: desconto, especial: true });
+
+      if (typeof window.trackEvent === 'function') {
+        window.trackEvent('apply_coupon', { codigo: 'DESCONTO_PROGRESSIVO', desconto: desconto, especial: true });
+      }
+
       renderTotais();
       renderCupom();
       return;
-    } else { showToast('⚠️ Adicione mais itens para ganhar desconto!', 'error'); return; }
+    } else {
+      showToast('⚠️ Adicione mais itens para ganhar desconto!', 'error');
+      return;
+    }
   }
 
   var cupom = null;
   for (var i = 0; i < cuponsValidos.length; i++) {
-    if (cuponsValidos[i].codigo === codigo) { cupom = cuponsValidos[i]; break; }
+    if (cuponsValidos[i].codigo === codigo) {
+      cupom = cuponsValidos[i];
+      break;
+    }
   }
-  if (!cupom) { showToast('Cupom inválido.', 'error'); return; }
+
+  if (!cupom) {
+    showToast('Cupom inválido.', 'error');
+    return;
+  }
 
   var subtotal = getCartTotal();
   if (cupom.minimo && subtotal < cupom.minimo) {
     showToast('⚠️ Valor mínimo para este cupom: ' + money(cupom.minimo) + '. Adicione mais itens.', 'error');
     return;
   }
+
   if (cupomEspecialAplicado) cupomEspecialAplicado = false;
 
   cupomAplicado = cupom;
@@ -1044,7 +1287,11 @@ function aplicarCupom() {
   document.getElementById('cupomInput').disabled = true;
   document.getElementById('btnAplicarCupom').disabled = true;
   showToast('✅ Cupom ' + cupom.codigo + ' aplicado! ' + cupom.desconto + '% de desconto.');
-  if (typeof window.trackEvent === 'function') window.trackEvent('apply_coupon', { codigo: cupom.codigo, desconto: cupom.desconto, total: subtotal });
+
+  if (typeof window.trackEvent === 'function') {
+    window.trackEvent('apply_coupon', { codigo: cupom.codigo, desconto: cupom.desconto, total: subtotal });
+  }
+
   renderTotais();
   renderCupom();
 }
@@ -1072,14 +1319,19 @@ function carregarExtras() {
       snapshot.forEach(function(doc) {
         var data = doc.data();
         if (data.ativo !== false) {
-          extras.push({ id: doc.id, nome: data.nome || data.name || 'Item', preco: data.preco || data.price || 0, img: data.img || '' });
+          extras.push({
+            id: doc.id,
+            nome: data.nome || data.name || 'Item',
+            preco: data.preco || data.price || 0,
+            img: data.img || ''
+          });
         }
       });
       renderExtras();
       atualizarInterfaceLoja();
     })
     .catch(function(err) {
-      console.error('Erro ao carregar extras:', err);
+      console.error('❌ Erro ao carregar extras:', err);
       extras = EXTRAS_PADRAO.slice();
       renderExtras();
       atualizarInterfaceLoja();
@@ -1089,10 +1341,12 @@ function carregarExtras() {
 function renderExtras() {
   var container = document.getElementById('extrasContainer');
   if (!container) return;
+
   if (!extras || extras.length === 0) {
     container.innerHTML = '<div style="color:#6a7a8a; padding:20px; text-align:center; width:100%;"><div style="font-size:32px; margin-bottom:8px;">🧂</div>Nenhum item extra disponível.<br><small style="font-size:11px;">Adicione no Painel Admin</small></div>';
     return;
   }
+
   var html = '';
   for (var i = 0; i < extras.length; i++) {
     var extra = extras[i];
@@ -1100,10 +1354,13 @@ function renderExtras() {
     var preco = extra.preco || extra.price || 0;
     var img = extra.img || '';
     var nomeEscapado = nome.replace(/'/g, "\\'");
+
     var imgSrc = img || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%2248%22%3E%3Crect width=%22120%22 height=%2248%22 fill=%22%230a1420%22/%3E%3Ctext x=%2260%22 y=%2230%22 text-anchor=%22middle%22 fill=%22%239aa6b2%22 font-size=%2214%22%3E🧂%3C/text%3E%3C/svg%3E';
+
     var btnDisabled = !lojaAberta ? 'disabled' : '';
     var btnText = lojaAberta ? '+ Adicionar' : '🔴 Fechado';
     var cardClass = lojaAberta ? '' : 'loja-fechada';
+
     html += '<div class="extra-card ' + cardClass + '">';
     html += '<img src="' + imgSrc + '" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%2248%22%3E%3Crect width=%22120%22 height=%2248%22 fill=%22%230a1420%22/%3E%3Ctext x=%2260%22 y=%2230%22 text-anchor=%22middle%22 fill=%22%239aa6b2%22 font-size=%2214%22%3E🧂%3C/text%3E%3C/svg%3E\'" />';
     html += '<div class="nome">' + nome + '</div>';
@@ -1111,24 +1368,43 @@ function renderExtras() {
     html += '<button class="btn primary small extra-add" ' + btnDisabled + ' onclick="addExtra(\'' + nomeEscapado + '\', ' + preco + ', \'' + (img || '') + '\')">' + btnText + '</button>';
     html += '</div>';
   }
+
   container.innerHTML = html;
 }
 
 window.addExtra = function(nome, preco, img) {
-  if (!lojaAberta) { showToast('🔴 Loja fechada. Não é possível adicionar itens.', 'error'); return; }
+  if (!lojaAberta) {
+    showToast('🔴 Loja fechada. Não é possível adicionar itens.', 'error');
+    return;
+  }
+
   var c = getCart();
   var id = 'extra_' + nome.replace(/\s/g, '_');
   var existente = null;
-  for (var i = 0; i < c.length; i++) { if (c[i].id === id) { existente = c[i]; break; } }
-  if (existente) existente.qty++;
-  else c.push({ id: id, title: nome, price: preco, precoTotal: preco, qty: 1, img: img || '', tipo: 'extra', isExtra: true });
+  for (var i = 0; i < c.length; i++) {
+    if (c[i].id === id) { existente = c[i]; break; }
+  }
+  if (existente) {
+    existente.qty++;
+  } else {
+    c.push({
+      id: id,
+      title: nome,
+      price: preco,
+      precoTotal: preco,
+      qty: 1,
+      img: img || '',
+      tipo: 'extra',
+      isExtra: true
+    });
+  }
   setCart(c);
   renderCart();
   showToast(nome + ' adicionado!');
 };
 
 // ============================================================
-// CARRINHO
+// RENDER CARRINHO
 // ============================================================
 function renderCart() {
   var c = getCart();
@@ -1150,12 +1426,15 @@ function renderCart() {
       var precoItem = it.precoTotal || it.price || 0;
       var sub = precoItem * (it.qty || 1);
       var isExtra = it.tipo === 'extra' || it.isExtra === true;
+
       var imgSrc = it.img || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect width=%2250%22 height=%2250%22 fill=%22%230a1420%22/%3E%3Ctext x=%2225%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%239aa6b2%22 font-size=%2214%22%3E' + (isExtra ? '🧂' : '🍕') + '%3C/text%3E%3C/svg%3E';
+
       var extrasHtml = '';
       if (it.extras && it.extras.length > 0) {
         var nomesExtras = it.extras.map(function(e) { return e.nome; }).join(', ');
         extrasHtml = '<div class="extras-list">➕ ' + nomesExtras + '</div>';
       }
+
       html += '<div class="cart-item' + (isExtra ? ' extra-item' : '') + '">';
       html += '<img src="' + imgSrc + '" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect width=%2250%22 height=%2250%22 fill=%22%230a1420%22/%3E%3Ctext x=%2225%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%239aa6b2%22 font-size=%2214%22%3E' + (isExtra ? '🧂' : '🍕') + '%3C/text%3E%3C/svg%3E\'" />';
       html += '<div class="info">';
@@ -1176,8 +1455,15 @@ function renderCart() {
   renderTotais();
   var btn = document.getElementById('btnConfirmar');
   if (btn) {
-    if (!lojaAberta) { btn.disabled = true; btn.textContent = '🔴 Loja Fechada'; btn.style.background = '#555'; }
-    else { btn.disabled = c.length === 0; btn.textContent = '✅ Confirmar'; btn.style.background = ''; }
+    if (!lojaAberta) {
+      btn.disabled = true;
+      btn.textContent = '🔴 Loja Fechada';
+      btn.style.background = '#555';
+    } else {
+      btn.disabled = c.length === 0;
+      btn.textContent = '✅ Confirmar';
+      btn.style.background = '';
+    }
   }
   atualizarCupomEspecial();
 }
@@ -1191,8 +1477,14 @@ function alterarQtd(i, delta) {
 }
 
 function limparSacola() {
-  if (!lojaAberta) { showToast('Loja fechada. Não é possível esvaziar a sacola.', 'error'); return; }
-  if (getCart().length === 0) { showToast('Sacola já está vazia', 'warning'); return; }
+  if (!lojaAberta) {
+    showToast('Loja fechada. Não é possível esvaziar a sacola.', 'error');
+    return;
+  }
+  if (getCart().length === 0) {
+    showToast('Sacola já está vazia', 'warning');
+    return;
+  }
   if (confirm('Tem certeza que deseja esvaziar a sacola?')) {
     localStorage.removeItem(CART_KEY);
     localStorage.removeItem(CUPOM_KEY);
@@ -1219,6 +1511,7 @@ function renderTotais() {
   var container = document.getElementById('totais');
   var naoAtendido = (areasEntrega.length > 0 && taxaAtual === 0);
   var entregaTexto = naoAtendido ? '🚫 Não atendemos' : (taxaAtual !== null ? money(taxaAtual) : '—');
+
   container.innerHTML =
     '<div class="linha"><span>Subtotal</span><span>' + money(sub) + '</span></div>' +
     (cupomAplicado ? '<div class="linha"><span>Desconto (' + cupomAplicado.desconto + '%)</span><span class="desconto">-' + money(desconto) + '</span></div>' : '') +
@@ -1335,6 +1628,7 @@ function calcularTaxaEndereco() {
   var numero = document.getElementById('numero');
   var cidade = document.getElementById('cidade');
   if (rua.value.length < 3 || !numero.value || !cidade.value) return;
+
   var end = rua.value + ', ' + numero.value + ', ' + cidade.value + ', SP';
   fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURIComponent(end) + '&key=' + GOOGLE_KEY)
     .then(function(r) { return r.json(); })
@@ -1348,26 +1642,46 @@ function calcularTaxaEndereco() {
         renderCupom();
       }
     })
-    .catch(function(e) { console.error('Erro ao calcular taxa:', e); });
+    .catch(function(e) {
+      console.error('Erro ao calcular taxa:', e);
+    });
 }
 var calcDebounced = debounce(calcularTaxaEndereco, 800);
 
+// ============================================================
+// MODAL
+// ============================================================
 function abrirModal() {
-  if (!lojaAberta) { showToast('🔴 Loja fechada. Não é possível finalizar o pedido.', 'error'); return; }
+  if (!lojaAberta) {
+    showToast('🔴 Loja fechada. Não é possível finalizar o pedido.', 'error');
+    return;
+  }
   var c = getCart();
   if (!c.length) { alert('Adicione pelo menos 1 item na sacola'); return; }
   document.getElementById('modalEndereco').style.display = 'flex';
   renderCupom();
   document.getElementById('erroEnvio').classList.remove('visible');
-  if (typeof window.trackEvent === 'function') window.trackEvent('begin_checkout', { total: getCartTotal(), itens: c.length });
+
+  if (typeof window.trackEvent === 'function') {
+    window.trackEvent('begin_checkout', { total: getCartTotal(), itens: c.length });
+  }
 }
 
-function fecharModal() { document.getElementById('modalEndereco').style.display = 'none'; }
+function fecharModal() {
+  document.getElementById('modalEndereco').style.display = 'none';
+}
 
+// ============================================================
+// GEOLOCALIZAÇÃO
+// ============================================================
 function usarLocalizacao() {
   var btn = document.getElementById('btnGeo');
   var status = document.getElementById('geoStatus');
-  if (!navigator.geolocation) { status.textContent = '❌ Seu navegador não suporta GPS'; status.className = 'geo-status error'; return; }
+  if (!navigator.geolocation) {
+    status.textContent = '❌ Seu navegador não suporta GPS';
+    status.className = 'geo-status error';
+    return;
+  }
   btn.disabled = true;
   status.textContent = '⏳ Buscando sua localização...';
   status.className = 'geo-status';
@@ -1386,7 +1700,9 @@ function usarLocalizacao() {
             var comp = data.results[0].address_components;
             var get = function(t) {
               var found = null;
-              for (var i = 0; i < comp.length; i++) { if (comp[i].types.indexOf(t) !== -1) { found = comp[i]; break; } }
+              for (var i = 0; i < comp.length; i++) {
+                if (comp[i].types.indexOf(t) !== -1) { found = comp[i]; break; }
+              }
               return found ? found.long_name : '';
             };
             document.getElementById('rua').value = get('route');
@@ -1395,8 +1711,15 @@ function usarLocalizacao() {
             var cid = get('administrative_area_level_2') || get('locality');
             var select = document.getElementById('cidade');
             var existe = false;
-            for (var k = 0; k < select.options.length; k++) { if (select.options[k].value === cid) { existe = true; break; } }
-            if (cid && !existe) { var opt = document.createElement('option'); opt.value = cid; opt.textContent = cid; select.appendChild(opt); }
+            for (var k = 0; k < select.options.length; k++) {
+              if (select.options[k].value === cid) { existe = true; break; }
+            }
+            if (cid && !existe) {
+              var opt = document.createElement('option');
+              opt.value = cid;
+              opt.textContent = cid;
+              select.appendChild(opt);
+            }
             if (cid) select.value = cid;
           }
           renderTotais();
@@ -1405,9 +1728,17 @@ function usarLocalizacao() {
           status.className = 'geo-status';
           btn.disabled = false;
         })
-        .catch(function(e) { status.textContent = '❌ Erro ao buscar endereço'; status.className = 'geo-status error'; btn.disabled = false; });
+        .catch(function(e) {
+          status.textContent = '❌ Erro ao buscar endereço';
+          status.className = 'geo-status error';
+          btn.disabled = false;
+        });
     },
-    function(err) { status.textContent = '⚠️ Permita o acesso à localização'; status.className = 'geo-status error'; btn.disabled = false; },
+    function(err) {
+      status.textContent = '⚠️ Permita o acesso à localização';
+      status.className = 'geo-status error';
+      btn.disabled = false;
+    },
     {enableHighAccuracy: true, timeout: 12000}
   );
 }
@@ -1416,11 +1747,15 @@ function usarLocalizacao() {
 // ENVIAR PEDIDO
 // ============================================================
 function enviarPedido() {
-  if (!lojaAberta) { showToast('🔴 Loja fechada. Não é possível enviar pedidos.', 'error'); return; }
+  if (!lojaAberta) {
+    showToast('🔴 Loja fechada. Não é possível enviar pedidos.', 'error');
+    return;
+  }
   var c = getCart();
   var erroEl = document.getElementById('erroEnvio');
   erroEl.classList.remove('visible');
   erroEl.textContent = '';
+
   if (!c.length) { alert('Sacola vazia'); return; }
 
   var nome = document.getElementById('nome');
@@ -1436,7 +1771,8 @@ function enviarPedido() {
   var telDigits = telefone.value.replace(/\D/g, '');
   if (telDigits.length < 10) { alert('WhatsApp com DDD (ex: 11999999999)'); telefone.focus(); return; }
   if (!cidade.value || !rua.value.trim() || !numero.value.trim() || !bairro.value.trim() || !pagamento.value) {
-    alert('Preencha todos os campos obrigatórios (*)'); return;
+    alert('Preencha todos os campos obrigatórios (*)');
+    return;
   }
   if (taxaAtual === null) taxaAtual = 5;
 
@@ -1459,14 +1795,16 @@ function enviarPedido() {
   if (pagamento.value === 'Dinheiro' && valorRecebido > 0 && trocoCalculado < 0) {
     alert('⚠️ O valor pago (' + money(valorRecebido) + ') é insuficiente para pagar o total do pedido (' + money(totalFinal) + ').');
     document.getElementById('loadingOverlay').classList.remove('active');
-    btn.disabled = false; btn.textContent = '✅ Confirmar e Enviar';
+    btn.disabled = false;
+    btn.textContent = '✅ Confirmar e Enviar';
     return;
   }
 
   if (pagamento.value === 'Dinheiro' && !valorDigitado.trim()) {
     alert('⚠️ Para pagamento em Dinheiro, informe o valor que você vai pagar (ex: 100 ou 100,50).');
     document.getElementById('loadingOverlay').classList.remove('active');
-    btn.disabled = false; btn.textContent = '✅ Confirmar e Enviar';
+    btn.disabled = false;
+    btn.textContent = '✅ Confirmar e Enviar';
     trocoInput.focus();
     return;
   }
@@ -1475,9 +1813,14 @@ function enviarPedido() {
   for (var j = 0; j < c.length; j++) {
     var precoItem = c[j].precoTotal || c[j].price || 0;
     itensFormatados.push({
-      id: c[j].id, nome: c[j].title, title: c[j].title,
-      preco: precoItem, price: precoItem, valor: precoItem,
-      quantidade: Number(c[j].qty), qty: Number(c[j].qty),
+      id: c[j].id,
+      nome: c[j].title,
+      title: c[j].title,
+      preco: precoItem,
+      price: precoItem,
+      valor: precoItem,
+      quantidade: Number(c[j].qty),
+      qty: Number(c[j].qty),
       total: precoItem * Number(c[j].qty),
       img: c[j].img || '',
       tipo: c[j].tipo || 'produto',
@@ -1486,22 +1829,32 @@ function enviarPedido() {
   }
 
   var pedido = {
-    id: codigoPedido, numeroPedido: codigoPedido, origem: 'cardapio',
+    id: codigoPedido,
+    numeroPedido: codigoPedido,
+    origem: 'cardapio',
     cliente: {
-      nome: nome.value.trim(), telefone: telDigits, cidade: cidade.value,
-      rua: rua.value.trim(), numero: numero.value.trim(), bairro: bairro.value.trim(),
+      nome: nome.value.trim(),
+      telefone: telDigits,
+      cidade: cidade.value,
+      rua: rua.value.trim(),
+      numero: numero.value.trim(),
+      bairro: bairro.value.trim(),
       pagamento: pagamento.value,
       troco: valorDigitado ? Math.round(valorRecebido * 100) : null,
       lat: clienteLatLng ? clienteLatLng.lat : null,
       lng: clienteLatLng ? clienteLatLng.lng : null
     },
     itens: itensFormatados,
-    subtotal: subTotal, taxa: taxaAtual, taxaEntrega: taxaAtual,
+    subtotal: subTotal,
+    taxa: taxaAtual,
+    taxaEntrega: taxaAtual,
     distanciaKm: distanciaAtual ? Number(distanciaAtual.toFixed(2)) : null,
-    total: totalFinal, pagamento: pagamento.value,
+    total: totalFinal,
+    pagamento: pagamento.value,
     valorRecebido: pagamento.value === 'Dinheiro' ? valorRecebido : null,
     trocoDevolver: pagamento.value === 'Dinheiro' ? trocoCalculado : null,
-    cupom: cupomAplicado || null, desconto: descTotal,
+    cupom: cupomAplicado || null,
+    desconto: descTotal,
     status: 'novo',
     criadoEm: firebase.firestore.FieldValue.serverTimestamp(),
     criadoEmMs: Date.now()
@@ -1514,18 +1867,24 @@ function enviarPedido() {
       hist.push({...pedido, criadoEm: new Date().toISOString()});
       localStorage.setItem('pedidos_pasterry_v1', JSON.stringify(hist));
 
-      if (typeof window.trackEvent === 'function') window.trackEvent('carrinho_finalizado', { telefone: telDigits });
+      if (typeof window.trackEvent === 'function') {
+        window.trackEvent('carrinho_finalizado', { telefone: telDigits });
+      }
+
       localStorage.removeItem(CART_KEY);
       localStorage.removeItem(CUPOM_KEY);
 
       if (typeof window.trackEvent === 'function') {
         window.trackEvent('purchase', {
-          transaction_id: codigoPedido, value: totalFinal, taxa: taxaAtual,
+          transaction_id: codigoPedido,
+          value: totalFinal,
+          taxa: taxaAtual,
           itens_count: itensFormatados.length,
           itens_nomes: itensFormatados.map(function(i) { return i.title; }).slice(0, 30),
           pagamento: pagamento.value
         });
       }
+
       alert('✅ Pedido #' + codigoPedido + ' confirmado!\n\n' + (cupomAplicado ? 'Cupom ' + cupomAplicado.codigo + ' aplicado: ' + cupomAplicado.desconto + '% de desconto' : ''));
       location.href = 'status.html?id=' + codigoPedido;
     })
@@ -1533,11 +1892,15 @@ function enviarPedido() {
       console.error('Erro ao enviar pedido:', err);
       erroEl.textContent = '❌ Erro ao enviar pedido: ' + (err.message || 'Erro desconhecido. Tente novamente.');
       erroEl.classList.add('visible');
-      btn.disabled = false; btn.textContent = 'Confirmar e Enviar';
+      btn.disabled = false;
+      btn.textContent = 'Confirmar e Enviar';
       document.getElementById('loadingOverlay').classList.remove('active');
     });
 }
 
+// ============================================================
+// MÁSCARA DE TELEFONE
+// ============================================================
 function mascaraTelefone(input) {
   var v = input.value.replace(/\D/g, '');
   if (v.length > 11) v = v.slice(0, 11);
@@ -1546,7 +1909,9 @@ function mascaraTelefone(input) {
   else input.value = '(' + v.slice(0,2) + ') ' + v.slice(2,7) + '-' + v.slice(7);
 }
 
-function formatarMoeda(valor) { return 'R$ ' + valor.toFixed(2).replace('.', ','); }
+function formatarMoeda(valor) {
+  return 'R$ ' + valor.toFixed(2).replace('.', ',');
+}
 
 // ============================================================
 // INICIALIZAÇÃO
@@ -1589,11 +1954,19 @@ document.addEventListener('DOMContentLoaded', function() {
     var sub = getCartTotal();
     var desconto = cupomAplicado ? sub * (cupomAplicado.desconto / 100) : 0;
     var totalFinal = sub - desconto + (taxaAtual || 0);
+
     var valorDigitado = this.value;
     var apenasNumeros = valorDigitado.replace(/[^\d,]/g, '');
     var valorNumerico = parseFloat(apenasNumeros.replace(',', '.'));
-    if (isNaN(valorNumerico) || valorNumerico <= 0) { trocoPreview.innerHTML = ''; renderCupom(); return; }
+
+    if (isNaN(valorNumerico) || valorNumerico <= 0) {
+      trocoPreview.innerHTML = '';
+      renderCupom();
+      return;
+    }
+
     var troco = valorNumerico - totalFinal;
+
     if (troco >= 0) {
       trocoPreview.innerHTML = '💵 Valor Recebido: ' + formatarMoeda(valorNumerico) + ' &nbsp;|&nbsp; 🔄 Troco a devolver: <strong style="color:#FFD700;">' + formatarMoeda(troco) + '</strong>';
       trocoPreview.style.color = '#4caf50';
@@ -1601,6 +1974,7 @@ document.addEventListener('DOMContentLoaded', function() {
       trocoPreview.innerHTML = '⚠️ Valor insuficiente. Faltam ' + formatarMoeda(Math.abs(troco)) + ' para pagar o pedido.';
       trocoPreview.style.color = '#ff6b6b';
     }
+
     renderCupom();
   });
 
@@ -1615,18 +1989,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.getElementById('btnAplicarCupom').addEventListener('click', aplicarCupom);
   document.getElementById('btnRemoverCupom').addEventListener('click', removerCupom);
-  document.getElementById('cupomInput').addEventListener('keypress', function(e) { if (e.key === 'Enter') aplicarCupom(); });
+  document.getElementById('cupomInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') aplicarCupom();
+  });
 
   const urlParams = new URLSearchParams(window.location.search);
   const cupomUrl = urlParams.get('cupom');
+
   if (cupomUrl) {
     setTimeout(function() {
       const input = document.getElementById('cupomInput');
-      if (input) { input.value = cupomUrl.toUpperCase(); aplicarCupom(); }
+      if (input) {
+        input.value = cupomUrl.toUpperCase();
+        aplicarCupom();
+      }
     }, 500);
   }
 });
 
+// ============================================================
+// FUNÇÕES GLOBAIS
+// ============================================================
 window.addExtra = addExtra;
 window.alterarQtd = alterarQtd;
 window.limparSacola = limparSacola;
