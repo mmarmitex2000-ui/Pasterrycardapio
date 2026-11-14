@@ -11,3 +11,16 @@ window.FIREBASE_CONFIG = {
   appId: "1:390619980929:web:5bb015938e9dcb89389980",
   measurementId: "G-CMH7LSQ7C0"
 };
+
+// ✅ Inicialização centralizada — evita duplicação em todas as páginas
+(function() {
+  if (typeof firebase === 'undefined') return;
+  if (!firebase.apps.length) {
+    try {
+      firebase.initializeApp(window.FIREBASE_CONFIG);
+      console.log('[config] Firebase inicializado (compat v8)');
+    } catch (e) {
+      console.error('[config] Erro ao inicializar Firebase:', e);
+    }
+  }
+})();

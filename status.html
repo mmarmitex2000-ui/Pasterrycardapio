@@ -1,23 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Status do Pedido — Pasterry</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<!-- ✅ Configuração externa -->
-<script src="config.js"></script>
 
-<!-- ✅ Inicializa o Firebase (compat) ANTES do tracker -->
+<!-- ✅ Ordem correta: compat v8 → config.js inicializa → tracker.js -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script>
-  if (!firebase.apps.length) {
-    firebase.initializeApp(window.FIREBASE_CONFIG);
-  }
-</script>
-
-<!-- ✅ Rastreador de eventos -->
+<script src="config.js"></script>
 <script src="tracker.js"></script>
 
 <style>
@@ -37,7 +30,6 @@
   .step.active{opacity:1;color:#07fcdb;font-weight:bold}
   .step::before{content:'';display:block;width:12px;height:12px;border-radius:50%;background:#444;margin:0 auto 6px;border:2px solid #1A1210}
   .step.active::before{background:#28a745}
-  .item-loja{font-size:14px;padding:4px 0;border-bottom:1px dashed #444}
   .btn{width:100%;padding:12px;border:none;border-radius:10px;background:#28a745;color:#fff;font-weight:bold;font-size:16px;cursor:pointer;margin-top:10px;text-align:center;text-decoration:none;display:block;box-sizing:border-box}
   .btn.ghost{background:#444}
   .btn.whats{background:#25D366;color:#1A1210}
@@ -59,22 +51,18 @@
   <div id="view"></div>
   <button class="btn ghost" onclick="location.href='index.html'">Voltar ao cardápio</button>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, doc, onSnapshot, collection, query, where, getDocs, orderBy, updateDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+<script>
   // ============================================================
-  // FIREBASE (configuração externa em config.js)
+  // FIREBASE v8 COMPAT (padronizado com o resto do site)
+  // config.js já inicializou. Só pegamos a referência.
   // ============================================================
-  const app = initializeApp(window.FIREBASE_CONFIG);
-  const db = getFirestore(app);
+  const db = firebase.firestore();
   const WHATS_LOJA = '5511994046432';
   const params = new URLSearchParams(location.search);
   let id = params.get('id');
   let unsubscribe = null;
   let ultimoStatus = null;
   let mapa = null;
-  let timerPreparando = null;
 
   if ('Notification' in window && Notification.permission !== 'granted') {
     Notification.requestPermission();
@@ -97,7 +85,7 @@
   const setCliente = c=>localStorage.setItem(CLIENTE_KEY, JSON.stringify(c));
 
   // ============================================================
-  // STATUS LABELS
+  // LABELS
   // ============================================================
   function getStatusLabel(status) {
     const map = {
@@ -116,81 +104,25 @@
 
   function getStatusBadgeClass(status) {
     const map = {
-      'novo': 'aguardando',
-      'preparando': 'preparando',
-      'pronto': 'pronto',
-      'coleta': 'pronto',
-      'saiu': 'saiu',
-      'entrega': 'saiu',
-      'entregue': 'entregue',
-      'cancelado': 'cancelado',
-      'despachado': ''
+      'novo': 'aguardando','preparando': 'preparando','pronto': 'pronto','coleta': 'pronto',
+      'saiu': 'saiu','entrega': 'saiu','entregue': 'entregue','cancelado': 'cancelado','despachado': ''
     };
     return map[status] || '';
   }
 
   // ============================================================
-  // Atualizar para preparando após 20 min (apenas se ainda estiver 'novo')
-  // ============================================================
-  async function atualizarParaPreparando(pedidoId, criadoEmMs) {
-    const agora = Date.now();
-    const tempoDecorrido = agora - criadoEmMs;
-    const TEMPO_20_MIN = 20 * 60 * 1000;
-    
-    if (tempoDecorrido >= TEMPO_20_MIN) {
-      try {
-        await updateDoc(doc(db, "pedidos", pedidoId), {
-          status: "preparando",
-          preparandoEm: serverTimestamp(),
-          preparandoEmMs: Date.now(),
-          atualizadoEm: serverTimestamp(),
-          atualizadoEmMs: Date.now()
-        });
-        console.log('⏳ Pedido atualizado para preparando (automático)');
-      } catch (e) {
-        console.error('Erro ao atualizar para preparando:', e);
-      }
-    } else {
-      const tempoRestante = TEMPO_20_MIN - tempoDecorrido;
-      if (timerPreparando) clearTimeout(timerPreparando);
-      timerPreparando = setTimeout(async () => {
-        try {
-          const snap = await getDoc(doc(db, "pedidos", pedidoId));
-          if (snap.exists() && snap.data().status === 'novo') {
-            await updateDoc(doc(db, "pedidos", pedidoId), {
-              status: "preparando",
-              preparandoEm: serverTimestamp(),
-              preparandoEmMs: Date.now(),
-              atualizadoEm: serverTimestamp(),
-              atualizadoEmMs: Date.now()
-            });
-            console.log('⏳ Pedido atualizado para preparando (automático após timer)');
-          }
-        } catch (e) {
-          console.error('Erro ao atualizar para preparando (timer):', e);
-        }
-      }, tempoRestante);
-    }
-  }
-
-  // ============================================================
-  // Abrir rota
+  // Rota do motoboy
   // ============================================================
   function abrirRotaMotoboy(lat, lng, endereco) {
     if (!lat || !lng) {
       if (endereco) {
-        const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(endereco)}`;
-        window.open(url, '_blank');
+        window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(endereco)}`, '_blank');
       }
       return;
     }
-    const url = `https://www.google.com/maps/dir/?api=1&origin=${lat},${lng}&destination=${encodeURIComponent(endereco)}`;
-    window.open(url, '_blank');
+    window.open(`https://www.google.com/maps/dir/?api=1&origin=${lat},${lng}&destination=${encodeURIComponent(endereco)}`, '_blank');
   }
 
-  // ============================================================
-  // Formatar tempo de rota
-  // ============================================================
   function formatarTempoRota(emRotaEmMs) {
     if (!emRotaEmMs) return '';
     const diff = Date.now() - emRotaEmMs;
@@ -201,18 +133,16 @@
   }
 
   // ============================================================
-  // RENDERIZAR PEDIDO
+  // RENDER
   // ============================================================
   function renderPedido(p){
     const view = document.getElementById('view');
-    
     const isCancelado = p.status === 'cancelado';
     const isAguardando = p.status === 'novo';
     const statusLabel = getStatusLabel(p.status);
     const badgeClass = getStatusBadgeClass(p.status);
     const isAtivo = p.status === 'entrega' || p.status === 'despachado' || p.status === 'saiu';
-    
-    // ✅ Timeline com 6 steps (incluindo "Preparando" separado)
+
     const steps = [
       {key:'aguardando', label:'Aguardando',  match: ['novo']},
       {key:'aceito',     label:'Aceito',      match: ['preparando','pronto','coleta','saiu','entrega','entregue']},
@@ -221,16 +151,11 @@
       {key:'saiu',       label:'Em entrega',  match: ['saiu','entrega','entregue']},
       {key:'entregue',   label:'Entregue',    match: ['entregue']}
     ];
-    
-    const isActive = (step) => {
-      if (isCancelado) return false;
-      return step.match.includes(p.status);
-    };
+    const isActive = (step) => !isCancelado && step.match.includes(p.status);
 
     const temRastreio = (p.status === 'saiu' || p.status === 'entrega') && p.lat && p.lng;
-    
     const whatsMsg = encodeURIComponent(`Olá, meu nome é ${p.cliente?.nome||''}. Pedido #${p.id.substring(0,6).toUpperCase()}, gostaria de falar com atendente.`);
-    
+
     const c = p.cliente || {};
     const taxaEntrega = p.taxa || p.taxaEntrega || 0;
     const descontoCupom = p.desconto || p.cupomDesconto || 0;
@@ -251,7 +176,6 @@
       enderecoCompleto = esc(p.endereco || 'Retirada na Loja');
     }
 
-    // Aviso amarelo quando o pedido está aguardando aceite
     const avisoAguardandoHtml = isAguardando ? `
       <div class="aviso-aguardando">
         <span style="font-size:20px;">⏳</span>
@@ -259,7 +183,6 @@
       </div>
     ` : '';
 
-    // Mapa de rastreio
     const mapaHtml = temRastreio ? `
       <div class="card" style="padding:0;overflow:hidden;border:2px solid #28a745">
         <div style="padding:12px 14px 8px">
@@ -274,17 +197,12 @@
       </div>
     ` : '';
 
-    // Botão de rota
     const botaoRotaHtml = (isAtivo && temRastreio) ? `
-      <button class="btn motoboy" id="btnRotaMotoboy">
-        🛵 Ver rota do motoboy
-      </button>
+      <button class="btn motoboy" id="btnRotaMotoboy">🛵 Ver rota do motoboy</button>
     ` : '';
 
-    // Badge do motoboy
     const badgeMotoboyHtml = p.motoboy ? `<span class="badge-motoboy">🛵 Entregador: ${esc(p.motoboy)}</span>` : '';
 
-    // Identificador do tipo de entregador
     let tipoEntregadorHtml = '';
     if (p.tipoEntregador === 'ifood') {
       tipoEntregadorHtml = '<span style="display:inline-block;background:#ea1d2c;color:white;padding:2px 12px;border-radius:12px;font-size:11px;font-weight:700;margin-left:6px;">iFood</span>';
@@ -292,10 +210,15 @@
       tipoEntregadorHtml = '<span style="display:inline-block;background:#8b5cf6;color:white;padding:2px 12px;border-radius:12px;font-size:11px;font-weight:700;margin-left:6px;">Entregador Próprio</span>';
     }
 
+    // Troco formatado (evita mostrar null quando não for dinheiro)
+    const trocoTexto = (c.pagamento === 'Dinheiro' || p.pagamento === 'Dinheiro')
+      ? (c.troco || p.troco ? ` (Troco para ${esc(money(Number(c.troco || p.troco) / 100))})` : '')
+      : '';
+
     view.innerHTML = `
       <h1>Seu pedido</h1>
       <div class="muted">Pedido #${esc(p.id.substring(0,6).toUpperCase())} <span class="pulse">• ao vivo</span> ${tipoEntregadorHtml}</div>
-      
+
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <strong>Status</strong>
@@ -307,10 +230,10 @@
         ${badgeMotoboyHtml}
         ${avisoAguardandoHtml}
       </div>
-      
+
       ${mapaHtml}
       ${botaoRotaHtml}
-      
+
       <div class="card">
         <strong>Detalhes do Pedido</strong>
         <div class="detalhes-texto" style="margin-top:10px">Nome: ${esc(c.nome || 'Não informado')}
@@ -319,23 +242,22 @@ ${enderecoCompleto}
 
 ${itensFormatados}
 
-💳 Pagamento: ${esc(c.pagamento || p.pagamento || 'Não informado')}${(c.pagamento||p.pagamento)==='Dinheiro'&&(c.troco||p.troco)?` (Troco para ${esc(c.troco||p.troco)})`:''}
+💳 Pagamento: ${esc(c.pagamento || p.pagamento || 'Não informado')}${trocoTexto}
 🧾 Subtotal: ${money(p.subtotal)}
 ${descontoCupom > 0 ? `🎫 Cupom: -${money(descontoCupom)}\n` : ''}🛵 Entrega: ${money(taxaEntrega)}
 💰 Total: ${money(p.total)}
 ${p.obs ? `\n📝 Obs: ${esc(p.obs)}` : ''}</div>
       </div>
-      
+
       <div class="card aviso">
         <strong>⚠️ Atenção</strong>
         <div style="margin-top:6px;font-size:13px">Não recebemos pagamentos adiantados.<br>Pix apenas na máquina, o motoboy leva.</div>
       </div>
-      
+
       <a href="https://wa.me/${WHATS_LOJA}?text=${whatsMsg}" target="_blank" class="btn whats" id="btnWhatsapp">💬 Falar no WhatsApp</a>
       <button class="btn ghost" onclick="location.href='status.html'">← Ver todos os pedidos</button>
     `;
 
-    // ✅ RASTREAMENTO: Clique no WhatsApp
     const btnWhats = document.getElementById('btnWhatsapp');
     if (btnWhats && typeof window.trackEvent === 'function') {
       btnWhats.addEventListener('click', function() {
@@ -343,37 +265,29 @@ ${p.obs ? `\n📝 Obs: ${esc(p.obs)}` : ''}</div>
       });
     }
 
-    // Mapa
-    if(temRastreio){ 
-      setTimeout(()=>{ 
-        if(mapa) mapa.remove(); 
-        mapa = L.map('mapa-rastreio', {zoomControl:false, dragging:true}).setView([p.lat, p.lng], 16); 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-          attribution:'© OpenStreetMap',
-          maxZoom:19
-        }).addTo(mapa); 
+    if(temRastreio){
+      setTimeout(()=>{
+        if(mapa) mapa.remove();
+        mapa = L.map('mapa-rastreio', {zoomControl:false, dragging:true}).setView([p.lat, p.lng], 16);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap', maxZoom:19}).addTo(mapa);
         const moto = L.divIcon({
           html:'<div style="font-size:32px;filter:drop-shadow(0 0 6px rgba(0,0,0,0.5));">🛵</div>',
-          iconSize:[32,32],
-          className:''
-        }); 
-        L.marker([p.lat, p.lng], {icon:moto}).addTo(mapa); 
+          iconSize:[32,32], className:''
+        });
+        L.marker([p.lat, p.lng], {icon:moto}).addTo(mapa);
         if (window._tempoRotaInterval) clearInterval(window._tempoRotaInterval);
         window._tempoRotaInterval = setInterval(() => {
           const el = document.getElementById('tempoRota');
-          if (el && p.saiuEmMs) {
-            el.textContent = formatarTempoRota(p.saiuEmMs);
-          }
+          if (el && p.saiuEmMs) el.textContent = formatarTempoRota(p.saiuEmMs);
         }, 10000);
-      }, 100); 
+      }, 100);
     }
 
-    // Botão rota
     const btnRota = document.getElementById('btnRotaMotoboy');
     if (btnRota) {
       btnRota.addEventListener('click', function() {
-        const endereco = c.rua ? 
-          `${c.rua}, ${c.numero || 's/n'}${c.bairro ? ' - ' + c.bairro : ''}` 
+        const endereco = c.rua ?
+          `${c.rua}, ${c.numero || 's/n'}${c.bairro ? ' - ' + c.bairro : ''}`
           : (p.endereco || '');
         abrirRotaMotoboy(p.lat, p.lng, endereco);
       });
@@ -388,63 +302,53 @@ ${p.obs ? `\n📝 Obs: ${esc(p.obs)}` : ''}</div>
     view.innerHTML = '<div style="text-align:center;padding:20px;opacity:.6">Carregando...</div>';
 
     if(id){
-      // ✅ RASTREAMENTO: view_status
       if (typeof window.trackEvent === 'function') {
         window.trackEvent('view_status', { pedido_id: id });
       }
 
       if(unsubscribe) unsubscribe();
-      unsubscribe = onSnapshot(doc(db, "pedidos", String(id)), (snap)=>{
-        if(snap.exists()) {
+      unsubscribe = db.collection('pedidos').doc(String(id)).onSnapshot((snap)=>{
+        if(snap.exists) {
           const p = {id:snap.id,...snap.data()};
           if (p.criadoEm && !p.criadoEmMs) {
             p.criadoEmMs = p.criadoEm.toMillis ? p.criadoEm.toMillis() : Date.now();
           }
           renderPedido(p);
-          
-          if (p.status === 'novo' && p.criadoEmMs) {
-            atualizarParaPreparando(p.id, p.criadoEmMs);
-          }
-          
-          if (p.status === 'preparando' && !p.preparandoEmMs) {
-            updateDoc(doc(db, "pedidos", p.id), {
-              preparandoEm: serverTimestamp(),
-              preparandoEmMs: Date.now()
-            }).catch(() => {});
-          }
-          
-          // Notifica quando status muda para 'saiu'
-          const statusReal = p.status === 'entrega'? 'saiu' : p.status;
+
+          // ✅ REMOVIDO: auto-aceite de 20min (a loja controla 100%)
+
+          // Notificação quando sai para entrega
+          const statusReal = p.status === 'entrega' ? 'saiu' : p.status;
           if((statusReal === 'saiu' || p.status === 'saiu') && ultimoStatus !== 'saiu' && ultimoStatus !== 'entrega') {
             try {
               const audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
               audio.play().catch(()=>{});
             } catch(e) {}
             navigator.vibrate?.([200,100,200]);
-            if(Notification.permission === 'granted') { 
-              new Notification('🛵 Saiu para entrega!', { 
-                body: `Pedido #${p.id.substring(0,6).toUpperCase()} está a caminho`, 
-                icon: 'https://i.imgur.com/8Km9tLL.png' 
-              }); 
+            if(Notification.permission === 'granted') {
+              new Notification('🛵 Saiu para entrega!', {
+                body: `Pedido #${p.id.substring(0,6).toUpperCase()} está a caminho`,
+                icon: 'https://i.imgur.com/8Km9tLL.png'
+              });
             }
             document.body.style.background = '#0f3d2e';
           }
-          
-          // Notifica quando o pedido é ACEITO (status muda de novo para preparando)
+
+          // Notificação quando aceito
           if (p.status === 'preparando' && ultimoStatus === 'novo') {
             try {
               const audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
               audio.play().catch(()=>{});
             } catch(e) {}
             navigator.vibrate?.([200,100,200]);
-            if(Notification.permission === 'granted') { 
-              new Notification('✅ Pedido aceito!', { 
-                body: `Pedido #${p.id.substring(0,6).toUpperCase()} foi confirmado pela loja e já está sendo preparado`, 
-                icon: 'https://i.imgur.com/8Km9tLL.png' 
-              }); 
+            if(Notification.permission === 'granted') {
+              new Notification('✅ Pedido aceito!', {
+                body: `Pedido #${p.id.substring(0,6).toUpperCase()} foi confirmado pela loja e já está sendo preparado`,
+                icon: 'https://i.imgur.com/8Km9tLL.png'
+              });
             }
           }
-          
+
           ultimoStatus = p.status;
         } else {
           view.innerHTML = '<h1>Pedido não encontrado</h1>';
@@ -454,22 +358,21 @@ ${p.obs ? `\n📝 Obs: ${esc(p.obs)}` : ''}</div>
     }
 
     const cli = getCliente();
-    let tel = cli.telefone? onlyDigits(cli.telefone) : null;
+    let tel = cli.telefone ? onlyDigits(cli.telefone) : null;
 
     if(!tel){
       view.innerHTML = `<h1>Meus Pedidos</h1><div class="card"><input class="tel" id="tel" placeholder="(11) 99999-9999" oninput="this.value=window.formatTelBR(this.value)"><button class="btn" id="btn">Ver meus pedidos</button></div>`;
-      document.getElementById('btn').onclick = ()=>{ 
-        const t = onlyDigits(document.getElementById('tel').value); 
-        if(t.length<10) return alert('Telefone inválido'); 
-        setCliente({...getCliente(), telefone:t}); 
-        location.reload(); 
+      document.getElementById('btn').onclick = ()=>{
+        const t = onlyDigits(document.getElementById('tel').value);
+        if(t.length<10) return alert('Telefone inválido');
+        setCliente({...getCliente(), telefone:t});
+        location.reload();
       };
       return;
     }
 
     try {
-      const q = query(collection(db,"pedidos"), where("cliente.telefone","==",tel));
-      const snap = await getDocs(q);
+      const snap = await db.collection('pedidos').where("cliente.telefone","==",tel).get();
       const docs = [];
       snap.forEach(d => {
         const data = d.data();
@@ -483,10 +386,10 @@ ${p.obs ? `\n📝 Obs: ${esc(p.obs)}` : ''}</div>
         return;
       }
 
-      view.innerHTML = `<h1>Meus Pedidos</h1><div class="muted">${docs.length} pedidos • ${formatTelBR(tel)}</div>` + docs.map(d => { 
-        const data = d.criadoEm?.toDate? d.criadoEm.toDate().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : ''; 
+      view.innerHTML = `<h1>Meus Pedidos</h1><div class="muted">${docs.length} pedidos • ${formatTelBR(tel)}</div>` + docs.map(d => {
+        const data = d.criadoEm?.toDate ? d.criadoEm.toDate().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '';
         const statusBadge = getStatusBadgeClass(d.status);
-        return `<div class="card" onclick="location.href='status.html?id=${d.id}'" style="cursor:pointer"><div style="display:flex;justify-content:space-between;align-items:center"><strong>#${d.id.substring(0,6).toUpperCase()}</strong><span class="badge ${statusBadge} ${d.status==='cancelado'?'cancelado':''}">${getStatusLabel(d.status)}</span></div><div class="muted" style="margin:6px 0">${data} • ${d.itens?.length||0} itens</div><div style="display:flex;justify-content:space-between;align-items:center"><span>${(d.itens||[]).slice(0,2).map(i=>`${i.qty}x ${i.title||i.nome}`).join(', ')}${d.itens?.length>2?'...':''}</span><strong>${money(d.total)}</strong></div></div>`; 
+        return `<div class="card" onclick="location.href='status.html?id=${d.id}'" style="cursor:pointer"><div style="display:flex;justify-content:space-between;align-items:center"><strong>#${d.id.substring(0,6).toUpperCase()}</strong><span class="badge ${statusBadge} ${d.status==='cancelado'?'cancelado':''}">${getStatusLabel(d.status)}</span></div><div class="muted" style="margin:6px 0">${data} • ${d.itens?.length||0} itens</div><div style="display:flex;justify-content:space-between;align-items:center"><span>${(d.itens||[]).slice(0,2).map(i=>`${i.qty}x ${i.title||i.nome}`).join(', ')}${d.itens?.length>2?'...':''}</span><strong>${money(d.total)}</strong></div></div>`;
       }).join('') + `<button class="btn ghost" onclick="localStorage.removeItem('${CLIENTE_KEY}');location.reload()">Trocar número</button>`;
 
     } catch(err) {

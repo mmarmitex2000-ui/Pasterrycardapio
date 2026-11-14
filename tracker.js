@@ -1,19 +1,20 @@
 // tracker.js — Sistema de rastreamento de eventos da Pasterry
-// Incluir em todas as páginas públicas: index.html, carrinho.html, status.html
-// ⚠️ Deve ser incluído DEPOIS do firebase-app e firebase-firestore
+// Deve ser incluído DEPOIS de config.js + firebase-app + firebase-firestore
 
 (function() {
   if (typeof firebase === 'undefined') {
-    console.warn('[tracker] Firebase não carregado ainda.');
+    console.warn('[tracker] Firebase não carregado ainda. Abortando tracker.');
     return;
   }
 
+  // ✅ Garante inicialização sem duplicar (config.js já inicializa)
   try {
     if (!firebase.apps.length) {
       firebase.initializeApp(window.FIREBASE_CONFIG);
     }
-  } catch(e) {
+  } catch (e) {
     console.error('[tracker] Erro ao inicializar Firebase:', e);
+    return;
   }
 
   const db = firebase.firestore();
@@ -25,17 +26,17 @@
     sessionStorage.setItem('pasterry_sessao', sessaoId);
   }
 
-  // ===== IDENTIFICADOR DE VISITANTE (persiste no navegador) =====
+  // ===== IDENTIFICADOR DE VISITANTE =====
   let visitanteId = localStorage.getItem('pasterry_visitante');
   if (!visitanteId) {
     visitanteId = 'vis_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
     localStorage.setItem('pasterry_visitante', visitanteId);
   }
 
-  // ===== TELEFONE DO CLIENTE (para carrinho abandonado) =====
+  // ===== TELEFONE DO CLIENTE =====
   let telefoneCliente = localStorage.getItem('pasterry_telefone') || '';
 
-  // ===== FILA EM MEMÓRIA (evita perder eventos se a rede cair) =====
+  // ===== FILA EM MEMÓRIA =====
   const fila = [];
   let enviando = false;
 
@@ -43,13 +44,14 @@
     if (enviando || fila.length === 0) return;
     enviando = true;
     while (fila.length > 0) {
-      const ev = fila.shift();
+      const ev = fila[0];
       try {
         await db.collection('eventos').add(ev);
+        fila.shift();
       } catch (e) {
-        console.warn('[tracker] Falha ao enviar evento, retornando à fila:', e);
-        if (e.code !== 'permission-denied') {
-          fila.unshift(ev);
+        console.warn('[tracker] Falha ao enviar evento:', e.code || e.message);
+        if (e.code === 'permission-denied') {
+          fila.shift(); // descarta para não travar a fila
         }
         break;
       }
@@ -62,14 +64,11 @@
     if (!tipo) return;
     dados = dados || {};
 
-    // Se o telefone foi passado, atualiza a memória e o localStorage
     if (dados.telefone) {
       telefoneCliente = dados.telefone;
       localStorage.setItem('pasterry_telefone', telefoneCliente);
     }
 
-    // Sanitiza: remove chaves com dados sensíveis (privacidade / LGPD)
-    // ⚠️ O telefone NÃO está bloqueado aqui para permitir recuperação de carrinho
     const bloqueados = ['nome', 'email', 'endereco', 'rua', 'numero', 'bairro', 'cpf', 'senha'];
     const dadosLimpos = {};
     Object.keys(dados).forEach(k => {
@@ -88,7 +87,7 @@
       dados: dadosLimpos,
       sessaoId: sessaoId,
       visitanteId: visitanteId,
-      telefone: telefoneCliente, // Salva na raiz para facilitar buscas
+      telefone: telefoneCliente,
       pagina: (location.pathname.split('/').pop() || 'index.html'),
       url: location.href.substring(0, 200),
       userAgent: navigator.userAgent.substring(0, 140),
@@ -97,7 +96,7 @@
       referencia: document.referrer ? document.referrer.substring(0, 200) : '',
       criadoEm: firebase.firestore.FieldValue.serverTimestamp(),
       criadoEmMs: Date.now(),
-      dia: new Date().toISOString().slice(0, 10) // YYYY-MM-DD para agregação fácil
+      dia: new Date().toISOString().slice(0, 10)
     };
 
     fila.push(evento);
@@ -105,13 +104,11 @@
   };
 
   // ===== RASTREAMENTO AUTOMÁTICO =====
-  // Visita à página
   window.trackEvent('page_view', {
     titulo: document.title,
     ref: document.referrer || ''
   });
 
-  // Tempo na página (heartbeat a cada 30s)
   let segundos = 0;
   const heartbeat = setInterval(() => {
     segundos += 30;
@@ -120,7 +117,6 @@
     }
   }, 30000);
 
-  // Saiu da página
   window.addEventListener('beforeunload', () => {
     clearInterval(heartbeat);
     window.trackEvent('page_exit', { segundos_total: segundos });
