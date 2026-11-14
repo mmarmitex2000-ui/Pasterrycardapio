@@ -2,13 +2,13 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Sacola - Pasterry</title>
 <style>
 /* ===== RESET E BASE ===== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ✅ MESMAS VARIÁVEIS DO index.html — atualizadas dinamicamente pelo Firestore */
+/* ✅ Carrega o layout imediatamente com as cores padrão do index.html (evita flash escuro) */
 :root {
   --bg-site: #1A1210;
   --bg-container: #1A1A1A;
@@ -16,7 +16,7 @@
   --bg-card: #22201E;
   --bg-card-hover: #2A2725;
   --bg-modal: #1F1A18;
-  --bg-input: #0F0D0C;
+  --bg-input: #FFFFFF;
   --cor-categoria-ativa: #FFE066;
   --cor-botao-adicionar: #2B7245;
   --cor-categoria: #FFD700;
@@ -39,42 +39,38 @@
   --raio-md: 12px;
   --raio-lg: 16px;
   --raio-xl: 24px;
-  --cor-primaria: var(--cor-botao-adicionar);
-  --cor-secundaria: var(--cor-fonte-preco);
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
 }
 
 body {
-  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
   background: var(--bg-site);
   color: var(--cor-fonte);
-  padding: 16px;
+  padding: 12px;
   padding-bottom: 200px;
   overflow-x: hidden;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* ===== HEADER ===== */
-.header {
+/* ===== TÍTULOS ===== */
+h3 {
+  margin: 16px 0 10px;
+  font-size: 16px;
+  color: var(--cor-fonte-titulo);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--borda-sutil);
+  gap: 8px;
 }
-.header h1 {
-  font-size: 24px;
-  color: var(--cor-fonte-titulo);
-  margin: 0;
-}
-.header .badge {
-  background: var(--cor-cart);
-  color: #fff;
-  padding: 4px 14px;
-  border-radius: 30px;
-  font-size: 13px;
-  font-weight: 700;
+h3 .count {
+  font-size: 12px;
+  color: var(--cor-fonte-muted);
+  font-weight: 400;
 }
 
 /* ===== MENSAGEM LOJA FECHADA ===== */
@@ -88,28 +84,13 @@ body {
   padding: 12px 16px;
   margin: 8px 0 12px 0;
   text-align: center;
-  font-size: clamp(14px, 2vw, 18px);
+  font-size: 14px;
 }
 .loja-fechada-msg strong { color: #fff; }
 
-/* ===== TÍTULOS ===== */
-h3 {
-  margin: 16px 0 10px;
-  font-size: 18px;
-  color: var(--cor-fonte-titulo);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-h3 .count {
-  font-size: 12px;
-  color: var(--cor-fonte-muted);
-  font-weight: 400;
-}
-
 /* ===== BOTÕES ===== */
 .btn {
-  padding: 8px 14px;
+  padding: 10px 14px;
   border: none;
   border-radius: 10px;
   font-weight: 700;
@@ -120,14 +101,15 @@ h3 .count {
   align-items: center;
   justify-content: center;
   gap: 6px;
+  font-family: inherit;
 }
-.btn:active { transform: scale(0.95); }
+.btn:active { transform: scale(0.96); }
 .btn.primary {
   background: var(--cor-botao-adicionar);
   color: #fff;
   box-shadow: 0 4px 15px rgba(43, 114, 69, 0.3);
 }
-.btn.primary:hover { filter: brightness(1.1); box-shadow: 0 4px 20px rgba(43, 114, 69, 0.4); }
+.btn.primary:hover { filter: brightness(1.1); }
 .btn.primary:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
 .btn.secondary {
   background: var(--bg-card);
@@ -137,8 +119,8 @@ h3 .count {
 .btn.secondary:hover { background: var(--bg-card-hover); }
 .btn.danger { background: var(--cor-erro); color: #fff; }
 .btn.danger:hover { filter: brightness(1.1); }
-.btn.small { padding: 4px 10px; font-size: 12px; border-radius: 6px; }
-.btn.large { padding: 12px 20px; font-size: 16px; }
+.btn.small { padding: 5px 10px; font-size: 12px; border-radius: 6px; }
+.btn.large { padding: 14px 20px; font-size: 15px; }
 .btn.cupom {
   background: var(--cor-fonte-preco);
   color: #1A1210;
@@ -146,10 +128,9 @@ h3 .count {
 .btn.cupom:hover { filter: brightness(1.1); }
 .btn.cupom:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn.extra-add { background: var(--cor-botao-adicionar) !important; color: #fff !important; }
-.btn.extra-add:hover { filter: brightness(1.15); }
 .btn.extra-add:disabled { background: #555 !important; opacity: 0.5; cursor: not-allowed; }
 
-/* ===== ITENS EXTRAS ===== */
+/* ===== EXTRAS ===== */
 .extras {
   display: flex;
   overflow-x: auto;
@@ -159,6 +140,7 @@ h3 .count {
   scrollbar-width: none;
   -ms-overflow-style: none;
   scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 .extras::-webkit-scrollbar { display: none; }
 .extra-card {
@@ -193,14 +175,14 @@ h3 .count {
 }
 .extra-card .btn {
   width: 100%;
-  padding: 4px;
+  padding: 6px;
   font-size: 13px;
   border-radius: 6px;
 }
 .extra-card.loja-fechada { opacity: 0.5; }
 .extra-card.loja-fechada .btn { background: #555 !important; cursor: not-allowed; }
 
-/* ===== CUPOM DE DESCONTO ===== */
+/* ===== CUPOM ===== */
 .cupom-area {
   background: var(--bg-card);
   border-radius: var(--raio-md);
@@ -215,17 +197,20 @@ h3 .count {
 .cupom-area input {
   flex: 1;
   min-width: 150px;
-  padding: 10px 14px;
+  padding: 12px 14px;
   border-radius: var(--raio-sm);
-  border: 1px solid var(--borda-sutil);
-  background: var(--bg-input);
-  color: var(--cor-fonte);
-  font-size: 14px;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  background: #FFFFFF;
+  color: #1A1210;
+  font-size: 15px;
+  font-family: inherit;
   text-transform: uppercase;
 }
-.cupom-area input:focus { outline: none; border-color: var(--cor-categoria-ativa); }
-.cupom-area input:disabled { opacity: 0.5; }
-.cupom-area .btn { padding: 10px 20px; }
+.cupom-area input::placeholder { color: #666; }
+.cupom-area input:focus { outline: none; border-color: var(--cor-categoria-ativa); box-shadow: 0 0 0 3px rgba(255,224,102,0.2); }
+.cupom-area input:disabled { opacity: 0.6; background: #e9ecef; }
+.cupom-area .btn { padding: 12px 20px; }
+
 .cupom-aplicado {
   background: rgba(34, 197, 94, 0.15);
   border: 1px solid var(--cor-sucesso);
@@ -239,7 +224,7 @@ h3 .count {
   gap: 8px;
 }
 .cupom-aplicado.visible { display: flex; }
-.cupom-aplicado .info { color: var(--cor-sucesso); font-weight: 600; }
+.cupom-aplicado .info { color: var(--cor-sucesso); font-weight: 600; font-size: 14px; }
 .cupom-aplicado .remove {
   color: var(--cor-erro);
   cursor: pointer;
@@ -247,9 +232,10 @@ h3 .count {
   background: transparent;
   border: none;
   font-size: 14px;
+  padding: 6px 10px;
 }
 
-/* ===== CUPOM ESPECIAL PROGRESSIVO ===== */
+/* ===== CUPOM ESPECIAL ===== */
 .cupom-especial-area {
   background: rgba(255, 224, 102, 0.08);
   border-radius: var(--raio-md);
@@ -301,9 +287,11 @@ h3 .count {
 .cupom-especial-area .info-barra {
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--cor-fonte-muted);
-  margin-top: 4px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 .cupom-especial-area .info-barra .destaque { color: var(--cor-categoria-ativa); font-weight: 700; }
 .cupom-especial-area .info-barra .proximo { color: var(--cor-sucesso); }
@@ -335,16 +323,17 @@ h3 .count {
   margin-bottom: 8px;
   border: 1px solid var(--borda-sutil);
   transition: transform 0.15s;
+  flex-wrap: wrap;
 }
-.cart-item:hover { transform: scale(1.01); }
 .cart-item img {
   width: 50px;
   height: 50px;
   object-fit: cover;
   border-radius: var(--raio-sm);
   background: var(--bg-input);
+  flex-shrink: 0;
 }
-.cart-item .info { flex: 1; min-width: 0; }
+.cart-item .info { flex: 1; min-width: 120px; }
 .cart-item .info .title { font-weight: 600; font-size: 14px; color: var(--cor-fonte-titulo); }
 .cart-item .info .extras-list { font-size: 11px; color: var(--cor-promo); margin-top: 2px; }
 .cart-item .info .price { font-size: 12px; color: var(--cor-fonte-preco); }
@@ -356,16 +345,16 @@ h3 .count {
   border-radius: var(--raio-sm);
   padding: 2px;
 }
-.cart-item .qty-control .btn { width: 28px; height: 28px; padding: 0; font-size: 16px; border-radius: 6px; }
+.cart-item .qty-control .btn { width: 30px; height: 30px; padding: 0; font-size: 16px; border-radius: 6px; }
 .cart-item .qty-control .qty { min-width: 24px; text-align: center; font-weight: 700; }
 .cart-item .item-total {
   font-weight: 700;
   color: var(--cor-fonte-preco);
   font-size: 14px;
-  min-width: 50px;
+  min-width: 60px;
   text-align: right;
 }
-.cart-item.extra-item { border-left: 3px solid var(--cor-promo); opacity: 0.85; }
+.cart-item.extra-item { border-left: 3px solid var(--cor-promo); }
 .cart-item.extra-item .info .title { color: var(--cor-promo); }
 
 /* ===== TOTAIS ===== */
@@ -379,9 +368,10 @@ h3 .count {
 .totais .linha {
   display: flex;
   justify-content: space-between;
-  padding: 3px 0;
+  padding: 4px 0;
   font-size: 14px;
   color: var(--cor-fonte-muted);
+  gap: 8px;
 }
 .totais .linha.total {
   border-top: 1px solid var(--borda-sutil);
@@ -403,14 +393,14 @@ h3 .count {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(180deg, transparent, var(--bg-site) 20%, var(--bg-site));
-  padding: 12px 16px;
+  background: linear-gradient(180deg, transparent, var(--bg-site) 15%, var(--bg-site));
+  padding: 12px 12px;
   padding-bottom: calc(12px + env(safe-area-inset-bottom));
   box-sizing: border-box;
   z-index: 50;
 }
-.footer-buttons { display: flex; gap: 12px; }
-.btn-large { padding: 14px 16px; font-size: 16px; flex: 1; border-radius: var(--raio-md); }
+.footer-buttons { display: flex; gap: 10px; }
+.btn-large { padding: 14px 16px; font-size: 15px; flex: 1; border-radius: var(--raio-md); }
 .btn-large:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* ===== MODAL ===== */
@@ -426,17 +416,16 @@ h3 .count {
   align-items: center;
   z-index: 110;
   backdrop-filter: blur(4px);
-  padding: 16px;
+  padding: 12px;
 }
 .modal-content {
   background: var(--bg-modal);
   padding: 20px;
   border-radius: var(--raio-lg);
-  width: 380px;
-  max-width: 100%;
-  max-height: 90vh;
-  overflow: auto;
-  scrollbar-width: none;
+  width: 100%;
+  max-width: 420px;
+  max-height: 92vh;
+  overflow-y: auto;
   border: 1px solid var(--borda-sutil);
   box-shadow: var(--sombra-modal);
   animation: modalIn 0.3s ease;
@@ -445,67 +434,72 @@ h3 .count {
   from { opacity: 0; transform: translateY(-20px) scale(0.96); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
-.modal-content::-webkit-scrollbar { display: none; }
 .modal-content .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
 }
-.modal-content .modal-header h3 { margin: 0; font-size: 20px; }
+.modal-content .modal-header h3 { margin: 0; font-size: 18px; }
 .modal-content .close-btn {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.08);
   border: none;
   color: var(--cor-fonte-muted);
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   font-size: 18px;
   cursor: pointer;
-  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.modal-content .close-btn:hover { background: rgba(255,255,255,0.1); }
+
+/* ✅ INPUTS BRANCOS COM BORDA FINA PRETA */
 .modal-content input,
 .modal-content select {
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px 14px;
   margin: 5px 0;
-  border: 1px solid var(--borda-sutil);
+  border: 1.5px solid #333;
   border-radius: var(--raio-sm);
-  background: var(--bg-input);
-  color: var(--cor-fonte);
-  font-size: 14px;
+  background: #FFFFFF;
+  color: #1A1210;
+  font-size: 15px;
+  font-family: inherit;
   box-sizing: border-box;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
+.modal-content input::placeholder { color: #666; }
 .modal-content input:focus,
 .modal-content select:focus {
   outline: none;
   border-color: var(--cor-categoria-ativa);
-  box-shadow: 0 0 0 3px rgba(255,224,102,0.15);
+  box-shadow: 0 0 0 3px rgba(255,224,102,0.25);
 }
-.modal-content input::placeholder { color: var(--cor-fonte-muted); opacity: 0.6; }
 .modal-content .field-label {
   font-size: 12px;
   color: var(--cor-fonte-muted);
-  margin-top: 8px;
+  margin-top: 10px;
   display: block;
+  font-weight: 600;
 }
 .modal-content .field-label .required { color: var(--cor-erro); }
+
 .geo-btn {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   background: linear-gradient(135deg, #1a5a3a, #2a8a5a);
   color: #fff;
   border: none;
   border-radius: var(--raio-sm);
   font-weight: 700;
+  font-size: 15px;
   margin: 6px 0;
   cursor: pointer;
-  transition: transform 0.15s, filter 0.2s;
+  font-family: inherit;
 }
-.geo-btn:hover { filter: brightness(1.1); }
-.geo-btn:active { transform: scale(0.97); }
+.geo-btn:active { transform: scale(0.98); }
 .geo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .geo-status {
   text-align: center;
@@ -556,7 +550,7 @@ h3 .count {
 .loading-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.75);
   display: none;
   align-items: center;
   justify-content: center;
@@ -574,47 +568,26 @@ h3 .count {
   animation: spin 0.8s linear infinite;
   margin: 0 auto 16px;
 }
-.loading-content .text { font-size: 18px; font-weight: 600; }
-.loading-content .sub { font-size: 13px; color: var(--cor-fonte-muted); margin-top: 4px; }
 @keyframes spin { to { transform: rotate(360deg); } }
+.loading-content .text { font-size: 16px; font-weight: 600; }
+.loading-content .sub { font-size: 13px; color: var(--cor-fonte-muted); margin-top: 4px; }
 
-/* ===== LIMPAR SACOLA ===== */
+/* ===== LIMPAR ===== */
 .btn-limpar {
   background: transparent;
   border: 1px solid rgba(220,53,69,0.3);
   color: var(--cor-erro);
-  padding: 6px 14px;
+  padding: 8px 14px;
   border-radius: var(--raio-sm);
   cursor: pointer;
   font-size: 13px;
   font-weight: 600;
   transition: background 0.2s;
   margin-top: 4px;
+  font-family: inherit;
 }
 .btn-limpar:hover { background: rgba(220,53,69,0.1); }
 .btn-limpar:disabled { opacity: 0.4; cursor: not-allowed; }
-
-/* ===== RESPONSIVO ===== */
-@media (max-width: 480px) {
-  body { padding: 12px; padding-bottom: 180px; }
-  .header h1 { font-size: 20px; }
-  .modal-content { padding: 16px; }
-  .extra-card { flex: 0 0 110px; }
-  .cart-item { padding: 8px 10px; flex-wrap: wrap; }
-  .cart-item .item-total { min-width: auto; margin-left: auto; }
-  .footer-buttons { flex-direction: column; gap: 8px; }
-  .btn-large { padding: 12px; }
-  .totais .linha.total { font-size: 16px; }
-  .cupom-area { flex-direction: column; }
-  .cupom-area input { width: 100%; }
-  .cupom-area .btn { width: 100%; }
-}
-@media (max-width: 360px) {
-  .extra-card { flex: 0 0 95px; padding: 6px; }
-  .extra-card img { height: 40px; }
-  .cart-item img { width: 40px; height: 40px; }
-  .cart-item .info .title { font-size: 12px; }
-}
 
 /* ===== TOAST ===== */
 .toast-container {
@@ -624,12 +597,18 @@ h3 .count {
   transform: translateX(-50%);
   z-index: 130;
   pointer-events: none;
+  width: calc(100% - 24px);
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 .toast {
   pointer-events: auto;
-  background: rgba(0,0,0,0.9);
+  background: rgba(0,0,0,0.92);
   color: #fff;
-  padding: 12px 20px;
+  padding: 12px 18px;
   border-radius: var(--raio-md);
   font-weight: 600;
   font-size: 14px;
@@ -639,6 +618,7 @@ h3 .count {
   display: flex;
   align-items: center;
   gap: 10px;
+  text-align: center;
 }
 @keyframes toastIn {
   from { opacity: 0; transform: translateY(-20px); }
@@ -648,38 +628,63 @@ h3 .count {
   from { opacity: 1; transform: translateY(0); }
   to { opacity: 0; transform: translateY(-20px); }
 }
+
+/* ===== RESPONSIVO MOBILE ===== */
+@media (max-width: 480px) {
+  body { padding: 10px; padding-bottom: 180px; }
+  h3 { font-size: 15px; }
+  .cupom-area { flex-direction: column; align-items: stretch; }
+  .cupom-area input { width: 100%; }
+  .cupom-area .btn { width: 100%; }
+  .extra-card { flex: 0 0 110px; }
+  .footer-buttons { flex-direction: column-reverse; gap: 8px; }
+  .btn-large { padding: 12px; font-size: 14px; }
+  .cart-item { padding: 10px; gap: 10px; }
+  .cart-item img { width: 44px; height: 44px; }
+  .cart-item .item-total { min-width: auto; font-size: 13px; }
+  .totais .linha.total { font-size: 16px; }
+  .modal-content { padding: 16px; max-height: 94vh; }
+  .modal-content input, .modal-content select { padding: 12px; font-size: 16px; } /* 16px evita zoom no iOS */
+}
+
+@media (max-width: 360px) {
+  .extra-card { flex: 0 0 95px; padding: 6px; }
+  .extra-card img { height: 40px; }
+  .cart-item img { width: 40px; height: 40px; }
+  .cart-item .info .title { font-size: 12px; }
+  .cart-item .qty-control .btn { width: 26px; height: 26px; font-size: 14px; }
+}
 </style>
 </head>
 <body>
 
-<!-- ===== HEADER ===== -->
-<div class="header">
-  <h1>🛒 Sacola</h1>
-  <span class="badge" id="cartBadge">0 itens</span>
-</div>
+<!-- ===== HEADER (só título) ===== -->
+<h3 style="margin-top: 0; font-size: 22px; color: var(--cor-fonte-titulo); justify-content: space-between; margin-bottom: 12px;">
+  <span>Sacola</span>
+  <span class="count" id="itensCount" style="font-size: 12px; background: var(--bg-card); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--borda-sutil);"></span>
+</h3>
 
 <!-- ===== MENSAGEM LOJA FECHADA ===== -->
 <div id="lojaFechadaMsg" class="loja-fechada-msg">
   <span>🔴 <strong>Loja fechada</strong> – Não é possível adicionar itens no momento.</span>
 </div>
 
-<!-- ===== ITENS EXTRAS ===== -->
-<h3>🧂 Itens Extras <span class="count">(adicione ao seu pedido)</span></h3>
+<!-- ===== ITENS EXTRAS (título removido) ===== -->
 <div class="extras" id="extrasContainer">
-  <div style="color:#6a7a8a; padding:10px; text-align:center; width:100%;">Carregando itens extras...</div>
+  <div style="color:#6a7a8a; padding:10px; text-align:center; width:100%;">Carregando...</div>
 </div>
 
-<!-- ===== CUPOM DE DESCONTO ===== -->
+<!-- ===== CUPOM ===== -->
 <div class="cupom-area">
-  <input type="text" id="cupomInput" placeholder="Digite seu cupom de desconto" maxlength="20" />
-  <button class="btn cupom" id="btnAplicarCupom">🎫 Aplicar</button>
+  <input type="text" id="cupomInput" placeholder="Cupom de desconto" maxlength="20" autocomplete="off" />
+  <button class="btn cupom" id="btnAplicarCupom">Aplicar</button>
 </div>
 <div class="cupom-aplicado" id="cupomAplicado">
   <span class="info">✅ Cupom aplicado!</span>
-  <button class="remove" id="btnRemoverCupom">✕ Remover</button>
+  <button class="remove" id="btnRemoverCupom">Remover</button>
 </div>
 
-<!-- ===== CUPOM ESPECIAL PROGRESSIVO ===== -->
+<!-- ===== CUPOM ESPECIAL ===== -->
 <div class="cupom-especial-area" id="cupomEspecialArea">
   <div class="titulo">⭐ Cupom Especial Progressivo</div>
   <div class="descricao">O desconto aumenta conforme o valor da sacola</div>
@@ -697,22 +702,21 @@ h3 .count {
     <span id="faltaDesconto">Falta: <span class="falta">R$ 10,00</span></span>
   </div>
   <div style="font-size:11px; color:#6a7a8a; text-align:center; margin-top:6px;">
-    Código: <strong style="color:#FFD700;">DESCONTO_PROGRESSIVO</strong> (digite no campo acima)
+    Código: <strong style="color:#FFD700;">DESCONTO_PROGRESSIVO</strong>
   </div>
 </div>
 
 <!-- ===== CARRINHO ===== -->
-<h3>📦 Itens do Pedido <span class="count" id="itensCount"></span></h3>
 <div id="cart"></div>
 
-<button class="btn-limpar" id="btnLimparSacola" onclick="limparSacola()">🗑️ Esvaziar sacola</button>
+<button class="btn-limpar" id="btnLimparSacola" onclick="limparSacola()">Esvaziar sacola</button>
 
 <!-- ===== RODAPÉ ===== -->
 <div class="footer-actions">
   <div id="totais"></div>
   <div class="footer-buttons">
     <button class="btn danger btn-large" onclick="location.href='index.html'">← Voltar</button>
-    <button id="btnConfirmar" class="btn primary btn-large" onclick="abrirModal()">✅ Confirmar</button>
+    <button id="btnConfirmar" class="btn primary btn-large" onclick="abrirModal()">Confirmar</button>
   </div>
 </div>
 
@@ -728,21 +732,21 @@ h3 .count {
     <div id="geoStatus" class="geo-status"></div>
 
     <label class="field-label"><span class="required">*</span> Nome completo</label>
-    <input id="nome" placeholder="Digite seu nome completo">
+    <input id="nome" placeholder="Seu nome" autocomplete="name">
 
     <label class="field-label"><span class="required">*</span> WhatsApp com DDD</label>
-    <input id="telefone" placeholder="(11) 99999-9999">
+    <input id="telefone" placeholder="(11) 99999-9999" inputmode="tel" autocomplete="tel">
 
     <label class="field-label"><span class="required">*</span> Cidade</label>
-    <select id="cidade"><option value="">Selecione sua cidade*</option></select>
+    <select id="cidade"><option value="">Selecione</option></select>
 
     <label class="field-label"><span class="required">*</span> Rua</label>
-    <input id="rua" placeholder="Nome da rua">
+    <input id="rua" placeholder="Nome da rua" autocomplete="street-address">
 
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
       <div>
         <label class="field-label"><span class="required">*</span> Número</label>
-        <input id="numero" placeholder="Número">
+        <input id="numero" placeholder="Nº" inputmode="numeric">
       </div>
       <div>
         <label class="field-label"><span class="required">*</span> Bairro</label>
@@ -752,14 +756,14 @@ h3 .count {
 
     <label class="field-label"><span class="required">*</span> Forma de pagamento</label>
     <select id="pagamento">
-      <option value="">Selecione uma opção*</option>
+      <option value="">Selecione</option>
       <option value="Dinheiro">💰 Dinheiro</option>
       <option value="Pix">📱 Pix</option>
       <option value="Debito">💳 Débito</option>
       <option value="Credito">💳 Crédito</option>
     </select>
 
-    <input id="troco" placeholder="Qual o valor que você vai pagar? (ex: 100 ou 100,50)" style="display:none">
+    <input id="troco" placeholder="Valor que vai pagar (ex: 100,00)" inputmode="decimal" style="display:none">
     <div id="trocoPreview" style="font-size:14px; margin-top:4px; min-height:20px; color:#4caf50; font-weight:600;"></div>
 
     <div class="cupom-modal">
@@ -769,7 +773,7 @@ h3 .count {
     </div>
 
     <div id="erroEnvio" class="erro-geral"></div>
-    <button class="btn primary" onclick="enviarPedido()">✅ Confirmar e Enviar</button>
+    <button class="btn primary" onclick="enviarPedido()">Confirmar e Enviar</button>
   </div>
 </div>
 
@@ -778,7 +782,7 @@ h3 .count {
   <div class="loading-content">
     <div class="spinner"></div>
     <div class="text">Enviando pedido...</div>
-    <div class="sub">Aguarde um momento</div>
+    <div class="sub">Aguarde</div>
   </div>
 </div>
 
@@ -816,23 +820,13 @@ var cupomEspecialAplicado = false;
 var cores = {};
 
 // ============================================================
-// ✅ CARREGAR CORES DO FIRESTORE (mesmo do index.html)
+// ✅ CARREGAR CORES DO FIRESTORE
 // ============================================================
 function carregarCores() {
   try {
     db.collection('config').doc('cores').onSnapshot(function(doc) {
-      if (doc.exists) {
-        cores = doc.data();
-      } else {
-        cores = {
-          corFundoSite: '#1A1210', corContainer: '#1A1A1A', corTopo: '#1A1210',
-          corCategoriaAtiva: '#FFE066', corBotaoAdicionar: '#2B7245',
-          corCategoria: '#FFD700', corMenu: '#DC3545',
-          corGroupHeader: '#FFD700', corCart: '#AC940D',
-          corFonte: '#E6EEF6', corFonteTitulo: '#FFFFFF',
-          corFontePreco: '#AC940D', corFonteMuted: '#9AA6B2'
-        };
-      }
+      if (doc.exists) cores = doc.data();
+      else cores = {};
       aplicarCores(cores);
     }, function(error) {
       console.error('Erro ao carregar cores:', error);
@@ -850,7 +844,7 @@ function aplicarCores(coresObj) {
   root.style.setProperty('--bg-card', coresObj.corContainer || '#22201E');
   root.style.setProperty('--bg-card-hover', (coresObj.corContainer || '#22201E') + 'dd');
   root.style.setProperty('--bg-modal', coresObj.corContainer || '#1F1A18');
-  root.style.setProperty('--bg-input', (coresObj.corFundoSite || '#1A1210') + 'dd');
+  root.style.setProperty('--bg-input', '#FFFFFF');
   root.style.setProperty('--cor-categoria-ativa', coresObj.corCategoriaAtiva || '#FFE066');
   root.style.setProperty('--cor-botao-adicionar', coresObj.corBotaoAdicionar || '#2B7245');
   root.style.setProperty('--cor-categoria', coresObj.corCategoria || '#FFD700');
@@ -867,20 +861,11 @@ function aplicarCores(coresObj) {
 // HELPERS
 // ============================================================
 var getCart = function() {
-  try {
-    return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-  } catch(e) {
-    return [];
-  }
+  try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
+  catch(e) { return []; }
 };
-
-var setCart = function(c) {
-  localStorage.setItem(CART_KEY, JSON.stringify(c));
-};
-
-var money = function(v) {
-  return 'R$ ' + Number(v || 0).toFixed(2).replace('.', ',');
-};
+var setCart = function(c) { localStorage.setItem(CART_KEY, JSON.stringify(c)); };
+var money = function(v) { return 'R$ ' + Number(v || 0).toFixed(2).replace('.', ','); };
 
 var distanciaKm = function(a, b, c, d) {
   var R = 6371;
@@ -898,35 +883,26 @@ function pontoDentroPoligono(lat, lng, vertices) {
   for (var i = 0, j = n - 1; i < n; j = i++) {
     var xi = vertices[i].lat, yi = vertices[i].lng;
     var xj = vertices[j].lat, yj = vertices[j].lng;
-    var intersect = ((yi > lng) !== (yj > lng)) &&
-                    (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi);
+    var intersect = ((yi > lng) !== (yj > lng)) && (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi);
     if (intersect) inside = !inside;
   }
   return inside;
 }
-
 function pontoDentroCirculo(lat, lng, center, raio) {
   var R = 6371;
   var dLat = (lat - center.lat) * Math.PI / 180;
   var dLng = (lng - center.lng) * Math.PI / 180;
-  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-          Math.cos(center.lat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) *
-          Math.sin(dLng/2) * Math.sin(dLng/2);
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(center.lat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) * Math.sin(dLng/2) * Math.sin(dLng/2);
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  var dist = R * c * 1000;
-  return dist <= raio;
+  return R * c * 1000 <= raio;
 }
-
 function calcularTaxa(km, lat, lng) {
   if (areasEntrega.length > 0 && lat !== undefined && lng !== undefined) {
     for (var i = 0; i < areasEntrega.length; i++) {
       var area = areasEntrega[i];
       var dentro = false;
-      if (area.tipo === 'polygon' && area.path) {
-        dentro = pontoDentroPoligono(lat, lng, area.path);
-      } else if (area.tipo === 'circle' && area.center && area.raio) {
-        dentro = pontoDentroCirculo(lat, lng, area.center, area.raio);
-      }
+      if (area.tipo === 'polygon' && area.path) dentro = pontoDentroPoligono(lat, lng, area.path);
+      else if (area.tipo === 'circle' && area.center && area.raio) dentro = pontoDentroCirculo(lat, lng, area.center, area.raio);
       if (dentro) return Number(area.taxa) || 0;
     }
     return 0;
@@ -940,9 +916,7 @@ function calcularTaxa(km, lat, lng) {
   return f ? Number(f.taxa) : Number(faixas[faixas.length - 1].taxa);
 }
 
-function gerarCodigoPedido() {
-  return Math.floor(1000 + Math.random() * 9000).toString();
-}
+function gerarCodigoPedido() { return Math.floor(1000 + Math.random() * 9000).toString(); }
 
 function showToast(msg, type) {
   type = type || 'success';
@@ -952,9 +926,7 @@ function showToast(msg, type) {
   var icon = type === 'success' ? '✅' : '⚠️';
   toast.innerHTML = icon + ' ' + msg;
   container.appendChild(toast);
-  setTimeout(function() {
-    if (toast.parentNode) toast.remove();
-  }, 2200);
+  setTimeout(function() { if (toast.parentNode) toast.remove(); }, 2400);
 }
 
 // ============================================================
@@ -974,7 +946,7 @@ function carregarCupomEspecial() {
       atualizarCupomEspecial();
     })
     .catch(function(err) {
-      console.error('❌ Erro ao carregar cupom especial:', err);
+      console.error('Erro cupom especial:', err);
       faixasEspeciais = [];
       cupomEspecialAtivo = false;
       atualizarCupomEspecial();
@@ -992,7 +964,6 @@ function calcularDescontoProgressivo(total) {
   return desconto;
 }
 
-// ✅ NÃO APLICA SOZINHO — só mostra a barra. O cliente digita o código.
 function atualizarCupomEspecial() {
   var area = document.getElementById('cupomEspecialArea');
   var total = getCartTotal();
@@ -1035,14 +1006,13 @@ function atualizarCupomEspecial() {
     document.getElementById('proximoDesconto').innerHTML = 'Próximo: <span class="proximo">' + money(proximoValor) + ' → ' + proximo.desconto + '%</span>';
     document.getElementById('faltaDesconto').innerHTML = 'Falta: <span class="falta">' + money(falta) + '</span>';
   } else if (total >= maximo) {
-    document.getElementById('proximoDesconto').innerHTML = 'Próximo: <span class="proximo">✅ Desconto máximo!</span>';
+    document.getElementById('proximoDesconto').innerHTML = 'Próximo: <span class="proximo">✅ Máximo!</span>';
     document.getElementById('faltaDesconto').innerHTML = 'Falta: <span class="falta">—</span>';
   } else {
     document.getElementById('proximoDesconto').innerHTML = 'Próximo: <span class="proximo">' + money(sorted[0].minimo) + ' → ' + sorted[0].desconto + '%</span>';
     document.getElementById('faltaDesconto').innerHTML = 'Falta: <span class="falta">' + money(sorted[0].minimo - total) + '</span>';
   }
 
-  // Se o cupom especial JÁ estava aplicado, atualiza o percentual
   if (cupomEspecialAplicado && cupomAplicado && cupomAplicado.especial) {
     if (desconto > 0) {
       cupomAplicado.desconto = desconto;
@@ -1055,7 +1025,7 @@ function atualizarCupomEspecial() {
       document.getElementById('cupomInput').value = '';
       document.getElementById('cupomInput').disabled = false;
       document.getElementById('btnAplicarCupom').disabled = false;
-      showToast('⚠️ Cupom especial removido — valor mínimo não atingido', 'error');
+      showToast('⚠️ Cupom especial removido', 'error');
     }
   }
 
@@ -1066,10 +1036,7 @@ function atualizarCupomEspecial() {
 function getCartTotal() {
   var c = getCart();
   var total = 0;
-  for (var i = 0; i < c.length; i++) {
-    var precoItem = c[i].precoTotal || c[i].price || 0;
-    total += precoItem * (c[i].qty || 1);
-  }
+  for (var i = 0; i < c.length; i++) total += (c[i].precoTotal || c[i].price || 0) * (c[i].qty || 1);
   return total;
 }
 
@@ -1078,15 +1045,11 @@ function getCartTotal() {
 // ============================================================
 function carregarStatusLoja() {
   db.collection('config').doc('loja').onSnapshot(function(doc) {
-    if (doc.exists) {
-      var data = doc.data();
-      lojaAberta = data.lojaAberta !== undefined ? data.lojaAberta : true;
-    } else {
-      lojaAberta = true;
-    }
+    if (doc.exists) lojaAberta = doc.data().lojaAberta !== undefined ? doc.data().lojaAberta : true;
+    else lojaAberta = true;
     atualizarInterfaceLoja();
   }, function(error) {
-    console.error('Erro ao carregar status da loja:', error);
+    console.error('Erro status loja:', error);
     lojaAberta = true;
     atualizarInterfaceLoja();
   });
@@ -1099,42 +1062,26 @@ function atualizarInterfaceLoja() {
 
   if (!lojaAberta) {
     msgDiv.style.display = 'block';
-    if (btnConfirmar) {
-      btnConfirmar.disabled = true;
-      btnConfirmar.textContent = '🔴 Loja Fechada';
-      btnConfirmar.style.background = '#555';
-    }
+    if (btnConfirmar) { btnConfirmar.disabled = true; btnConfirmar.textContent = 'Loja Fechada'; btnConfirmar.style.background = '#555'; }
     if (btnLimpar) btnLimpar.disabled = true;
-    document.querySelectorAll('.extra-card .btn').forEach(function(btn) {
-      btn.disabled = true;
-      btn.textContent = '🔴 Fechado';
-      btn.style.background = '#555';
-    });
-    document.querySelectorAll('.extra-card').forEach(function(card) {
-      card.classList.add('loja-fechada');
-    });
+    document.querySelectorAll('.extra-card .btn').forEach(function(btn) { btn.disabled = true; btn.textContent = 'Fechado'; btn.style.background = '#555'; });
+    document.querySelectorAll('.extra-card').forEach(function(card) { card.classList.add('loja-fechada'); });
   } else {
     msgDiv.style.display = 'none';
     if (btnConfirmar) {
       var c = getCart();
       btnConfirmar.disabled = c.length === 0;
-      btnConfirmar.textContent = '✅ Confirmar';
+      btnConfirmar.textContent = 'Confirmar';
       btnConfirmar.style.background = '';
     }
     if (btnLimpar) btnLimpar.disabled = false;
-    document.querySelectorAll('.extra-card .btn').forEach(function(btn) {
-      btn.disabled = false;
-      btn.textContent = '+ Adicionar';
-      btn.style.background = '';
-    });
-    document.querySelectorAll('.extra-card').forEach(function(card) {
-      card.classList.remove('loja-fechada');
-    });
+    document.querySelectorAll('.extra-card .btn').forEach(function(btn) { btn.disabled = false; btn.textContent = '+ Adicionar'; btn.style.background = ''; });
+    document.querySelectorAll('.extra-card').forEach(function(card) { card.classList.remove('loja-fechada'); });
   }
 }
 
 // ============================================================
-// EXTRAS PADRÃO / CUPONS FALLBACK
+// FALLBACKS
 // ============================================================
 var EXTRAS_PADRAO = [
   { nome: 'Molho Barbecue', preco: 5.00, img: '' },
@@ -1158,16 +1105,10 @@ function carregarCupons() {
     .then(function(doc) {
       if (doc.exists) {
         var data = doc.data();
-        if (data.cupons && Array.isArray(data.cupons) && data.cupons.length > 0) {
-          cuponsValidos = data.cupons;
-        } else if (data.cupom && Array.isArray(data.cupom) && data.cupom.length > 0) {
-          cuponsValidos = data.cupom;
-        } else {
-          cuponsValidos = CUPONS_FALLBACK;
-        }
-      } else {
-        cuponsValidos = CUPONS_FALLBACK;
-      }
+        if (data.cupons && Array.isArray(data.cupons) && data.cupons.length > 0) cuponsValidos = data.cupons;
+        else if (data.cupom && Array.isArray(data.cupom) && data.cupom.length > 0) cuponsValidos = data.cupom;
+        else cuponsValidos = CUPONS_FALLBACK;
+      } else cuponsValidos = CUPONS_FALLBACK;
 
       var saved = localStorage.getItem(CUPOM_KEY);
       if (saved) {
@@ -1185,7 +1126,7 @@ function carregarCupons() {
             if (cupomReal) {
               var subtotal = getCartTotal();
               if (cupomReal.minimo && subtotal < cupomReal.minimo) {
-                showToast('⚠️ Valor mínimo para este cupom: ' + money(cupomReal.minimo) + '. Adicione mais itens.', 'error');
+                showToast('⚠️ Valor mínimo: ' + money(cupomReal.minimo), 'error');
                 cupomAplicado = null;
                 localStorage.removeItem(CUPOM_KEY);
               } else {
@@ -1205,12 +1146,11 @@ function carregarCupons() {
           cupomAplicado = null;
         }
       }
-
       renderTotais();
       renderCupom();
     })
     .catch(function(err) {
-      console.error('❌ Erro ao carregar cupons:', err);
+      console.error('Erro cupons:', err);
       cuponsValidos = CUPONS_FALLBACK;
       renderTotais();
       renderCupom();
@@ -1218,67 +1158,37 @@ function carregarCupons() {
 }
 
 function aplicarCupom() {
-  if (!lojaAberta) {
-    showToast('Loja fechada. Não é possível aplicar cupons.', 'error');
-    return;
-  }
-
+  if (!lojaAberta) { showToast('Loja fechada', 'error'); return; }
   var codigo = document.getElementById('cupomInput').value.trim().toUpperCase();
-  if (!codigo) {
-    showToast('Digite um código de cupom.', 'error');
-    return;
-  }
+  if (!codigo) { showToast('Digite um cupom', 'error'); return; }
 
   if (codigo === 'DESCONTO_PROGRESSIVO') {
     var total = getCartTotal();
     var desconto = calcularDescontoProgressivo(total);
     if (desconto > 0) {
       cupomEspecialAplicado = true;
-      var cupomEspecial = {
-        codigo: 'DESCONTO_PROGRESSIVO',
-        desconto: desconto,
-        minimo: 0,
-        especial: true
-      };
+      var cupomEspecial = { codigo: 'DESCONTO_PROGRESSIVO', desconto: desconto, minimo: 0, especial: true };
       cupomAplicado = cupomEspecial;
       localStorage.setItem(CUPOM_KEY, JSON.stringify(cupomEspecial));
       document.getElementById('cupomAplicado').classList.add('visible');
       document.getElementById('cupomInput').disabled = true;
       document.getElementById('btnAplicarCupom').disabled = true;
-      showToast('⭐ Cupom especial aplicado! ' + desconto + '% de desconto.');
-
-      if (typeof window.trackEvent === 'function') {
-        window.trackEvent('apply_coupon', { codigo: 'DESCONTO_PROGRESSIVO', desconto: desconto, especial: true });
-      }
-
+      showToast('⭐ Cupom especial: ' + desconto + '% OFF');
+      if (typeof window.trackEvent === 'function') window.trackEvent('apply_coupon', { codigo: 'DESCONTO_PROGRESSIVO', desconto: desconto, especial: true });
       renderTotais();
       renderCupom();
       return;
-    } else {
-      showToast('⚠️ Adicione mais itens para ganhar desconto!', 'error');
-      return;
-    }
+    } else { showToast('⚠️ Adicione mais itens', 'error'); return; }
   }
 
   var cupom = null;
   for (var i = 0; i < cuponsValidos.length; i++) {
-    if (cuponsValidos[i].codigo === codigo) {
-      cupom = cuponsValidos[i];
-      break;
-    }
+    if (cuponsValidos[i].codigo === codigo) { cupom = cuponsValidos[i]; break; }
   }
-
-  if (!cupom) {
-    showToast('Cupom inválido.', 'error');
-    return;
-  }
+  if (!cupom) { showToast('Cupom inválido', 'error'); return; }
 
   var subtotal = getCartTotal();
-  if (cupom.minimo && subtotal < cupom.minimo) {
-    showToast('⚠️ Valor mínimo para este cupom: ' + money(cupom.minimo) + '. Adicione mais itens.', 'error');
-    return;
-  }
-
+  if (cupom.minimo && subtotal < cupom.minimo) { showToast('⚠️ Valor mínimo: ' + money(cupom.minimo), 'error'); return; }
   if (cupomEspecialAplicado) cupomEspecialAplicado = false;
 
   cupomAplicado = cupom;
@@ -1286,12 +1196,8 @@ function aplicarCupom() {
   document.getElementById('cupomAplicado').classList.add('visible');
   document.getElementById('cupomInput').disabled = true;
   document.getElementById('btnAplicarCupom').disabled = true;
-  showToast('✅ Cupom ' + cupom.codigo + ' aplicado! ' + cupom.desconto + '% de desconto.');
-
-  if (typeof window.trackEvent === 'function') {
-    window.trackEvent('apply_coupon', { codigo: cupom.codigo, desconto: cupom.desconto, total: subtotal });
-  }
-
+  showToast('✅ Cupom ' + cupom.codigo + ': ' + cupom.desconto + '% OFF');
+  if (typeof window.trackEvent === 'function') window.trackEvent('apply_coupon', { codigo: cupom.codigo, desconto: cupom.desconto, total: subtotal });
   renderTotais();
   renderCupom();
 }
@@ -1304,7 +1210,7 @@ function removerCupom() {
   document.getElementById('cupomInput').value = '';
   document.getElementById('cupomInput').disabled = false;
   document.getElementById('btnAplicarCupom').disabled = false;
-  showToast('Cupom removido.');
+  showToast('Cupom removido');
   renderTotais();
   renderCupom();
 }
@@ -1319,19 +1225,14 @@ function carregarExtras() {
       snapshot.forEach(function(doc) {
         var data = doc.data();
         if (data.ativo !== false) {
-          extras.push({
-            id: doc.id,
-            nome: data.nome || data.name || 'Item',
-            preco: data.preco || data.price || 0,
-            img: data.img || ''
-          });
+          extras.push({ id: doc.id, nome: data.nome || data.name || 'Item', preco: data.preco || data.price || 0, img: data.img || '' });
         }
       });
       renderExtras();
       atualizarInterfaceLoja();
     })
     .catch(function(err) {
-      console.error('❌ Erro ao carregar extras:', err);
+      console.error('Erro extras:', err);
       extras = EXTRAS_PADRAO.slice();
       renderExtras();
       atualizarInterfaceLoja();
@@ -1343,7 +1244,7 @@ function renderExtras() {
   if (!container) return;
 
   if (!extras || extras.length === 0) {
-    container.innerHTML = '<div style="color:#6a7a8a; padding:20px; text-align:center; width:100%;"><div style="font-size:32px; margin-bottom:8px;">🧂</div>Nenhum item extra disponível.<br><small style="font-size:11px;">Adicione no Painel Admin</small></div>';
+    container.innerHTML = '<div style="color:#6a7a8a; padding:16px; text-align:center; width:100%; font-size:13px;">Nenhum item extra disponível</div>';
     return;
   }
 
@@ -1354,11 +1255,9 @@ function renderExtras() {
     var preco = extra.preco || extra.price || 0;
     var img = extra.img || '';
     var nomeEscapado = nome.replace(/'/g, "\\'");
-
     var imgSrc = img || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%2248%22%3E%3Crect width=%22120%22 height=%2248%22 fill=%22%230a1420%22/%3E%3Ctext x=%2260%22 y=%2230%22 text-anchor=%22middle%22 fill=%22%239aa6b2%22 font-size=%2214%22%3E🧂%3C/text%3E%3C/svg%3E';
-
     var btnDisabled = !lojaAberta ? 'disabled' : '';
-    var btnText = lojaAberta ? '+ Adicionar' : '🔴 Fechado';
+    var btnText = lojaAberta ? '+ Adicionar' : 'Fechado';
     var cardClass = lojaAberta ? '' : 'loja-fechada';
 
     html += '<div class="extra-card ' + cardClass + '">';
@@ -1368,39 +1267,20 @@ function renderExtras() {
     html += '<button class="btn primary small extra-add" ' + btnDisabled + ' onclick="addExtra(\'' + nomeEscapado + '\', ' + preco + ', \'' + (img || '') + '\')">' + btnText + '</button>';
     html += '</div>';
   }
-
   container.innerHTML = html;
 }
 
 window.addExtra = function(nome, preco, img) {
-  if (!lojaAberta) {
-    showToast('🔴 Loja fechada. Não é possível adicionar itens.', 'error');
-    return;
-  }
-
+  if (!lojaAberta) { showToast('Loja fechada', 'error'); return; }
   var c = getCart();
   var id = 'extra_' + nome.replace(/\s/g, '_');
   var existente = null;
-  for (var i = 0; i < c.length; i++) {
-    if (c[i].id === id) { existente = c[i]; break; }
-  }
-  if (existente) {
-    existente.qty++;
-  } else {
-    c.push({
-      id: id,
-      title: nome,
-      price: preco,
-      precoTotal: preco,
-      qty: 1,
-      img: img || '',
-      tipo: 'extra',
-      isExtra: true
-    });
-  }
+  for (var i = 0; i < c.length; i++) { if (c[i].id === id) { existente = c[i]; break; } }
+  if (existente) existente.qty++;
+  else c.push({ id: id, title: nome, price: preco, precoTotal: preco, qty: 1, img: img || '', tipo: 'extra', isExtra: true });
   setCart(c);
   renderCart();
-  showToast(nome + ' adicionado!');
+  showToast(nome + ' adicionado');
 };
 
 // ============================================================
@@ -1410,12 +1290,10 @@ function renderCart() {
   var c = getCart();
   var container = document.getElementById('cart');
   var countEl = document.getElementById('itensCount');
-  var badgeEl = document.getElementById('cartBadge');
   var totalItens = 0;
   for (var i = 0; i < c.length; i++) totalItens += c[i].qty;
 
-  if (badgeEl) badgeEl.textContent = totalItens + ' itens';
-  if (countEl) countEl.textContent = '(' + totalItens + ' itens)';
+  if (countEl) countEl.textContent = totalItens + (totalItens === 1 ? ' item' : ' itens');
 
   if (c.length === 0) {
     container.innerHTML = '<div class="cart-empty"><div class="icon">🛒</div><div style="font-weight:600;margin-bottom:4px;">Sacola vazia</div><div style="font-size:13px;color:#6a7a8a;">Adicione um pastel ou item extra</div></div>';
@@ -1426,7 +1304,6 @@ function renderCart() {
       var precoItem = it.precoTotal || it.price || 0;
       var sub = precoItem * (it.qty || 1);
       var isExtra = it.tipo === 'extra' || it.isExtra === true;
-
       var imgSrc = it.img || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect width=%2250%22 height=%2250%22 fill=%22%230a1420%22/%3E%3Ctext x=%2225%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%239aa6b2%22 font-size=%2214%22%3E' + (isExtra ? '🧂' : '🍕') + '%3C/text%3E%3C/svg%3E';
 
       var extrasHtml = '';
@@ -1455,15 +1332,8 @@ function renderCart() {
   renderTotais();
   var btn = document.getElementById('btnConfirmar');
   if (btn) {
-    if (!lojaAberta) {
-      btn.disabled = true;
-      btn.textContent = '🔴 Loja Fechada';
-      btn.style.background = '#555';
-    } else {
-      btn.disabled = c.length === 0;
-      btn.textContent = '✅ Confirmar';
-      btn.style.background = '';
-    }
+    if (!lojaAberta) { btn.disabled = true; btn.textContent = 'Loja Fechada'; btn.style.background = '#555'; }
+    else { btn.disabled = c.length === 0; btn.textContent = 'Confirmar'; btn.style.background = ''; }
   }
   atualizarCupomEspecial();
 }
@@ -1477,15 +1347,9 @@ function alterarQtd(i, delta) {
 }
 
 function limparSacola() {
-  if (!lojaAberta) {
-    showToast('Loja fechada. Não é possível esvaziar a sacola.', 'error');
-    return;
-  }
-  if (getCart().length === 0) {
-    showToast('Sacola já está vazia', 'warning');
-    return;
-  }
-  if (confirm('Tem certeza que deseja esvaziar a sacola?')) {
+  if (!lojaAberta) { showToast('Loja fechada', 'error'); return; }
+  if (getCart().length === 0) { showToast('Sacola vazia', 'warning'); return; }
+  if (confirm('Esvaziar a sacola?')) {
     localStorage.removeItem(CART_KEY);
     localStorage.removeItem(CUPOM_KEY);
     cupomAplicado = null;
@@ -1506,11 +1370,10 @@ function renderTotais() {
   var sub = getCartTotal();
   var desconto = 0;
   if (cupomAplicado) desconto = sub * (cupomAplicado.desconto / 100);
-  var totalComDesconto = sub - desconto;
-  var totalFinal = totalComDesconto + (taxaAtual || 0);
+  var totalFinal = sub - desconto + (taxaAtual || 0);
   var container = document.getElementById('totais');
   var naoAtendido = (areasEntrega.length > 0 && taxaAtual === 0);
-  var entregaTexto = naoAtendido ? '🚫 Não atendemos' : (taxaAtual !== null ? money(taxaAtual) : '—');
+  var entregaTexto = naoAtendido ? 'Não atendemos' : (taxaAtual !== null ? money(taxaAtual) : '—');
 
   container.innerHTML =
     '<div class="linha"><span>Subtotal</span><span>' + money(sub) + '</span></div>' +
@@ -1549,12 +1412,9 @@ function renderCupom() {
 
   var htmlExtra = '';
   if (pagamentoSelecionado === 'Dinheiro' && valorRecebidoExibicao > 0) {
-    htmlExtra += '<div>💵 Valor Recebido: ' + money(valorRecebidoExibicao) + '</div>';
-    if (trocoExibicao !== null && trocoExibicao >= 0) {
-      htmlExtra += '<div style="color:#FFD700;">🔄 Troco a devolver: ' + money(trocoExibicao) + '</div>';
-    } else if (trocoExibicao !== null && trocoExibicao < 0) {
-      htmlExtra += '<div style="color:#ff6b6b;">⚠️ Faltam ' + money(Math.abs(trocoExibicao)) + ' para pagar</div>';
-    }
+    htmlExtra += '<div>💵 Recebido: ' + money(valorRecebidoExibicao) + '</div>';
+    if (trocoExibicao !== null && trocoExibicao >= 0) htmlExtra += '<div style="color:#FFD700;">🔄 Troco: ' + money(trocoExibicao) + '</div>';
+    else if (trocoExibicao !== null && trocoExibicao < 0) htmlExtra += '<div style="color:#ff6b6b;">⚠️ Faltam ' + money(Math.abs(trocoExibicao)) + '</div>';
   }
 
   containerTotal.innerHTML =
@@ -1585,7 +1445,7 @@ function carregarConfig() {
       }
       if (configEntrega.googleMapsApiKey) GOOGLE_KEY = configEntrega.googleMapsApiKey;
       var select = document.getElementById('cidade');
-      select.innerHTML = '<option value="">Selecione sua cidade*</option>';
+      select.innerHTML = '<option value="">Selecione</option>';
       var cidades = configEntrega.cidades || [];
       for (var i = 0; i < cidades.length; i++) {
         var opt = document.createElement('option');
@@ -1596,21 +1456,9 @@ function carregarConfig() {
       renderTotais();
     })
     .catch(function(err) {
-      console.error('Erro ao carregar configurações:', err);
-      configEntrega = {
-        loja: {lat: -23.27824, lon: -46.73661},
-        faixas: [{ate: 3, taxa: 5}, {ate: 5, taxa: 7}, {ate: 8, taxa: 10}],
-        cidades: ['Franco da Rocha', 'Francisco Morato', 'Caieiras']
-      };
+      console.error('Erro config:', err);
+      configEntrega = { loja: {lat: -23.27824, lon: -46.73661}, faixas: [{ate: 3, taxa: 5}, {ate: 5, taxa: 7}], cidades: ['Franco da Rocha'] };
       areasEntrega = [];
-      var select = document.getElementById('cidade');
-      select.innerHTML = '<option value="">Selecione sua cidade*</option>';
-      for (var j = 0; j < configEntrega.cidades.length; j++) {
-        var opt2 = document.createElement('option');
-        opt2.value = configEntrega.cidades[j];
-        opt2.textContent = configEntrega.cidades[j];
-        select.appendChild(opt2);
-      }
     });
 }
 
@@ -1642,48 +1490,28 @@ function calcularTaxaEndereco() {
         renderCupom();
       }
     })
-    .catch(function(e) {
-      console.error('Erro ao calcular taxa:', e);
-    });
+    .catch(function(e) { console.error('Erro taxa:', e); });
 }
 var calcDebounced = debounce(calcularTaxaEndereco, 800);
 
-// ============================================================
-// MODAL
-// ============================================================
 function abrirModal() {
-  if (!lojaAberta) {
-    showToast('🔴 Loja fechada. Não é possível finalizar o pedido.', 'error');
-    return;
-  }
+  if (!lojaAberta) { showToast('Loja fechada', 'error'); return; }
   var c = getCart();
-  if (!c.length) { alert('Adicione pelo menos 1 item na sacola'); return; }
+  if (!c.length) { alert('Adicione pelo menos 1 item'); return; }
   document.getElementById('modalEndereco').style.display = 'flex';
   renderCupom();
   document.getElementById('erroEnvio').classList.remove('visible');
-
-  if (typeof window.trackEvent === 'function') {
-    window.trackEvent('begin_checkout', { total: getCartTotal(), itens: c.length });
-  }
+  if (typeof window.trackEvent === 'function') window.trackEvent('begin_checkout', { total: getCartTotal(), itens: c.length });
 }
 
-function fecharModal() {
-  document.getElementById('modalEndereco').style.display = 'none';
-}
+function fecharModal() { document.getElementById('modalEndereco').style.display = 'none'; }
 
-// ============================================================
-// GEOLOCALIZAÇÃO
-// ============================================================
 function usarLocalizacao() {
   var btn = document.getElementById('btnGeo');
   var status = document.getElementById('geoStatus');
-  if (!navigator.geolocation) {
-    status.textContent = '❌ Seu navegador não suporta GPS';
-    status.className = 'geo-status error';
-    return;
-  }
+  if (!navigator.geolocation) { status.textContent = '❌ GPS indisponível'; status.className = 'geo-status error'; return; }
   btn.disabled = true;
-  status.textContent = '⏳ Buscando sua localização...';
+  status.textContent = '⏳ Buscando...';
   status.className = 'geo-status';
   navigator.geolocation.getCurrentPosition(
     function(pos) {
@@ -1700,9 +1528,7 @@ function usarLocalizacao() {
             var comp = data.results[0].address_components;
             var get = function(t) {
               var found = null;
-              for (var i = 0; i < comp.length; i++) {
-                if (comp[i].types.indexOf(t) !== -1) { found = comp[i]; break; }
-              }
+              for (var i = 0; i < comp.length; i++) { if (comp[i].types.indexOf(t) !== -1) { found = comp[i]; break; } }
               return found ? found.long_name : '';
             };
             document.getElementById('rua').value = get('route');
@@ -1711,34 +1537,19 @@ function usarLocalizacao() {
             var cid = get('administrative_area_level_2') || get('locality');
             var select = document.getElementById('cidade');
             var existe = false;
-            for (var k = 0; k < select.options.length; k++) {
-              if (select.options[k].value === cid) { existe = true; break; }
-            }
-            if (cid && !existe) {
-              var opt = document.createElement('option');
-              opt.value = cid;
-              opt.textContent = cid;
-              select.appendChild(opt);
-            }
+            for (var k = 0; k < select.options.length; k++) { if (select.options[k].value === cid) { existe = true; break; } }
+            if (cid && !existe) { var opt = document.createElement('option'); opt.value = cid; opt.textContent = cid; select.appendChild(opt); }
             if (cid) select.value = cid;
           }
           renderTotais();
           renderCupom();
-          status.textContent = '✅ Localização encontrada - ' + distanciaAtual.toFixed(1) + ' km';
+          status.textContent = '✅ ' + distanciaAtual.toFixed(1) + ' km';
           status.className = 'geo-status';
           btn.disabled = false;
         })
-        .catch(function(e) {
-          status.textContent = '❌ Erro ao buscar endereço';
-          status.className = 'geo-status error';
-          btn.disabled = false;
-        });
+        .catch(function(e) { status.textContent = '❌ Erro endereço'; status.className = 'geo-status error'; btn.disabled = false; });
     },
-    function(err) {
-      status.textContent = '⚠️ Permita o acesso à localização';
-      status.className = 'geo-status error';
-      btn.disabled = false;
-    },
+    function(err) { status.textContent = '⚠️ Permita o GPS'; status.className = 'geo-status error'; btn.disabled = false; },
     {enableHighAccuracy: true, timeout: 12000}
   );
 }
@@ -1747,15 +1558,11 @@ function usarLocalizacao() {
 // ENVIAR PEDIDO
 // ============================================================
 function enviarPedido() {
-  if (!lojaAberta) {
-    showToast('🔴 Loja fechada. Não é possível enviar pedidos.', 'error');
-    return;
-  }
+  if (!lojaAberta) { showToast('Loja fechada', 'error'); return; }
   var c = getCart();
   var erroEl = document.getElementById('erroEnvio');
   erroEl.classList.remove('visible');
   erroEl.textContent = '';
-
   if (!c.length) { alert('Sacola vazia'); return; }
 
   var nome = document.getElementById('nome');
@@ -1767,18 +1574,17 @@ function enviarPedido() {
   var pagamento = document.getElementById('pagamento');
   var trocoInput = document.getElementById('troco');
 
-  if (!nome.value.trim()) { alert('Digite seu nome completo'); nome.focus(); return; }
+  if (!nome.value.trim()) { alert('Digite seu nome'); nome.focus(); return; }
   var telDigits = telefone.value.replace(/\D/g, '');
-  if (telDigits.length < 10) { alert('WhatsApp com DDD (ex: 11999999999)'); telefone.focus(); return; }
+  if (telDigits.length < 10) { alert('WhatsApp inválido'); telefone.focus(); return; }
   if (!cidade.value || !rua.value.trim() || !numero.value.trim() || !bairro.value.trim() || !pagamento.value) {
-    alert('Preencha todos os campos obrigatórios (*)');
-    return;
+    alert('Preencha todos os campos *'); return;
   }
   if (taxaAtual === null) taxaAtual = 5;
 
   var btn = document.querySelector('#modalEndereco .btn.primary');
   btn.disabled = true;
-  btn.textContent = '⏳ Enviando...';
+  btn.textContent = 'Enviando...';
   document.getElementById('loadingOverlay').classList.add('active');
 
   var codigoPedido = gerarCodigoPedido();
@@ -1793,18 +1599,15 @@ function enviarPedido() {
   var trocoCalculado = (valorRecebido > 0) ? (valorRecebido - totalFinal) : null;
 
   if (pagamento.value === 'Dinheiro' && valorRecebido > 0 && trocoCalculado < 0) {
-    alert('⚠️ O valor pago (' + money(valorRecebido) + ') é insuficiente para pagar o total do pedido (' + money(totalFinal) + ').');
+    alert('⚠️ Valor insuficiente. Total: ' + money(totalFinal));
     document.getElementById('loadingOverlay').classList.remove('active');
-    btn.disabled = false;
-    btn.textContent = '✅ Confirmar e Enviar';
+    btn.disabled = false; btn.textContent = 'Confirmar e Enviar';
     return;
   }
-
   if (pagamento.value === 'Dinheiro' && !valorDigitado.trim()) {
-    alert('⚠️ Para pagamento em Dinheiro, informe o valor que você vai pagar (ex: 100 ou 100,50).');
+    alert('⚠️ Informe o valor que vai pagar');
     document.getElementById('loadingOverlay').classList.remove('active');
-    btn.disabled = false;
-    btn.textContent = '✅ Confirmar e Enviar';
+    btn.disabled = false; btn.textContent = 'Confirmar e Enviar';
     trocoInput.focus();
     return;
   }
@@ -1813,14 +1616,9 @@ function enviarPedido() {
   for (var j = 0; j < c.length; j++) {
     var precoItem = c[j].precoTotal || c[j].price || 0;
     itensFormatados.push({
-      id: c[j].id,
-      nome: c[j].title,
-      title: c[j].title,
-      preco: precoItem,
-      price: precoItem,
-      valor: precoItem,
-      quantidade: Number(c[j].qty),
-      qty: Number(c[j].qty),
+      id: c[j].id, nome: c[j].title, title: c[j].title,
+      preco: precoItem, price: precoItem, valor: precoItem,
+      quantidade: Number(c[j].qty), qty: Number(c[j].qty),
       total: precoItem * Number(c[j].qty),
       img: c[j].img || '',
       tipo: c[j].tipo || 'produto',
@@ -1829,32 +1627,22 @@ function enviarPedido() {
   }
 
   var pedido = {
-    id: codigoPedido,
-    numeroPedido: codigoPedido,
-    origem: 'cardapio',
+    id: codigoPedido, numeroPedido: codigoPedido, origem: 'cardapio',
     cliente: {
-      nome: nome.value.trim(),
-      telefone: telDigits,
-      cidade: cidade.value,
-      rua: rua.value.trim(),
-      numero: numero.value.trim(),
-      bairro: bairro.value.trim(),
+      nome: nome.value.trim(), telefone: telDigits, cidade: cidade.value,
+      rua: rua.value.trim(), numero: numero.value.trim(), bairro: bairro.value.trim(),
       pagamento: pagamento.value,
       troco: valorDigitado ? Math.round(valorRecebido * 100) : null,
       lat: clienteLatLng ? clienteLatLng.lat : null,
       lng: clienteLatLng ? clienteLatLng.lng : null
     },
     itens: itensFormatados,
-    subtotal: subTotal,
-    taxa: taxaAtual,
-    taxaEntrega: taxaAtual,
+    subtotal: subTotal, taxa: taxaAtual, taxaEntrega: taxaAtual,
     distanciaKm: distanciaAtual ? Number(distanciaAtual.toFixed(2)) : null,
-    total: totalFinal,
-    pagamento: pagamento.value,
+    total: totalFinal, pagamento: pagamento.value,
     valorRecebido: pagamento.value === 'Dinheiro' ? valorRecebido : null,
     trocoDevolver: pagamento.value === 'Dinheiro' ? trocoCalculado : null,
-    cupom: cupomAplicado || null,
-    desconto: descTotal,
+    cupom: cupomAplicado || null, desconto: descTotal,
     status: 'novo',
     criadoEm: firebase.firestore.FieldValue.serverTimestamp(),
     criadoEmMs: Date.now()
@@ -1866,41 +1654,29 @@ function enviarPedido() {
       var hist = JSON.parse(localStorage.getItem('pedidos_pasterry_v1') || '[]');
       hist.push({...pedido, criadoEm: new Date().toISOString()});
       localStorage.setItem('pedidos_pasterry_v1', JSON.stringify(hist));
-
-      if (typeof window.trackEvent === 'function') {
-        window.trackEvent('carrinho_finalizado', { telefone: telDigits });
-      }
-
+      if (typeof window.trackEvent === 'function') window.trackEvent('carrinho_finalizado', { telefone: telDigits });
       localStorage.removeItem(CART_KEY);
       localStorage.removeItem(CUPOM_KEY);
-
       if (typeof window.trackEvent === 'function') {
         window.trackEvent('purchase', {
-          transaction_id: codigoPedido,
-          value: totalFinal,
-          taxa: taxaAtual,
+          transaction_id: codigoPedido, value: totalFinal, taxa: taxaAtual,
           itens_count: itensFormatados.length,
           itens_nomes: itensFormatados.map(function(i) { return i.title; }).slice(0, 30),
           pagamento: pagamento.value
         });
       }
-
-      alert('✅ Pedido #' + codigoPedido + ' confirmado!\n\n' + (cupomAplicado ? 'Cupom ' + cupomAplicado.codigo + ' aplicado: ' + cupomAplicado.desconto + '% de desconto' : ''));
+      alert('✅ Pedido #' + codigoPedido + ' confirmado!\n\n' + (cupomAplicado ? 'Cupom ' + cupomAplicado.codigo + ': ' + cupomAplicado.desconto + '% OFF' : ''));
       location.href = 'status.html?id=' + codigoPedido;
     })
     .catch(function(err) {
-      console.error('Erro ao enviar pedido:', err);
-      erroEl.textContent = '❌ Erro ao enviar pedido: ' + (err.message || 'Erro desconhecido. Tente novamente.');
+      console.error('Erro pedido:', err);
+      erroEl.textContent = '❌ ' + (err.message || 'Erro. Tente novamente.');
       erroEl.classList.add('visible');
-      btn.disabled = false;
-      btn.textContent = 'Confirmar e Enviar';
+      btn.disabled = false; btn.textContent = 'Confirmar e Enviar';
       document.getElementById('loadingOverlay').classList.remove('active');
     });
 }
 
-// ============================================================
-// MÁSCARA DE TELEFONE
-// ============================================================
 function mascaraTelefone(input) {
   var v = input.value.replace(/\D/g, '');
   if (v.length > 11) v = v.slice(0, 11);
@@ -1909,15 +1685,13 @@ function mascaraTelefone(input) {
   else input.value = '(' + v.slice(0,2) + ') ' + v.slice(2,7) + '-' + v.slice(7);
 }
 
-function formatarMoeda(valor) {
-  return 'R$ ' + valor.toFixed(2).replace('.', ',');
-}
+function formatarMoeda(valor) { return 'R$ ' + valor.toFixed(2).replace('.', ','); }
 
 // ============================================================
 // INICIALIZAÇÃO
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
-  // ✅ PRIMEIRO: carrega as cores (mesmo do index.html)
+  // ✅ PRIMEIRO: carrega as cores do admin (sem flash escuro)
   carregarCores();
   carregarStatusLoja();
   carregarConfig();
@@ -1940,7 +1714,7 @@ document.addEventListener('DOMContentLoaded', function() {
   pagamento.addEventListener('change', function() {
     if (pagamento.value === 'Dinheiro') {
       trocoInput.style.display = 'block';
-      trocoInput.placeholder = 'Qual o valor que você vai pagar? (ex: 100 ou 100,50)';
+      trocoInput.placeholder = 'Valor que vai pagar';
       if (trocoInput.value) trocoInput.dispatchEvent(new Event('input'));
     } else {
       trocoInput.style.display = 'none';
@@ -1954,27 +1728,18 @@ document.addEventListener('DOMContentLoaded', function() {
     var sub = getCartTotal();
     var desconto = cupomAplicado ? sub * (cupomAplicado.desconto / 100) : 0;
     var totalFinal = sub - desconto + (taxaAtual || 0);
-
     var valorDigitado = this.value;
     var apenasNumeros = valorDigitado.replace(/[^\d,]/g, '');
     var valorNumerico = parseFloat(apenasNumeros.replace(',', '.'));
-
-    if (isNaN(valorNumerico) || valorNumerico <= 0) {
-      trocoPreview.innerHTML = '';
-      renderCupom();
-      return;
-    }
-
+    if (isNaN(valorNumerico) || valorNumerico <= 0) { trocoPreview.innerHTML = ''; renderCupom(); return; }
     var troco = valorNumerico - totalFinal;
-
     if (troco >= 0) {
-      trocoPreview.innerHTML = '💵 Valor Recebido: ' + formatarMoeda(valorNumerico) + ' &nbsp;|&nbsp; 🔄 Troco a devolver: <strong style="color:#FFD700;">' + formatarMoeda(troco) + '</strong>';
+      trocoPreview.innerHTML = '💵 Recebido: ' + formatarMoeda(valorNumerico) + ' | 🔄 Troco: <strong style="color:#FFD700;">' + formatarMoeda(troco) + '</strong>';
       trocoPreview.style.color = '#4caf50';
     } else {
-      trocoPreview.innerHTML = '⚠️ Valor insuficiente. Faltam ' + formatarMoeda(Math.abs(troco)) + ' para pagar o pedido.';
+      trocoPreview.innerHTML = '⚠️ Faltam ' + formatarMoeda(Math.abs(troco));
       trocoPreview.style.color = '#ff6b6b';
     }
-
     renderCupom();
   });
 
@@ -1995,21 +1760,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const urlParams = new URLSearchParams(window.location.search);
   const cupomUrl = urlParams.get('cupom');
-
   if (cupomUrl) {
     setTimeout(function() {
       const input = document.getElementById('cupomInput');
-      if (input) {
-        input.value = cupomUrl.toUpperCase();
-        aplicarCupom();
-      }
+      if (input) { input.value = cupomUrl.toUpperCase(); aplicarCupom(); }
     }, 500);
   }
 });
 
-// ============================================================
-// FUNÇÕES GLOBAIS
-// ============================================================
 window.addExtra = addExtra;
 window.alterarQtd = alterarQtd;
 window.limparSacola = limparSacola;
