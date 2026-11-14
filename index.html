@@ -205,7 +205,7 @@
     @media (max-width: 480px) { .promo-header-card .promo-nav { width: 32px; height: 32px; font-size: 16px; } }
 
     /* MAIN E CATEGORIAS */
-    main { flex: 1; display: flex; flex-direction: column; gap: 4px; padding: 0 0 80px 0; max-width: 1400px; margin: 0 auto; width: 100%; }
+    main { flex: 1; display: flex; flex-direction: column; gap: 4px; padding: 0 0 100px 0; max-width: 1400px; margin: 0 auto; width: 100%; }
     .secao-destaques { padding: 16px 0 8px 0; margin-bottom: 8px; }
     .secao-destaques.oculto { display: none !important; }
     .secao-titulo { display: flex; align-items: center; justify-content: space-between; padding: 0 16px; margin-bottom: 12px; }
@@ -390,18 +390,22 @@
     #logoZoomOverlay.animando { display: flex; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); pointer-events: auto; }
     #logoZoomOverlay.animando img { transform: scale(5); }
 
-    /* LEMBRETES E ÍCONES FLUTUANTES */
-    .pst-lembrete { position: fixed; left: 0; right: 0; z-index: 9997; padding: 10px 16px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 700; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer; }
-    .pst-icone-flutuante { position: fixed; z-index: 9996; width: 62px; height: 62px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 20px rgba(255,215,0,0.4); border: 2px solid rgba(255,255,255,0.3); overflow: hidden; }
+    /* ============================================================
+       LEMBRETES E ÍCONES FLUTUANTES (Posicionamento Ajustado)
+       ============================================================ */
+    .pst-lembrete { position: fixed; left: 0; right: 0; z-index: 70; padding: 10px 16px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 700; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer; transition: transform 0.2s; }
+    .pst-lembrete.bottom { bottom: 0; padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
+    
+    .pst-icone-flutuante { position: fixed; z-index: 85; width: 62px; height: 62px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 20px rgba(255,215,0,0.4); border: 2px solid rgba(255,255,255,0.3); overflow: hidden; transition: transform 0.2s; }
     .pst-icone-flutuante img { width: 100%; height: 100%; object-fit: cover; }
     .pst-icone-flutuante:hover { transform: scale(1.12); }
     .pst-icone-flutuante.top-right { top: 100px; right: 16px; }
     .pst-icone-flutuante.top-left { top: 100px; left: 16px; }
-    .pst-icone-flutuante.bottom-right { bottom: 160px; right: 16px; }
-    .pst-icone-flutuante.bottom-left { bottom: 160px; left: 16px; }
+    .pst-icone-flutuante.bottom-right { bottom: 100px; right: 16px; } /* Fica logo acima do carrinho */
+    .pst-icone-flutuante.bottom-left { bottom: 100px; left: 16px; }
     .pst-icone-flutuante.flutuando { animation: pst-flutuar 3s infinite ease-in-out; }
     @keyframes pst-flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-    .pst-icone-flutuante .pst-tooltip { position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); color: #fff; font-size: 10px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; }
+    .pst-icone-flutuante .pst-tooltip { position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); color: #fff; font-size: 10px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
     .pst-icone-flutuante:hover .pst-tooltip { opacity: 1; }
   </style>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -1271,35 +1275,48 @@
       if (typeof firebase === 'undefined' || !firebase.apps.length) { setTimeout(init, 300); return; }
       const db = firebase.firestore();
 
+      // Fica ouvindo em tempo real as mudanças no painel
       db.collection('config').doc('promocoes').onSnapshot((snap) => {
         if (!snap.exists) { 
-          // Sem promoções → mostra o header normal
-          document.getElementById('mainHeader').classList.remove('escondido');
-          document.getElementById('promoHeaderContainer').innerHTML = '';
+          restaurarHeaderNormal();
           return; 
         }
-        renderizarTudo(snap.data());
+        renderizarPromocoes(snap.data());
+      }, (error) => {
+        console.error('[promocoes] Erro ao carregar:', error);
+        restaurarHeaderNormal();
       });
+    }
+
+    function restaurarHeaderNormal() {
+      document.getElementById('mainHeader').classList.remove('escondido');
+      document.getElementById('promoHeaderContainer').innerHTML = '';
+      document.querySelectorAll('.pst-lembrete, .pst-icone-flutuante').forEach(el => el.remove());
     }
 
     let intervalSlide = null;
     let slideAtual = 0;
+    let promocaoAtualId = null;
 
-    function renderizarTudo(data) {
+    function renderizarPromocoes(data) {
       const anuncios = data.anuncios || [];
       const lembretes = data.lembretes || [];
       const icones = data.icones || [];
 
+      // Limpa os ícones e lembretes antes de recriar
       document.querySelectorAll('.pst-lembrete, .pst-icone-flutuante').forEach(el => el.remove());
       if (intervalSlide) clearInterval(intervalSlide);
 
-      // ===== PROMOÇÃO NO LUGAR DO HEADER =====
+      // ===== FILTRA E RENDERIZA A PROMOÇÃO NO HEADER =====
       const anunciosAtivos = anuncios.filter(a => a.ativo !== false).sort((a,b) => (a.ordem||1) - (b.ordem||1));
       
       if (anunciosAtivos.length > 0) {
+        // Esconde o header normal
         document.getElementById('mainHeader').classList.add('escondido');
+        // Mostra o card da promoção
         renderizarPromoHeader(anunciosAtivos[0]);
       } else {
+        // Se não tem promoção ativa, mostra o header normal
         document.getElementById('mainHeader').classList.remove('escondido');
         document.getElementById('promoHeaderContainer').innerHTML = '';
       }
@@ -1310,8 +1327,14 @@
         el.className = 'pst-lembrete ' + (l.posicao || 'top');
         el.style.background = l.corFundo || '#FFD700';
         el.style.color = l.corTexto || '#1A1210';
-        if (l.posicao === 'bottom') el.style.bottom = '90px';
-        else el.style.top = (180 + (i * 40)) + 'px';
+        
+        // Posicionamento especial: se for bottom, fica logo acima do botão do carrinho
+        if (l.posicao === 'bottom') {
+          el.style.bottom = '90px'; // Altura do footer-bar
+        } else {
+          el.style.top = (180 + (i * 40)) + 'px';
+        }
+        
         el.innerHTML = `${l.icone ? `<span>${l.icone}</span>` : ''}<span>${l.texto}</span>`;
         if (l.link) el.addEventListener('click', () => window.location.href = l.link);
         document.body.appendChild(el);
@@ -1331,15 +1354,14 @@
       });
     }
 
-    // ============================================================
-    // RENDERIZAR O CARD DE PROMOÇÃO NO LUGAR DO HEADER
-    // ============================================================
     function renderizarPromoHeader(anuncio) {
       const cont = document.getElementById('promoHeaderContainer');
       const midias = anuncio.midias || [];
       
+      if (promocaoAtualId === anuncio.titulo && cont.children.length > 0) return;
+      promocaoAtualId = anuncio.titulo;
+
       if (midias.length === 0) {
-        // Sem mídia → volta o header
         document.getElementById('mainHeader').classList.remove('escondido');
         cont.innerHTML = '';
         return;
@@ -1349,7 +1371,6 @@
       card.className = 'promo-header-card';
       card.style.borderColor = anuncio.cor || '#FFD700';
 
-      // Wrapper da mídia
       const midiaWrapper = document.createElement('div');
       midiaWrapper.className = 'promo-midia-wrapper';
 
@@ -1375,7 +1396,6 @@
 
       card.appendChild(midiaWrapper);
 
-      // Badge topo
       if (anuncio.badge) {
         const badge = document.createElement('div');
         badge.className = 'promo-badge-top';
@@ -1383,7 +1403,6 @@
         card.appendChild(badge);
       }
 
-      // Overlay com título/subtítulo
       const overlay = document.createElement('div');
       overlay.className = 'promo-overlay';
       if (anuncio.titulo) {
@@ -1400,7 +1419,6 @@
       }
       card.appendChild(overlay);
 
-      // Bolinhas (dots) se tiver mais de 1 mídia
       if (midias.length > 1) {
         const dots = document.createElement('div');
         dots.className = 'promo-dots';
@@ -1411,7 +1429,6 @@
         });
         card.appendChild(dots);
 
-        // Setas de navegação
         const prev = document.createElement('button');
         prev.className = 'promo-nav prev';
         prev.innerHTML = '‹';
@@ -1425,7 +1442,6 @@
         card.appendChild(next);
       }
 
-      // Click no card abre o produto
       if (anuncio.produtoId) {
         card.addEventListener('click', () => {
           if (window.PRODUCTS) {
@@ -1443,7 +1459,6 @@
       cont.innerHTML = '';
       cont.appendChild(card);
 
-      // Auto-rotação se tiver mais de 1 mídia
       slideAtual = 0;
       if (midias.length > 1) {
         const tempo = (anuncio.tempoTroca || 4) * 1000;
@@ -1467,9 +1482,6 @@
       if (dots[slideAtual]) dots[slideAtual].classList.add('ativo');
     }
 
-    // ============================================================
-    // RESGATAR CUPOM
-    // ============================================================
     function resgatarCupom(ic, el) {
       const jaResg = localStorage.getItem('pasterry_cupom_resgatado_' + ic.cupomCodigo) === 'true';
       if (jaResg) {
