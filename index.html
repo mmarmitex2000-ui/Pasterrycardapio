@@ -97,7 +97,7 @@
     .header-parallax .parallax-titulo { font-size: 24px; font-weight: 900; color: #fff; margin: 0 0 4px 0; text-shadow: 0 2px 12px rgba(0,0,0,0.8); }
     .header-parallax .parallax-subtitulo { font-size: 13px; color: rgba(255,255,255,0.85); font-weight: 500; text-shadow: 0 1px 6px rgba(0,0,0,0.8); }
 
-    /* BANNER DE PROMOÇÃO (SUBSTITUI O HEADER PARALLAX QUANDO ATIVO) */
+    /* BANNER DE PROMOÇÃO */
     #pst-banner-promo {
       display: none;
       position: relative;
@@ -122,53 +122,26 @@
     }
     #pst-banner-promo .banner-slide.ativo { opacity: 1; }
     #pst-banner-promo .banner-slide img,
-    #pst-banner-promo .banner-slide video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+    #pst-banner-promo .banner-slide video { width: 100%; height: 100%; object-fit: cover; display: block; }
     #pst-banner-promo .banner-overlay {
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 16px 20px;
-      z-index: 2;
-      pointer-events: none;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 16px 20px; z-index: 2; pointer-events: none;
     }
     #pst-banner-promo .banner-titulo { font-size: 22px; font-weight: 900; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,0.9); margin-bottom: 4px; }
     #pst-banner-promo .banner-sub { font-size: 13px; color: rgba(255,255,255,0.9); text-shadow: 0 1px 6px rgba(0,0,0,0.9); }
     #pst-banner-promo .banner-badge {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 900;
-      color: #1A1210;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      z-index: 3;
+      position: absolute; top: 12px; left: 12px;
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 11px; font-weight: 900; color: #1A1210;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4); z-index: 3;
     }
     #pst-banner-promo .banner-dots {
-      position: absolute;
-      bottom: 8px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 6px;
-      z-index: 3;
+      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 6px; z-index: 3;
     }
-    #pst-banner-promo .banner-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.4);
-      transition: background 0.2s, transform 0.2s;
-    }
+    #pst-banner-promo .banner-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); transition: background 0.2s, transform 0.2s; }
     #pst-banner-promo .banner-dot.ativo { background: #FFD700; transform: scale(1.3); }
 
     main { flex: 1; display: flex; flex-direction: column; gap: 4px; padding: 0 0 80px 0; max-width: 1400px; margin: 0 auto; width: 100%; }
@@ -180,7 +153,6 @@
     .carrossel-destaques { display: flex; gap: 12px; overflow-x: auto; padding: 4px 16px 12px 16px; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; -webkit-overflow-scrolling: touch; }
     .carrossel-destaques::-webkit-scrollbar { display: none; }
 
-    /* CARD DESTAQUE 3D */
     .card-destaque { flex: 0 0 160px; scroll-snap-align: start; background: var(--bg-card); border-radius: var(--raio-lg); overflow: hidden; border: 1px solid var(--borda-sutil); position: relative; cursor: pointer; transition: transform 0.12s ease, box-shadow 0.12s ease; box-shadow: 0 6px 0 rgba(0,0,0,0.35), 0 8px 20px rgba(0,0,0,0.35); }
     .card-destaque:hover { transform: translateY(-3px); box-shadow: 0 9px 0 rgba(0,0,0,0.35), 0 14px 28px rgba(0,0,0,0.4); }
     .card-destaque:active { transform: translateY(3px) scale(0.98); box-shadow: 0 2px 0 rgba(0,0,0,0.35), 0 4px 10px rgba(0,0,0,0.3); }
@@ -195,7 +167,6 @@
     .nav-categorias { display: flex; gap: 8px; overflow-x: auto; padding: 4px 16px 10px 16px; scrollbar-width: none; -ms-overflow-style: none; -webkit-overflow-scrolling: touch; }
     .nav-categorias::-webkit-scrollbar { display: none; }
 
-    /* BOTÃO DE CATEGORIA 3D */
     .nav-cat-item { flex-shrink: 0; padding: 9px 18px; background: var(--bg-card); border: 1.5px solid var(--borda-sutil); border-radius: 30px; color: var(--cor-fonte-muted); font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.1s ease; white-space: nowrap; position: relative; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 0 rgba(0,0,0,0.35), 0 5px 12px rgba(0,0,0,0.25); }
     .nav-cat-item:hover { color: var(--cor-fonte); border-color: rgba(255,215,0,0.4); transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.35), 0 8px 16px rgba(0,0,0,0.3); }
     .nav-cat-item:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.35), 0 2px 6px rgba(0,0,0,0.25); }
@@ -209,7 +180,6 @@
     @media (min-width: 640px) { .grid-produtos { grid-template-columns: repeat(2, 1fr); } }
     @media (min-width: 1024px) { .grid-produtos { grid-template-columns: repeat(3, 1fr); } }
 
-    /* CARD PRODUTO 3D */
     .card-produto { background: var(--bg-card); border-radius: var(--raio-md); padding: 12px; display: flex; gap: 12px; align-items: center; border: 1px solid var(--borda-sutil); transition: transform 0.12s ease, background 0.2s ease, box-shadow 0.12s ease; position: relative; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,0.35), 0 7px 18px rgba(0,0,0,0.3); }
     .card-produto:hover { background: var(--bg-card-hover); transform: translateY(-3px); box-shadow: 0 8px 0 rgba(0,0,0,0.35), 0 14px 28px rgba(0,0,0,0.4); }
     .card-produto:active { transform: translateY(3px) scale(0.99); box-shadow: 0 2px 0 rgba(0,0,0,0.35), 0 4px 10px rgba(0,0,0,0.3); }
@@ -227,7 +197,6 @@
     .preco-original-riscado { color: var(--cor-fonte-muted); font-size: 11px; text-decoration: line-through; font-weight: 500; }
     .preco-promocional { color: #4caf50; font-weight: 900; font-size: 15px; }
 
-    /* BOTÃO + DO PRODUTO 3D */
     .card-produto .btn-add { flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; background: var(--cor-botao-adicionar); border: none; color: #fff; font-weight: 900; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; transition: transform 0.1s, background 0.2s, box-shadow 0.1s; box-shadow: 0 4px 0 #1a4a2c, 0 6px 12px rgba(43,114,69,0.4); }
     .card-produto .btn-add:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #1a4a2c, 0 8px 16px rgba(43,114,69,0.5); }
     .card-produto .btn-add:active { transform: translateY(3px) scale(0.92); box-shadow: 0 1px 0 #1a4a2c, 0 2px 5px rgba(43,114,69,0.35); }
@@ -241,7 +210,6 @@
     .loja-fechada-msg strong { color: #fff; }
     .footer-bar { position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: linear-gradient(180deg, transparent, var(--bg-site) 30%); z-index: 70; }
 
-    /* BOTÃO DO CARRINHO 3D */
     .footer-cart { width: 100%; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 20px; border-radius: var(--raio-md); background: var(--cor-cart); color: #fff; font-weight: 900; font-size: 16px; border: 0; cursor: pointer; box-shadow: 0 6px 0 #6e5e08, 0 10px 26px rgba(0,0,0,0.5); transition: transform 0.12s, box-shadow 0.12s, background 0.2s; }
     .footer-cart:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #6e5e08, 0 14px 32px rgba(0,0,0,0.55); filter: brightness(1.05); }
     .footer-cart:active { transform: translateY(4px); box-shadow: 0 1px 0 #6e5e08, 0 3px 8px rgba(0,0,0,0.4); }
@@ -260,108 +228,22 @@
     .dialog-titulo { font-weight: 800; font-size: clamp(13px, 3.8vw, 16px); color: var(--cor-fonte-titulo); text-align: center; padding: 0 clamp(20px, 6vw, 32px); line-height: 1.2; }
     .dialog-desc { color: var(--cor-fonte-muted); text-align: center; font-size: clamp(10px, 2.8vw, 12px); line-height: 1.3; }
 
-    /* MODAL DE DETALHES */
-    .modal-image-wrap {
-      width: 100%;
-      border-radius: var(--raio-sm);
-      overflow: hidden;
-      background: #0c1220;
-      position: relative;
-      height: clamp(120px, 28vh, 200px);
-      flex-shrink: 0;
-      cursor: zoom-in;
-    }
-    .modal-image-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.2s ease;
-    }
+    .modal-image-wrap { width: 100%; border-radius: var(--raio-sm); overflow: hidden; background: #0c1220; position: relative; height: clamp(120px, 28vh, 200px); flex-shrink: 0; cursor: zoom-in; }
+    .modal-image-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.2s ease; }
     .modal-image-wrap:active img { transform: scale(1.03); }
-    .modal-image-wrap .logo-marca-detalhe {
-      position: absolute;
-      bottom: clamp(4px, 1.2vw, 8px);
-      left: clamp(4px, 1.2vw, 8px);
-      width: clamp(18px, 5vw, 24px);
-      height: clamp(18px, 5vw, 24px);
-      border-radius: 50%;
-      border: 1.5px solid rgba(255,255,255,0.3);
-      background: rgba(0,0,0,0.4);
-      padding: 1.5px;
-      object-fit: contain;
-      z-index: 2;
-      pointer-events: none;
-    }
-    .modal-image-wrap .zoom-hint {
-      position: absolute;
-      bottom: clamp(4px, 1.2vw, 8px);
-      right: clamp(4px, 1.2vw, 8px);
-      background: rgba(0,0,0,0.7);
-      color: #fff;
-      font-size: clamp(8px, 2.2vw, 10px);
-      font-weight: 700;
-      padding: clamp(3px, 0.8vw, 5px) clamp(6px, 1.5vw, 9px);
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      z-index: 2;
-      pointer-events: none;
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(255,255,255,0.15);
-    }
+    .modal-image-wrap .logo-marca-detalhe { position: absolute; bottom: clamp(4px, 1.2vw, 8px); left: clamp(4px, 1.2vw, 8px); width: clamp(18px, 5vw, 24px); height: clamp(18px, 5vw, 24px); border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.4); padding: 1.5px; object-fit: contain; z-index: 2; pointer-events: none; }
+    .modal-image-wrap .zoom-hint { position: absolute; bottom: clamp(4px, 1.2vw, 8px); right: clamp(4px, 1.2vw, 8px); background: rgba(0,0,0,0.7); color: #fff; font-size: clamp(8px, 2.2vw, 10px); font-weight: 700; padding: clamp(3px, 0.8vw, 5px) clamp(6px, 1.5vw, 9px); border-radius: 20px; display: flex; align-items: center; gap: 3px; z-index: 2; pointer-events: none; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.15); }
     .modal-image-wrap .zoom-hint svg { width: clamp(8px, 2.2vw, 10px); height: clamp(8px, 2.2vw, 10px); }
 
-    /* LIGHTBOX DE FOTO */
-    .photo-lightbox {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.96);
-      backdrop-filter: blur(10px);
-      z-index: 500;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      animation: fadeInLightbox 0.25s ease;
-    }
+    .photo-lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.96); backdrop-filter: blur(10px); z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px; animation: fadeInLightbox 0.25s ease; }
     .photo-lightbox.active { display: flex; }
     @keyframes fadeInLightbox { from { opacity: 0; } to { opacity: 1; } }
-    .photo-lightbox .lightbox-img {
-      max-width: 100%;
-      max-height: 90vh;
-      object-fit: contain;
-      border-radius: 8px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
-      animation: zoomInLightbox 0.3s ease;
-    }
+    .photo-lightbox .lightbox-img { max-width: 100%; max-height: 90vh; object-fit: contain; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.8); animation: zoomInLightbox 0.3s ease; }
     @keyframes zoomInLightbox { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .photo-lightbox .lightbox-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.25);
-      color: #fff;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      font-size: 22px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(8px);
-      transition: background 0.2s, transform 0.1s, box-shadow 0.1s;
-      z-index: 2;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.5);
-    }
+    .photo-lightbox .lightbox-close { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: #fff; width: 44px; height: 44px; border-radius: 50%; font-size: 22px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); transition: background 0.2s, transform 0.1s, box-shadow 0.1s; z-index: 2; box-shadow: 0 4px 0 rgba(0,0,0,0.5); }
     .photo-lightbox .lightbox-close:hover { background: rgba(255,255,255,0.3); transform: translateY(-1px); box-shadow: 0 5px 0 rgba(0,0,0,0.5); }
     .photo-lightbox .lightbox-close:active { transform: translateY(2px) scale(0.92); box-shadow: 0 1px 0 rgba(0,0,0,0.5); }
 
-    /* BOTÃO DE TAMANHO 3D */
     .opcoes-tamanho { display: grid; gap: clamp(4px, 1.2vw, 6px); margin-top: 2px; }
     .btn-tamanho { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: clamp(6px, 1.8vw, 9px) clamp(7px, 2vw, 11px); background: var(--bg-card); border: 1.5px solid var(--borda-sutil); border-radius: var(--raio-sm); color: var(--cor-fonte); font-weight: 700; font-size: clamp(10px, 3vw, 13px); cursor: pointer; transition: all 0.1s ease; position: relative; box-shadow: 0 4px 0 rgba(0,0,0,0.35); }
     .btn-tamanho:hover { background: var(--bg-card-hover); border-color: rgba(255,215,0,0.3); transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.35); }
@@ -383,7 +265,6 @@
     .adicionais-section .label { font-weight: 800; font-size: clamp(9px, 2.6vw, 11px); color: var(--cor-promo); margin-bottom: clamp(3px, 1vw, 5px); display: flex; align-items: center; gap: 4px; }
     .adicionais-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(4px, 1.2vw, 6px); max-height: clamp(90px, 22vh, 130px); overflow-y: auto; padding: 2px 0; }
 
-    /* BOTÃO EXTRA 3D */
     .btn-extra { background: var(--bg-card); border: 1.5px solid var(--borda-sutil); border-radius: var(--raio-sm); padding: clamp(4px, 1.2vw, 6px) clamp(5px, 1.5vw, 8px); color: var(--cor-fonte); font-size: clamp(8px, 2.4vw, 10px); cursor: pointer; transition: all 0.1s ease; font-weight: 600; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 3px; min-height: clamp(26px, 7vw, 32px); box-shadow: 0 3px 0 rgba(0,0,0,0.35); }
     .btn-extra:hover { background: var(--bg-card-hover); transform: translateY(-1px); box-shadow: 0 4px 0 rgba(0,0,0,0.35); }
     .btn-extra:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.35); }
@@ -395,13 +276,11 @@
 
     .dialog-actions { display: flex; gap: clamp(4px, 1.2vw, 6px); margin-top: clamp(3px, 1vw, 5px); }
 
-    /* BOTÃO PRINCIPAL 3D */
     .btn-principal { flex: 1; padding: clamp(7px, 2.2vw, 10px); border-radius: var(--raio-sm); background: var(--cor-botao-adicionar); color: #fff; border: none; font-weight: 800; font-size: clamp(10px, 2.8vw, 12px); cursor: pointer; transition: all 0.1s ease; box-shadow: 0 4px 0 #1a4a2c, 0 6px 14px rgba(43,114,69,0.4); }
     .btn-principal:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 0 #1a4a2c, 0 8px 18px rgba(43,114,69,0.5); }
     .btn-principal:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 #1a4a2c; }
     .btn-principal:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: 0 2px 0 #1a4a2c; }
 
-    /* BOTÃO SECUNDÁRIO 3D */
     .btn-secundario { flex: 0 0 auto; padding: clamp(7px, 2.2vw, 10px) clamp(9px, 2.8vw, 13px); border-radius: var(--raio-sm); background: rgba(255,255,255,0.08); color: var(--cor-fonte); border: 1px solid var(--borda-sutil); font-weight: 700; font-size: clamp(9px, 2.6vw, 11px); cursor: pointer; transition: all 0.1s ease; box-shadow: 0 3px 0 rgba(0,0,0,0.4); }
     .btn-secundario:hover { background: rgba(255,255,255,0.12); transform: translateY(-1px); box-shadow: 0 4px 0 rgba(0,0,0,0.4); }
     .btn-secundario:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.4); }
@@ -474,10 +353,10 @@
     .lead-modal button.btn-lead:active { transform: translateY(4px); box-shadow: 0 1px 0 #1a4a2c; }
     .lead-modal .lead-erro { color: #ff6b6b; font-size: 12px; margin-top: 8px; display: none; }
 
-    /* ===== BAÚ DE CUPONS (FICA ACIMA DO BOTÃO DO CARRINHO, CANTO DIREITO) ===== */
+    /* ===== BAÚ DE CUPONS (ACIMA DO BOTÃO CARRINHO, CANTO DIREITO) ===== */
     .btn-bau {
       position: fixed;
-      bottom: 90px;
+      bottom: 100px;       /* ✅ logo acima do botão carrinho */
       right: 16px;
       z-index: 80;
       background: linear-gradient(135deg, #FFD700, #FF6B00);
@@ -492,13 +371,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      animation: flutuar 3s infinite ease-in-out;
       transition: transform 0.15s, opacity 0.3s, box-shadow 0.15s;
+      /* ✅ Sem animação flutuante (você quer ele parado) */
     }
     .btn-bau:hover { transform: scale(1.08); box-shadow: 0 8px 0 #b35500, 0 14px 30px rgba(255,107,0,0.6); }
     .btn-bau:active { transform: translateY(4px) scale(0.95); box-shadow: 0 2px 0 #b35500, 0 4px 10px rgba(255,107,0,0.4); }
     .btn-bau.escondido { display: none; }
-    @keyframes flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
     .bau-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(6px); z-index: 250; display: none; align-items: center; justify-content: center; padding: 20px; }
     .bau-overlay.active { display: flex; }
@@ -514,46 +392,22 @@
     .cupom-card-item .info { flex: 1; }
     .cupom-card-item .codigo { font-size: 18px; font-weight: 900; color: var(--cor-secundaria); letter-spacing: 1px; }
     .cupom-card-item .regra { font-size: 12px; color: var(--cor-fonte-muted); margin-top: 4px; }
-
-    /* BOTÃO RESGATAR CUPOM 3D */
     .cupom-card-item .btn-copiar { background: var(--cor-botao-adicionar); color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 0 #1a4a2c, 0 6px 14px rgba(43,114,69,0.4); transition: all 0.1s; }
     .cupom-card-item .btn-copiar:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #1a4a2c, 0 8px 18px rgba(43,114,69,0.5); filter: brightness(1.05); }
     .cupom-card-item .btn-copiar:active { transform: translateY(3px); box-shadow: 0 1px 0 #1a4a2c; }
     .cupom-card-item .btn-copiar.copiado { background: var(--cor-sucesso); box-shadow: 0 4px 0 #157a3d, 0 6px 14px rgba(34,197,94,0.4); }
 
-    /* ===== EXPLOSÃO DE CONFETES ===== */
-    .confete {
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      z-index: 999;
-      pointer-events: none;
-      border-radius: 50%;
-    }
-    @keyframes explodir {
-      0% { transform: translate(0, 0) scale(1); opacity: 1; }
-      100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-    }
+    /* ===== CONFETES ===== */
+    .confete { position: fixed; width: 10px; height: 10px; z-index: 999; pointer-events: none; border-radius: 50%; }
+    @keyframes explodir { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; } }
 
     /* ===== ZOOM DA LOGO ===== */
-    #logoZoomOverlay {
-      position: fixed; inset: 0; z-index: 9999;
-      display: none; align-items: center; justify-content: center;
-      pointer-events: none; background: transparent;
-    }
-    #logoZoomOverlay img {
-      width: 48px; height: 48px; border-radius: 50%;
-      object-fit: cover; border: 2px solid var(--cor-categoria);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      transform: scale(1);
-    }
-    #logoZoomOverlay.animando {
-      display: flex; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); pointer-events: auto;
-    }
+    #logoZoomOverlay { position: fixed; inset: 0; z-index: 9999; display: none; align-items: center; justify-content: center; pointer-events: none; background: transparent; }
+    #logoZoomOverlay img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--cor-categoria); box-shadow: 0 10px 40px rgba(0,0,0,0.8); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(1); }
+    #logoZoomOverlay.animando { display: flex; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); pointer-events: auto; }
     #logoZoomOverlay.animando img { transform: scale(5); }
 
-    /* ===== LEMBRETES (ACIMA DO BOTÃO DO CARRINHO, ARREDONDADO, CENTRALIZADO) ===== */
+    /* ===== LEMBRETES (ACIMA DO BOTÃO CARRINHO, ARREDONDADO, CENTRALIZADO) ===== */
     .pst-lembrete {
       position: fixed;
       left: 50%;
@@ -581,22 +435,7 @@
     .pst-lembrete.bottom { bottom: 170px; }
 
     /* ===== ÍCONES FLUTUANTES ===== */
-    .pst-icone-flutuante {
-      position: fixed;
-      z-index: 9996;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 20px rgba(255,215,0,0.4);
-      border: 2px solid rgba(255,255,255,0.3);
-      transition: transform 0.2s, box-shadow 0.2s;
-      overflow: hidden;
-    }
+    .pst-icone-flutuante { position: fixed; z-index: 9996; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 20px rgba(255,215,0,0.4); border: 2px solid rgba(255,255,255,0.3); transition: transform 0.2s, box-shadow 0.2s; overflow: hidden; }
     .pst-icone-flutuante img { width: 100%; height: 100%; object-fit: cover; }
     .pst-icone-flutuante:hover { transform: scale(1.12); box-shadow: 0 10px 28px rgba(0,0,0,0.6), 0 0 30px rgba(255,215,0,0.6); }
     .pst-icone-flutuante.top-right { top: 80px; right: 16px; }
@@ -605,22 +444,7 @@
     .pst-icone-flutuante.bottom-left { bottom: 160px; left: 16px; }
     .pst-icone-flutuante.flutuando { animation: pst-flutuar 3s infinite ease-in-out; }
     @keyframes pst-flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-    .pst-icone-flutuante .pst-tooltip {
-      position: absolute;
-      bottom: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.9);
-      color: #fff;
-      font-size: 10px;
-      padding: 4px 8px;
-      border-radius: 6px;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s;
-      font-weight: 600;
-    }
+    .pst-icone-flutuante .pst-tooltip { position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); color: #fff; font-size: 10px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; font-weight: 600; }
     .pst-icone-flutuante:hover .pst-tooltip { opacity: 1; }
   </style>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -651,6 +475,7 @@
   <!-- ===== BAÚ DE CUPONS (acima do botão carrinho, canto direito) ===== -->
   <button class="btn-bau escondido" id="btnBau" onclick="abrirBau()" aria-label="Baú de Cupons">🎁</button>
 
+  <!-- ===== MODAL DO BAÚ (opcional, mantido para debug) ===== -->
   <div class="bau-overlay" id="bauOverlay">
     <div class="bau-modal">
       <button class="close-bau" onclick="fecharBau()">×</button>
@@ -820,21 +645,16 @@
   </div>
 
   <script>
-    // ============================================================
-    // HISTÓRICO (botão voltar)
-    // ============================================================
     function pushHistory(stateName) {
       try { history.pushState({ modal: stateName }, '', ''); }
       catch (e) { console.warn('History API:', e); }
     }
-
     window.addEventListener('popstate', function() {
       if (document.getElementById('sizeOverlay').style.display === 'flex') fecharSizeOverlayHistorico();
       if (document.getElementById('photoLightbox').classList.contains('active')) fecharFoto();
       if (document.getElementById('bauOverlay').classList.contains('active')) fecharBau();
       if (document.getElementById('overlay').style.display === 'flex') document.getElementById('overlay').style.display = 'none';
     });
-
     function fecharSizeOverlayHistorico() {
       document.getElementById('sizeOverlay').style.display = 'none';
       document.getElementById('sizeOverlay').setAttribute('aria-hidden', 'true');
@@ -843,9 +663,6 @@
       selectedExtras = [];
     }
 
-    // ============================================================
-    // ZOOM DA LOGO
-    // ============================================================
     let logoZoomTimer = null;
     function abrirZoomLogo() {
       const overlay = document.getElementById('logoZoomOverlay');
@@ -862,11 +679,7 @@
       if (logoZoomTimer) clearTimeout(logoZoomTimer);
     }
 
-    // ============================================================
-    // FIREBASE
-    // ============================================================
     const db = firebase.firestore();
-
     const NOME_COLECAO_PRODUTOS = localStorage.getItem('colecaoProdutos') || 'produtos';
     const NOME_COLECAO_CATEGORIAS = localStorage.getItem('colecaoCategorias') || 'categorias';
 
@@ -875,7 +688,7 @@
     let menuItems = [];
     let lojaAberta = true;
     let termoBusca = '';
-    let categoriaAntesDaBusca = null; // ✅ restaura categoria ao limpar busca
+    let categoriaAntesDaBusca = null;
     let logoMarcaAtual = '';
     let fechamentoExtra = '';
     let adicionaisCache = [];
@@ -899,17 +712,11 @@
 
     function logDebug(mensagem, dados = null) { console.log(`[DEBUG] ${mensagem}`, dados || ''); }
 
-    // ✅ Helper: aceita http E data:image
     function imgSrcSegura(img, emojiFallback = '🍕') {
-      if (img && typeof img === 'string' && (img.startsWith('http') || img.startsWith('data:image'))) {
-        return img;
-      }
+      if (img && typeof img === 'string' && (img.startsWith('http') || img.startsWith('data:image'))) return img;
       return "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200'><rect width='100%' height='100%' fill='%230a1420'/><text x='50%' y='50%' fill='%23a7b6c1' font-size='16' text-anchor='middle' dominant-baseline='middle'>" + emojiFallback + "</text></svg>";
     }
 
-    // ============================================================
-    // LIGHTBOX DE FOTO
-    // ============================================================
     function abrirFoto() {
       const imgEl = document.getElementById('sizeImg');
       const lightbox = document.getElementById('photoLightbox');
@@ -938,13 +745,47 @@
       const agora = Date.now();
       if (jaTemLead) {
         if (!localStorage.getItem('pasterry_cupom_v1')) {
-          document.getElementById('btnBau').classList.remove('escondido');
+          const btn = document.getElementById('btnBau');
+          if (btn) { btn.classList.remove('escondido'); btn.style.display = ''; }
+        } else {
+          const btn = document.getElementById('btnBau');
+          if (btn) { btn.classList.add('escondido'); btn.style.display = 'none'; }
         }
         return;
       }
       if (jaIgnorou && (agora - Number(jaIgnorou)) < 24 * 60 * 60 * 1000) return;
       setTimeout(() => { document.getElementById('leadOverlay').classList.add('active'); }, 3000);
     }
+
+    // ✅ Quando o cupom é removido/adicionado em outra aba, o baú reage
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'pasterry_cupom_v1') {
+        const btnBau = document.getElementById('btnBau');
+        if (!btnBau) return;
+        if (!e.newValue && localStorage.getItem('pasterry_lead_telefone')) {
+          btnBau.classList.remove('escondido');
+          btnBau.style.display = '';
+        } else if (e.newValue) {
+          btnBau.classList.add('escondido');
+          btnBau.style.display = 'none';
+        }
+      }
+    });
+
+    // ✅ Ao voltar do carrinho (mesma aba), re-verifica estado do baú
+    window.addEventListener('pageshow', () => {
+      const btnBau = document.getElementById('btnBau');
+      if (!btnBau) return;
+      const temCupom = !!localStorage.getItem('pasterry_cupom_v1');
+      const temLead = !!localStorage.getItem('pasterry_lead_telefone');
+      if (temLead && !temCupom) {
+        btnBau.classList.remove('escondido');
+        btnBau.style.display = '';
+      } else if (temCupom) {
+        btnBau.classList.add('escondido');
+        btnBau.style.display = 'none';
+      }
+    });
 
     function fecharLead() {
       document.getElementById('leadOverlay').classList.remove('active');
@@ -965,7 +806,11 @@
         window.trackEvent('identificacao', { telefone: tel, origem: 'popup_boas_vindas' });
       }
       document.getElementById('leadOverlay').classList.remove('active');
-      document.getElementById('btnBau').classList.remove('escondido');
+      const btnBau = document.getElementById('btnBau');
+      if (btnBau && !localStorage.getItem('pasterry_cupom_v1')) {
+        btnBau.classList.remove('escondido');
+        btnBau.style.display = '';
+      }
       showCenterNotification('Presente liberado!', 'Abra a caixinha no canto da tela.');
     }
 
@@ -980,29 +825,47 @@
           else e.target.value = v;
         });
       }
+      verificarLead();
     });
 
-    verificarLead();
-
     // ============================================================
-    // BAÚ DE CUPONS
+    // BAÚ DE CUPONS — CLIQUE = APLICA O MELHOR CUPOM AUTOMATICAMENTE
     // ============================================================
     function abrirBau() {
       if (!localStorage.getItem('pasterry_lead_telefone')) {
         document.getElementById('leadOverlay').classList.add('active');
         return;
       }
-      document.getElementById('bauOverlay').classList.add('active');
-      carregarCuponsSite();
-      pushHistory('bau');
+      if (localStorage.getItem('pasterry_cupom_v1')) {
+        showCenterNotification('🎁 Você já resgatou um cupom!', 'Remova do carrinho para resgatar outro.');
+        return;
+      }
+      db.collection('config').doc('cupons').get().then(doc => {
+        if (!doc.exists || !Array.isArray(doc.data().cupons)) {
+          showCenterNotification('😕 Nenhum cupom disponível', 'Volte mais tarde!');
+          return;
+        }
+        const ativos = doc.data().cupons.filter(c => c && c.codigo && Number(c.desconto) > 0);
+        if (ativos.length === 0) {
+          showCenterNotification('😕 Nenhum cupom disponível', 'Volte mais tarde!');
+          return;
+        }
+        const melhor = ativos.reduce((a, b) => (b.desconto > a.desconto ? b : a));
+        window._cuponsDisponiveis = ativos;
+        aplicarCupomDireto(melhor.codigo);
+      }).catch(err => {
+        console.error(err);
+        showCenterNotification('❌ Erro ao buscar cupons', 'Tente novamente.');
+      });
     }
 
     function fecharBau() { document.getElementById('bauOverlay').classList.remove('active'); }
 
+    // Mantido para debug/fallback (abre o modal com a lista)
     function carregarCuponsSite() {
       const container = document.getElementById('listaCuponsSite');
+      if (!container) return;
       container.innerHTML = '<div style="text-align:center; padding:20px; color:#6a7a8a;">⏳ Buscando cupons...</div>';
-
       db.collection('config').doc('cupons').get().then(doc => {
         if (doc.exists && Array.isArray(doc.data().cupons) && doc.data().cupons.length > 0) {
           const ativos = doc.data().cupons.filter(c => c && c.codigo && Number(c.desconto) > 0);
@@ -1037,37 +900,49 @@
       const rect = btnBau.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
-      for (let i = 0; i < 40; i++) {
+
+      // Explosão de confetes
+      for (let i = 0; i < 50; i++) {
         const confete = document.createElement('div');
         confete.classList.add('confete');
         confete.style.backgroundColor = coresConfete[Math.floor(Math.random() * coresConfete.length)];
         const angulo = Math.random() * Math.PI * 2;
-        const forca = 100 + Math.random() * 200;
+        const forca = 120 + Math.random() * 220;
         const tx = Math.cos(angulo) * forca;
         const ty = Math.sin(angulo) * forca;
         confete.style.left = cx + 'px';
         confete.style.top = cy + 'px';
         confete.style.setProperty('--tx', tx + 'px');
         confete.style.setProperty('--ty', ty + 'px');
-        const tamanho = 6 + Math.random() * 8;
+        const tamanho = 6 + Math.random() * 10;
         confete.style.width = tamanho + 'px';
         confete.style.height = tamanho + 'px';
-        confete.style.animation = `explodir ${0.6 + Math.random() * 0.4}s ease-out forwards`;
+        confete.style.animation = `explodir ${0.7 + Math.random() * 0.5}s ease-out forwards`;
         document.body.appendChild(confete);
-        setTimeout(() => confete.remove(), 1000);
+        setTimeout(() => confete.remove(), 1200);
       }
+
+      // Esconde o baú
       btnBau.style.display = 'none';
       btnBau.classList.add('escondido');
-      document.getElementById('bauOverlay').classList.remove('active');
-      const cupomCompleto = window._cuponsDisponiveis.find(c => c.codigo === codigoCupomSelecionado);
+
+      // Salva o cupom no localStorage
+      const cupomCompleto = (window._cuponsDisponiveis || []).find(c => c.codigo === codigoCupomSelecionado);
       if (cupomCompleto) {
         localStorage.setItem('pasterry_cupom_v1', JSON.stringify({
           codigo: cupomCompleto.codigo,
+          desconto: cupomCompleto.desconto,
           minimo: cupomCompleto.minimo || 0,
           pendente: true
         }));
+        showCenterNotification(
+          `🎁 Cupom ${cupomCompleto.codigo} resgatado!`,
+          `${cupomCompleto.desconto}% OFF ${cupomCompleto.minimo > 0 ? '• Mínimo R$ ' + Number(cupomCompleto.minimo).toFixed(2).replace('.', ',') : ''}`
+        );
+        if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+      } else {
+        showCenterNotification('🎁 Cupom resgatado!', 'Ele já está no carrinho.');
       }
-      showCenterNotification('🎁 Cupom resgatado!', 'Ele já está no carrinho.');
     }
 
     function aplicarCupomDireto(codigo) {
@@ -1081,7 +956,7 @@
     function carregarCores() {
       try {
         db.collection('config').doc('cores').onSnapshot((doc) => {
-          if (doc.exists) { cores = doc.data(); }
+          if (doc.exists) cores = doc.data();
           else {
             cores = {
               corFundoSite: '#1A1210', corContainer: '#1A1A1A', corTopo: '#1A1210',
@@ -1126,7 +1001,6 @@
           DIAS_SEMANA.forEach(dia => { if (!horariosCache[dia]) horariosCache[dia] = []; });
           atualizarStatusCompleto();
         }, (error) => logDebug('Erro horários', error));
-
         db.collection('config').doc('loja').onSnapshot((doc) => {
           if (doc.exists) {
             const data = doc.data();
@@ -1249,21 +1123,11 @@
       });
     }
 
-    // ============================================================
-    // MENU TOGGLE
-    // ============================================================
     const menuToggle = document.getElementById('menuToggle');
     const menuDropdown = document.getElementById('menuDropdown');
     if (menuToggle && menuDropdown) {
-      menuToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menuDropdown.classList.toggle('open');
-      });
-      document.addEventListener('click', (e) => {
-        if (!menuToggle.contains(e.target) && !menuDropdown.contains(e.target)) {
-          menuDropdown.classList.remove('open');
-        }
-      });
+      menuToggle.addEventListener('click', (e) => { e.stopPropagation(); menuDropdown.classList.toggle('open'); });
+      document.addEventListener('click', (e) => { if (!menuToggle.contains(e.target) && !menuDropdown.contains(e.target)) menuDropdown.classList.remove('open'); });
     }
 
     // ============================================================
@@ -1289,29 +1153,23 @@
       return campos.some(c => normalizarTexto(c).includes(termoNormalizado));
     }
 
-    // ✅ Restaura categoria ao limpar busca
     function aplicarFiltro() {
       const termoAnterior = termoBusca;
       termoBusca = normalizarTexto(searchInput.value);
-      if (termoBusca && !termoAnterior) {
-        categoriaAntesDaBusca = activeCategory;
-      }
+      if (termoBusca && !termoAnterior) categoriaAntesDaBusca = activeCategory;
       if (!termoBusca && termoAnterior && categoriaAntesDaBusca) {
         activeCategory = categoriaAntesDaBusca;
         categoriaAntesDaBusca = null;
       }
-      if (termoBusca && typeof window.trackEvent === 'function') {
-        window.trackEvent('search', { termo: termoBusca });
-      }
+      if (termoBusca && typeof window.trackEvent === 'function') window.trackEvent('search', { termo: termoBusca });
       renderProducts();
     }
 
     if (searchBtn) {
       searchBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (searchBox.classList.contains('expanded') && searchInput.value.trim()) {
-          aplicarFiltro();
-        } else {
+        if (searchBox.classList.contains('expanded') && searchInput.value.trim()) aplicarFiltro();
+        else {
           searchBox.classList.toggle('expanded');
           if (searchBox.classList.contains('expanded')) setTimeout(() => searchInput.focus(), 300);
           else { searchInput.value = ''; aplicarFiltro(); }
@@ -1320,10 +1178,7 @@
     }
     let buscaTimer = null;
     if (searchInput) {
-      searchInput.addEventListener('input', () => {
-        clearTimeout(buscaTimer);
-        buscaTimer = setTimeout(aplicarFiltro, 120);
-      });
+      searchInput.addEventListener('input', () => { clearTimeout(buscaTimer); buscaTimer = setTimeout(aplicarFiltro, 120); });
     }
 
     // ============================================================
@@ -1335,10 +1190,7 @@
     const closeShare = document.getElementById('closeShare');
     let shareLink = '', shareTitle = '';
 
-    function abrirShare(link, title) {
-      shareLink = link; shareTitle = title;
-      if (shareOverlay) shareOverlay.classList.add('active');
-    }
+    function abrirShare(link, title) { shareLink = link; shareTitle = title; if (shareOverlay) shareOverlay.classList.add('active'); }
     function fecharShare() { if (shareOverlay) shareOverlay.classList.remove('active'); }
 
     if (shareWhatsapp) {
@@ -1350,11 +1202,8 @@
     }
     if (shareCopy) {
       shareCopy.addEventListener('click', () => {
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText(shareLink).then(() => {
-            showCenterNotification('Link copiado!', 'Compartilhe com seus amigos');
-          }).catch(() => {});
-        } else {
+        if (navigator.clipboard) navigator.clipboard.writeText(shareLink).then(() => showCenterNotification('Link copiado!', 'Compartilhe com seus amigos')).catch(() => {});
+        else {
           const input = document.createElement('input');
           input.value = shareLink;
           document.body.appendChild(input);
@@ -1411,15 +1260,9 @@
       centerToast._timer = setTimeout(() => {
         centerToast.classList.add('voando');
         setTimeout(() => {
-          if (checkoutBtn) {
-            checkoutBtn.classList.add('vibrar');
-            setTimeout(() => checkoutBtn.classList.remove('vibrar'), 400);
-          }
+          if (checkoutBtn) { checkoutBtn.classList.add('vibrar'); setTimeout(() => checkoutBtn.classList.remove('vibrar'), 400); }
         }, 2000);
-        setTimeout(() => {
-          centerToast.classList.remove('show', 'voando');
-          centerToast.style.display = 'none';
-        }, 800);
+        setTimeout(() => { centerToast.classList.remove('show', 'voando'); centerToast.style.display = 'none'; }, 800);
       }, 1200);
     }
 
@@ -1561,10 +1404,7 @@
       const img = document.getElementById('parallaxImg');
       const titulo = document.getElementById('parallaxTitulo');
       const subtitulo = document.getElementById('parallaxSubtitulo');
-      if (img && headerConfig.imagem) {
-        img.src = headerConfig.imagem;
-        img.style.display = 'block';
-      }
+      if (img && headerConfig.imagem) { img.src = headerConfig.imagem; img.style.display = 'block'; }
       if (titulo) titulo.textContent = headerConfig.titulo;
       if (subtitulo) subtitulo.textContent = headerConfig.subtitulo;
     }
@@ -1604,15 +1444,11 @@
 
     function getTagDoProduto(produtoId) { return tagsDesconto[produtoId] || null; }
 
-    // ============================================================
-    // CUPONS
-    // ============================================================
     function carregarCupons() {
       try {
         db.collection('config').doc('cupons').onSnapshot((doc) => {
-          if (doc.exists && Array.isArray(doc.data().cupons)) {
-            cuponsAtivos = doc.data().cupons.filter(c => c && c.codigo && Number(c.desconto) > 0);
-          } else cuponsAtivos = [];
+          if (doc.exists && Array.isArray(doc.data().cupons)) cuponsAtivos = doc.data().cupons.filter(c => c && c.codigo && Number(c.desconto) > 0);
+          else cuponsAtivos = [];
         }, (err) => { cuponsAtivos = []; });
       } catch (err) { cuponsAtivos = []; }
     }
@@ -1651,9 +1487,6 @@
       aplicarCores(cores);
     }
 
-    // ============================================================
-    // RENDERIZAR DESTAQUES E MAIS PEDIDOS
-    // ============================================================
     function renderDestaques() {
       renderizarCarrosselGenerico({
         containerId: 'carrosselDestaques',
@@ -1680,10 +1513,7 @@
         ids.forEach(prodId => {
           for (const catId in PRODUCTS) {
             const prod = PRODUCTS[catId]?.find(p => p.id === prodId);
-            if (prod && (prod.ativo === true || prod.ativo === undefined)) {
-              destaques.push({ ...prod, _catId: catId });
-              break;
-            }
+            if (prod && (prod.ativo === true || prod.ativo === undefined)) { destaques.push({ ...prod, _catId: catId }); break; }
           }
         });
       } else if (isPreferidos) {
@@ -1693,11 +1523,7 @@
         });
         destaques = destaques.slice(0, 6);
       }
-      if (destaques.length === 0) {
-        secaoEl.style.display = 'none';
-        secaoEl.classList.add('oculto');
-        return;
-      }
+      if (destaques.length === 0) { secaoEl.style.display = 'none'; secaoEl.classList.add('oculto'); return; }
       secaoEl.style.display = 'block';
       secaoEl.classList.remove('oculto');
       carrosselEl.innerHTML = '';
@@ -1711,16 +1537,12 @@
           if (tag && tag.percentual > 0) {
             const promo = aplicarDescontoPreco(minPrice, tag.percentual);
             precoHtml = `<div class="preco-container"><span class="preco-promocional">${formatBRL(promo)}</span><span class="preco-original-riscado">${formatBRL(minPrice)}</span></div>`;
-          } else {
-            precoHtml = `<div class="preco">A partir de ${formatBRL(minPrice)}</div>`;
-          }
+          } else precoHtml = `<div class="preco">A partir de ${formatBRL(minPrice)}</div>`;
         } else if (prod.price) {
           if (tag && tag.percentual > 0) {
             const promo = aplicarDescontoPreco(prod.price, tag.percentual);
             precoHtml = `<div class="preco-container"><span class="preco-promocional">${formatBRL(promo)}</span><span class="preco-original-riscado">${formatBRL(prod.price)}</span></div>`;
-          } else {
-            precoHtml = `<div class="preco">${formatBRL(prod.price)}</div>`;
-          }
+          } else precoHtml = `<div class="preco">${formatBRL(prod.price)}</div>`;
         }
         const imgSrc = imgSrcSegura(prod.img);
         const tagHtml = (tag && tag.percentual > 0) ? `<span class="tag-desconto no-card">🔥 ${tag.texto || tag.percentual + '% OFF'}</span>` : '';
@@ -1749,9 +1571,6 @@
       });
     }
 
-    // ============================================================
-    // RENDERIZAR PRODUTOS
-    // ============================================================
     function renderProducts() {
       if (!productsEl) return;
       productsEl.innerHTML = '';
@@ -1901,9 +1720,6 @@
       return activeCategory || 'geral';
     }
 
-    // ============================================================
-    // CARRINHO – ADICIONAR
-    // ============================================================
     function addToCart(productId, category) {
       if (!lojaAberta) { showCenterNotification('Loja fechada', 'Não é possível adicionar itens no momento'); return; }
       const p = (PRODUCTS[category] || []).find(x => x.id === productId);
@@ -1972,9 +1788,6 @@
       }
     }
 
-    // ============================================================
-    // DIÁLOGOS DE QUANTIDADE
-    // ============================================================
     let editingIndex = null;
     const overlay = document.getElementById('overlay');
     const numDisplay = document.getElementById('numDisplay');
@@ -2015,7 +1828,6 @@
     if (cancelQtyBtn) cancelQtyBtn.addEventListener('click', closeQtyDialog);
     if (overlay) overlay.addEventListener('click', (e) => { if (e.target === overlay) closeQtyDialog(); });
 
-    // ===== MODAL DE TAMANHOS =====
     const sizeOverlay = document.getElementById('sizeOverlay');
     const sizeTitle = document.getElementById('sizeTitle');
     const sizeDesc = document.getElementById('sizeDesc');
@@ -2049,10 +1861,7 @@
           });
         });
         return adicionaisCache;
-      } catch (error) {
-        adicionaisCache = [];
-        return [];
-      }
+      } catch (error) { adicionaisCache = []; return []; }
     }
 
     function getAdicionaisPorProduto(produtoId, categoriaId) {
@@ -2206,9 +2015,6 @@
       }
     }
 
-    // ============================================================
-    // CHECKOUT
-    // ============================================================
     if (checkoutBtn) {
       checkoutBtn.addEventListener('click', () => {
         if (!lojaAberta) { showCenterNotification('Loja fechada', 'Não é possível acessar o carrinho no momento'); return; }
@@ -2216,9 +2022,6 @@
       });
     }
 
-    // ============================================================
-    // ATUALIZAR BOTÕES
-    // ============================================================
     function atualizarBotoes() {
       document.querySelectorAll('.btn-add').forEach(btn => {
         btn.disabled = !lojaAberta;
@@ -2240,9 +2043,6 @@
       }
     }
 
-    // ============================================================
-    // CARREGAR CARDÁPIO
-    // ============================================================
     async function renderizarTudo() {
       await carregarAdicionais();
       renderDestaques();
@@ -2302,7 +2102,7 @@
     }
 
     // ============================================================
-    // SISTEMA DE PROMOÇÕES — BANNER NO LUGAR DO HEADER
+    // SISTEMA DE PROMOÇÕES — BANNER + LEMBRETES + ÍCONES
     // ============================================================
     let bannerPromoIndex = 0;
     let bannerPromoTimer = null;
@@ -2315,7 +2115,7 @@
         anunciosPromo = (data.anuncios || []).filter(a => a.ativo !== false);
         configPromo = data.config || configPromo;
 
-        // ===== 1. LEMBRETES (acima do botão carrinho, arredondado, centralizado) =====
+        // LEMBRETES (acima do botão carrinho, arredondado, centralizado)
         document.querySelectorAll('.pst-lembrete').forEach(el => el.remove());
         const lembretes = (data.lembretes || []).filter(l => l.ativo !== false);
         lembretes.forEach((l, i) => {
@@ -2323,17 +2123,14 @@
           el.className = 'pst-lembrete ' + (l.posicao || 'bottom');
           el.style.background = l.corFundo || '#FFD700';
           el.style.color = l.corTexto || '#1A1210';
-          if (l.posicao === 'top') {
-            el.style.top = (76 + (i * 50)) + 'px';
-          } else {
-            el.style.bottom = (170 + (i * 50)) + 'px';
-          }
+          if (l.posicao === 'top') el.style.top = (76 + (i * 50)) + 'px';
+          else el.style.bottom = (170 + (i * 50)) + 'px';
           el.innerHTML = `${l.icone ? `<span>${l.icone}</span>` : ''}<span>${l.texto}</span>`;
           if (l.link) el.addEventListener('click', () => window.location.href = l.link);
           document.body.appendChild(el);
         });
 
-        // ===== 2. ÍCONES FLUTUANTES =====
+        // ÍCONES FLUTUANTES
         document.querySelectorAll('.pst-icone-flutuante').forEach(el => el.remove());
         const icones = (data.icones || []).filter(ic => ic.ativo !== false);
         icones.forEach((ic) => {
@@ -2351,12 +2148,8 @@
           document.body.appendChild(el);
         });
 
-        // ===== 3. BANNER DE PROMOÇÃO NO LUGAR DO HEADER =====
-        if (anunciosPromo.length > 0 && configPromo.ativo !== false) {
-          mostrarBannerPromo();
-        } else {
-          esconderBannerPromo();
-        }
+        if (anunciosPromo.length > 0 && configPromo.ativo !== false) mostrarBannerPromo();
+        else esconderBannerPromo();
       }, (err) => console.warn('[promocoes] Erro:', err));
     }
 
@@ -2364,43 +2157,25 @@
       const banner = document.getElementById('pst-banner-promo');
       const headerParallax = document.getElementById('headerParallax');
       if (!banner) return;
-
-      // Esconde o header parallax
       if (headerParallax) headerParallax.style.display = 'none';
-
-      // Prepara slides
       bannerMidiasCache = [];
       anunciosPromo.forEach(a => {
-        if (a.midias && a.midias.length > 0) {
-          a.midias.forEach(m => {
-            bannerMidiasCache.push({ ...m, _anuncio: a });
-          });
-        }
+        if (a.midias && a.midias.length > 0) a.midias.forEach(m => bannerMidiasCache.push({ ...m, _anuncio: a }));
       });
-
       if (bannerMidiasCache.length === 0) { esconderBannerPromo(); return; }
-
       banner.classList.add('ativo');
       banner.innerHTML = '';
-
       bannerMidiasCache.forEach((m, i) => {
         const slide = document.createElement('div');
         slide.className = 'banner-slide' + (i === 0 ? ' ativo' : '');
         slide.dataset.index = i;
-        if (m.tipo === 'video') {
-          slide.innerHTML = `<video src="${m.url}" muted loop playsinline autoplay></video>`;
-        } else {
-          slide.innerHTML = `<img src="${m.url}" alt="" />`;
-        }
+        if (m.tipo === 'video') slide.innerHTML = `<video src="${m.url}" muted loop playsinline autoplay></video>`;
+        else slide.innerHTML = `<img src="${m.url}" alt="" />`;
         const anuncio = m._anuncio;
         const overlay = document.createElement('div');
         overlay.className = 'banner-overlay';
-        overlay.innerHTML = `
-          <div class="banner-titulo">${anuncio.titulo || ''}</div>
-          ${anuncio.subtitulo ? `<div class="banner-sub">${anuncio.subtitulo}</div>` : ''}
-        `;
+        overlay.innerHTML = `<div class="banner-titulo">${anuncio.titulo || ''}</div>${anuncio.subtitulo ? `<div class="banner-sub">${anuncio.subtitulo}</div>` : ''}`;
         slide.appendChild(overlay);
-
         if (anuncio.badge) {
           const badge = document.createElement('div');
           badge.className = 'banner-badge';
@@ -2408,11 +2183,8 @@
           badge.textContent = anuncio.badge;
           slide.appendChild(badge);
         }
-
-        // ✅ CLIQUE ABRE O MODAL DO PRODUTO
         slide.addEventListener('click', () => {
           if (anuncio.produtoId) {
-            // Encontra o produto e abre modal
             for (const catId in PRODUCTS) {
               const p = PRODUCTS[catId]?.find(x => x.id === anuncio.produtoId);
               if (p) {
@@ -2423,14 +2195,10 @@
               }
             }
           }
-          // Se não tem produto, mostra notificação
           showCenterNotification(anuncio.titulo || 'Promoção', anuncio.subtitulo || '');
         });
-
         banner.appendChild(slide);
       });
-
-      // Dots
       if (bannerMidiasCache.length > 1) {
         const dots = document.createElement('div');
         dots.className = 'banner-dots';
@@ -2441,8 +2209,6 @@
         });
         banner.appendChild(dots);
       }
-
-      // Rotação automática
       if (bannerMidiasCache.length > 1) {
         if (bannerPromoTimer) clearInterval(bannerPromoTimer);
         const tempo = (anunciosPromo[0]?.tempoTroca || 4) * 1000;
@@ -2477,15 +2243,13 @@
       carregarMaisPedidos();
       carregarTagsDesconto();
       carregarPromocoes();
+      carregarCupons();
       window.addEventListener('scroll', handleParallaxScroll, { passive: true });
       updateCheckoutText();
     }
 
     iniciarApp();
 
-    // ============================================================
-    // EVENTOS GLOBAIS
-    // ============================================================
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         if (document.getElementById('photoLightbox').classList.contains('active')) { fecharFoto(); return; }
@@ -2514,7 +2278,8 @@
 
     console.log('✅ Pasterry Cardápio carregado com sucesso!');
     console.log('📣 Banner de promoção no lugar do header quando ativo');
-    console.log('🎁 Baú de cupons explode e some após resgatar');
+    console.log('🎁 Baú de cupons: 1 clique = cupom aplicado + confetes + some');
+    console.log('🔄 Baú reaparece se o cupom for removido do carrinho');
   </script>
 </body>
 </html>
