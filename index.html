@@ -97,7 +97,7 @@
     .header-parallax .parallax-titulo { font-size: 24px; font-weight: 900; color: #fff; margin: 0 0 4px 0; text-shadow: 0 2px 12px rgba(0,0,0,0.8); }
     .header-parallax .parallax-subtitulo { font-size: 13px; color: rgba(255,255,255,0.85); font-weight: 500; text-shadow: 0 1px 6px rgba(0,0,0,0.8); }
 
-    /* BANNER DE PROMOÇÃO */
+    /* BANNER DE PROMOÇÃO (AGORA ARRASTÁVEL) */
     #pst-banner-promo {
       display: none;
       position: relative;
@@ -105,24 +105,27 @@
       border-radius: 16px;
       overflow: hidden;
       box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.3);
-      cursor: pointer;
+      cursor: grab;
       height: 180px;
       background: #2a201d;
       animation: bannerIn 0.5s ease;
+      touch-action: pan-y;
     }
+    #pst-banner-promo:active { cursor: grabbing; }
     #pst-banner-promo.ativo { display: block; }
     @keyframes bannerIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
     #pst-banner-promo .banner-slide {
       position: absolute;
       inset: 0;
       opacity: 0;
-      transition: opacity 0.6s ease;
+      transition: opacity 0.4s ease, transform 0.4s ease;
       display: flex;
       align-items: stretch;
+      pointer-events: none;
     }
-    #pst-banner-promo .banner-slide.ativo { opacity: 1; }
+    #pst-banner-promo .banner-slide.ativo { opacity: 1; pointer-events: auto; }
     #pst-banner-promo .banner-slide img,
-    #pst-banner-promo .banner-slide video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    #pst-banner-promo .banner-slide video { width: 100%; height: 100%; object-fit: cover; display: block; user-select: none; -webkit-user-drag: none; pointer-events: none; }
     #pst-banner-promo .banner-overlay {
       position: absolute; inset: 0;
       background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%);
@@ -139,9 +142,14 @@
     }
     #pst-banner-promo .banner-dots {
       position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 6px; z-index: 3;
+      display: flex; gap: 6px; z-index: 4;
+      pointer-events: auto;
     }
-    #pst-banner-promo .banner-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); transition: background 0.2s, transform 0.2s; }
+    #pst-banner-promo .banner-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4);
+      transition: background 0.2s, transform 0.2s; cursor: pointer;
+      border: none; padding: 0;
+    }
     #pst-banner-promo .banner-dot.ativo { background: #FFD700; transform: scale(1.3); }
 
     main { flex: 1; display: flex; flex-direction: column; gap: 4px; padding: 0 0 80px 0; max-width: 1400px; margin: 0 auto; width: 100%; }
@@ -297,15 +305,14 @@
     .toast .sub { color: var(--cor-fonte-muted); font-size: 12px; }
     @keyframes toastIn { to { transform: translateY(0); opacity: 1; } }
     @keyframes toastOut { to { transform: translateY(-8px); opacity: 0; } }
+
+    /* ✅ NOTIFICAÇÃO CENTRAL (FICA NO CENTRO E NÃO DESCE) */
     #centerToast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.85); z-index: 200; background: rgba(0,0,0,0.92); backdrop-filter: blur(10px); border: 1.5px solid rgba(255,215,0,0.4); border-radius: var(--raio-xl); padding: 24px 32px; display: none; flex-direction: column; align-items: center; gap: 10px; min-width: 220px; max-width: 85vw; box-shadow: 0 20px 60px rgba(0,0,0,0.9); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; }
     #centerToast.show { display: flex; opacity: 1; transform: translate(-50%, -50%) scale(1); }
     #centerToast .check-icon { font-size: 42px; color: var(--cor-sucesso); }
     #centerToast .msg { color: var(--cor-fonte); font-weight: 800; font-size: 17px; text-align: center; line-height: 1.3; }
     #centerToast .sub-msg { color: var(--cor-fonte-muted); font-size: 13px; }
-    @keyframes descerCarrinho { 0% { top: 50%; opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { top: 110%; opacity: 0; transform: translate(-50%, -50%) scale(0.6); } }
-    #centerToast.voando { animation: descerCarrinho 0.8s ease-in forwards; }
-    @keyframes vibrar { 0%, 100% { transform: scale(1); } 25% { transform: scale(1.05) rotate(-1deg); } 50% { transform: scale(1.1) rotate(1deg); } 75% { transform: scale(1.05) rotate(-1deg); } }
-    .footer-cart.vibrar { animation: vibrar 0.4s ease-in-out; }
+
     .share-overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.8); z-index: 150; backdrop-filter: blur(8px); padding: 20px; }
     .share-overlay.active { display: flex; }
     .share-modal { background: var(--bg-modal); border-radius: var(--raio-xl); padding: 24px; max-width: 380px; width: 100%; box-shadow: var(--sombra-modal); border: 1px solid var(--borda-media); animation: modalIn 0.3s ease; }
@@ -353,10 +360,10 @@
     .lead-modal button.btn-lead:active { transform: translateY(4px); box-shadow: 0 1px 0 #1a4a2c; }
     .lead-modal .lead-erro { color: #ff6b6b; font-size: 12px; margin-top: 8px; display: none; }
 
-    /* ===== BAÚ DE CUPONS (ACIMA DO BOTÃO CARRINHO, CANTO DIREITO) ===== */
+    /* ===== BAÚ DE CUPONS ===== */
     .btn-bau {
       position: fixed;
-      bottom: 100px;       /* ✅ logo acima do botão carrinho */
+      bottom: 100px;
       right: 16px;
       z-index: 80;
       background: linear-gradient(135deg, #FFD700, #FF6B00);
@@ -372,7 +379,6 @@
       align-items: center;
       justify-content: center;
       transition: transform 0.15s, opacity 0.3s, box-shadow 0.15s;
-      /* ✅ Sem animação flutuante (você quer ele parado) */
     }
     .btn-bau:hover { transform: scale(1.08); box-shadow: 0 8px 0 #b35500, 0 14px 30px rgba(255,107,0,0.6); }
     .btn-bau:active { transform: translateY(4px) scale(0.95); box-shadow: 0 2px 0 #b35500, 0 4px 10px rgba(255,107,0,0.4); }
@@ -407,7 +413,7 @@
     #logoZoomOverlay.animando { display: flex; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); pointer-events: auto; }
     #logoZoomOverlay.animando img { transform: scale(5); }
 
-    /* ===== LEMBRETES (ACIMA DO BOTÃO CARRINHO, ARREDONDADO, CENTRALIZADO) ===== */
+    /* ===== LEMBRETES ===== */
     .pst-lembrete {
       position: fixed;
       left: 50%;
@@ -472,10 +478,8 @@
     </div>
   </div>
 
-  <!-- ===== BAÚ DE CUPONS (acima do botão carrinho, canto direito) ===== -->
   <button class="btn-bau escondido" id="btnBau" onclick="abrirBau()" aria-label="Baú de Cupons">🎁</button>
 
-  <!-- ===== MODAL DO BAÚ (opcional, mantido para debug) ===== -->
   <div class="bau-overlay" id="bauOverlay">
     <div class="bau-modal">
       <button class="close-bau" onclick="fecharBau()">×</button>
@@ -550,10 +554,8 @@
     </header>
 
     <main>
-      <!-- ===== BANNER DE PROMOÇÃO (substitui o header parallax quando ativo) ===== -->
       <div id="pst-banner-promo"></div>
 
-      <!-- ===== HEADER PARALLAX (some quando banner está ativo) ===== -->
       <div class="header-parallax" id="headerParallax">
         <img id="parallaxImg" class="parallax-bg-img" src="" alt="Capa" style="display:none" />
         <div class="parallax-overlay">
@@ -757,7 +759,6 @@
       setTimeout(() => { document.getElementById('leadOverlay').classList.add('active'); }, 3000);
     }
 
-    // ✅ Quando o cupom é removido/adicionado em outra aba, o baú reage
     window.addEventListener('storage', (e) => {
       if (e.key === 'pasterry_cupom_v1') {
         const btnBau = document.getElementById('btnBau');
@@ -772,7 +773,6 @@
       }
     });
 
-    // ✅ Ao voltar do carrinho (mesma aba), re-verifica estado do baú
     window.addEventListener('pageshow', () => {
       const btnBau = document.getElementById('btnBau');
       if (!btnBau) return;
@@ -806,12 +806,16 @@
         window.trackEvent('identificacao', { telefone: tel, origem: 'popup_boas_vindas' });
       }
       document.getElementById('leadOverlay').classList.remove('active');
+
+      // ✅ Mostra a caixinha do baú e a mensagem central "Abra seu presente!"
       const btnBau = document.getElementById('btnBau');
       if (btnBau && !localStorage.getItem('pasterry_cupom_v1')) {
         btnBau.classList.remove('escondido');
         btnBau.style.display = '';
       }
-      showCenterNotification('Presente liberado!', 'Abra a caixinha no canto da tela.');
+
+      // ✅ MENSAGEM CENTRAL QUE NÃO DESCE E SOME EM 2s
+      showCenterNotification('🎁 Abra seu presente!', 'Clique na caixinha no canto da tela.', 2000);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -829,7 +833,7 @@
     });
 
     // ============================================================
-    // BAÚ DE CUPONS — CLIQUE = APLICA O MELHOR CUPOM AUTOMATICAMENTE
+    // BAÚ DE CUPONS
     // ============================================================
     function abrirBau() {
       if (!localStorage.getItem('pasterry_lead_telefone')) {
@@ -837,17 +841,17 @@
         return;
       }
       if (localStorage.getItem('pasterry_cupom_v1')) {
-        showCenterNotification('🎁 Você já resgatou um cupom!', 'Remova do carrinho para resgatar outro.');
+        showCenterNotification('🎁 Você já resgatou um cupom!', 'Remova do carrinho para resgatar outro.', 2000);
         return;
       }
       db.collection('config').doc('cupons').get().then(doc => {
         if (!doc.exists || !Array.isArray(doc.data().cupons)) {
-          showCenterNotification('😕 Nenhum cupom disponível', 'Volte mais tarde!');
+          showCenterNotification('😕 Nenhum cupom disponível', 'Volte mais tarde!', 2000);
           return;
         }
         const ativos = doc.data().cupons.filter(c => c && c.codigo && Number(c.desconto) > 0);
         if (ativos.length === 0) {
-          showCenterNotification('😕 Nenhum cupom disponível', 'Volte mais tarde!');
+          showCenterNotification('😕 Nenhum cupom disponível', 'Volte mais tarde!', 2000);
           return;
         }
         const melhor = ativos.reduce((a, b) => (b.desconto > a.desconto ? b : a));
@@ -855,13 +859,12 @@
         aplicarCupomDireto(melhor.codigo);
       }).catch(err => {
         console.error(err);
-        showCenterNotification('❌ Erro ao buscar cupons', 'Tente novamente.');
+        showCenterNotification('❌ Erro ao buscar cupons', 'Tente novamente.', 2000);
       });
     }
 
     function fecharBau() { document.getElementById('bauOverlay').classList.remove('active'); }
 
-    // Mantido para debug/fallback (abre o modal com a lista)
     function carregarCuponsSite() {
       const container = document.getElementById('listaCuponsSite');
       if (!container) return;
@@ -901,7 +904,6 @@
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
 
-      // Explosão de confetes
       for (let i = 0; i < 50; i++) {
         const confete = document.createElement('div');
         confete.classList.add('confete');
@@ -922,11 +924,9 @@
         setTimeout(() => confete.remove(), 1200);
       }
 
-      // Esconde o baú
       btnBau.style.display = 'none';
       btnBau.classList.add('escondido');
 
-      // Salva o cupom no localStorage
       const cupomCompleto = (window._cuponsDisponiveis || []).find(c => c.codigo === codigoCupomSelecionado);
       if (cupomCompleto) {
         localStorage.setItem('pasterry_cupom_v1', JSON.stringify({
@@ -935,13 +935,13 @@
           minimo: cupomCompleto.minimo || 0,
           pendente: true
         }));
-        showCenterNotification(
-          `🎁 Cupom ${cupomCompleto.codigo} resgatado!`,
-          `${cupomCompleto.desconto}% OFF ${cupomCompleto.minimo > 0 ? '• Mínimo R$ ' + Number(cupomCompleto.minimo).toFixed(2).replace('.', ',') : ''}`
-        );
+
+        // ✅ MENSAGEM CENTRAL "Seu desconto foi adicionado!" (2s, sem descer)
+        showCenterNotification('🎉 Seu desconto foi adicionado!', cupomCompleto.desconto + '% OFF • Cupom ' + cupomCompleto.codigo, 2000);
+
         if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
       } else {
-        showCenterNotification('🎁 Cupom resgatado!', 'Ele já está no carrinho.');
+        showCenterNotification('🎁 Cupom resgatado!', 'Ele já está no carrinho.', 2000);
       }
     }
 
@@ -1241,29 +1241,28 @@
     }
 
     // ============================================================
-    // NOTIFICAÇÕES
+    // ✅ NOTIFICAÇÃO CENTRAL — SEMPRE NO CENTRO, SOME EM 2s, NÃO DESCE
     // ============================================================
-    function showCenterNotification(title, sub = 'Adicionado ao carrinho') {
+    function showCenterNotification(title, sub = 'Adicionado ao carrinho', duracaoMs = 2000) {
       const centerToast = document.getElementById('centerToast');
       const centerToastMsg = document.getElementById('centerToastMsg');
       const centerToastSub = document.getElementById('centerToastSub');
-      const checkoutBtn = document.getElementById('checkoutBtn');
       if (!centerToast || !centerToastMsg || !centerToastSub) return;
-      centerToast.classList.remove('voando');
+
       centerToastMsg.textContent = title;
       centerToastSub.textContent = sub;
       centerToast.style.display = 'flex';
       void centerToast.offsetWidth;
       centerToast.classList.add('show');
-      if (checkoutBtn) checkoutBtn.classList.remove('vibrar');
+
       clearTimeout(centerToast._timer);
+      // ✅ Não tem mais "voando" — só some suavemente após N segundos
       centerToast._timer = setTimeout(() => {
-        centerToast.classList.add('voando');
+        centerToast.classList.remove('show');
         setTimeout(() => {
-          if (checkoutBtn) { checkoutBtn.classList.add('vibrar'); setTimeout(() => checkoutBtn.classList.remove('vibrar'), 400); }
-        }, 2000);
-        setTimeout(() => { centerToast.classList.remove('show', 'voando'); centerToast.style.display = 'none'; }, 800);
-      }, 1200);
+          centerToast.style.display = 'none';
+        }, 300);
+      }, duracaoMs);
     }
 
     // ============================================================
@@ -2102,7 +2101,7 @@
     }
 
     // ============================================================
-    // SISTEMA DE PROMOÇÕES — BANNER + LEMBRETES + ÍCONES
+    // ✅ SISTEMA DE PROMOÇÕES — BANNER ARRASTÁVEL + LEMBRETES + ÍCONES
     // ============================================================
     let bannerPromoIndex = 0;
     let bannerPromoTimer = null;
@@ -2115,7 +2114,6 @@
         anunciosPromo = (data.anuncios || []).filter(a => a.ativo !== false);
         configPromo = data.config || configPromo;
 
-        // LEMBRETES (acima do botão carrinho, arredondado, centralizado)
         document.querySelectorAll('.pst-lembrete').forEach(el => el.remove());
         const lembretes = (data.lembretes || []).filter(l => l.ativo !== false);
         lembretes.forEach((l, i) => {
@@ -2130,7 +2128,6 @@
           document.body.appendChild(el);
         });
 
-        // ÍCONES FLUTUANTES
         document.querySelectorAll('.pst-icone-flutuante').forEach(el => el.remove());
         const icones = (data.icones || []).filter(ic => ic.ativo !== false);
         icones.forEach((ic) => {
@@ -2170,7 +2167,7 @@
         slide.className = 'banner-slide' + (i === 0 ? ' ativo' : '');
         slide.dataset.index = i;
         if (m.tipo === 'video') slide.innerHTML = `<video src="${m.url}" muted loop playsinline autoplay></video>`;
-        else slide.innerHTML = `<img src="${m.url}" alt="" />`;
+        else slide.innerHTML = `<img src="${m.url}" alt="" draggable="false" />`;
         const anuncio = m._anuncio;
         const overlay = document.createElement('div');
         overlay.className = 'banner-overlay';
@@ -2183,6 +2180,36 @@
           badge.textContent = anuncio.badge;
           slide.appendChild(badge);
         }
+        banner.appendChild(slide);
+      });
+
+      if (bannerMidiasCache.length > 1) {
+        const dots = document.createElement('div');
+        dots.className = 'banner-dots';
+        bannerMidiasCache.forEach((_, i) => {
+          const dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'banner-dot' + (i === 0 ? ' ativo' : '');
+          dot.addEventListener('click', (e) => {
+            e.stopPropagation();
+            irParaSlideBanner(i);
+          });
+          dots.appendChild(dot);
+        });
+        banner.appendChild(dots);
+      }
+
+      // ✅ ROTAÇÃO AUTOMÁTICA
+      iniciarRotacaoBanner();
+
+      // ✅ ARRASTAR (SWIPE) PARA MUDAR DE SLIDE
+      configurarSwipeBanner();
+
+      // ✅ CLIQUE NOS SLIDES (ADICIONAR PRODUTO)
+      document.querySelectorAll('#pst-banner-promo .banner-slide').forEach((slide) => {
+        const idx = parseInt(slide.dataset.index);
+        const m = bannerMidiasCache[idx];
+        const anuncio = m._anuncio;
         slide.addEventListener('click', () => {
           if (anuncio.produtoId) {
             for (const catId in PRODUCTS) {
@@ -2197,35 +2224,124 @@
           }
           showCenterNotification(anuncio.titulo || 'Promoção', anuncio.subtitulo || '');
         });
-        banner.appendChild(slide);
       });
-      if (bannerMidiasCache.length > 1) {
-        const dots = document.createElement('div');
-        dots.className = 'banner-dots';
-        bannerMidiasCache.forEach((_, i) => {
-          const dot = document.createElement('span');
-          dot.className = 'banner-dot' + (i === 0 ? ' ativo' : '');
-          dots.appendChild(dot);
-        });
-        banner.appendChild(dots);
-      }
-      if (bannerMidiasCache.length > 1) {
+    }
+
+    function iniciarRotacaoBanner() {
+      if (bannerPromoTimer) clearInterval(bannerPromoTimer);
+      if (bannerMidiasCache.length <= 1) return;
+      const tempo = (anunciosPromo[0]?.tempoTroca || 4) * 1000;
+      bannerPromoTimer = setInterval(() => {
+        irParaSlideBanner((bannerPromoIndex + 1) % bannerMidiasCache.length, false);
+      }, tempo);
+    }
+
+    function irParaSlideBanner(novoIndex, resetarTimer = true) {
+      const banner = document.getElementById('pst-banner-promo');
+      if (!banner) return;
+      const total = bannerMidiasCache.length;
+      if (total === 0) return;
+      bannerPromoIndex = ((novoIndex % total) + total) % total;
+
+      const slides = banner.querySelectorAll('.banner-slide');
+      const dots = banner.querySelectorAll('.banner-dot');
+      slides.forEach((s, i) => s.classList.toggle('ativo', i === bannerPromoIndex));
+      dots.forEach((d, i) => d.classList.toggle('ativo', i === bannerPromoIndex));
+
+      if (resetarTimer) {
         if (bannerPromoTimer) clearInterval(bannerPromoTimer);
-        const tempo = (anunciosPromo[0]?.tempoTroca || 4) * 1000;
-        bannerPromoTimer = setInterval(() => {
-          bannerPromoIndex = (bannerPromoIndex + 1) % bannerMidiasCache.length;
-          const slides = banner.querySelectorAll('.banner-slide');
-          const dots = banner.querySelectorAll('.banner-dot');
-          slides.forEach((s, i) => s.classList.toggle('ativo', i === bannerPromoIndex));
-          dots.forEach((d, i) => d.classList.toggle('ativo', i === bannerPromoIndex));
-        }, tempo);
+        iniciarRotacaoBanner();
       }
+    }
+
+    // ✅ SWIPE/ARRASTAR DO BANNER
+    let bannerTouchStartX = 0;
+    let bannerTouchStartY = 0;
+    let bannerTouchAtivo = false;
+    let bannerArrastou = false;
+
+    function configurarSwipeBanner() {
+      const banner = document.getElementById('pst-banner-promo');
+      if (!banner) return;
+      if (banner.dataset.swipeConfigurado === '1') return;
+      banner.dataset.swipeConfigurado = '1';
+
+      // TOUCH (MOBILE)
+      banner.addEventListener('touchstart', (e) => {
+        if (e.touches.length !== 1) return;
+        bannerTouchStartX = e.touches[0].clientX;
+        bannerTouchStartY = e.touches[0].clientY;
+        bannerTouchAtivo = true;
+        bannerArrastou = false;
+      }, { passive: true });
+
+      banner.addEventListener('touchmove', (e) => {
+        if (!bannerTouchAtivo || e.touches.length !== 1) return;
+        const dx = Math.abs(e.touches[0].clientX - bannerTouchStartX);
+        const dy = Math.abs(e.touches[0].clientY - bannerTouchStartY);
+        if (dx > 10 && dx > dy) bannerArrastou = true;
+      }, { passive: true });
+
+      banner.addEventListener('touchend', (e) => {
+        if (!bannerTouchAtivo) return;
+        bannerTouchAtivo = false;
+        const touchEnd = e.changedTouches[0];
+        const dx = touchEnd.clientX - bannerTouchStartX;
+        const dy = touchEnd.clientY - bannerTouchStartY;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+          if (dx < 0) irParaSlideBanner(bannerPromoIndex + 1);
+          else irParaSlideBanner(bannerPromoIndex - 1);
+          bannerArrastou = true;
+          setTimeout(() => { bannerArrastou = false; }, 100);
+        }
+      }, { passive: true });
+
+      // MOUSE (DESKTOP)
+      let mouseStartX = null;
+      let mouseStartY = null;
+      let mouseDown = false;
+
+      banner.addEventListener('mousedown', (e) => {
+        mouseStartX = e.clientX;
+        mouseStartY = e.clientY;
+        mouseDown = true;
+        bannerArrastou = false;
+      });
+
+      banner.addEventListener('mousemove', (e) => {
+        if (!mouseDown || mouseStartX === null) return;
+        const dx = Math.abs(e.clientX - mouseStartX);
+        const dy = Math.abs(e.clientY - mouseStartY);
+        if (dx > 10 && dx > dy) bannerArrastou = true;
+      });
+
+      banner.addEventListener('mouseup', (e) => {
+        if (!mouseDown) return;
+        mouseDown = false;
+        if (mouseStartX === null) return;
+        const dx = e.clientX - mouseStartX;
+        const dy = e.clientY - mouseStartY;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+          if (dx < 0) irParaSlideBanner(bannerPromoIndex + 1);
+          else irParaSlideBanner(bannerPromoIndex - 1);
+          bannerArrastou = true;
+          setTimeout(() => { bannerArrastou = false; }, 100);
+        }
+        mouseStartX = null;
+        mouseStartY = null;
+      });
+
+      banner.addEventListener('mouseleave', () => {
+        mouseDown = false;
+        mouseStartX = null;
+        mouseStartY = null;
+      });
     }
 
     function esconderBannerPromo() {
       const banner = document.getElementById('pst-banner-promo');
       const headerParallax = document.getElementById('headerParallax');
-      if (banner) { banner.classList.remove('ativo'); banner.innerHTML = ''; }
+      if (banner) { banner.classList.remove('ativo'); banner.innerHTML = ''; banner.dataset.swipeConfigurado = ''; }
       if (headerParallax) headerParallax.style.display = 'block';
       if (bannerPromoTimer) { clearInterval(bannerPromoTimer); bannerPromoTimer = null; }
     }
@@ -2277,9 +2393,9 @@
     window.fecharZoomLogo = fecharZoomLogo;
 
     console.log('✅ Pasterry Cardápio carregado com sucesso!');
-    console.log('📣 Banner de promoção no lugar do header quando ativo');
-    console.log('🎁 Baú de cupons: 1 clique = cupom aplicado + confetes + some');
-    console.log('🔄 Baú reaparece se o cupom for removido do carrinho');
+    console.log('👉 Banner de promoção arrastável (swipe)');
+    console.log('🎁 "Abra seu presente!" (2s no centro, sem descer)');
+    console.log('🎉 "Seu desconto foi adicionado!" (2s no centro, sem descer)');
   </script>
 </body>
 </html>
