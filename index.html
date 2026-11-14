@@ -1466,8 +1466,18 @@
 
     const formatBRL = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
+    // ============================================================
+    // CONTROLE DE SCROLL PROGRAMÁTICO (evita conflito com observer)
+    // ============================================================
+    let scrollProgramatico = false;
+    let scrollProgramaticoTimer = null;
+
     function setActiveCategory(catId, { scrollIntoView = false } = {}) {
       if (!catId) return;
+      
+      // Se não é clique (scrollIntoView=false) e já está ativa, não faz nada
+      if (!scrollIntoView && activeCategory === catId) return;
+      
       activeCategory = catId;
       
       document.querySelectorAll('.nav-cat-item').forEach(b => {
@@ -1477,8 +1487,17 @@
       if (scrollIntoView) {
         const section = document.querySelector(`.secao-categoria[data-cat="${catId}"]`);
         if (section) {
+          // 🔒 Bloqueia o observer durante o scroll suave
+          scrollProgramatico = true;
+          clearTimeout(scrollProgramaticoTimer);
+          
           const top = section.offsetTop - 140;
           window.scrollTo({ top, behavior: 'smooth' });
+          
+          // Libera o observer após o scroll terminar
+          scrollProgramaticoTimer = setTimeout(() => {
+            scrollProgramatico = false;
+          }, 900);
         }
       }
     }
@@ -1493,11 +1512,16 @@
       if (!sections.length) return;
       
       const options = { 
-        rootMargin: '-130px 0px -60% 0px', 
+        rootMargin: '-140px 0px -50% 0px', 
         threshold: [0, 0.25, 0.5, 0.75, 1] 
       };
       
+      let observerDebounce = null;
+      
       scrollObserver = new IntersectionObserver((entries) => {
+        // 🔒 Ignora se o scroll foi causado por clique numa categoria
+        if (scrollProgramatico) return;
+        
         let bestEntry = null, bestRatio = 0;
         for (const entry of entries) {
           if (entry.isIntersecting && entry.intersectionRatio > bestRatio) {
@@ -1507,7 +1531,14 @@
         }
         if (bestEntry) {
           const catId = bestEntry.target.dataset.cat;
-          if (catId && catId !== activeCategory) setActiveCategory(catId);
+          
+          // Debounce para evitar trocas em cascata
+          clearTimeout(observerDebounce);
+          observerDebounce = setTimeout(() => {
+            if (catId && catId !== activeCategory && !scrollProgramatico) {
+              setActiveCategory(catId);
+            }
+          }, 120);
         }
       }, options);
       
