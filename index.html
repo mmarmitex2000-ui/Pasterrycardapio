@@ -27,8 +27,6 @@
       --cor-badge: #FFD700;
       --cor-sucesso: #22c55e;
       --cor-erro: #ef4444;
-      /* ✅ NOVO — corrige as cores do popup "Ofertas Exclusivas" */
-      --cor-secundaria: #FFD700;
       --borda-sutil: rgba(255,255,255,0.06);
       --borda-media: rgba(255,255,255,0.1);
       --sombra-card: 0 4px 16px rgba(0,0,0,0.3);
@@ -99,20 +97,59 @@
     .header-parallax .parallax-titulo { font-size: 24px; font-weight: 900; color: #fff; margin: 0 0 4px 0; text-shadow: 0 2px 12px rgba(0,0,0,0.8); }
     .header-parallax .parallax-subtitulo { font-size: 13px; color: rgba(255,255,255,0.85); font-weight: 500; text-shadow: 0 1px 6px rgba(0,0,0,0.8); }
 
-    /* BANNER DE PROMOÇÃO */
-    #pst-banner-promo { display: none; position: relative; margin: 8px 12px; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.3); cursor: grab; height: 180px; background: #2a201d; animation: bannerIn 0.5s ease; touch-action: pan-y; }
+    /* BANNER DE PROMOÇÃO (AGORA ARRASTÁVEL) */
+    #pst-banner-promo {
+      display: none;
+      position: relative;
+      margin: 8px 12px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.3);
+      cursor: grab;
+      height: 180px;
+      background: #2a201d;
+      animation: bannerIn 0.5s ease;
+      touch-action: pan-y;
+    }
     #pst-banner-promo:active { cursor: grabbing; }
     #pst-banner-promo.ativo { display: block; }
     @keyframes bannerIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
-    #pst-banner-promo .banner-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.4s ease, transform 0.4s ease; display: flex; align-items: stretch; pointer-events: none; }
+    #pst-banner-promo .banner-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      display: flex;
+      align-items: stretch;
+      pointer-events: none;
+    }
     #pst-banner-promo .banner-slide.ativo { opacity: 1; pointer-events: auto; }
-    #pst-banner-promo .banner-slide img, #pst-banner-promo .banner-slide video { width: 100%; height: 100%; object-fit: cover; display: block; user-select: none; -webkit-user-drag: none; pointer-events: none; }
-    #pst-banner-promo .banner-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 16px 20px; z-index: 2; pointer-events: none; }
+    #pst-banner-promo .banner-slide img,
+    #pst-banner-promo .banner-slide video { width: 100%; height: 100%; object-fit: cover; display: block; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+    #pst-banner-promo .banner-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 16px 20px; z-index: 2; pointer-events: none;
+    }
     #pst-banner-promo .banner-titulo { font-size: 22px; font-weight: 900; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,0.9); margin-bottom: 4px; }
     #pst-banner-promo .banner-sub { font-size: 13px; color: rgba(255,255,255,0.9); text-shadow: 0 1px 6px rgba(0,0,0,0.9); }
-    #pst-banner-promo .banner-badge { position: absolute; top: 12px; left: 12px; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 900; color: #1A1210; box-shadow: 0 4px 12px rgba(0,0,0,0.4); z-index: 3; }
-    #pst-banner-promo .banner-dots { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 4; pointer-events: auto; }
-    #pst-banner-promo .banner-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); transition: background 0.2s, transform 0.2s; cursor: pointer; border: none; padding: 0; }
+    #pst-banner-promo .banner-badge {
+      position: absolute; top: 12px; left: 12px;
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 11px; font-weight: 900; color: #1A1210;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4); z-index: 3;
+    }
+    #pst-banner-promo .banner-dots {
+      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 6px; z-index: 4;
+      pointer-events: auto;
+    }
+    #pst-banner-promo .banner-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4);
+      transition: background 0.2s, transform 0.2s; cursor: pointer;
+      border: none; padding: 0;
+    }
     #pst-banner-promo .banner-dot.ativo { background: #FFD700; transform: scale(1.3); }
 
     main { flex: 1; display: flex; flex-direction: column; gap: 4px; padding: 0 0 80px 0; max-width: 1400px; margin: 0 auto; width: 100%; }
@@ -158,7 +195,7 @@
     .card-produto .media img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .card-produto .media .logo-marca { position: absolute; bottom: 4px; left: 4px; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.4); padding: 1px; object-fit: contain; z-index: 2; pointer-events: none; }
     .card-produto .info { flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-    .card-produto .titulo { font-weight: 700; font-size: 14px; line-height: 1.25; color: #FFFFFF !important; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-produto .titulo { font-weight: 700; font-size: 14px; line-height: 1.25; color: var(--cor-fonte-titulo); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .card-produto .descricao { color: var(--cor-fonte-muted); font-size: 11px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .card-produto .precos { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
     .card-produto .preco-atual { color: var(--cor-fonte-preco); font-weight: 800; font-size: 14px; }
@@ -269,6 +306,7 @@
     @keyframes toastIn { to { transform: translateY(0); opacity: 1; } }
     @keyframes toastOut { to { transform: translateY(-8px); opacity: 0; } }
 
+    /* ✅ NOTIFICAÇÃO CENTRAL (FICA NO CENTRO E NÃO DESCE) */
     #centerToast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.85); z-index: 200; background: rgba(0,0,0,0.92); backdrop-filter: blur(10px); border: 1.5px solid rgba(255,215,0,0.4); border-radius: var(--raio-xl); padding: 24px 32px; display: none; flex-direction: column; align-items: center; gap: 10px; min-width: 220px; max-width: 85vw; box-shadow: 0 20px 60px rgba(0,0,0,0.9); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; }
     #centerToast.show { display: flex; opacity: 1; transform: translate(-50%, -50%) scale(1); }
     #centerToast .check-icon { font-size: 42px; color: var(--cor-sucesso); }
@@ -304,97 +342,61 @@
     .products-wrap::-webkit-scrollbar { display: none; }
     button:focus-visible { outline: 2px solid var(--cor-categoria-ativa); outline-offset: 2px; }
 
-    /* ===== POPUP DE CAPTURA DE LEAD — CORRIGIDO (letras brancas + destaque) ===== */
+    /* ===== POPUP DE CAPTURA DE LEAD ===== */
     .lead-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
     .lead-overlay.active { display: flex; }
-    .lead-modal {
-      background: linear-gradient(135deg, #2a201d 0%, #1A1210 100%);
-      border: 2px solid #FFD700;
-      border-radius: var(--raio-xl);
-      padding: 30px 20px;
-      max-width: 380px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 40px rgba(255,215,0,0.25);
-      position: relative;
-      animation: modalIn 0.4s ease;
-    }
+    .lead-modal { background: linear-gradient(135deg, #2a201d 0%, #1A1210 100%); border: 2px solid var(--cor-secundaria); border-radius: var(--raio-xl); padding: 30px 20px; max-width: 380px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.9); position: relative; animation: modalIn 0.4s ease; }
     .lead-modal .close-lead { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.06); border: 1px solid var(--borda-sutil); color: var(--cor-fonte-muted); font-size: 20px; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 0 rgba(0,0,0,0.4); transition: all 0.1s; }
     .lead-modal .close-lead:hover { color: var(--cor-fonte); background: rgba(255,255,255,0.12); transform: translateY(-1px); box-shadow: 0 4px 0 rgba(0,0,0,0.4); }
-    .lead-modal .close-lead:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.4); }
-    .lead-modal .icon-gift { font-size: 54px; margin-bottom: 12px; display: block; filter: drop-shadow(0 4px 12px rgba(255,215,0,0.5)); }
-    .lead-modal h2 {
-      color: #FFFFFF !important;
-      font-size: 24px;
-      font-weight: 900;
-      margin-bottom: 10px;
-      letter-spacing: 0.3px;
-      text-shadow: 0 2px 12px rgba(255,215,0,0.5), 0 0 24px rgba(255,215,0,0.3);
-    }
-    .lead-modal p {
-      color: #FFFFFF !important;
-      font-size: 14px;
-      margin-bottom: 20px;
-      line-height: 1.5;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-    }
-    .lead-modal p strong {
-      color: #FFE066 !important;
-      font-weight: 900;
-      text-shadow: 0 1px 8px rgba(255,224,102,0.4);
-    }
-    .lead-modal input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 10px;
-      border: 2px solid #FFD700;
-      background: #FFFFFF !important;
-      color: #1A1210 !important;
-      font-size: 16px;
-      text-align: center;
-      margin-bottom: 10px;
-      font-weight: 800;
-      box-shadow: inset 0 3px 8px rgba(0,0,0,0.15);
-    }
-    .lead-modal input::placeholder { color: #888 !important; font-weight: 600; }
-    .lead-modal input:focus { outline: none; border-color: #FFE066; box-shadow: 0 0 0 4px rgba(255,224,102,0.3), inset 0 3px 8px rgba(0,0,0,0.15); }
-    .lead-modal button.btn-lead {
-      width: 100%;
-      padding: 14px;
-      background: var(--cor-botao-adicionar, #2B7245);
-      color: #FFFFFF !important;
-      border: none;
-      border-radius: 10px;
-      font-weight: 900;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.1s;
-      box-shadow: 0 5px 0 #1a4a2c, 0 8px 20px rgba(43,114,69,0.4);
-      letter-spacing: 0.3px;
-    }
-    .lead-modal button.btn-lead:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #1a4a2c, 0 10px 24px rgba(43,114,69,0.5); filter: brightness(1.08); }
+    .lead-modal .close-lead:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4); }
+    .lead-modal .icon-gift { font-size: 50px; margin-bottom: 10px; display: block; }
+    .lead-modal h2 { color: var(--cor-secundaria); font-size: 22px; margin-bottom: 8px; }
+    .lead-modal p { color: var(--cor-fonte); font-size: 14px; margin-bottom: 20px; line-height: 1.4; }
+    .lead-modal p strong { color: var(--cor-secundaria); }
+    .lead-modal input { width: 100%; padding: 14px; border-radius: 10px; border: 2px solid var(--cor-secundaria); background: var(--bg-input); color: #fff; font-size: 16px; text-align: center; margin-bottom: 10px; font-weight: bold; box-shadow: inset 0 3px 8px rgba(0,0,0,0.4); }
+    .lead-modal input:focus { outline: none; box-shadow: 0 0 15px rgba(255,215,0,0.3), inset 0 3px 8px rgba(0,0,0,0.4); }
+    .lead-modal button.btn-lead { width: 100%; padding: 14px; background: var(--cor-botao-adicionar); color: #fff; border: none; border-radius: 10px; font-weight: 800; font-size: 16px; cursor: pointer; transition: all 0.1s; box-shadow: 0 5px 0 #1a4a2c, 0 8px 20px rgba(43,114,69,0.4); }
+    .lead-modal button.btn-lead:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #1a4a2c, 0 10px 24px rgba(43,114,69,0.5); filter: brightness(1.05); }
     .lead-modal button.btn-lead:active { transform: translateY(4px); box-shadow: 0 1px 0 #1a4a2c; }
-    .lead-modal .lead-erro { color: #ff6b6b; font-size: 12px; margin-top: 8px; display: none; font-weight: 700; }
+    .lead-modal .lead-erro { color: #ff6b6b; font-size: 12px; margin-top: 8px; display: none; }
 
     /* ===== BAÚ DE CUPONS ===== */
-    .btn-bau { position: fixed; bottom: 100px; right: 16px; z-index: 80; background: linear-gradient(135deg, #FFD700, #FF6B00); color: #1A1210; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 28px; cursor: pointer; box-shadow: 0 6px 0 #b35500, 0 10px 24px rgba(255,107,0,0.5); display: flex; align-items: center; justify-content: center; transition: transform 0.15s, opacity 0.3s, box-shadow 0.15s; }
+    .btn-bau {
+      position: fixed;
+      bottom: 100px;
+      right: 16px;
+      z-index: 80;
+      background: linear-gradient(135deg, #FFD700, #FF6B00);
+      color: #1A1210;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #b35500, 0 10px 24px rgba(255,107,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s, opacity 0.3s, box-shadow 0.15s;
+    }
     .btn-bau:hover { transform: scale(1.08); box-shadow: 0 8px 0 #b35500, 0 14px 30px rgba(255,107,0,0.6); }
     .btn-bau:active { transform: translateY(4px) scale(0.95); box-shadow: 0 2px 0 #b35500, 0 4px 10px rgba(255,107,0,0.4); }
     .btn-bau.escondido { display: none; }
 
     .bau-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(6px); z-index: 250; display: none; align-items: center; justify-content: center; padding: 20px; }
     .bau-overlay.active { display: flex; }
-    .bau-modal { background: var(--bg-modal); border-radius: var(--raio-xl); padding: 24px; max-width: 420px; width: 100%; border: 2px solid #FFD700; box-shadow: 0 20px 60px rgba(0,0,0,0.9); position: relative; max-height: 80vh; overflow-y: auto; }
+    .bau-modal { background: var(--bg-modal); border-radius: var(--raio-xl); padding: 24px; max-width: 420px; width: 100%; border: 2px solid var(--cor-secundaria); box-shadow: 0 20px 60px rgba(0,0,0,0.9); position: relative; max-height: 80vh; overflow-y: auto; }
     .bau-modal .close-bau { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.06); border: 1px solid var(--borda-sutil); color: var(--cor-fonte-muted); font-size: 20px; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 0 rgba(0,0,0,0.4); transition: all 0.1s; }
     .bau-modal .close-bau:hover { color: var(--cor-fonte); background: rgba(255,255,255,0.12); transform: translateY(-1px); box-shadow: 0 4px 0 rgba(0,0,0,0.4); }
     .bau-modal .close-bau:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.4); }
-    .bau-modal h2 { color: #FFD700; font-size: 22px; margin-bottom: 6px; text-align: center; }
+    .bau-modal h2 { color: var(--cor-secundaria); font-size: 22px; margin-bottom: 6px; text-align: center; }
     .bau-modal .desc { color: var(--cor-fonte-muted); font-size: 13px; text-align: center; margin-bottom: 20px; }
 
-    .cupom-card-item { background: linear-gradient(135deg, #2a201d, #1A1210); border: 1px dashed #FFD700; border-radius: 12px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px; transition: transform 0.15s, box-shadow 0.15s; box-shadow: 0 4px 0 rgba(0,0,0,0.4); }
+    .cupom-card-item { background: linear-gradient(135deg, #2a201d, #1A1210); border: 1px dashed var(--cor-secundaria); border-radius: 12px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px; transition: transform 0.15s, box-shadow 0.15s; box-shadow: 0 4px 0 rgba(0,0,0,0.4); }
     .cupom-card-item:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.4); }
     .cupom-card-item .info { flex: 1; }
-    .cupom-card-item .codigo { font-size: 18px; font-weight: 900; color: #FFD700; letter-spacing: 1px; }
+    .cupom-card-item .codigo { font-size: 18px; font-weight: 900; color: var(--cor-secundaria); letter-spacing: 1px; }
     .cupom-card-item .regra { font-size: 12px; color: var(--cor-fonte-muted); margin-top: 4px; }
     .cupom-card-item .btn-copiar { background: var(--cor-botao-adicionar); color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 0 #1a4a2c, 0 6px 14px rgba(43,114,69,0.4); transition: all 0.1s; }
     .cupom-card-item .btn-copiar:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #1a4a2c, 0 8px 18px rgba(43,114,69,0.5); filter: brightness(1.05); }
@@ -412,7 +414,28 @@
     #logoZoomOverlay.animando img { transform: scale(5); }
 
     /* ===== LEMBRETES ===== */
-    .pst-lembrete { position: fixed; left: 50%; transform: translateX(-50%); z-index: 9997; padding: 10px 22px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 13px; font-weight: 800; text-align: center; border-radius: 30px; box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 0 2px rgba(255,255,255,0.15); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; white-space: nowrap; max-width: calc(100vw - 32px); overflow: hidden; text-overflow: ellipsis; }
+    .pst-lembrete {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9997;
+      padding: 10px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+      border-radius: 30px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 0 2px rgba(255,255,255,0.15);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+      max-width: calc(100vw - 32px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     .pst-lembrete:hover { transform: translateX(-50%) translateY(-2px) scale(1.02); box-shadow: 0 8px 26px rgba(0,0,0,0.6), 0 0 0 2px rgba(255,255,255,0.25); }
     .pst-lembrete.top { top: 76px; }
     .pst-lembrete.bottom { bottom: 170px; }
@@ -624,9 +647,6 @@
   </div>
 
   <script>
-    // ============================================================
-    // INÍCIO DO JAVASCRIPT (PARTE 2 vem a seguir)
-    // ============================================================
     function pushHistory(stateName) {
       try { history.pushState({ modal: stateName }, '', ''); }
       catch (e) { console.warn('History API:', e); }
@@ -718,7 +738,9 @@
       document.body.style.overflow = '';
     }
 
+    // ============================================================
     // LEAD
+    // ============================================================
     function verificarLead() {
       const jaTemLead = localStorage.getItem('pasterry_lead_telefone');
       const jaIgnorou = localStorage.getItem('pasterry_lead_ignorado');
@@ -784,11 +806,15 @@
         window.trackEvent('identificacao', { telefone: tel, origem: 'popup_boas_vindas' });
       }
       document.getElementById('leadOverlay').classList.remove('active');
+
+      // ✅ Mostra a caixinha do baú e a mensagem central "Abra seu presente!"
       const btnBau = document.getElementById('btnBau');
       if (btnBau && !localStorage.getItem('pasterry_cupom_v1')) {
         btnBau.classList.remove('escondido');
         btnBau.style.display = '';
       }
+
+      // ✅ MENSAGEM CENTRAL QUE NÃO DESCE E SOME EM 2s
       showCenterNotification('🎁 Abra seu presente!', 'Clique na caixinha no canto da tela.', 2000);
     }
 
@@ -805,12 +831,6 @@
       }
       verificarLead();
     });
-
-    // ============================================================
-    // ⬇️ CONTINUA NA PARTE 2 (próxima mensagem)
-    // ============================================================
-
-
 
     // ============================================================
     // BAÚ DE CUPONS
@@ -916,6 +936,7 @@
           pendente: true
         }));
 
+        // ✅ MENSAGEM CENTRAL "Seu desconto foi adicionado!" (2s, sem descer)
         showCenterNotification('🎉 Seu desconto foi adicionado!', cupomCompleto.desconto + '% OFF • Cupom ' + cupomCompleto.codigo, 2000);
 
         if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
@@ -1220,7 +1241,7 @@
     }
 
     // ============================================================
-    // NOTIFICAÇÃO CENTRAL
+    // ✅ NOTIFICAÇÃO CENTRAL — SEMPRE NO CENTRO, SOME EM 2s, NÃO DESCE
     // ============================================================
     function showCenterNotification(title, sub = 'Adicionado ao carrinho', duracaoMs = 2000) {
       const centerToast = document.getElementById('centerToast');
@@ -1235,6 +1256,7 @@
       centerToast.classList.add('show');
 
       clearTimeout(centerToast._timer);
+      // ✅ Não tem mais "voando" — só some suavemente após N segundos
       centerToast._timer = setTimeout(() => {
         centerToast.classList.remove('show');
         setTimeout(() => {
@@ -2079,7 +2101,7 @@
     }
 
     // ============================================================
-    // SISTEMA DE PROMOÇÕES — BANNER ARRASTÁVEL + LEMBRETES + ÍCONES
+    // ✅ SISTEMA DE PROMOÇÕES — BANNER ARRASTÁVEL + LEMBRETES + ÍCONES
     // ============================================================
     let bannerPromoIndex = 0;
     let bannerPromoTimer = null;
@@ -2177,9 +2199,13 @@
         banner.appendChild(dots);
       }
 
+      // ✅ ROTAÇÃO AUTOMÁTICA
       iniciarRotacaoBanner();
+
+      // ✅ ARRASTAR (SWIPE) PARA MUDAR DE SLIDE
       configurarSwipeBanner();
 
+      // ✅ CLIQUE NOS SLIDES (ADICIONAR PRODUTO)
       document.querySelectorAll('#pst-banner-promo .banner-slide').forEach((slide) => {
         const idx = parseInt(slide.dataset.index);
         const m = bannerMidiasCache[idx];
@@ -2228,6 +2254,7 @@
       }
     }
 
+    // ✅ SWIPE/ARRASTAR DO BANNER
     let bannerTouchStartX = 0;
     let bannerTouchStartY = 0;
     let bannerTouchAtivo = false;
@@ -2239,6 +2266,7 @@
       if (banner.dataset.swipeConfigurado === '1') return;
       banner.dataset.swipeConfigurado = '1';
 
+      // TOUCH (MOBILE)
       banner.addEventListener('touchstart', (e) => {
         if (e.touches.length !== 1) return;
         bannerTouchStartX = e.touches[0].clientX;
@@ -2268,6 +2296,7 @@
         }
       }, { passive: true });
 
+      // MOUSE (DESKTOP)
       let mouseStartX = null;
       let mouseStartY = null;
       let mouseDown = false;
@@ -2351,6 +2380,7 @@
     window.addToCart = addToCart;
     window.openQtyDialog = openQtyDialog;
     window.openSizeDialog = openSizeDialog;
+    window.showSuccess = showSuccess;
     window.showCenterNotification = showCenterNotification;
     window.fecharLead = fecharLead;
     window.salvarLead = salvarLead;
@@ -2363,15 +2393,9 @@
     window.fecharZoomLogo = fecharZoomLogo;
 
     console.log('✅ Pasterry Cardápio carregado com sucesso!');
+    console.log('👉 Banner de promoção arrastável (swipe)');
+    console.log('🎁 "Abra seu presente!" (2s no centro, sem descer)');
+    console.log('🎉 "Seu desconto foi adicionado!" (2s no centro, sem descer)');
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
