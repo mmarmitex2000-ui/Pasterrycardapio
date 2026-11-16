@@ -306,12 +306,12 @@
     @keyframes toastIn { to { transform: translateY(0); opacity: 1; } }
     @keyframes toastOut { to { transform: translateY(-8px); opacity: 0; } }
 
-    /* ✅ NOTIFICAÇÃO CENTRAL (FICA NO CENTRO E NÃO DESCE) */
+    /* ✅ NOTIFICAÇÃO CENTRAL (FICA NO CENTRO E NÃO DESCE) — LETRAS AMARELAS */
     #centerToast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.85); z-index: 200; background: rgba(0,0,0,0.92); backdrop-filter: blur(10px); border: 1.5px solid rgba(255,215,0,0.4); border-radius: var(--raio-xl); padding: 24px 32px; display: none; flex-direction: column; align-items: center; gap: 10px; min-width: 220px; max-width: 85vw; box-shadow: 0 20px 60px rgba(0,0,0,0.9); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; }
     #centerToast.show { display: flex; opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    #centerToast .check-icon { font-size: 42px; color: var(--cor-sucesso); }
-    #centerToast .msg { color: var(--cor-fonte); font-weight: 800; font-size: 17px; text-align: center; line-height: 1.3; }
-    #centerToast .sub-msg { color: var(--cor-fonte-muted); font-size: 13px; }
+    #centerToast .check-icon { font-size: 42px; color: #FFD700; text-shadow: 0 0 12px rgba(255,215,0,0.6); font-weight: 900; }
+    #centerToast .msg { color: #FFD700; font-weight: 800; font-size: 17px; text-align: center; line-height: 1.3; }
+    #centerToast .sub-msg { color: #FFE066; font-size: 13px; }
 
     .share-overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.8); z-index: 150; backdrop-filter: blur(8px); padding: 20px; }
     .share-overlay.active { display: flex; }
@@ -342,24 +342,40 @@
     .products-wrap::-webkit-scrollbar { display: none; }
     button:focus-visible { outline: 2px solid var(--cor-categoria-ativa); outline-offset: 2px; }
 
-    /* ===== POPUP DE CAPTURA DE LEAD ===== */
+    /* ===== POPUP DE CAPTURA DE LEAD (AMARELO) ===== */
     .lead-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
     .lead-overlay.active { display: flex; }
-    .lead-modal { background: linear-gradient(135deg, #2a201d 0%, #1A1210 100%); border: 2px solid var(--cor-secundaria); border-radius: var(--raio-xl); padding: 30px 20px; max-width: 380px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.9); position: relative; animation: modalIn 0.4s ease; }
-    .lead-modal .close-lead { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.06); border: 1px solid var(--borda-sutil); color: var(--cor-fonte-muted); font-size: 20px; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 0 rgba(0,0,0,0.4); transition: all 0.1s; }
-    .lead-modal .close-lead:hover { color: var(--cor-fonte); background: rgba(255,255,255,0.12); transform: translateY(-1px); box-shadow: 0 4px 0 rgba(0,0,0,0.4); }
+    .lead-modal { background: linear-gradient(135deg, #2a201d 0%, #1A1210 100%); border: 2px solid #FFD700; border-radius: var(--raio-xl); padding: 30px 20px; max-width: 380px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.9); position: relative; animation: modalIn 0.4s ease; }
+    
+    /* Botão X amarelo */
+    .lead-modal .close-lead { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.06); border: 1px solid var(--borda-sutil); color: #FFD700; font-size: 20px; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 0 rgba(0,0,0,0.4); transition: all 0.1s; }
+    .lead-modal .close-lead:hover { color: #FFD700; background: rgba(255,255,255,0.12); transform: translateY(-1px); box-shadow: 0 4px 0 rgba(0,0,0,0.4); }
     .lead-modal .close-lead:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4); }
+    
     .lead-modal .icon-gift { font-size: 50px; margin-bottom: 10px; display: block; }
-    .lead-modal h2 { color: var(--cor-secundaria); font-size: 22px; margin-bottom: 8px; }
-    .lead-modal p { color: var(--cor-fonte); font-size: 14px; margin-bottom: 20px; line-height: 1.4; }
-    .lead-modal p strong { color: var(--cor-secundaria); }
-    .lead-modal input { width: 100%; padding: 14px; border-radius: 10px; border: 2px solid var(--cor-secundaria); background: var(--bg-input); color: #fff; font-size: 16px; text-align: center; margin-bottom: 10px; font-weight: bold; box-shadow: inset 0 3px 8px rgba(0,0,0,0.4); }
-    .lead-modal input:focus { outline: none; box-shadow: 0 0 15px rgba(255,215,0,0.3), inset 0 3px 8px rgba(0,0,0,0.4); }
-    .lead-modal button.btn-lead { width: 100%; padding: 14px; background: var(--cor-botao-adicionar); color: #fff; border: none; border-radius: 10px; font-weight: 800; font-size: 16px; cursor: pointer; transition: all 0.1s; box-shadow: 0 5px 0 #1a4a2c, 0 8px 20px rgba(43,114,69,0.4); }
+    
+    /* Filtro para deixar o emoji 🎁 amarelo */
+    .emoji-amarelo {
+      filter: invert(85%) sepia(60%) saturate(1500%) hue-rotate(360deg) brightness(105%) contrast(105%);
+      display: inline-block;
+    }
+
+    /* Letras amarelas puxadas pelas classes */
+    .lead-modal h2.msg { color: #FFD700; font-size: 22px; margin-bottom: 8px; }
+    .lead-modal p.sub-msg { color: #FFE066; font-size: 14px; margin-bottom: 20px; line-height: 1.4; }
+    .lead-modal p strong.msg { color: #FFD700; }
+
+    /* Input: texto digitado amarelo e borda amarela */
+    .lead-modal input { width: 100%; padding: 14px; border-radius: 10px; border: 2px solid #FFD700; background: var(--bg-input); color: #FFD700; font-size: 16px; text-align: center; margin-bottom: 10px; font-weight: bold; box-shadow: inset 0 3px 8px rgba(0,0,0,0.4); }
+    .lead-modal input::placeholder { color: rgba(255,215,0,0.5); } /* Cor do texto de exemplo */
+    .lead-modal input:focus { outline: none; box-shadow: 0 0 15px rgba(255,215,0,0.4), inset 0 3px 8px rgba(0,0,0,0.4); }
+
+    /* Botão: fundo verde, mas texto amarelo */
+    .lead-modal button.btn-lead { width: 100%; padding: 14px; background: var(--cor-botao-adicionar); color: #FFD700; border: none; border-radius: 10px; font-weight: 800; font-size: 16px; cursor: pointer; transition: all 0.1s; box-shadow: 0 5px 0 #1a4a2c, 0 8px 20px rgba(43,114,69,0.4); text-shadow: 0 1px 2px rgba(0,0,0,0.6); }
     .lead-modal button.btn-lead:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #1a4a2c, 0 10px 24px rgba(43,114,69,0.5); filter: brightness(1.05); }
     .lead-modal button.btn-lead:active { transform: translateY(4px); box-shadow: 0 1px 0 #1a4a2c; }
+    
     .lead-modal .lead-erro { color: #ff6b6b; font-size: 12px; margin-top: 8px; display: none; }
-
     /* ===== BAÚ DE CUPONS ===== */
     .btn-bau {
       position: fixed;
@@ -460,23 +476,33 @@
 </head>
 <body>
 
-  <div id="logoZoomOverlay" onclick="fecharZoomLogo()">
-    <img id="logoZoomImg" src="img/logo.jpg" alt="Logo Pasterry" />
-  </div>
-
   <div class="lead-overlay" id="leadOverlay">
     <div class="lead-modal">
       <button class="close-lead" onclick="fecharLead()">×</button>
-      <span class="icon-gift">🎁</span>
-      <h2>Ofertas Exclusivas</h2>
-      <p>Quer receber ofertas exclusivas para clientes cadastrados?<br>
-      Deixe seu WhatsApp e ganhe acesso a promoções que não estão no site.<br>
-      <strong>É rápido, grátis e você não perde nenhuma!</strong></p>
+      
+      <!-- Emoji amarelo -->
+      <span class="icon-gift"><span class="emoji-amarelo">🎁</span></span>
+      
+      <!-- Título amarelo -->
+      <h2 class="msg">Ofertas Exclusivas</h2>
+      
+      <!-- Texto amarelo -->
+      <p class="sub-msg">
+        Quer receber ofertas exclusivas para clientes cadastrados?<br>
+        Deixe seu WhatsApp e ganhe acesso a promoções que não estão no site.<br>
+        <strong class="msg">É rápido, grátis e você não perde nenhuma!</strong>
+      </p>
+      
       <input type="tel" id="leadTelefone" placeholder="(11) 99999-9999" maxlength="15" />
-      <button class="btn-lead" onclick="salvarLead()">Quero receber as ofertas</button>
+      
+      <!-- Botão com texto amarelo -->
+      <button class="btn-lead msg" onclick="salvarLead()">Quero receber as ofertas</button>
+      
       <div class="lead-erro" id="leadErro"></div>
     </div>
   </div>
+
+
 
   <button class="btn-bau escondido" id="btnBau" onclick="abrirBau()" aria-label="Baú de Cupons">🎁</button>
 
@@ -498,7 +524,7 @@
 
   <div id="toastWrap" aria-live="polite" aria-atomic="true"></div>
   <div id="centerToast">
-    <div class="check-icon">✅</div>
+    <div class="check-icon">✔</div>
     <div class="msg" id="centerToastMsg">Item adicionado!</div>
     <div class="sub-msg" id="centerToastSub">Adicionado ao carrinho</div>
   </div>
@@ -814,8 +840,8 @@
         btnBau.style.display = '';
       }
 
-      // ✅ MENSAGEM CENTRAL QUE NÃO DESCE E SOME EM 2s
-      showCenterNotification('🎁 Abra seu presente!', 'Clique na caixinha no canto da tela.', 2000);
+      // ✅ MENSAGEM CENTRAL QUE NÃO DESCE E SOME EM 2s — LETRAS AMARELAS
+      showCenterNotification('Abra seu presente!', 'Clique na caixinha no canto da tela.', 2000);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -841,17 +867,17 @@
         return;
       }
       if (localStorage.getItem('pasterry_cupom_v1')) {
-        showCenterNotification('🎁 Você já resgatou um cupom!', 'Remova do carrinho para resgatar outro.', 2000);
+        showCenterNotification('Você já resgatou um cupom!', 'Remova do carrinho para resgatar outro.', 2000);
         return;
       }
       db.collection('config').doc('cupons').get().then(doc => {
         if (!doc.exists || !Array.isArray(doc.data().cupons)) {
-          showCenterNotification('😕 Nenhum cupom disponível', 'Volte mais tarde!', 2000);
+          showCenterNotification('Nenhum cupom disponível', 'Volte mais tarde!', 2000);
           return;
         }
         const ativos = doc.data().cupons.filter(c => c && c.codigo && Number(c.desconto) > 0);
         if (ativos.length === 0) {
-          showCenterNotification('😕 Nenhum cupom disponível', 'Volte mais tarde!', 2000);
+          showCenterNotification('Nenhum cupom disponível', 'Volte mais tarde!', 2000);
           return;
         }
         const melhor = ativos.reduce((a, b) => (b.desconto > a.desconto ? b : a));
@@ -859,7 +885,7 @@
         aplicarCupomDireto(melhor.codigo);
       }).catch(err => {
         console.error(err);
-        showCenterNotification('❌ Erro ao buscar cupons', 'Tente novamente.', 2000);
+        showCenterNotification('Erro ao buscar cupons', 'Tente novamente.', 2000);
       });
     }
 
@@ -936,12 +962,12 @@
           pendente: true
         }));
 
-        // ✅ MENSAGEM CENTRAL "Seu desconto foi adicionado!" (2s, sem descer)
-        showCenterNotification('🎉 Seu desconto foi adicionado!', cupomCompleto.desconto + '% OFF • Cupom ' + cupomCompleto.codigo, 2000);
+        // ✅ MENSAGEM CENTRAL "Seu desconto foi adicionado!" (2s, sem descer) — LETRAS AMARELAS
+        showCenterNotification('Seu desconto foi adicionado!', cupomCompleto.desconto + '% OFF • Cupom ' + cupomCompleto.codigo, 2000);
 
         if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
       } else {
-        showCenterNotification('🎁 Cupom resgatado!', 'Ele já está no carrinho.', 2000);
+        showCenterNotification('Cupom resgatado!', 'Ele já está no carrinho.', 2000);
       }
     }
 
