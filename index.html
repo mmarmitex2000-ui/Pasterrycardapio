@@ -1,3 +1,9 @@
+ 
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -36,9 +42,7 @@
       --raio-lg: 16px;
       --raio-xl: 24px;
     }
-
     *, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
     html, body {
       height: 100%; margin: 0;
       background: var(--bg-site); color: var(--cor-fonte);
@@ -48,13 +52,7 @@
       -ms-overflow-style: none; scrollbar-width: none;
     }
     html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0; height: 0; }
-
-    .app {
-      min-height: 100vh; display: flex; flex-direction: column;
-      background: var(--bg-site); padding-bottom: 100px;
-    }
-
-    /* HEADER */
+    .app { min-height: 100vh; display: flex; flex-direction: column; background: var(--bg-site); padding-bottom: 100px; }
     header { position: sticky; top: 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--bg-topo); border-bottom: 1px solid var(--borda-sutil); box-shadow: 0 2px 12px rgba(0,0,0,0.4); min-height: 64px; gap: 12px; }
     .logo { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border: 2px solid var(--cor-categoria); flex-shrink: 0; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 0 rgba(0,0,0,0.4), 0 6px 16px rgba(0,0,0,0.3); }
     .logo:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.4), 0 8px 20px rgba(0,0,0,0.35); }
@@ -78,10 +76,6 @@
     .menu-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #8a1a24, 0 2px 6px rgba(0,0,0,0.3); }
     .menu-btn .bar { display: block; width: 18px; height: 2px; background: #fff; border-radius: 2px; }
     .menu-dropdown { position: absolute; top: 68px; right: 16px; background: #daeec4; border-radius: var(--raio-md); min-width: 220px; box-shadow: 0 8px 30px rgba(0,0,0,0.8); border: 1px solid var(--borda-media); display: none; flex-direction: column; overflow: hidden; z-index: 100; padding: 6px 0; animation: dropdownIn 0.2s ease; }
-    
-
-
-    
     @keyframes dropdownIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
     .menu-dropdown.open { display: flex; }
     .menu-dropdown .item { display: flex; align-items: center; gap: 12px; padding: 12px 18px; color: var(--cor-fonte); text-decoration: none; font-weight: 600; font-size: 14px; transition: background 0.15s ease; border-bottom: 1px solid var(--borda-sutil); }
@@ -93,69 +87,25 @@
     .banner-informativo .icon { font-size: 18px; flex-shrink: 0; }
     .banner-informativo .texto { flex: 1; }
     @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* HEADER PARALLAX */
     .header-parallax { position: relative; width: 100%; height: 220px; overflow: hidden; border-radius: 0 0 var(--raio-xl) var(--raio-xl); margin-bottom: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); background: #2a201d; }
     .header-parallax .parallax-bg-img { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.55); display: block; }
     .header-parallax .parallax-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(26,18,16,0.2) 0%, rgba(26,18,16,0.95) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 16px 20px; z-index: 2; }
     .header-parallax .parallax-titulo { font-size: 24px; font-weight: 900; color: #fff; margin: 0 0 4px 0; text-shadow: 0 2px 12px rgba(0,0,0,0.8); }
     .header-parallax .parallax-subtitulo { font-size: 13px; color: rgba(255,255,255,0.85); font-weight: 500; text-shadow: 0 1px 6px rgba(0,0,0,0.8); }
-
-    /* BANNER DE PROMOÇÃO (AGORA ARRASTÁVEL) */
-    #pst-banner-promo {
-      display: none;
-      position: relative;
-      margin: 8px 12px;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.3);
-      cursor: grab;
-      height: 180px;
-      background: #2a201d;
-      animation: bannerIn 0.5s ease;
-      touch-action: pan-y;
-    }
+    #pst-banner-promo { display: none; position: relative; margin: 8px 12px; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.3); cursor: grab; height: 180px; background: #2a201d; animation: bannerIn 0.5s ease; touch-action: pan-y; }
     #pst-banner-promo:active { cursor: grabbing; }
     #pst-banner-promo.ativo { display: block; }
     @keyframes bannerIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
-    #pst-banner-promo .banner-slide {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      display: flex;
-      align-items: stretch;
-      pointer-events: none;
-    }
+    #pst-banner-promo .banner-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.4s ease, transform 0.4s ease; display: flex; align-items: stretch; pointer-events: none; }
     #pst-banner-promo .banner-slide.ativo { opacity: 1; pointer-events: auto; }
-    #pst-banner-promo .banner-slide img,
-    #pst-banner-promo .banner-slide video { width: 100%; height: 100%; object-fit: cover; display: block; user-select: none; -webkit-user-drag: none; pointer-events: none; }
-    #pst-banner-promo .banner-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%);
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 16px 20px; z-index: 2; pointer-events: none;
-    }
+    #pst-banner-promo .banner-slide img, #pst-banner-promo .banner-slide video { width: 100%; height: 100%; object-fit: cover; display: block; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+    #pst-banner-promo .banner-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 16px 20px; z-index: 2; pointer-events: none; }
     #pst-banner-promo .banner-titulo { font-size: 22px; font-weight: 900; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,0.9); margin-bottom: 4px; }
     #pst-banner-promo .banner-sub { font-size: 13px; color: rgba(255,255,255,0.9); text-shadow: 0 1px 6px rgba(0,0,0,0.9); }
-    #pst-banner-promo .banner-badge {
-      position: absolute; top: 12px; left: 12px;
-      padding: 4px 12px; border-radius: 20px;
-      font-size: 11px; font-weight: 900; color: #1A1210;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4); z-index: 3;
-    }
-    #pst-banner-promo .banner-dots {
-      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 6px; z-index: 4;
-      pointer-events: auto;
-    }
-    #pst-banner-promo .banner-dot {
-      width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4);
-      transition: background 0.2s, transform 0.2s; cursor: pointer;
-      border: none; padding: 0;
-    }
+    #pst-banner-promo .banner-badge { position: absolute; top: 12px; left: 12px; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 900; color: #1A1210; box-shadow: 0 4px 12px rgba(0,0,0,0.4); z-index: 3; }
+    #pst-banner-promo .banner-dots { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 4; pointer-events: auto; }
+    #pst-banner-promo .banner-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); transition: background 0.2s, transform 0.2s; cursor: pointer; border: none; padding: 0; }
     #pst-banner-promo .banner-dot.ativo { background: #FFD700; transform: scale(1.3); }
-
     main { flex: 1; display: flex; flex-direction: column; gap: 4px; padding: 0 0 80px 0; max-width: 1400px; margin: 0 auto; width: 100%; }
     .secao-destaques { padding: 16px 0 8px 0; margin-bottom: 8px; }
     .secao-destaques.oculto { display: none !important; }
@@ -164,7 +114,6 @@
     .secao-titulo h2 .emoji { font-size: 22px; }
     .carrossel-destaques { display: flex; gap: 12px; overflow-x: auto; padding: 4px 16px 12px 16px; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; -webkit-overflow-scrolling: touch; }
     .carrossel-destaques::-webkit-scrollbar { display: none; }
-
     .card-destaque { flex: 0 0 160px; scroll-snap-align: start; background: var(--bg-card); border-radius: var(--raio-lg); overflow: hidden; border: 1px solid var(--borda-sutil); position: relative; cursor: pointer; transition: transform 0.12s ease, box-shadow 0.12s ease; box-shadow: 0 6px 0 rgba(0,0,0,0.35), 0 8px 20px rgba(0,0,0,0.35); }
     .card-destaque:hover { transform: translateY(-3px); box-shadow: 0 9px 0 rgba(0,0,0,0.35), 0 14px 28px rgba(0,0,0,0.4); }
     .card-destaque:active { transform: translateY(3px) scale(0.98); box-shadow: 0 2px 0 rgba(0,0,0,0.35), 0 4px 10px rgba(0,0,0,0.3); }
@@ -174,11 +123,9 @@
     .card-destaque .info { padding: 10px 12px 12px; }
     .card-destaque .titulo { font-size: 13px; font-weight: 700; color: var(--cor-fonte-titulo); margin-bottom: 4px; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 32px; }
     .card-destaque .preco { font-size: 14px; font-weight: 800; color: var(--cor-fonte-preco); }
-
     .nav-categorias-wrap { position: sticky; top: 64px; z-index: 45; background: var(--bg-site); padding: 10px 0; border-bottom: 1px solid var(--borda-sutil); box-shadow: 0 4px 12px rgba(0,0,0,0.2); margin-bottom: 8px; }
     .nav-categorias { display: flex; gap: 8px; overflow-x: auto; padding: 4px 16px 10px 16px; scrollbar-width: none; -ms-overflow-style: none; -webkit-overflow-scrolling: touch; }
     .nav-categorias::-webkit-scrollbar { display: none; }
-
     .nav-cat-item { flex-shrink: 0; padding: 9px 18px; background: var(--bg-card); border: 1.5px solid var(--borda-sutil); border-radius: 30px; color: var(--cor-fonte-muted); font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.1s ease; white-space: nowrap; position: relative; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 0 rgba(0,0,0,0.35), 0 5px 12px rgba(0,0,0,0.25); }
     .nav-cat-item:hover { color: var(--cor-fonte); border-color: rgba(255,215,0,0.4); transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.35), 0 8px 16px rgba(0,0,0,0.3); }
     .nav-cat-item:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.35), 0 2px 6px rgba(0,0,0,0.25); }
@@ -191,7 +138,6 @@
     .grid-produtos { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 16px; }
     @media (min-width: 640px) { .grid-produtos { grid-template-columns: repeat(2, 1fr); } }
     @media (min-width: 1024px) { .grid-produtos { grid-template-columns: repeat(3, 1fr); } }
-
     .card-produto { background: var(--bg-card); border-radius: var(--raio-md); padding: 12px; display: flex; gap: 12px; align-items: center; border: 1px solid var(--borda-sutil); transition: transform 0.12s ease, background 0.2s ease, box-shadow 0.12s ease; position: relative; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,0.35), 0 7px 18px rgba(0,0,0,0.3); }
     .card-produto:hover { background: var(--bg-card-hover); transform: translateY(-3px); box-shadow: 0 8px 0 rgba(0,0,0,0.35), 0 14px 28px rgba(0,0,0,0.4); }
     .card-produto:active { transform: translateY(3px) scale(0.99); box-shadow: 0 2px 0 rgba(0,0,0,0.35), 0 4px 10px rgba(0,0,0,0.3); }
@@ -208,7 +154,6 @@
     .preco-container { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
     .preco-original-riscado { color: var(--cor-fonte-muted); font-size: 11px; text-decoration: line-through; font-weight: 500; }
     .preco-promocional { color: #4caf50; font-weight: 900; font-size: 15px; }
-
     .card-produto .btn-add { flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; background: var(--cor-botao-adicionar); border: none; color: #fff; font-weight: 900; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; transition: transform 0.1s, background 0.2s, box-shadow 0.1s; box-shadow: 0 4px 0 #1a4a2c, 0 6px 12px rgba(43,114,69,0.4); }
     .card-produto .btn-add:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #1a4a2c, 0 8px 16px rgba(43,114,69,0.5); }
     .card-produto .btn-add:active { transform: translateY(3px) scale(0.92); box-shadow: 0 1px 0 #1a4a2c, 0 2px 5px rgba(43,114,69,0.35); }
@@ -217,11 +162,9 @@
     .btn-share:hover { background: rgba(255,255,255,0.2); transform: translateY(-1px); box-shadow: 0 4px 0 rgba(0,0,0,0.5), 0 6px 12px rgba(0,0,0,0.35); }
     .btn-share:active { transform: translateY(2px) scale(0.9); box-shadow: 0 1px 0 rgba(0,0,0,0.5); }
     .btn-share svg { width: 12px; height: 12px; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none; }
-
     .loja-fechada-msg { display: none; background: rgba(244,67,54,0.15); border: 1.5px solid var(--cor-erro); border-radius: var(--raio-md); color: var(--cor-erro); font-weight: 800; padding: 12px 16px; margin: 8px 16px 12px; text-align: center; font-size: 14px; }
     .loja-fechada-msg strong { color: #fff; }
     .footer-bar { position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: linear-gradient(180deg, transparent, var(--bg-site) 30%); z-index: 70; }
-
     .footer-cart { width: 100%; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 20px; border-radius: var(--raio-md); background: var(--cor-cart); color: #fff; font-weight: 900; font-size: 16px; border: 0; cursor: pointer; box-shadow: 0 6px 0 #6e5e08, 0 10px 26px rgba(0,0,0,0.5); transition: transform 0.12s, box-shadow 0.12s, background 0.2s; }
     .footer-cart:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #6e5e08, 0 14px 32px rgba(0,0,0,0.55); filter: brightness(1.05); }
     .footer-cart:active { transform: translateY(4px); box-shadow: 0 1px 0 #6e5e08, 0 3px 8px rgba(0,0,0,0.4); }
@@ -239,14 +182,12 @@
     .dialog .btn-fechar:active { transform: translateY(2px) scale(0.92); box-shadow: 0 1px 0 rgba(0,0,0,0.55); }
     .dialog-titulo { font-weight: 800; font-size: clamp(13px, 3.8vw, 16px); color: var(--cor-fonte-titulo); text-align: center; padding: 0 clamp(20px, 6vw, 32px); line-height: 1.2; }
     .dialog-desc { color: var(--cor-fonte-muted); text-align: center; font-size: clamp(10px, 2.8vw, 12px); line-height: 1.3; }
-
     .modal-image-wrap { width: 100%; border-radius: var(--raio-sm); overflow: hidden; background: #0c1220; position: relative; height: clamp(120px, 28vh, 200px); flex-shrink: 0; cursor: zoom-in; }
     .modal-image-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.2s ease; }
     .modal-image-wrap:active img { transform: scale(1.03); }
     .modal-image-wrap .logo-marca-detalhe { position: absolute; bottom: clamp(4px, 1.2vw, 8px); left: clamp(4px, 1.2vw, 8px); width: clamp(18px, 5vw, 24px); height: clamp(18px, 5vw, 24px); border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.4); padding: 1.5px; object-fit: contain; z-index: 2; pointer-events: none; }
     .modal-image-wrap .zoom-hint { position: absolute; bottom: clamp(4px, 1.2vw, 8px); right: clamp(4px, 1.2vw, 8px); background: rgba(0,0,0,0.7); color: #fff; font-size: clamp(8px, 2.2vw, 10px); font-weight: 700; padding: clamp(3px, 0.8vw, 5px) clamp(6px, 1.5vw, 9px); border-radius: 20px; display: flex; align-items: center; gap: 3px; z-index: 2; pointer-events: none; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.15); }
     .modal-image-wrap .zoom-hint svg { width: clamp(8px, 2.2vw, 10px); height: clamp(8px, 2.2vw, 10px); }
-
     .photo-lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.96); backdrop-filter: blur(10px); z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px; animation: fadeInLightbox 0.25s ease; }
     .photo-lightbox.active { display: flex; }
     @keyframes fadeInLightbox { from { opacity: 0; } to { opacity: 1; } }
@@ -255,7 +196,6 @@
     .photo-lightbox .lightbox-close { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: #fff; width: 44px; height: 44px; border-radius: 50%; font-size: 22px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); transition: background 0.2s, transform 0.1s, box-shadow 0.1s; z-index: 2; box-shadow: 0 4px 0 rgba(0,0,0,0.5); }
     .photo-lightbox .lightbox-close:hover { background: rgba(255,255,255,0.3); transform: translateY(-1px); box-shadow: 0 5px 0 rgba(0,0,0,0.5); }
     .photo-lightbox .lightbox-close:active { transform: translateY(2px) scale(0.92); box-shadow: 0 1px 0 rgba(0,0,0,0.5); }
-
     .opcoes-tamanho { display: grid; gap: clamp(4px, 1.2vw, 6px); margin-top: 2px; }
     .btn-tamanho { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: clamp(6px, 1.8vw, 9px) clamp(7px, 2vw, 11px); background: var(--bg-card); border: 1.5px solid var(--borda-sutil); border-radius: var(--raio-sm); color: var(--cor-fonte); font-weight: 700; font-size: clamp(10px, 3vw, 13px); cursor: pointer; transition: all 0.1s ease; position: relative; box-shadow: 0 4px 0 rgba(0,0,0,0.35); }
     .btn-tamanho:hover { background: var(--bg-card-hover); border-color: rgba(255,215,0,0.3); transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.35); }
@@ -272,11 +212,9 @@
     .btn-tamanho.selecionado .preco-promo-modal { color: #fff; }
     .btn-tamanho.selecionado .preco-riscado-modal { color: rgba(255,255,255,0.7); }
     .btn-tamanho:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: 0 2px 0 rgba(0,0,0,0.2); }
-
     .adicionais-section { margin-top: clamp(3px, 1vw, 5px); padding-top: clamp(4px, 1.2vw, 7px); border-top: 1px solid var(--borda-sutil); }
     .adicionais-section .label { font-weight: 800; font-size: clamp(9px, 2.6vw, 11px); color: var(--cor-promo); margin-bottom: clamp(3px, 1vw, 5px); display: flex; align-items: center; gap: 4px; }
     .adicionais-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(4px, 1.2vw, 6px); max-height: clamp(90px, 22vh, 130px); overflow-y: auto; padding: 2px 0; }
-
     .btn-extra { background: var(--bg-card); border: 1.5px solid var(--borda-sutil); border-radius: var(--raio-sm); padding: clamp(4px, 1.2vw, 6px) clamp(5px, 1.5vw, 8px); color: var(--cor-fonte); font-size: clamp(8px, 2.4vw, 10px); cursor: pointer; transition: all 0.1s ease; font-weight: 600; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 3px; min-height: clamp(26px, 7vw, 32px); box-shadow: 0 3px 0 rgba(0,0,0,0.35); }
     .btn-extra:hover { background: var(--bg-card-hover); transform: translateY(-1px); box-shadow: 0 4px 0 rgba(0,0,0,0.35); }
     .btn-extra:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.35); }
@@ -285,18 +223,14 @@
     .btn-extra.selecionado:active { transform: translateY(2px); box-shadow: 0 1px 0 #a84500; }
     .btn-extra .preco-extra { color: var(--cor-promo); font-weight: 800; font-size: clamp(8px, 2.4vw, 10px); white-space: nowrap; }
     .btn-extra.selecionado .preco-extra { color: #fff; }
-
     .dialog-actions { display: flex; gap: clamp(4px, 1.2vw, 6px); margin-top: clamp(3px, 1vw, 5px); }
-
     .btn-principal { flex: 1; padding: clamp(7px, 2.2vw, 10px); border-radius: var(--raio-sm); background: var(--cor-botao-adicionar); color: #fff; border: none; font-weight: 800; font-size: clamp(10px, 2.8vw, 12px); cursor: pointer; transition: all 0.1s ease; box-shadow: 0 4px 0 #1a4a2c, 0 6px 14px rgba(43,114,69,0.4); }
     .btn-principal:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 0 #1a4a2c, 0 8px 18px rgba(43,114,69,0.5); }
     .btn-principal:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 #1a4a2c; }
     .btn-principal:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: 0 2px 0 #1a4a2c; }
-
     .btn-secundario { flex: 0 0 auto; padding: clamp(7px, 2.2vw, 10px) clamp(9px, 2.8vw, 13px); border-radius: var(--raio-sm); background: rgba(255,255,255,0.08); color: var(--cor-fonte); border: 1px solid var(--borda-sutil); font-weight: 700; font-size: clamp(9px, 2.6vw, 11px); cursor: pointer; transition: all 0.1s ease; box-shadow: 0 3px 0 rgba(0,0,0,0.4); }
     .btn-secundario:hover { background: rgba(255,255,255,0.12); transform: translateY(-1px); box-shadow: 0 4px 0 rgba(0,0,0,0.4); }
     .btn-secundario:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.4); }
-
     .num-display { font-size: 40px; background: var(--bg-input); padding: 16px; border-radius: var(--raio-md); text-align: center; color: var(--cor-categoria-ativa); font-weight: 900; border: 1px solid var(--borda-sutil); box-shadow: inset 0 4px 12px rgba(0,0,0,0.5); }
     .kbd { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
     .kbd button { padding: 14px 8px; font-size: 18px; border-radius: var(--raio-sm); background: var(--bg-card); border: 1px solid var(--borda-sutil); color: var(--cor-fonte); font-weight: 800; cursor: pointer; transition: all 0.1s; box-shadow: 0 4px 0 rgba(0,0,0,0.35); }
@@ -309,14 +243,11 @@
     .toast .sub { color: var(--cor-fonte-muted); font-size: 12px; }
     @keyframes toastIn { to { transform: translateY(0); opacity: 1; } }
     @keyframes toastOut { to { transform: translateY(-8px); opacity: 0; } }
-
-    /* ✅ NOTIFICAÇÃO CENTRAL (FICA NO CENTRO E NÃO DESCE) — LETRAS AMARELAS */
     #centerToast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.85); z-index: 200; background: rgba(0,0,0,0.92); backdrop-filter: blur(10px); border: 1.5px solid rgba(255,215,0,0.4); border-radius: var(--raio-xl); padding: 24px 32px; display: none; flex-direction: column; align-items: center; gap: 10px; min-width: 220px; max-width: 85vw; box-shadow: 0 20px 60px rgba(0,0,0,0.9); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; }
     #centerToast.show { display: flex; opacity: 1; transform: translate(-50%, -50%) scale(1); }
     #centerToast .check-icon { font-size: 42px; color: #FFD700; text-shadow: 0 0 12px rgba(255,215,0,0.6); font-weight: 900; }
     #centerToast .msg { color: #FFD700; font-weight: 800; font-size: 17px; text-align: center; line-height: 1.3; }
     #centerToast .sub-msg { color: #FFE066; font-size: 13px; }
-
     .share-overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.8); z-index: 150; backdrop-filter: blur(8px); padding: 20px; }
     .share-overlay.active { display: flex; }
     .share-modal { background: var(--bg-modal); border-radius: var(--raio-xl); padding: 24px; max-width: 380px; width: 100%; box-shadow: var(--sombra-modal); border: 1px solid var(--borda-media); animation: modalIn 0.3s ease; }
@@ -350,60 +281,27 @@
     .lead-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
     .lead-overlay.active { display: flex; }
     .lead-modal { background: linear-gradient(135deg, #2a201d 0%, #1A1210 100%); border: 2px solid #FFD700; border-radius: var(--raio-xl); padding: 30px 20px; max-width: 380px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.9); position: relative; animation: modalIn 0.4s ease; }
-    
-    /* Botão X amarelo */
     .lead-modal .close-lead { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.06); border: 1px solid var(--borda-sutil); color: #FFD700; font-size: 20px; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 0 rgba(0,0,0,0.4); transition: all 0.1s; }
     .lead-modal .close-lead:hover { color: #FFD700; background: rgba(255,255,255,0.12); transform: translateY(-1px); box-shadow: 0 4px 0 rgba(0,0,0,0.4); }
     .lead-modal .close-lead:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4); }
-    
     .lead-modal .icon-gift { font-size: 50px; margin-bottom: 10px; display: block; }
-    
-    /* Filtro para deixar o emoji 🎁 amarelo */
-    .emoji-amarelo {
-      filter: invert(85%) sepia(60%) saturate(1500%) hue-rotate(360deg) brightness(105%) contrast(105%);
-      display: inline-block;
-    }
-
-    /* Letras amarelas puxadas pelas classes */
+    .emoji-amarelo { filter: invert(85%) sepia(60%) saturate(1500%) hue-rotate(360deg) brightness(105%) contrast(105%); display: inline-block; }
     .lead-modal h2.msg { color: #FFD700; font-size: 22px; margin-bottom: 8px; }
     .lead-modal p.sub-msg { color: #FFE066; font-size: 14px; margin-bottom: 20px; line-height: 1.4; }
     .lead-modal p strong.msg { color: #FFD700; }
-
-    /* Input: texto digitado amarelo e borda amarela */
     .lead-modal input { width: 100%; padding: 14px; border-radius: 10px; border: 2px solid #FFD700; background: var(--bg-input); color: #FFD700; font-size: 16px; text-align: center; margin-bottom: 10px; font-weight: bold; box-shadow: inset 0 3px 8px rgba(0,0,0,0.4); }
-    .lead-modal input::placeholder { color: rgba(255,215,0,0.5); } /* Cor do texto de exemplo */
+    .lead-modal input::placeholder { color: rgba(255,215,0,0.5); }
     .lead-modal input:focus { outline: none; box-shadow: 0 0 15px rgba(255,215,0,0.4), inset 0 3px 8px rgba(0,0,0,0.4); }
-
-    /* Botão: fundo verde, mas texto amarelo */
     .lead-modal button.btn-lead { width: 100%; padding: 14px; background: var(--cor-botao-adicionar); color: #FFD700; border: none; border-radius: 10px; font-weight: 800; font-size: 16px; cursor: pointer; transition: all 0.1s; box-shadow: 0 5px 0 #1a4a2c, 0 8px 20px rgba(43,114,69,0.4); text-shadow: 0 1px 2px rgba(0,0,0,0.6); }
     .lead-modal button.btn-lead:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #1a4a2c, 0 10px 24px rgba(43,114,69,0.5); filter: brightness(1.05); }
     .lead-modal button.btn-lead:active { transform: translateY(4px); box-shadow: 0 1px 0 #1a4a2c; }
-    
     .lead-modal .lead-erro { color: #ff6b6b; font-size: 12px; margin-top: 8px; display: none; }
+
     /* ===== BAÚ DE CUPONS ===== */
-    .btn-bau {
-      position: fixed;
-      bottom: 100px;
-      right: 16px;
-      z-index: 80;
-      background: linear-gradient(135deg, #FFD700, #FF6B00);
-      color: #1A1210;
-      border: none;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      font-size: 28px;
-      cursor: pointer;
-      box-shadow: 0 6px 0 #b35500, 0 10px 24px rgba(255,107,0,0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.15s, opacity 0.3s, box-shadow 0.15s;
-    }
+    .btn-bau { position: fixed; bottom: 100px; right: 16px; z-index: 80; background: linear-gradient(135deg, #FFD700, #FF6B00); color: #1A1210; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 28px; cursor: pointer; box-shadow: 0 6px 0 #b35500, 0 10px 24px rgba(255,107,0,0.5); display: flex; align-items: center; justify-content: center; transition: transform 0.15s, opacity 0.3s, box-shadow 0.15s; }
     .btn-bau:hover { transform: scale(1.08); box-shadow: 0 8px 0 #b35500, 0 14px 30px rgba(255,107,0,0.6); }
     .btn-bau:active { transform: translateY(4px) scale(0.95); box-shadow: 0 2px 0 #b35500, 0 4px 10px rgba(255,107,0,0.4); }
     .btn-bau.escondido { display: none; }
-
     .bau-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(6px); z-index: 250; display: none; align-items: center; justify-content: center; padding: 20px; }
     .bau-overlay.active { display: flex; }
     .bau-modal { background: var(--bg-modal); border-radius: var(--raio-xl); padding: 24px; max-width: 420px; width: 100%; border: 2px solid var(--cor-secundaria); box-shadow: 0 20px 60px rgba(0,0,0,0.9); position: relative; max-height: 80vh; overflow-y: auto; }
@@ -412,7 +310,6 @@
     .bau-modal .close-bau:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.4); }
     .bau-modal h2 { color: var(--cor-secundaria); font-size: 22px; margin-bottom: 6px; text-align: center; }
     .bau-modal .desc { color: var(--cor-fonte-muted); font-size: 13px; text-align: center; margin-bottom: 20px; }
-
     .cupom-card-item { background: linear-gradient(135deg, #2a201d, #1A1210); border: 1px dashed var(--cor-secundaria); border-radius: 12px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px; transition: transform 0.15s, box-shadow 0.15s; box-shadow: 0 4px 0 rgba(0,0,0,0.4); }
     .cupom-card-item:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.4); }
     .cupom-card-item .info { flex: 1; }
@@ -427,35 +324,14 @@
     .confete { position: fixed; width: 10px; height: 10px; z-index: 999; pointer-events: none; border-radius: 50%; }
     @keyframes explodir { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; } }
 
-    /* ===== ZOOM DA LOGO ===== */
-    #logoZoomOverlay { position: fixed; inset: 0; z-index: 9999; display: none; align-items: center; justify-content: center; pointer-events: none; background: transparent; }
-    #logoZoomOverlay img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--cor-categoria); box-shadow: 0 10px 40px rgba(0,0,0,0.8); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(1); }
-    #logoZoomOverlay.animando { display: flex; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); pointer-events: auto; }
-    #logoZoomOverlay.animando img { transform: scale(5); }
+    /* ===== ZOOM DA LOGO (CORRIGIDO) ===== */
+    #logoZoomOverlay { position: fixed; inset: 0; z-index: 9999; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.85); backdrop-filter: blur(6px); cursor: zoom-out; padding: 20px; }
+    #logoZoomOverlay.animando { display: flex; }
+    #logoZoomOverlay img { max-width: 90vw; max-height: 90vh; width: auto; height: auto; border-radius: 16px; object-fit: contain; box-shadow: 0 20px 60px rgba(0,0,0,0.8); animation: zoomLogoIn 0.3s ease; }
+    @keyframes zoomLogoIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
     /* ===== LEMBRETES ===== */
-    .pst-lembrete {
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 9997;
-      padding: 10px 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      font-size: 13px;
-      font-weight: 800;
-      text-align: center;
-      border-radius: 30px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 0 2px rgba(255,255,255,0.15);
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      white-space: nowrap;
-      max-width: calc(100vw - 32px);
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .pst-lembrete { position: fixed; left: 50%; transform: translateX(-50%); z-index: 9997; padding: 10px 22px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 13px; font-weight: 800; text-align: center; border-radius: 30px; box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 0 2px rgba(255,255,255,0.15); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; white-space: nowrap; max-width: calc(100vw - 32px); overflow: hidden; text-overflow: ellipsis; }
     .pst-lembrete:hover { transform: translateX(-50%) translateY(-2px) scale(1.02); box-shadow: 0 8px 26px rgba(0,0,0,0.6), 0 0 0 2px rgba(255,255,255,0.25); }
     .pst-lembrete.top { top: 76px; }
     .pst-lembrete.bottom { bottom: 170px; }
@@ -483,30 +359,23 @@
   <div class="lead-overlay" id="leadOverlay">
     <div class="lead-modal">
       <button class="close-lead" onclick="fecharLead()">×</button>
-      
-      <!-- Emoji amarelo -->
       <span class="icon-gift"><span class="emoji-amarelo">🎁</span></span>
-      
-      <!-- Título amarelo -->
       <h2 class="msg">Ofertas Exclusivas</h2>
-      
-      <!-- Texto amarelo -->
       <p class="sub-msg">
         Quer receber ofertas exclusivas para clientes cadastrados?<br>
         Deixe seu WhatsApp e ganhe acesso a promoções que não estão no site.<br>
         <strong class="msg">É rápido, grátis e você não perde nenhuma!</strong>
       </p>
-      
       <input type="tel" id="leadTelefone" placeholder="(11) 99999-9999" maxlength="15" />
-      
-      <!-- Botão com texto amarelo -->
       <button class="btn-lead msg" onclick="salvarLead()">Quero receber as ofertas</button>
-      
       <div class="lead-erro" id="leadErro"></div>
     </div>
   </div>
 
-
+  <!-- ✅ OVERLAY DE ZOOM DA LOGO (novo) -->
+  <div id="logoZoomOverlay" onclick="fecharZoomLogo()">
+    <img id="logoZoomImg" src="" alt="Logo Pasterry" />
+  </div>
 
   <button class="btn-bau escondido" id="btnBau" onclick="abrirBau()" aria-label="Baú de Cupons">🎁</button>
 
@@ -676,7 +545,25 @@
     </div>
   </div>
 
-  <script>
+  <!-- O <script> completo vem na PARTE 2/2 -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <script>
     function pushHistory(stateName) {
       try { history.pushState({ modal: stateName }, '', ''); }
       catch (e) { console.warn('History API:', e); }
@@ -696,18 +583,25 @@
     }
 
     let logoZoomTimer = null;
+
+    // ✅ CORRIGIDO: agora usa os elementos #logoZoomOverlay e #logoZoomImg
     function abrirZoomLogo() {
       const overlay = document.getElementById('logoZoomOverlay');
       const zoomImg = document.getElementById('logoZoomImg');
       const originalImg = document.getElementById('logoImg');
-      if (originalImg.src) zoomImg.src = originalImg.src;
+      if (!overlay || !zoomImg || !originalImg) return;
+      if (!originalImg.src) return;
+
+      zoomImg.src = originalImg.src;
       overlay.classList.add('animando');
+
       if (logoZoomTimer) clearTimeout(logoZoomTimer);
-      logoZoomTimer = setTimeout(() => { fecharZoomLogo(); }, 2000);
+      logoZoomTimer = setTimeout(() => { fecharZoomLogo(); }, 3000);
     }
+
     function fecharZoomLogo() {
       const overlay = document.getElementById('logoZoomOverlay');
-      overlay.classList.remove('animando');
+      if (overlay) overlay.classList.remove('animando');
       if (logoZoomTimer) clearTimeout(logoZoomTimer);
     }
 
@@ -837,14 +731,12 @@
       }
       document.getElementById('leadOverlay').classList.remove('active');
 
-      // ✅ Mostra a caixinha do baú e a mensagem central "Abra seu presente!"
       const btnBau = document.getElementById('btnBau');
       if (btnBau && !localStorage.getItem('pasterry_cupom_v1')) {
         btnBau.classList.remove('escondido');
         btnBau.style.display = '';
       }
 
-      // ✅ MENSAGEM CENTRAL QUE NÃO DESCE E SOME EM 2s — LETRAS AMARELAS
       showCenterNotification('Abra seu presente!', 'Clique na caixinha no canto da tela.', 2000);
     }
 
@@ -865,6 +757,7 @@
     // ============================================================
     // BAÚ DE CUPONS
     // ============================================================
+    // ✅ CORRIGIDO: usa o cupom DEFINIDO pelo admin em config/cupom_boas_vindas
     function abrirBau() {
       if (!localStorage.getItem('pasterry_lead_telefone')) {
         document.getElementById('leadOverlay').classList.add('active');
@@ -874,19 +767,35 @@
         showCenterNotification('Você já resgatou um cupom!', 'Remova do carrinho para resgatar outro.', 2000);
         return;
       }
-      db.collection('config').doc('cupons').get().then(doc => {
-        if (!doc.exists || !Array.isArray(doc.data().cupons)) {
-          showCenterNotification('Nenhum cupom disponível', 'Volte mais tarde!', 2000);
-          return;
+
+      Promise.all([
+        db.collection('config').doc('cupom_boas_vindas').get(),
+        db.collection('config').doc('cupons').get()
+      ]).then(([docBoas, docCupons]) => {
+        const codigoDefinido = docBoas.exists ? (docBoas.data().codigo || '') : '';
+        const listaCupons = docCupons.exists && Array.isArray(docCupons.data().cupons)
+          ? docCupons.data().cupons.filter(c => c && c.codigo && Number(c.desconto) > 0)
+          : [];
+
+        let cupomEscolhido = null;
+
+        if (codigoDefinido) {
+          cupomEscolhido = listaCupons.find(c => c.codigo === codigoDefinido) || null;
+          if (!cupomEscolhido) {
+            showCenterNotification('Cupom indisponível', 'Tente novamente mais tarde.', 2000);
+            return;
+          }
+        } else {
+          if (listaCupons.length === 0) {
+            showCenterNotification('Nenhum cupom disponível', 'Volte mais tarde!', 2000);
+            return;
+          }
+          cupomEscolhido = listaCupons.reduce((a, b) => (Number(b.desconto) > Number(a.desconto) ? b : a));
         }
-        const ativos = doc.data().cupons.filter(c => c && c.codigo && Number(c.desconto) > 0);
-        if (ativos.length === 0) {
-          showCenterNotification('Nenhum cupom disponível', 'Volte mais tarde!', 2000);
-          return;
-        }
-        const melhor = ativos.reduce((a, b) => (b.desconto > a.desconto ? b : a));
-        window._cuponsDisponiveis = ativos;
-        aplicarCupomDireto(melhor.codigo);
+
+        window._cuponsDisponiveis = listaCupons;
+        codigoCupomSelecionado = cupomEscolhido.codigo;
+        aplicarCupomDireto(cupomEscolhido.codigo);
       }).catch(err => {
         console.error(err);
         showCenterNotification('Erro ao buscar cupons', 'Tente novamente.', 2000);
@@ -966,7 +875,6 @@
           pendente: true
         }));
 
-        // ✅ MENSAGEM CENTRAL "Seu desconto foi adicionado!" (2s, sem descer) — LETRAS AMARELAS
         showCenterNotification('Seu desconto foi adicionado!', cupomCompleto.desconto + '% OFF • Cupom ' + cupomCompleto.codigo, 2000);
 
         if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
@@ -1271,7 +1179,7 @@
     }
 
     // ============================================================
-    // ✅ NOTIFICAÇÃO CENTRAL — SEMPRE NO CENTRO, SOME EM 2s, NÃO DESCE
+    // NOTIFICAÇÃO CENTRAL
     // ============================================================
     function showCenterNotification(title, sub = 'Adicionado ao carrinho', duracaoMs = 2000) {
       const centerToast = document.getElementById('centerToast');
@@ -1286,7 +1194,6 @@
       centerToast.classList.add('show');
 
       clearTimeout(centerToast._timer);
-      // ✅ Não tem mais "voando" — só some suavemente após N segundos
       centerToast._timer = setTimeout(() => {
         centerToast.classList.remove('show');
         setTimeout(() => {
@@ -2131,7 +2038,7 @@
     }
 
     // ============================================================
-    // ✅ SISTEMA DE PROMOÇÕES — BANNER ARRASTÁVEL + LEMBRETES + ÍCONES
+    // SISTEMA DE PROMOÇÕES
     // ============================================================
     let bannerPromoIndex = 0;
     let bannerPromoTimer = null;
@@ -2229,13 +2136,9 @@
         banner.appendChild(dots);
       }
 
-      // ✅ ROTAÇÃO AUTOMÁTICA
       iniciarRotacaoBanner();
-
-      // ✅ ARRASTAR (SWIPE) PARA MUDAR DE SLIDE
       configurarSwipeBanner();
 
-      // ✅ CLIQUE NOS SLIDES (ADICIONAR PRODUTO)
       document.querySelectorAll('#pst-banner-promo .banner-slide').forEach((slide) => {
         const idx = parseInt(slide.dataset.index);
         const m = bannerMidiasCache[idx];
@@ -2284,7 +2187,6 @@
       }
     }
 
-    // ✅ SWIPE/ARRASTAR DO BANNER
     let bannerTouchStartX = 0;
     let bannerTouchStartY = 0;
     let bannerTouchAtivo = false;
@@ -2296,7 +2198,6 @@
       if (banner.dataset.swipeConfigurado === '1') return;
       banner.dataset.swipeConfigurado = '1';
 
-      // TOUCH (MOBILE)
       banner.addEventListener('touchstart', (e) => {
         if (e.touches.length !== 1) return;
         bannerTouchStartX = e.touches[0].clientX;
@@ -2326,7 +2227,6 @@
         }
       }, { passive: true });
 
-      // MOUSE (DESKTOP)
       let mouseStartX = null;
       let mouseStartY = null;
       let mouseDown = false;
@@ -2404,13 +2304,14 @@
         if (shareOverlay && shareOverlay.classList.contains('active')) fecharShare();
         if (menuDropdown) menuDropdown.classList.remove('open');
         if (document.getElementById('bauOverlay').classList.contains('active')) fecharBau();
+        if (document.getElementById('logoZoomOverlay').classList.contains('animando')) fecharZoomLogo();
       }
     });
 
     window.addToCart = addToCart;
     window.openQtyDialog = openQtyDialog;
     window.openSizeDialog = openSizeDialog;
-    window.showSuccess = showSuccess;
+    // ✅ REMOVIDO: window.showSuccess = showSuccess; (função não existia)
     window.showCenterNotification = showCenterNotification;
     window.fecharLead = fecharLead;
     window.salvarLead = salvarLead;
@@ -2423,9 +2324,8 @@
     window.fecharZoomLogo = fecharZoomLogo;
 
     console.log('✅ Pasterry Cardápio carregado com sucesso!');
-    console.log('👉 Banner de promoção arrastável (swipe)');
-    console.log('🎁 "Abra seu presente!" (2s no centro, sem descer)');
-    console.log('🎉 "Seu desconto foi adicionado!" (2s no centro, sem descer)');
+    console.log('🎁 Cupom de boas-vindas definido pelo admin (config/cupom_boas_vindas)');
+    console.log('🔍 Zoom da logo ativo (#logoZoomOverlay)');
   </script>
 </body>
 </html>
